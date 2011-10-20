@@ -1,12 +1,17 @@
 package net.ecoarttech.ihplus;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import net.ecoarttech.ihplus.model.Route;
+import net.ecoarttech.ihplus.network.DirectionCompletionListener;
+import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
+import net.ecoarttech.ihplus.network.MapDirectionCompletionListener;
+import net.ecoarttech.ihplus.network.MapDirectionsAsyncTask;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -35,8 +40,9 @@ public class IHActivity extends MapActivity {
 		mMapView.setSatellite(false);
 		String from = URLEncoder.encode("1200 Bob Harrison St Austin, TX");
 		String to = URLEncoder.encode("600 W 6th St Austin, TX");
-		String pairs[] = getDirectionData(from, to);
-		drawPath(pairs);
+		getMapDirectionData(from, to);
+		// String pairs[] = getDirectionData(from, to);
+		// drawPath(pairs);
 
 	}
 
@@ -51,7 +57,7 @@ public class IHActivity extends MapActivity {
 		mMapController = mMapView.getController();
 		geoPoint = startGP;
 		mMapController.setCenter(geoPoint); // TODO - center on user's location?
-		mMapController.setZoom(17);
+		mMapController.setZoom(16);
 		mMapView.getOverlays().add(new DirectionPathOverlay(startGP, startGP));
 
 		// NAVIGATE THE PATH
@@ -76,124 +82,100 @@ public class IHActivity extends MapActivity {
 		mMapView.displayZoomControls(true);
 	}
 
+	private void drawMapPath(Route route) {
+		ArrayList<GeoPoint> points = route.getPoints();
+		// STARTING POINT
+		GeoPoint startGP = points.get(0);
+		// new GeoPoint(
+		// (int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double
+		// .parseDouble(lngLat[0]) * 1E6));
+
+		mMapController = mMapView.getController();
+		geoPoint = startGP;
+		mMapController.setCenter(geoPoint); // TODO - center on user's location?
+		mMapController.setZoom(16);
+		mMapView.getOverlays().add(new DirectionPathOverlay(startGP, startGP));
+
+		// NAVIGATE THE PATH
+		GeoPoint gp1;
+		GeoPoint gp2 = startGP;
+
+		for (int i = 1; i < points.size(); i++) {
+			// lngLat = pairs[i].split(",");
+			gp1 = gp2;
+			// watch out! For GeoPoint, first:latitude, second:longitude
+			gp2 = points.get(i);
+			// new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6),
+			// (int) (Double.parseDouble(lngLat[0]) * 1E6));
+			mMapView.getOverlays().add(new DirectionPathOverlay(gp1, gp2));
+			Log.d("xxx", "point:" + gp2);
+		}
+
+		// END POINT
+		mMapView.getOverlays().add(new DirectionPathOverlay(gp2, gp2));
+
+		mMapView.getController().animateTo(startGP);
+		mMapView.setBuiltInZoomControls(true);
+		mMapView.displayZoomControls(true);
+	}
+
 	@Override
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	private String[] getDirectionData(String srcPlace, String destPlace) {
-		String urlString = "http://maps.google.com/maps?f=d&hl=en&saddr="
-				+ srcPlace + "&daddr=" + destPlace
-				+ "&ie=UTF8&0&om=0&output=kml";
-		Log.d("URL", urlString);
-		Document doc = null;
-		HttpURLConnection urlConnection = null;
-		URL url = null;
-		String pathConent = "";
-		try {
+	private void getDirectionData(String srcPlace, String destPlace) {
+		DirectionsAsyncTask task = new DirectionsAsyncTask(this, srcPlace,
+				destPlace, new DirectionCompletionListener() {
 
-			url = new URL(urlString.toString());
-			urlConnection = (HttpURLConnection) url.openConnection();
-			urlConnection.setRequestMethod("GET");
-			urlConnection.setDoOutput(true);
-			urlConnection.setDoInput(true);
-			urlConnection.connect();
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			doc = db.parse(urlConnection.getInputStream());
-
-		} catch (Exception e) {
-		}
-		Log.d(TAG, "doc: " + doc);
-		// TODO - null check here -- make sure user is connected to the
-		// internet!
-		NodeList nl = doc.getElementsByTagName("LineString");
-		for (int s = 0; s < nl.getLength(); s++) {
-			Node rootNode = nl.item(s);
-			NodeList configItems = rootNode.getChildNodes();
-			for (int x = 0; x < configItems.getLength(); x++) {
-				Node lineStringNode = configItems.item(x);
-				NodeList path = lineStringNode.getChildNodes();
-				pathConent = path.item(0).getNodeValue();
-			}
-		}
-		String[] tempContent = pathConent.split(" ");
-		return tempContent;
+					@Override
+					public void onComplete(Document doc) {
+						String pathConent = "";
+						Log.d(TAG, "doc: " + doc);
+						if (doc != null) {
+							NodeList nl = doc
+									.getElementsByTagName("LineString");
+							for (int s = 0; s < nl.getLength(); s++) {
+								Node rootNode = nl.item(s);
+								NodeList configItems = rootNode.getChildNodes();
+								for (int x = 0; x < configItems.getLength(); x++) {
+									Node lineStringNode = configItems.item(x);
+									NodeList path = lineStringNode
+											.getChildNodes();
+									pathConent = path.item(0).getNodeValue();
+								}
+							}
+							String[] tempContent = pathConent.split(" ");
+							drawPath(tempContent);
+						}
+					}
+				});
+		task.execute();
 	}
 
-	// private void getDirectionData(String srcPlace, String destPlace) {
-	// DirectionsAsyncTask task = new DirectionsAsyncTask(this, srcPlace,
-	// destPlace, new DirectionCompletionListener() {
-	//
-	// @Override
-	// public void onComplete(String result) {
-	// // TODO Auto-generated method stub
-	//
-	// DocumentBuilderFactory dbf = DocumentBuilderFactory
-	// .newInstance();
-	// DocumentBuilder db;
-	// Document doc = null;
-	// try {
-	// db = dbf.newDocumentBuilder();
-	// doc = db.parse(result);
-	// } catch (ParserConfigurationException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (SAXException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// String pathConent = "";
-	// Log.d(TAG, "doc: " + doc);
-	// if (doc != null) {
-	// NodeList nl = doc
-	// .getElementsByTagName("LineString");
-	// for (int s = 0; s < nl.getLength(); s++) {
-	// Node rootNode = nl.item(s);
-	// NodeList configItems = rootNode.getChildNodes();
-	// for (int x = 0; x < configItems.getLength(); x++) {
-	// Node lineStringNode = configItems.item(x);
-	// NodeList path = lineStringNode
-	// .getChildNodes();
-	// pathConent = path.item(0).getNodeValue();
-	// }
-	// }
-	// String[] tempContent = pathConent.split(" ");
-	// drawPath(tempContent);
-	// }
-	// }
-	// });
-	// task.execute();
-	// // String urlString = "http://maps.google.com/maps?f=d&hl=en&saddr="
-	// // + srcPlace + "&daddr=" + destPlace
-	// // + "&ie=UTF8&0&om=0&output=kml";
-	// // Log.d("URL", urlString);
-	// // Document doc = null;
-	// // HttpURLConnection urlConnection = null;
-	// // URL url = null;
-	// // try {
-	// //
-	// // url = new URL(urlString);
-	// // urlConnection = (HttpURLConnection) url.openConnection();
-	// // urlConnection.setRequestMethod("GET");
-	// // urlConnection.setDoOutput(true);
-	// // urlConnection.setDoInput(true);
-	// // urlConnection.connect();
-	// // DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-	// // DocumentBuilder db = dbf.newDocumentBuilder();
-	// // doc = db.parse(urlConnection.getInputStream());
-	// //
-	// // } catch (Exception e) {
-	// // }
-	// //
-	// // return tempContent;
-	// // } else {
-	// // // TODO
-	// // return null;
-	// // }
-	// }
+	private void getMapDirectionData(String srcPlace, String destPlace) {
+		MapDirectionsAsyncTask task = new MapDirectionsAsyncTask(this,
+				srcPlace, destPlace, new MapDirectionCompletionListener() {
+
+					@Override
+					public void onComplete(String result) {
+						Log.d(TAG, "done");
+						try {
+							JSONObject json = new JSONObject(result);
+							JSONArray routes = json.getJSONArray("routes");
+							if (routes.length() > 0) {
+								Route route = new Route(routes.getJSONObject(0));
+								drawMapPath(route);
+							} else {
+								// TODO - POOP
+							}
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				});
+		task.execute();
+	}
 }
