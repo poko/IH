@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import net.ecoarttech.ihplus.gps.CurrentLocListener;
 import net.ecoarttech.ihplus.model.Route;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
@@ -23,7 +24,10 @@ import org.w3c.dom.NodeList;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
@@ -36,9 +40,12 @@ public class IHMapActivity extends MapActivity {
 	public static final String BUNDLE_START = "start";
 	public static final String BUNDLE_END = "end";
 	private Context mContext;
-	MapView mMapView;
-	MapController mMapController;
-	GeoPoint geoPoint;
+	private MapView mMapView;
+	private MapController mMapController;
+	private GeoPoint geoPoint;
+	private GeoPoint mCurrentLocation;
+	private LocationManager mLocMgr;
+	private CurrentLocListener mCurrLocListener;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -46,6 +53,10 @@ public class IHMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 		this.mContext = this;
+		// start current location listener
+		mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+		mCurrLocListener = new CurrentLocListener(newLocationHandler);
+		mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mCurrLocListener);
 		mMapView = (MapView) findViewById(R.id.map_view);
 		mMapView.setSatellite(false);
 
@@ -60,8 +71,7 @@ public class IHMapActivity extends MapActivity {
 					@Override
 					public void onComplete(Document doc) {
 						NodeList nl = doc.getElementsByTagName("coordinates");
-						String coordsElm = nl.item(0).getFirstChild()
-								.getNodeValue();
+						String coordsElm = nl.item(0).getFirstChild().getNodeValue();
 						String[] coords = coordsElm.split(",");
 						// long = 0, lat = 1
 						double lat = Double.valueOf(coords[1]);
@@ -89,45 +99,21 @@ public class IHMapActivity extends MapActivity {
 					}
 				});
 		startTask.execute();
-		// try {
-		// Geocoder g = new Geocoder(this, Locale.getDefault());
-		// // get first input coord:
-		// List<Address> addys = g.getFromLocationName(
-		// "1200 Bob Harrison St Austin, TX", 1); // Find one location
-		// Address start = addys.get(0);
-		// Log.d(TAG, "Randoms: " + Math.random() * (.009));
-		// double randLat = start.getLatitude() - Math.random() * (.008); //
-		// toDO
-		// // randomize
-		// // offset
-		// double randLong = start.getLongitude() - Math.random() * (.008);
-		// List<Address> myList = g.getFromLocation(randLat, randLong, 1);
-		// Log.d(TAG, "XXXXXXresult:" + myList.get(0));
-		// if (myList.size() > 0) {
-		// Address addy = myList.get(0);
-		// to = addy.getAddressLine(0);
-		// Log.d(TAG, "To: " + to);
-		// }
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// String end = URLEncoder.encode("Palmer Events Center, Austin, TX");
-		// getDirectionData(from, to);
-		// getDirectionData(to, end);
-		// getMapDirectionData(from, to);
-		// String pairs[] = getDirectionData(from, to);
-		// drawPath(pairs);
-
 	}
+
+	Handler newLocationHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Log.d(TAG, "new location, mappy ol' pal!: " + msg.obj);
+		}
+	};
 
 	private void drawPath(String[] pairs) {
 		String[] lngLat = pairs[0].split(",");
 
 		// STARTING POINT
-		GeoPoint startGP = new GeoPoint(
-				(int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double
-						.parseDouble(lngLat[0]) * 1E6));
+		GeoPoint startGP = new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double
+				.parseDouble(lngLat[0]) * 1E6));
 
 		mMapController = mMapView.getController();
 		geoPoint = startGP;
@@ -138,13 +124,14 @@ public class IHMapActivity extends MapActivity {
 		// NAVIGATE THE PATH
 		GeoPoint gp1;
 		GeoPoint gp2 = startGP;
-
+		Log.d(TAG, "pairs amount:" + pairs.length);
 		for (int i = 1; i < pairs.length; i++) {
+
 			lngLat = pairs[i].split(",");
 			gp1 = gp2;
 			// watch out! For GeoPoint, first:latitude, second:longitude
-			gp2 = new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6),
-					(int) (Double.parseDouble(lngLat[0]) * 1E6));
+			gp2 = new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double
+					.parseDouble(lngLat[0]) * 1E6));
 			mMapView.getOverlays().add(new DirectionPathOverlay(gp1, gp2));
 			Log.d("xxx", "pair:" + pairs[i]);
 		}
@@ -201,23 +188,21 @@ public class IHMapActivity extends MapActivity {
 	}
 
 	private void getDirectionData(String srcPlace, String destPlace) {
-		DirectionsAsyncTask task = new DirectionsAsyncTask(this, srcPlace,
-				destPlace, new DirectionCompletionListener() {
+		DirectionsAsyncTask task = new DirectionsAsyncTask(this, srcPlace, destPlace,
+				new DirectionCompletionListener() {
 
 					@Override
 					public void onComplete(Document doc) {
 						String pathConent = "";
 						Log.d(TAG, "doc: " + doc);
 						if (doc != null) {
-							NodeList nl = doc
-									.getElementsByTagName("LineString");
+							NodeList nl = doc.getElementsByTagName("LineString");
 							for (int s = 0; s < nl.getLength(); s++) {
 								Node rootNode = nl.item(s);
 								NodeList configItems = rootNode.getChildNodes();
 								for (int x = 0; x < configItems.getLength(); x++) {
 									Node lineStringNode = configItems.item(x);
-									NodeList path = lineStringNode
-											.getChildNodes();
+									NodeList path = lineStringNode.getChildNodes();
 									pathConent = path.item(0).getNodeValue();
 								}
 							}
@@ -230,8 +215,8 @@ public class IHMapActivity extends MapActivity {
 	}
 
 	private void getMapDirectionData(String srcPlace, String destPlace) {
-		MapDirectionsAsyncTask task = new MapDirectionsAsyncTask(this,
-				srcPlace, destPlace, new MapDirectionCompletionListener() {
+		MapDirectionsAsyncTask task = new MapDirectionsAsyncTask(this, srcPlace, destPlace,
+				new MapDirectionCompletionListener() {
 
 					@Override
 					public void onComplete(String result) {
@@ -254,8 +239,10 @@ public class IHMapActivity extends MapActivity {
 		task.execute();
 	}
 
-	private double getRandomOffset() {
+	private static double getRandomOffset() {
 		double num = Math.random() * (.009);
-		return Math.floor(num * 1000 + 0.5) / 1000;
+		double offset = Math.floor(num * 1000 + 0.5) / 1000;
+		int i = (offset / .001) % 2 == 0 ? 1 : -1;
+		return offset * i;
 	}
 }

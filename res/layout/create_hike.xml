@@ -30,12 +30,14 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_start"
-		android:textColorHint="#B6B6B6"/>	
+		android:textColorHint="#B6B6B6"
+		android:text="1200 Bob Harrison St Austin, TX"/>	
 	<EditText android:id="@+id/end_address"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_end"
-		android:textColorHint="#B6B6B6"/>	
+		android:textColorHint="#B6B6B6"
+		android:text="1100 Navasota St Austin, TX"/>	
 	</LinearLayout>
 	<TextView 
 		android:layout_width="fill_parent"
