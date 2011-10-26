@@ -37,7 +37,10 @@
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_end"
 		android:textColorHint="#B6B6B6"
-		android:text="1100 Navasota St Austin, TX"/>	
+		android:text="1100 Navasota St Austin, TX"/>
+	<ImageView android:id="@+id/test_img"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>	
 	</LinearLayout>
 	<TextView 
 		android:layout_width="fill_parent"

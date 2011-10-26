@@ -20,9 +20,7 @@ public class DirectionPathOverlay extends Overlay {
 	}
 
 	@Override
-	public boolean draw(Canvas canvas, MapView mapView, boolean shadow,
-			long when) {
-		// TODO Auto-generated method stub
+	public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
 		Projection projection = mapView.getProjection();
 		if (shadow == false) {
 			Paint paint = new Paint();
@@ -33,8 +31,8 @@ public class DirectionPathOverlay extends Overlay {
 			Point point2 = new Point();
 			projection.toPixels(gp2, point2);
 			paint.setStrokeWidth(3);
-			canvas.drawLine((float) point.x, (float) point.y, (float) point2.x,
-					(float) point2.y, paint);
+			canvas.drawLine((float) point.x, (float) point.y, (float) point2.x, (float) point2.y,
+					paint);
 		}
 		return super.draw(canvas, mapView, shadow, when);
 	}

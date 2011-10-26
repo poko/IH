@@ -2,20 +2,33 @@ package net.ecoarttech.ihplus;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class CreateHikeActivity extends Activity {
 	private static String TAG = "IH+ - CreateHikeActivity";
 	private static int CREATE_HIKE = 1;
+	private AnimationDrawable testd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.create_hike);
+		ImageView test = (ImageView) findViewById(R.id.test_img);
+		test.setBackgroundResource(R.drawable.gps_indicator);
+		testd = (AnimationDrawable) test.getBackground();
+	}
+
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		// TODO Auto-generated method stub
+		super.onWindowFocusChanged(hasFocus);
+		testd.start();
 	}
 
 	public void onSearchClick(View v) {

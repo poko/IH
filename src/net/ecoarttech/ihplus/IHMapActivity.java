@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import net.ecoarttech.ihplus.gps.CurrentLocListener;
+import net.ecoarttech.ihplus.gps.CurrentLocationOverlay;
 import net.ecoarttech.ihplus.model.Route;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
@@ -24,7 +24,6 @@ import org.w3c.dom.NodeList;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,9 +42,7 @@ public class IHMapActivity extends MapActivity {
 	private MapView mMapView;
 	private MapController mMapController;
 	private GeoPoint geoPoint;
-	private GeoPoint mCurrentLocation;
-	private LocationManager mLocMgr;
-	private CurrentLocListener mCurrLocListener;
+	private CurrentLocationOverlay mCurrentLocationOverlay;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -53,12 +50,18 @@ public class IHMapActivity extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
 		this.mContext = this;
-		// start current location listener
-		mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-		mCurrLocListener = new CurrentLocListener(newLocationHandler);
-		mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mCurrLocListener);
+		// setup map view
 		mMapView = (MapView) findViewById(R.id.map_view);
 		mMapView.setSatellite(false);
+
+		// trying out mylocationoverlay?
+		mCurrentLocationOverlay = new CurrentLocationOverlay(this, mMapView);
+		mCurrentLocationOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				mMapView.getController().animateTo(mCurrentLocationOverlay.getMyLocation());
+			}
+		});
+		mMapView.getOverlays().add(mCurrentLocationOverlay);
 
 		Bundle extras = getIntent().getExtras();
 		final String start = URLEncoder.encode(extras.getString(BUNDLE_START));
@@ -101,10 +104,26 @@ public class IHMapActivity extends MapActivity {
 		startTask.execute();
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mCurrentLocationOverlay.enableMyLocation();
+	}
+
+	protected void onPause() {
+		super.onPause();
+		mCurrentLocationOverlay.disableMyLocation();
+	};
+
 	Handler newLocationHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "new location, mappy ol' pal!: " + msg.obj);
+			// Location currentLocation = (Location) msg.obj;
+			// mCurrentLocation = new GeoPoint((int)
+			// (currentLocation.getLatitude() * 1E6),
+			// (int) (currentLocation.getLongitude() * 1E6));
+			// mMapView.getOverlays().add(new GeoPointOverlay(mCurrentLocation);
 		}
 	};
 
