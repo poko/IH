@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, IHActivity!</string>
-    <string name="app_name">IH</string>
+    <string name="app_name">IH+</string>
+    <string name="enter_start">enter start address</string>
+    <string name="enter_end">enter end address</string>
+    <string name="hit_trail">hit the trail &gt;</string>
 </resources>

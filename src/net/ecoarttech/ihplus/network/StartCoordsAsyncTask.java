@@ -20,7 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
+public class StartCoordsAsyncTask extends AsyncTask<Void, Void, Document> {
 
 	private static final String TAG = "DirectionsAsyncTask";
 	public final static String SERVER_URL = "http://maps.google.com/maps";
@@ -31,24 +31,18 @@ public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 	protected boolean mShowDialog = false;
 	protected ProgressDialog mDialog;
 	protected String mLabel = "Loading";
-	private String sAdd;
-	private String dAdd;
+	private String location;
 
-	public DirectionsAsyncTask(Context context, String from, String to,
+	public StartCoordsAsyncTask(Context context, String location,
 			DirectionCompletionListener listener) {
 		this.mCompletionListener = listener;
 		this.mContext = context;
-		sAdd = from;
-		dAdd = to;
+		this.location = location;
 		mRequestQueries = new HashMap<String, Object>();
-		mRequestQueries.put("f", "d");
 		mRequestQueries.put("hl", "en");
-		// mRequestQueries.put("saddr", from);
-		// mRequestQueries.put("daddr", to);
-		mRequestQueries.put("ie", "UTF8&0");
-		mRequestQueries.put("om", "0");
 		mRequestQueries.put("output", "kml");
-		mRequestQueries.put("dirflg", "w");
+		// mRequestQueries.put("f", "d");
+		// mRequestQueries.put("ie", "UTF8&0");
 	}
 
 	@Override
@@ -73,8 +67,7 @@ public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 		URL url;
 		try {
 			String uriStr = uriBuilder.build().toString();
-			uriStr = uriStr + "&saddr=" + sAdd;
-			uriStr = uriStr + "&daddr=" + dAdd;
+			uriStr = uriStr + "&q=" + location;
 			url = new URL(uriStr);
 			Log.d(TAG, "Uri: " + url);
 			HttpURLConnection urlConnection = (HttpURLConnection) url

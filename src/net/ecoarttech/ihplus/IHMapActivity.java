@@ -1,13 +1,17 @@
 package net.ecoarttech.ihplus;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import net.ecoarttech.ihplus.model.Route;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.MapDirectionCompletionListener;
 import net.ecoarttech.ihplus.network.MapDirectionsAsyncTask;
+import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +20,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -24,8 +31,11 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 
-public class IHActivity extends MapActivity {
+public class IHMapActivity extends MapActivity {
 	private static final String TAG = "IHMapView";
+	public static final String BUNDLE_START = "start";
+	public static final String BUNDLE_END = "end";
+	private Context mContext;
 	MapView mMapView;
 	MapController mMapController;
 	GeoPoint geoPoint;
@@ -35,12 +45,77 @@ public class IHActivity extends MapActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
-
+		this.mContext = this;
 		mMapView = (MapView) findViewById(R.id.map_view);
 		mMapView.setSatellite(false);
-		String from = URLEncoder.encode("1200 Bob Harrison St Austin, TX");
-		String to = URLEncoder.encode("600 W 6th St Austin, TX");
-		getMapDirectionData(from, to);
+
+		Bundle extras = getIntent().getExtras();
+		final String start = URLEncoder.encode(extras.getString(BUNDLE_START));
+		final String end = URLEncoder.encode(extras.getString(BUNDLE_END));
+		// get start/end points from bundle
+		// get address for random geo points
+		StartCoordsAsyncTask startTask = new StartCoordsAsyncTask(this, start,
+				new DirectionCompletionListener() {
+
+					@Override
+					public void onComplete(Document doc) {
+						NodeList nl = doc.getElementsByTagName("coordinates");
+						String coordsElm = nl.item(0).getFirstChild()
+								.getNodeValue();
+						String[] coords = coordsElm.split(",");
+						// long = 0, lat = 1
+						double lat = Double.valueOf(coords[1]);
+						double lng = Double.valueOf(coords[0]);
+						// randomize offset
+						Geocoder g = new Geocoder(mContext, Locale.getDefault());
+						double randLat = lat - getRandomOffset();
+						double randLong = lng - getRandomOffset();
+						List<Address> myList;
+						try {
+							myList = g.getFromLocation(randLat, randLong, 1);
+							Log.d(TAG, "XXXXXXresult:" + myList.get(0));
+							String to = null;
+							if (myList.size() > 0) {
+								Address addy = myList.get(0);
+								to = URLEncoder.encode(addy.getAddressLine(0));
+								Log.d(TAG, "To: " + to);
+							}
+
+							getDirectionData(start, to);
+							getDirectionData(to, end);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+		startTask.execute();
+		// try {
+		// Geocoder g = new Geocoder(this, Locale.getDefault());
+		// // get first input coord:
+		// List<Address> addys = g.getFromLocationName(
+		// "1200 Bob Harrison St Austin, TX", 1); // Find one location
+		// Address start = addys.get(0);
+		// Log.d(TAG, "Randoms: " + Math.random() * (.009));
+		// double randLat = start.getLatitude() - Math.random() * (.008); //
+		// toDO
+		// // randomize
+		// // offset
+		// double randLong = start.getLongitude() - Math.random() * (.008);
+		// List<Address> myList = g.getFromLocation(randLat, randLong, 1);
+		// Log.d(TAG, "XXXXXXresult:" + myList.get(0));
+		// if (myList.size() > 0) {
+		// Address addy = myList.get(0);
+		// to = addy.getAddressLine(0);
+		// Log.d(TAG, "To: " + to);
+		// }
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// String end = URLEncoder.encode("Palmer Events Center, Austin, TX");
+		// getDirectionData(from, to);
+		// getDirectionData(to, end);
+		// getMapDirectionData(from, to);
 		// String pairs[] = getDirectionData(from, to);
 		// drawPath(pairs);
 
@@ -57,7 +132,7 @@ public class IHActivity extends MapActivity {
 		mMapController = mMapView.getController();
 		geoPoint = startGP;
 		mMapController.setCenter(geoPoint); // TODO - center on user's location?
-		mMapController.setZoom(16);
+		mMapController.setZoom(15);
 		mMapView.getOverlays().add(new DirectionPathOverlay(startGP, startGP));
 
 		// NAVIGATE THE PATH
@@ -177,5 +252,10 @@ public class IHActivity extends MapActivity {
 					}
 				});
 		task.execute();
+	}
+
+	private double getRandomOffset() {
+		double num = Math.random() * (.009);
+		return Math.floor(num * 1000 + 0.5) / 1000;
 	}
 }

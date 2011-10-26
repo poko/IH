@@ -40,7 +40,8 @@ public class MapDirectionsAsyncTask extends AsyncTask<Void, Void, HttpResponse> 
 		mRequestQueries.put("sensor", "true");
 		mRequestQueries.put("origin", from);
 		mRequestQueries.put("destination", to);
-		mRequestQueries.put("waypoints", "100 Congress Ave"); // TODO
+		mRequestQueries.put("waypoints", "30.27497,-97.74141"); // TODO'
+
 	}
 
 	@Override
