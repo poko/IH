@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import net.ecoarttech.ihplus.gps.CurrentLocListener;
 import net.ecoarttech.ihplus.gps.CurrentLocationOverlay;
 import net.ecoarttech.ihplus.model.Route;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
@@ -24,6 +25,8 @@ import org.w3c.dom.NodeList;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -43,6 +46,9 @@ public class IHMapActivity extends MapActivity {
 	private MapController mMapController;
 	private GeoPoint geoPoint;
 	private CurrentLocationOverlay mCurrentLocationOverlay;
+	private GeoPoint mCurrentLocation;
+	private LocationManager mLocMgr;
+	private CurrentLocListener mCurrLocListener;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -54,6 +60,11 @@ public class IHMapActivity extends MapActivity {
 		mMapView = (MapView) findViewById(R.id.map_view);
 		mMapView.setSatellite(false);
 
+		// start current location listener
+		// mLocMgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+		// mCurrLocListener = new CurrentLocListener(newLocationHandler);
+		// mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0,
+		// mCurrLocListener);
 		// trying out mylocationoverlay?
 		mCurrentLocationOverlay = new CurrentLocationOverlay(this, mMapView);
 		mCurrentLocationOverlay.runOnFirstFix(new Runnable() {
@@ -119,11 +130,11 @@ public class IHMapActivity extends MapActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "new location, mappy ol' pal!: " + msg.obj);
-			// Location currentLocation = (Location) msg.obj;
-			// mCurrentLocation = new GeoPoint((int)
-			// (currentLocation.getLatitude() * 1E6),
-			// (int) (currentLocation.getLongitude() * 1E6));
-			// mMapView.getOverlays().add(new GeoPointOverlay(mCurrentLocation);
+			Location currentLocation = (Location) msg.obj;
+			mCurrentLocation = new GeoPoint((int) (currentLocation.getLatitude() * 1E6),
+					(int) (currentLocation.getLongitude() * 1E6));
+			// mMapView.getOverlays().add(new
+			// GeoPointOverlay(mCurrentLocation));
 		}
 	};
 
