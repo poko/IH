@@ -190,7 +190,9 @@ public class IHMapActivity extends MapActivity {
 		ArrayList<Integer> existingVistas = new ArrayList<Integer>();
 		if (points.length < 3) {
 			// each point is a new scenic vista
-			// TODO
+			for (int i = 0; i < points.length; i++) {
+				createNewVista(points[i]);
+			}
 		} else {
 			// generate random number between 2-4 (for 4-8 total scenic vistas)
 			Random rand = new Random();
@@ -199,18 +201,21 @@ public class IHMapActivity extends MapActivity {
 			for (int i = 0; i < vistaAmount; i++) {
 				int r = rand.nextInt(points.length);
 				if (!existingVistas.contains(r)) {
-					// create a new scenic vista here!
-					String[] lngLat = points[r].split(",");
-					ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
-					mHike.addVista(vista);
-					mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
-					// mScenicVistaOverlay.addVista(new
-					// OverlayItem(vista.getPoint(), "Scenic Vista", ""));
-					Log.d(TAG, "new vista!" + points[r]);
+					createNewVista(points[r]);
 					existingVistas.add(r);
 				}
 			}
 		}
+	}
+
+	private void createNewVista(String coordsStr) {
+		// create a new scenic vista here!
+		String[] lngLat = coordsStr.split(",");
+		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
+		mHike.addVista(vista);
+		mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
+		// TODO - move draw out of here .. once path is drawn
+		Log.d(TAG, "new vista!" + coordsStr);
 	}
 
 	private static double getRandomOffset() {

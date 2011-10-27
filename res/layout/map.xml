@@ -28,6 +28,38 @@
 			android:clickable="true"
 			android:onClick="onSearchClick"/>
 	</RelativeLayout>
+	<!-- Hike Info Bar -->
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/tabbar_gray"
+		android:visibility="gone">
+		<TextView android:id="@+id/hike_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:text=""/>
+		<ImageView android:id="@+id/hike_note"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/notes_tab"
+			android:clickable="true"
+			android:onClick="onHikeNotesClick"/>
+		<ImageView android:id="@+id/hike_gallery"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_toLeftOf="@id/hike_note"
+			android:src="@drawable/gallery_tab"
+			android:clickable="true"
+			android:onClick="onHikeGalleryClick"/>
+		<ImageView android:id="@+id/hike_photo"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_toLeftOf="@id/hike_gallery"
+			android:src="@drawable/photo_tab"
+			android:clickable="true"
+			android:onClick="onHikePhotoClick"/>
+	</RelativeLayout>
 	<com.google.android.maps.MapView
 		android:id="@+id/map_view"
 		android:layout_width="fill_parent"
