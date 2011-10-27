@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.location.Location;
-import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -16,7 +15,8 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Projection;
 
 public class CurrentLocationOverlay extends MyLocationOverlay {
-	private static final int ANIMATION_DURATION = 300;
+	private static final int ANIMATION_DURATION = 200;
+	@SuppressWarnings("unused")
 	private static final String TAG = "IH+ - CurrentLocationOverlay";
 	private int animationState = 1; // 1 for animating but need a start time;
 	// and 2 for animating and have start time
@@ -39,11 +39,9 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 	}
 
 	@Override
-	protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix,
-			GeoPoint myLocation, long when) {
-		Log.d(TAG, "Drawing my location: when: " + when);
+	protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
+		// Log.d(TAG, "Drawing my location: when: " + when);
 		if (animationState == 1) {
-			Log.d(TAG, "animation state is 1.");
 			startTime = when;
 			animationState = 2;
 		}
@@ -56,17 +54,17 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 
 		// draw current bitmap
 		Projection p = mapView.getProjection();
-		float accuracy = p.metersToEquatorPixels(lastFix.getAccuracy());
+		// float accuracy = p.metersToEquatorPixels(lastFix.getAccuracy());
 		Point loc = p.toPixels(myLocation, null);
 		paint.setAntiAlias(true);
 		paint.setAlpha(255);
 		canvas.drawBitmap(currentBitmap, loc.x, loc.y, paint);
 		// prompt a redraw for animation?!?
-		mapView.postInvalidateDelayed(ANIMATION_DURATION);
+		mapView.postInvalidateDelayed(ANIMATION_DURATION - 100);
+		// super.drawMyLocation(canvas, mapView, lastFix, myLocation, when);
 	}
 
 	private void incrementBitmap() {
-		Log.d(TAG, "incrementing bitmap: " + currentBitmapIndex);
 		animationState = 1;
 		switch (currentBitmapIndex) {
 		case 0: {

@@ -1,5 +1,6 @@
 package net.ecoarttech.ihplus;
 
+import net.ecoarttech.ihplus.util.Util;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,9 @@ public class CreateHikeActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.create_hike);
+		// set fonts
+		Util.setFont(this, findViewById(R.id.start_address), findViewById(R.id.end_address));
+		Util.setBoldFont(this, findViewById(R.id.start_hike));
 	}
 
 	public void onSearchClick(View v) {

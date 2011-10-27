@@ -1,4 +1,4 @@
-package net.ecoarttech.ihplus;
+package net.ecoarttech.ihplus.gps;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,6 +13,7 @@ import com.google.android.maps.Projection;
 public class DirectionPathOverlay extends Overlay {
 	private GeoPoint gp1;
 	private GeoPoint gp2;
+	Paint paint = new Paint();
 
 	public DirectionPathOverlay(GeoPoint gp1, GeoPoint gp2) {
 		this.gp1 = gp1;
@@ -23,7 +24,6 @@ public class DirectionPathOverlay extends Overlay {
 	public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
 		Projection projection = mapView.getProjection();
 		if (shadow == false) {
-			Paint paint = new Paint();
 			paint.setAntiAlias(true);
 			Point point = new Point();
 			projection.toPixels(gp1, point);
@@ -31,8 +31,7 @@ public class DirectionPathOverlay extends Overlay {
 			Point point2 = new Point();
 			projection.toPixels(gp2, point2);
 			paint.setStrokeWidth(3);
-			canvas.drawLine((float) point.x, (float) point.y, (float) point2.x, (float) point2.y,
-					paint);
+			canvas.drawLine((float) point.x, (float) point.y, (float) point2.x, (float) point2.y, paint);
 		}
 		return super.draw(canvas, mapView, shadow, when);
 	}
