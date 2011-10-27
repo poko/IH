@@ -9,7 +9,7 @@ import java.util.Random;
 
 import net.ecoarttech.ihplus.gps.CurrentLocationOverlay;
 import net.ecoarttech.ihplus.gps.DirectionPathOverlay;
-import net.ecoarttech.ihplus.gps.ScenicVistaOverlay;
+import net.ecoarttech.ihplus.gps.SingleVistaOverlay;
 import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
@@ -31,7 +31,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.OverlayItem;
 
 public class IHMapActivity extends MapActivity {
 	private static final String TAG = "IHMapView";
@@ -39,7 +38,6 @@ public class IHMapActivity extends MapActivity {
 	public static final String BUNDLE_END = "end";
 	private Context mContext;
 	private MapView mMapView;
-	private ScenicVistaOverlay mScenicVistaOverlay;
 	private MapController mMapController;
 	private GeoPoint geoPoint;
 	private CurrentLocationOverlay mCurrentLocationOverlay;
@@ -55,8 +53,6 @@ public class IHMapActivity extends MapActivity {
 		// setup map view & view elements
 		mMapView = (MapView) findViewById(R.id.map_view);
 		mMapView.setSatellite(false);
-		mScenicVistaOverlay = new ScenicVistaOverlay(getResources().getDrawable(R.drawable.scenic_vista_point));
-		mMapView.getOverlays().add(mScenicVistaOverlay);
 
 		mCurrentLocationOverlay = new CurrentLocationOverlay(this, mMapView);
 		mCurrentLocationOverlay.runOnFirstFix(new Runnable() {
@@ -207,7 +203,9 @@ public class IHMapActivity extends MapActivity {
 					String[] lngLat = points[r].split(",");
 					ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
 					mHike.addVista(vista);
-					mScenicVistaOverlay.addVista(new OverlayItem(vista.getPoint(), "Scenic Vista", ""));
+					mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
+					// mScenicVistaOverlay.addVista(new
+					// OverlayItem(vista.getPoint(), "Scenic Vista", ""));
 					Log.d(TAG, "new vista!" + points[r]);
 					existingVistas.add(r);
 				}
