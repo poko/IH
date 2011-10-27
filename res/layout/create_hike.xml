@@ -7,7 +7,8 @@
 	<!-- Top Bar -->
 	<RelativeLayout 
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:background="@color/header_gray">
 		<ImageView 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
@@ -25,28 +26,28 @@
 		android:layout_height="wrap_content"
 		android:orientation="vertical"
 		android:padding="5dp"
-		android:background="#838182">
+		android:background="@color/tabbar_gray">
 	<EditText android:id="@+id/start_address"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_start"
-		android:textColorHint="#B6B6B6"
+		android:textColorHint="@color/background_gray"
 		android:text="1200 Bob Harrison St Austin, TX"/>	
 	<EditText android:id="@+id/end_address"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_end"
-		android:textColorHint="#B6B6B6"
+		android:textColorHint="@color/background_gray"
 		android:text="1100 Navasota St Austin, TX"/>	
 	</LinearLayout>
-	<TextView 
+	<TextView android:id="@+id/start_hike"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:gravity="right"
 		android:paddingRight="20dp"
 		android:textSize="20dp"
-		android:textColor="#02dbfb"
-		android:background="#f0f0f0"
+		android:textColor="@color/link_blue"
+		android:background="@color/light_gray"
 		android:text="@string/hit_trail"
 		android:clickable="true"
 		android:onClick="onHitTrailClick"/>

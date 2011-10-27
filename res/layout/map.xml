@@ -4,6 +4,30 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	> 
+	<!-- Top Bar -->
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/header_gray">
+		<ImageView 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:src="@drawable/create_top_bar"/>
+		<ImageView android:id="@+id/search_btn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/hikes_top_btn"
+			android:clickable="true"
+			android:onClick="onHikesClick"/>
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_toLeftOf="@id/search_btn"
+			android:src="@drawable/search_top_btn"
+			android:clickable="true"
+			android:onClick="onSearchClick"/>
+	</RelativeLayout>
 	<com.google.android.maps.MapView
 		android:id="@+id/map_view"
 		android:layout_width="fill_parent"
