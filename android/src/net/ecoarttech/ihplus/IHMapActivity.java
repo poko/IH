@@ -246,6 +246,8 @@ public class IHMapActivity extends MapActivity {
 		for (ScenicVista vista : mHike.getVistas()) {
 			mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
 		}
+		// get vista 'tasks' from server
+		new VistaDownloadTask(mHike.getVistas()).execute();
 	}
 
 	private static double getRandomOffset() {
