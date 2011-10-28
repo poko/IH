@@ -28,7 +28,7 @@
 			android:clickable="true"
 			android:onClick="onSearchClick"/>
 	</RelativeLayout>
-	<!-- Hike Info Bar -->
+	<!-- Hike Info Bar (if existing hike) -->
 	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -38,27 +38,20 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
 			android:text=""/>
-		<ImageView android:id="@+id/hike_note"
+		<ImageView android:id="@+id/hike_task"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
 			android:layout_alignParentRight="true"
 			android:src="@drawable/notes_tab"
 			android:clickable="true"
-			android:onClick="onHikeNotesClick"/>
+			android:onClick="onHikeTaskClick"/>
 		<ImageView android:id="@+id/hike_gallery"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
-			android:layout_toLeftOf="@id/hike_note"
+			android:layout_toLeftOf="@id/hike_task"
 			android:src="@drawable/gallery_tab"
 			android:clickable="true"
-			android:onClick="onHikeGalleryClick"/>
-		<ImageView android:id="@+id/hike_photo"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_toLeftOf="@id/hike_gallery"
-			android:src="@drawable/photo_tab"
-			android:clickable="true"
-			android:onClick="onHikePhotoClick"/>
+			android:onClick="onHikeGalleryClick"/> 
 	</RelativeLayout>
 	<com.google.android.maps.MapView
 		android:id="@+id/map_view"

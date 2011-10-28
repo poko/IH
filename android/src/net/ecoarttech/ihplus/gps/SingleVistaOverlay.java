@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -33,8 +32,6 @@ public class SingleVistaOverlay extends Overlay {
 			Point point = new Point();
 			projection.toPixels(mGeoPoint, point);
 
-			Log.d("vista overlay", "bitmap width? " + mBitmap.getWidth());
-			Log.d("vista overlay", "bitmap height? " + mBitmap.getHeight());
 			canvas.drawBitmap(mBitmap, (float) point.x - (mBitmap.getWidth() / 2), (float) point.y
 					- (mBitmap.getHeight() / 2), mPaint);
 		}

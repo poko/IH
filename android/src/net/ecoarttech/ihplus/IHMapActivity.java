@@ -34,6 +34,7 @@ import com.google.android.maps.MapView;
 
 public class IHMapActivity extends MapActivity {
 	private static final String TAG = "IHMapView";
+	public static final String BUNDLE_RANDOM = "random";
 	public static final String BUNDLE_START = "start";
 	public static final String BUNDLE_END = "end";
 	private Context mContext;
@@ -43,6 +44,9 @@ public class IHMapActivity extends MapActivity {
 	private CurrentLocationOverlay mCurrentLocationOverlay;
 	private boolean mRouteShown = false;
 	private Hike mHike;
+	private boolean randomPoint = true;
+	private ArrayList<ScenicVista> vistas;
+	private int mPathCalls = 0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -65,8 +69,21 @@ public class IHMapActivity extends MapActivity {
 		Bundle extras = getIntent().getExtras();
 		final String start = URLEncoder.encode(extras.getString(BUNDLE_START));
 		final String end = URLEncoder.encode(extras.getString(BUNDLE_END));
+		randomPoint = extras.getBoolean(BUNDLE_RANDOM);
 		// get start/end points from bundle
-		// get address for random geo points
+		Log.d(TAG, "randomizing?? " + randomPoint);
+		if (randomPoint) {
+			// get address for random geo points
+			getRandomAddress(start, end);
+		} else {
+			getDirectionData(start, end);
+		}
+
+		// create new Hike object
+		mHike = new Hike();
+	}
+
+	private void getRandomAddress(final String start, final String end) {
 		StartCoordsAsyncTask startTask = new StartCoordsAsyncTask(this, start, new DirectionCompletionListener() {
 
 			@Override
@@ -100,9 +117,6 @@ public class IHMapActivity extends MapActivity {
 			}
 		});
 		startTask.execute();
-
-		// create new Hike object
-		mHike = new Hike();
 	}
 
 	@Override
@@ -179,6 +193,15 @@ public class IHMapActivity extends MapActivity {
 							String[] tempContent = pathConent.split(" ");
 							generateScenicVistas(tempContent);
 							drawPath(tempContent);
+							if (randomPoint) {
+								mPathCalls++;
+								if (mPathCalls == 2) {
+									drawVistas();
+								}
+							} else {
+								// we're done!
+								drawVistas();
+							}
 						}
 					}
 				});
@@ -198,11 +221,14 @@ public class IHMapActivity extends MapActivity {
 			Random rand = new Random();
 			int vistaAmount = rand.nextInt(2) + 2;// random method (2,3, or 4);
 			Log.d(TAG, "Vistas: " + vistaAmount);
-			for (int i = 0; i < vistaAmount; i++) {
+			int i = 0;
+			while (i < vistaAmount) {
 				int r = rand.nextInt(points.length);
+				Log.d(TAG, "trying vista : " + r);
 				if (!existingVistas.contains(r)) {
 					createNewVista(points[r]);
 					existingVistas.add(r);
+					i++;
 				}
 			}
 		}
@@ -213,9 +239,13 @@ public class IHMapActivity extends MapActivity {
 		String[] lngLat = coordsStr.split(",");
 		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
 		mHike.addVista(vista);
-		mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
-		// TODO - move draw out of here .. once path is drawn
 		Log.d(TAG, "new vista!" + coordsStr);
+	}
+
+	private void drawVistas() {
+		for (ScenicVista vista : mHike.getVistas()) {
+			mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
+		}
 	}
 
 	private static double getRandomOffset() {

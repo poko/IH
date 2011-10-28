@@ -11,6 +11,7 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.Projection;
 
 public class DirectionPathOverlay extends Overlay {
+	private static final String TAG = "IH+ - DirectionPathOverlay";
 	private GeoPoint gp1;
 	private GeoPoint gp2;
 	Paint paint = new Paint();
@@ -22,6 +23,8 @@ public class DirectionPathOverlay extends Overlay {
 
 	@Override
 	public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when) {
+		// Log.d(TAG, "mapview zoom?? " + mapView.getZoomLevel());
+		// TODO - change path width based on zoom level
 		Projection projection = mapView.getProjection();
 		if (shadow == false) {
 			paint.setAntiAlias(true);
