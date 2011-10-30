@@ -10,11 +10,8 @@ public class Hike {
 	private ArrayList<ScenicVista> vistas = new ArrayList<ScenicVista>();
 
 	public void addVista(ScenicVista vista) {
-		vistas.add(vista);
-		// vistas should now be registered as geo-fences ?
-
-		// and they should get their action items from the server as well.
-		// if the server has error, should have some kind of vista info on the phone
+		if (!vistas.contains(vista))
+			vistas.add(vista);
 	}
 
 	public void addPoint(GeoPoint point) {

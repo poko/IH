@@ -10,6 +10,7 @@ import java.util.Random;
 import net.ecoarttech.ihplus.gps.CurrentLocationOverlay;
 import net.ecoarttech.ihplus.gps.DirectionPathOverlay;
 import net.ecoarttech.ihplus.gps.SingleVistaOverlay;
+import net.ecoarttech.ihplus.model.ActionType;
 import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
@@ -21,9 +22,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Address;
@@ -35,6 +38,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -273,6 +277,7 @@ public class IHMapActivity extends MapActivity {
 		}
 		// get vista 'tasks' from server
 		new VistaDownloadTask(mHike.getVistas(), mActionHandler).execute();
+		// TODO - if the server has error, should have some kind of vista info on the phone
 	}
 
 	private static final int VISTA_ENTERED = 1;
@@ -333,28 +338,63 @@ public class IHMapActivity extends MapActivity {
 			Log.d(TAG, "entering: " + entering);
 			String enter = entering ? "Entering" : "Leaving";
 			Toast.makeText(mContext, enter + " a scenic vista.", Toast.LENGTH_LONG).show();
-			ScenicVista enteredVista = mHike.getVistas().get(i);
+			final ScenicVista enteredVista = mHike.getVistas().get(i);
 			if (entering) {
 				// display hike & vista info at top of screen
 				findViewById(R.id.hike_layout).setVisibility(View.VISIBLE);
 				findViewById(R.id.vista_layout).setVisibility(View.VISIBLE);
 				TextView vistaInfo = (TextView) findViewById(R.id.vista_info);
 				vistaInfo.setText(enteredVista.getAction());
-				View vistaCont = findViewById(R.id.vista_cont);
 				// Util.setBoldFont(mContext, findViewById(R.id.hike_name), findViewById(R.id.vista_label), vistaInfo,
 				// vistaCont);
-				vistaCont.setOnClickListener(new OnClickListener() {
+				// TODO - if this is not an original hike, display the gallery button
+				// set click listeners
+				View vistaCont = findViewById(R.id.vista_cont);
+				View actionButton = findViewById(R.id.vista_task);
+				setActionClickListeners(enteredVista, vistaCont, actionButton);
 
-					@Override
-					public void onClick(View arg0) {
-						// TODO Auto-generated method stub
-
-					}
-				});
 			} else {
 				// if vista task is not completed, tsk tsk!
 				// else, get rid of vista info bar
 			}
 		}
+	}
+
+	private void setActionClickListeners(final ScenicVista vista, View... views) {
+		for (View view : views) {
+			view.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// depending on action type
+					// open note dialog
+					if (vista.getActionType() == ActionType.NOTE) {
+						final View alertContent = getLayoutInflater().inflate(R.layout.note_dialog, null);
+						new AlertDialog.Builder(mContext).setTitle("Take a Note").setIcon(0).setView(alertContent)
+								.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface d, int which) {
+										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
+										vista.setNote(noteInput.getText().toString());
+										if (vista.isComplete()) {
+											// allow user to move on to the next vista
+											markVistaAsCompleted(vista);
+										}
+									}
+								}).create().show();
+					} else if (vista.getActionType() == ActionType.PHOTO) {
+						// TODO - open camera intent
+
+					}
+				}
+			});
+		}
+	}
+
+	// TODO - implement
+	private void markVistaAsCompleted(ScenicVista vista) {
+		// remove vista info views
+		// remove pending intent
+		vista.cancelIntent(mContext, mLocMgr);
+		// save vista info to db
 	}
 }

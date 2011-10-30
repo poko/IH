@@ -75,8 +75,10 @@ public class VistaDownloadTask extends AsyncTask<Void, Void, HttpResponse> {
 				JSONArray vistaActions = responseJson.getJSONArray("vista_actions");
 				for (int i = 0; i < mVistas.size(); i++) {
 					ScenicVista v = mVistas.get(i);
-					v.setActionId(vistaActions.getJSONObject(i).getInt("vista_id"));
-					v.setAction(vistaActions.getJSONObject(i).getString("verbiage"));
+					JSONObject vistaJson = vistaActions.getJSONObject(i);
+					v.setActionId(vistaJson.getInt("vista_id"));
+					v.setAction(vistaJson.getString("verbiage"));
+					v.setActionType(vistaJson.getString("action_type"));
 				}
 				mHandler.sendEmptyMessage(23); // TODO
 			} catch (IllegalStateException e) {
