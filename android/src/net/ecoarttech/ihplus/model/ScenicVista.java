@@ -1,8 +1,11 @@
 package net.ecoarttech.ihplus.model;
 
+import net.ecoarttech.ihplus.db.DBHelper;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
 import android.util.Log;
 
@@ -10,6 +13,14 @@ import com.google.android.maps.GeoPoint;
 
 public class ScenicVista {
 	private static final String TAG = "IH+ - ScenicVista";
+	public static final String TABLE_NAME = "vistas";
+	public static final String COL_HIKE_ID = "hike_id";
+	public static final String COL_LAT = "latitude";
+	public static final String COL_LNG = "longitude";
+	public static final String COL_ACTION_ID = "action_id";
+	public static final String COL_NOTE = "note";
+	public static final String COL_PHOTO = "photo";
+	public static final String COL_DATE = "date";
 	private Double latitude;
 	private Double longitude;
 	private GeoPoint point;
@@ -17,6 +28,7 @@ public class ScenicVista {
 	private String action;
 	private ActionType actionType;
 	private String note;
+	private String photo;
 	private PendingIntent pi;
 	private BroadcastReceiver br;
 	private boolean complete = false;
@@ -52,7 +64,7 @@ public class ScenicVista {
 	}
 
 	public void setActionType(String type) {
-		this.actionType = ActionType.valueOf(type);
+		this.actionType = ActionType.valueOf(type.toUpperCase());
 	}
 
 	public ActionType getActionType() {
@@ -66,8 +78,12 @@ public class ScenicVista {
 
 	public void cancelIntent(Context c, LocationManager m) {
 		Log.d(TAG, "canceling intent for : " + point);
-		c.unregisterReceiver(br);
-		m.removeProximityAlert(pi);
+		if (br != null)
+			c.unregisterReceiver(br);
+		br = null;
+		if (pi != null)
+			m.removeProximityAlert(pi);
+		pi = null;
 	}
 
 	public void setNote(String note) {
@@ -82,6 +98,21 @@ public class ScenicVista {
 
 	public boolean isComplete() {
 		return complete;
+	}
+
+	public void save(Context context, int hikeId) {
+		// save to database.
+		DBHelper helper = new DBHelper(context);
+		SQLiteDatabase db = helper.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put(COL_HIKE_ID, hikeId);
+		values.put(COL_LAT, latitude);
+		values.put(COL_LNG, longitude);
+		values.put(COL_ACTION_ID, actionId);
+		values.put(COL_NOTE, note);
+		values.put(COL_PHOTO, photo);
+		db.insert(TABLE_NAME, null, values);
+		db.close();
 	}
 
 	public void complete() {

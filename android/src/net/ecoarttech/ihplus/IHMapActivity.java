@@ -99,6 +99,7 @@ public class IHMapActivity extends MapActivity {
 
 		// create new Hike object
 		mHike = new Hike();
+		Log.d(TAG, "hike hashcode: " + mHike.hashCode());
 	}
 
 	private void getRandomAddress(final String start, final String end) {
@@ -393,8 +394,11 @@ public class IHMapActivity extends MapActivity {
 	// TODO - implement
 	private void markVistaAsCompleted(ScenicVista vista) {
 		// remove vista info views
+		findViewById(R.id.hike_layout).setVisibility(View.GONE);
+		findViewById(R.id.vista_layout).setVisibility(View.GONE);
 		// remove pending intent
 		vista.cancelIntent(mContext, mLocMgr);
 		// save vista info to db
+		vista.save(this, mHike.hashCode());
 	}
 }
