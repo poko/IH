@@ -57,38 +57,43 @@
 			android:clickable="true"
 			android:onClick="onHikeGalleryClick"/> 
 	</RelativeLayout>
-	<LinearLayout android:id="@+id/vista_layout"
+	<RelativeLayout 
 		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical"
-		android:padding="10dp"
-		android:background="#33333333"
-		android:visibility="gone">
-		<TextView android:id="@+id/vista_label"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:text="@string/this_is_vista"
-			android:textStyle="bold"
-			android:textColor="#000000"/>
-		<TextView android:id="@+id/vista_info"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textStyle="bold"
-			android:textColor="#000000"/>
-		<TextView android:id="@+id/vista_cont"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_gravity="right"
-			android:textColor="@color/link_blue"
-			android:textStyle="bold"
+		android:layout_height="wrap_content">
+		<com.google.android.maps.MapView
+			android:id="@+id/map_view"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
 			android:clickable="true"
-			android:text="@string/cont"/> 
-	</LinearLayout>
-	<!-- Vista Info bar -->
-	<com.google.android.maps.MapView
-		android:id="@+id/map_view"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:clickable="true"
-		android:apiKey="02hzpyogklthR3YriJBgTP1dlr1jvpQhIJFcIsQ"/> 
+			android:apiKey="02hzpyogklthR3YriJBgTP1dlr1jvpQhIJFcIsQ"/> 
+		<!-- Vista Info bar -->
+		<LinearLayout android:id="@+id/vista_layout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:orientation="vertical"
+			android:padding="10dp"
+			android:background="@drawable/vista_bg"
+			android:visibility="gone">
+			<TextView android:id="@+id/vista_label"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:text="@string/this_is_vista"
+				android:textStyle="bold"
+				android:textColor="#000000"/>
+			<TextView android:id="@+id/vista_info"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:textColor="#000000"/>
+			<TextView android:id="@+id/vista_cont"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:textColor="@color/link_blue"
+				android:textStyle="bold"
+				android:clickable="true"
+				android:text="@string/cont"/> 
+		</LinearLayout>
+	</RelativeLayout>
 </LinearLayout>
