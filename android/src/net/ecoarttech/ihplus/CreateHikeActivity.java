@@ -25,6 +25,7 @@ public class CreateHikeActivity extends Activity {
 	public void onSearchClick(View v) {
 		// start the search activity
 		Log.d(TAG, "search click");
+		startActivity(new Intent(this, SearchActivity.class));
 	}
 
 	public void onHitTrailClick(View v) {

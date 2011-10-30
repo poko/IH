@@ -16,7 +16,6 @@ import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
 import net.ecoarttech.ihplus.network.VistaDownloadTask;
-import net.ecoarttech.ihplus.util.Util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -58,11 +57,8 @@ public class IHMapActivity extends MapActivity {
 	private boolean mRouteShown = false;
 	private Hike mHike;
 	private boolean randomPoint = true;
-	private ArrayList<ScenicVista> vistas;
 	private int mPathCalls = 0;
 	private LocationManager mLocMgr;
-	private IntentFilter mFilter;
-	private VistaEnteredReceiver mBroadReceiver;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -152,8 +148,10 @@ public class IHMapActivity extends MapActivity {
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
+		for (ScenicVista vista : mHike.getVistas()) {
+			vista.cancelIntent(mContext, mLocMgr);
+		}
 		// TODO - unregister all recievers unregisterReceiver(mBroadReceiver);
 	}
 
@@ -278,7 +276,6 @@ public class IHMapActivity extends MapActivity {
 	}
 
 	private static final int VISTA_ENTERED = 1;
-	private static final int VISTA_EXITED = 2;
 
 	private Handler mActionHandler = new Handler() {
 		@Override
@@ -290,7 +287,6 @@ public class IHMapActivity extends MapActivity {
 				ScenicVista vista = mHike.getVistas().get(i);
 				// setup proximity alert
 				Intent intent = new Intent(PROXIMITY_INTENT + i);
-				intent.putExtra(VistaEnteredReceiver.BUNDLE_VISTA, i);
 				Log.d(TAG, "intent action: " + intent.getAction());
 				PendingIntent pi = PendingIntent.getBroadcast(mContext, VISTA_ENTERED, intent, 0);
 
@@ -301,7 +297,7 @@ public class IHMapActivity extends MapActivity {
 				IntentFilter filter = new IntentFilter(PROXIMITY_INTENT + i);
 				VistaEnteredReceiver br = new VistaEnteredReceiver();
 				registerReceiver(br, filter);
-				// TODO = vista.setPendingIntent(pi);
+				vista.setPendingIntentAndReceiver(pi, br);
 			}
 		}
 	};
@@ -325,15 +321,16 @@ public class IHMapActivity extends MapActivity {
 
 	public class VistaEnteredReceiver extends BroadcastReceiver {
 
-		public final static String BUNDLE_VISTA = "vista";
-
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "IH broadcast, test: " + intent.getAction());
-			int i = intent.getExtras().getInt(BUNDLE_VISTA);
+			Bundle extras = intent.getExtras();
+			// int i = extras.getInt(BUNDLE_VISTA);
+			String index = intent.getAction().split(PROXIMITY_INTENT)[1];
+			Integer i = Integer.valueOf(index);
 			Log.d(TAG, "I: " + i);
-			boolean entering = intent.getExtras().getBoolean(LocationManager.KEY_PROXIMITY_ENTERING);
-			Log.d(TAG, "entering? : " + entering);
+			boolean entering = extras.getBoolean(LocationManager.KEY_PROXIMITY_ENTERING);
+			Log.d(TAG, "entering: " + entering);
 			String enter = entering ? "Entering" : "Leaving";
 			Toast.makeText(mContext, enter + " a scenic vista.", Toast.LENGTH_LONG).show();
 			ScenicVista enteredVista = mHike.getVistas().get(i);
@@ -344,8 +341,8 @@ public class IHMapActivity extends MapActivity {
 				TextView vistaInfo = (TextView) findViewById(R.id.vista_info);
 				vistaInfo.setText(enteredVista.getAction());
 				View vistaCont = findViewById(R.id.vista_cont);
-				Util.setBoldFont(mContext, findViewById(R.id.hike_name), findViewById(R.id.vista_label), vistaInfo,
-						vistaCont);
+				// Util.setBoldFont(mContext, findViewById(R.id.hike_name), findViewById(R.id.vista_label), vistaInfo,
+				// vistaCont);
 				vistaCont.setOnClickListener(new OnClickListener() {
 
 					@Override
@@ -356,7 +353,7 @@ public class IHMapActivity extends MapActivity {
 				});
 			} else {
 				// if vista task is not completed, tsk tsk!
-
+				// else, get rid of vista info bar
 			}
 		}
 	}
