@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IH+</string>
+    <string name="cont">continue &gt;</string>
+    <string name="current_hike">your current hike</string>
     <string name="enter_start">enter start address</string>
     <string name="enter_end">enter end address</string>
     <string name="hit_trail">hit the trail &gt;</string>
+    <string name="this_is_vista">This is a IH+ Scenic Vista:</string>
 </resources>

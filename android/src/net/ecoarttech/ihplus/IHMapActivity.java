@@ -16,6 +16,7 @@ import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
 import net.ecoarttech.ihplus.network.VistaDownloadTask;
+import net.ecoarttech.ihplus.util.Util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -34,6 +35,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -286,6 +290,7 @@ public class IHMapActivity extends MapActivity {
 				ScenicVista vista = mHike.getVistas().get(i);
 				// setup proximity alert
 				Intent intent = new Intent(PROXIMITY_INTENT + i);
+				intent.putExtra(VistaEnteredReceiver.BUNDLE_VISTA, i);
 				Log.d(TAG, "intent action: " + intent.getAction());
 				PendingIntent pi = PendingIntent.getBroadcast(mContext, VISTA_ENTERED, intent, 0);
 
@@ -323,13 +328,36 @@ public class IHMapActivity extends MapActivity {
 		public final static String BUNDLE_VISTA = "vista";
 
 		@Override
-		public void onReceive(Context context, Intent i) {
-			// TODO Auto-generated method stub
+		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "IH broadcast, test: " + intent.getAction());
+			int i = intent.getExtras().getInt(BUNDLE_VISTA);
+			Log.d(TAG, "I: " + i);
+			boolean entering = intent.getExtras().getBoolean(LocationManager.KEY_PROXIMITY_ENTERING);
+			Log.d(TAG, "entering? : " + entering);
+			String enter = entering ? "Entering" : "Leaving";
+			Toast.makeText(mContext, enter + " a scenic vista.", Toast.LENGTH_LONG).show();
+			ScenicVista enteredVista = mHike.getVistas().get(i);
+			if (entering) {
+				// display hike & vista info at top of screen
+				findViewById(R.id.hike_layout).setVisibility(View.VISIBLE);
+				findViewById(R.id.vista_layout).setVisibility(View.VISIBLE);
+				TextView vistaInfo = (TextView) findViewById(R.id.vista_info);
+				vistaInfo.setText(enteredVista.getAction());
+				View vistaCont = findViewById(R.id.vista_cont);
+				Util.setBoldFont(mContext, findViewById(R.id.hike_name), findViewById(R.id.vista_label), vistaInfo,
+						vistaCont);
+				vistaCont.setOnClickListener(new OnClickListener() {
 
-			Log.d(TAG, "IH broadcast, test: " + i.getAction());
-			Log.d(TAG, "I: " + i.getExtras().getInt(BUNDLE_VISTA));
-			Log.d(TAG, "entering? : " + i.getExtras().getBoolean(LocationManager.KEY_PROXIMITY_ENTERING));
+					@Override
+					public void onClick(View arg0) {
+						// TODO Auto-generated method stub
 
+					}
+				});
+			} else {
+				// if vista task is not completed, tsk tsk!
+
+			}
 		}
 	}
 }
