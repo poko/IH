@@ -15,15 +15,23 @@ import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
+import net.ecoarttech.ihplus.network.VistaDownloadTask;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
@@ -37,6 +45,7 @@ public class IHMapActivity extends MapActivity {
 	public static final String BUNDLE_RANDOM = "random";
 	public static final String BUNDLE_START = "start";
 	public static final String BUNDLE_END = "end";
+	public static final String PROXIMITY_INTENT = "net.ecoarttech.ihplus.ProximityIntent";
 	private Context mContext;
 	private MapView mMapView;
 	private MapController mMapController;
@@ -47,6 +56,9 @@ public class IHMapActivity extends MapActivity {
 	private boolean randomPoint = true;
 	private ArrayList<ScenicVista> vistas;
 	private int mPathCalls = 0;
+	private LocationManager mLocMgr;
+	private IntentFilter mFilter;
+	private VistaEnteredReceiver mBroadReceiver;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -57,6 +69,8 @@ public class IHMapActivity extends MapActivity {
 		// setup map view & view elements
 		mMapView = (MapView) findViewById(R.id.map_view);
 		mMapView.setSatellite(false);
+
+		mLocMgr = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 		mCurrentLocationOverlay = new CurrentLocationOverlay(this, mMapView);
 		mCurrentLocationOverlay.runOnFirstFix(new Runnable() {
@@ -123,12 +137,21 @@ public class IHMapActivity extends MapActivity {
 	protected void onResume() {
 		super.onResume();
 		mCurrentLocationOverlay.enableMyLocation();
+		// enable all vista locationListeners - TODO
 	}
 
 	protected void onPause() {
 		super.onPause();
 		mCurrentLocationOverlay.disableMyLocation();
+		// disable all vista locationListeners - TODO
 	};
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		// TODO - unregister all recievers unregisterReceiver(mBroadReceiver);
+	}
 
 	private void drawPath(String[] pairs) {
 		String[] lngLat = pairs[0].split(",");
@@ -237,7 +260,7 @@ public class IHMapActivity extends MapActivity {
 	private void createNewVista(String coordsStr) {
 		// create a new scenic vista here!
 		String[] lngLat = coordsStr.split(",");
-		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
+		ScenicVista vista = new ScenicVista(this, lngLat[1], lngLat[0]);
 		mHike.addVista(vista);
 		Log.d(TAG, "new vista!" + coordsStr);
 	}
@@ -247,8 +270,36 @@ public class IHMapActivity extends MapActivity {
 			mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
 		}
 		// get vista 'tasks' from server
-		new VistaDownloadTask(mHike.getVistas()).execute();
+		new VistaDownloadTask(mHike.getVistas(), mActionHandler).execute();
 	}
+
+	private static final int VISTA_ENTERED = 1;
+	private static final int VISTA_EXITED = 2;
+
+	private Handler mActionHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Log.d(TAG, "got message! " + msg.what);
+			// enable all the Vista proximity alerts?
+			for (int i = 0; i < mHike.getVistas().size(); i++) {// (ScenicVista vista : mHike.getVistas()) {
+
+				ScenicVista vista = mHike.getVistas().get(i);
+				// setup proximity alert
+				Intent intent = new Intent(PROXIMITY_INTENT + i);
+				Log.d(TAG, "intent action: " + intent.getAction());
+				PendingIntent pi = PendingIntent.getBroadcast(mContext, VISTA_ENTERED, intent, 0);
+
+				mLocMgr.addProximityAlert(vista.getLat(), vista.getLong(), 25, -1, pi);
+				Log.d(TAG, "added alert for: " + vista.getLat() + " long: " + vista.getLong());
+
+				// set up pending intent recievers
+				IntentFilter filter = new IntentFilter(PROXIMITY_INTENT + i);
+				VistaEnteredReceiver br = new VistaEnteredReceiver();
+				registerReceiver(br, filter);
+				// TODO = vista.setPendingIntent(pi);
+			}
+		}
+	};
 
 	private static double getRandomOffset() {
 		double num = Math.random() * (.009);
@@ -265,5 +316,20 @@ public class IHMapActivity extends MapActivity {
 	public void onHikesClick(View v) {
 		Log.d(TAG, "hike click");
 		// TODO - Implement
+	}
+
+	public class VistaEnteredReceiver extends BroadcastReceiver {
+
+		public final static String BUNDLE_VISTA = "vista";
+
+		@Override
+		public void onReceive(Context context, Intent i) {
+			// TODO Auto-generated method stub
+
+			Log.d(TAG, "IH broadcast, test: " + i.getAction());
+			Log.d(TAG, "I: " + i.getExtras().getInt(BUNDLE_VISTA));
+			Log.d(TAG, "entering? : " + i.getExtras().getBoolean(LocationManager.KEY_PROXIMITY_ENTERING));
+
+		}
 	}
 }
