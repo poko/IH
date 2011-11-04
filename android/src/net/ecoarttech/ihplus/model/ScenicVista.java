@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
@@ -28,7 +29,7 @@ public class ScenicVista {
 	private String action;
 	private ActionType actionType;
 	private String note;
-	private String photo;
+	private Uri photo;
 	private PendingIntent pi;
 	private BroadcastReceiver br;
 	private boolean complete = false;
@@ -88,12 +89,16 @@ public class ScenicVista {
 
 	public void setNote(String note) {
 		this.note = note;
-		if (note.length() > 0)
-			complete = true;
+		complete = note.length() > 0;
 	}
 
 	public String getNote() {
 		return note;
+	}
+
+	public void setPhotoUri(Uri uri) {
+		this.photo = uri;
+		complete = uri != null;
 	}
 
 	public boolean isComplete() {
@@ -110,7 +115,7 @@ public class ScenicVista {
 		values.put(COL_LNG, longitude);
 		values.put(COL_ACTION_ID, actionId);
 		values.put(COL_NOTE, note);
-		values.put(COL_PHOTO, photo);
+		values.put(COL_PHOTO, photo.toString());
 		db.insert(TABLE_NAME, null, values);
 		db.close();
 	}

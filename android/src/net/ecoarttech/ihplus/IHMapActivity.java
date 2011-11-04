@@ -22,9 +22,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,9 +34,11 @@ import android.content.IntentFilter;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,6 +57,7 @@ public class IHMapActivity extends MapActivity {
 	public static final String BUNDLE_START = "start";
 	public static final String BUNDLE_END = "end";
 	public static final String PROXIMITY_INTENT = "net.ecoarttech.ihplus.ProximityIntent";
+	public final static int TAKE_PHOTO_ACTIVITY = 0;
 	private Context mContext;
 	private MapView mMapView;
 	private MapController mMapController;
@@ -63,6 +68,8 @@ public class IHMapActivity extends MapActivity {
 	private boolean randomPoint = true;
 	private int mPathCalls = 0;
 	private LocationManager mLocMgr;
+	private ScenicVista mPhotoVista;
+	private Uri mPhotoUri;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -100,6 +107,21 @@ public class IHMapActivity extends MapActivity {
 		// create new Hike object
 		mHike = new Hike();
 		Log.d(TAG, "hike hashcode: " + mHike.hashCode());
+	}
+
+	/*
+	 * Return back to Task Entry Activity from taking a photo. Mark picture step as complete if the activity succeeded.
+	 */
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		Log.d(TAG, "result code: " + resultCode);
+		if (requestCode == TAKE_PHOTO_ACTIVITY) {
+			if (resultCode == Activity.RESULT_OK)
+				mPhotoVista.setPhotoUri(mPhotoUri);
+			if (mPhotoVista.isComplete()) {
+				// allow user to move on to the next vista
+				markVistaAsCompleted(mPhotoVista);
+			}
+		}
 	}
 
 	private void getRandomAddress(final String start, final String end) {
@@ -383,15 +405,34 @@ public class IHMapActivity extends MapActivity {
 									}
 								}).create().show();
 					} else if (vista.getActionType() == ActionType.PHOTO) {
-						// TODO - open camera intent
-
+						// open camera intent
+						startCameraIntent(vista);
 					}
 				}
 			});
 		}
 	}
 
-	// TODO - implement
+	private void startCameraIntent(ScenicVista vista) {
+		// TODO - check that sdcard is available
+		// save the vista for which we are saving the photo
+		mPhotoVista = vista;
+
+		// create an intent for accessing the camera
+		Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+		ContentValues cameraValues = new ContentValues();
+		cameraValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+		cameraValues.put(MediaStore.Images.Media.TITLE, "IHPlus_" + vista.getLat() + "_" + vista.getLong());
+		cameraValues.put(MediaStore.Images.Media.DESCRIPTION, mContext.getResources().getString(R.string.app_name));
+		Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cameraValues);
+
+		pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+		mPhotoUri = uri;
+		// take the picture by invoking the camera activity
+		startActivityForResult(pictureIntent, TAKE_PHOTO_ACTIVITY);
+	}
+
 	private void markVistaAsCompleted(ScenicVista vista) {
 		// remove vista info views
 		findViewById(R.id.hike_layout).setVisibility(View.GONE);
