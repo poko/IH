@@ -54,8 +54,9 @@ $height = intval($ratio*$height);
 
 
 $hike_name = $_POST["hike_name"];
+$hike_desc = $_POST["description"];
 $username = $_POST["username"];
-//$vistas = $_POST["vistas"];
+$vistas = $_POST["vistas"];
 $start_lat = $_POST["start_lat"];
 $start_lng = $_POST["start_lng"];
 $ip_address = $_SERVER["REMOTE_ADDR"];
@@ -81,9 +82,10 @@ is_dir($today_upload_dir) || mkdir($today_upload_dir, 0755);
 
 include 'db_open.php';
 
-$query = sprintf("insert into original_hikes (username, name, start_lat, startling, ip_address) values ('%s', '%s', '%s', '%s', INET_ATON('%s'))",
+$query = sprintf("insert into original_hikes (username, name, description, start_lat, start_lng, ip_address) values ('%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($username),
                   mysql_real_escape_string($hike_name),
+                  mysql_real_escape_string($hike_desc),
                   mysql_real_escape_string($start_lat),
                   mysql_real_escape_string($start_lng),
                   mysql_real_escape_string($ip_address));
@@ -95,8 +97,9 @@ if (!$result) {
     die($message);
 }
 // upload each vista point
-echo "vistas:".printr($vistas);
-//$query = sprintf("insert into original_hikes (filename, path, coords, point_id, ip_address, username) values ('%s', '%s', GeomFromText('POINT(%s %s)'), '%s', INET_ATON('%s'), '%s')",
+echo "vistas: ";
+echo print_r($vistas);
+//$query = sprintf("insert into original_vistas (filename, path, coords, point_id, ip_address, username) values ('%s', '%s', GeomFromText('POINT(%s %s)'), '%s', INET_ATON('%s'), '%s')",
 //                  mysql_real_escape_string(basename($uploadfile)),
 //                  mysql_real_escape_string($today_dir),
 //                  mysql_real_escape_string($lat),
@@ -110,8 +113,8 @@ echo "vistas:".printr($vistas);
 
 include 'db_close.php';
 
-echo "<textarea>";
-echo "{\"uploadResult\":\"success\"}";
-echo "</textarea>";
+//echo "<textarea>";
+echo "{\"result\":\"success\"}";
+//echo "</textarea>";
 
 ?>

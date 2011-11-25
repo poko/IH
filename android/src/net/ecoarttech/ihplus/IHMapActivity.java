@@ -15,8 +15,9 @@ import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
-import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
 import net.ecoarttech.ihplus.network.DownloadVistaActionsTask;
+import net.ecoarttech.ihplus.network.NetworkConstants;
+import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -443,26 +444,58 @@ public class IHMapActivity extends MapActivity {
 		// save vista info to db
 		vista.save(this, mHike.hashCode());
 		// check if the hike is complete
-		if (mHike.isComplete()) {
-			completeHike();
-		}
+		// if (mHike.isComplete()) { TODO - uncomment!
+		completeHike();
+		// }
 	}
 
 	private void completeHike() {
-		// TODO - input some things??
-		new AlertDialog.Builder(this).setTitle("Complete Hike").setPositiveButton("Upload",
+		// inflate input dialog
+		final View dialogView = getLayoutInflater().inflate(R.layout.complete_hike_dialog, null);
+		new AlertDialog.Builder(this).setTitle("Complete Hike").setView(dialogView).setPositiveButton("Upload",
 				new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						mHike.upload(new Handler() {
-							@Override
-							public void handleMessage(Message msg) {
-								// TODO Auto-generated method stub
-								super.handleMessage(msg);
-							}
-						});
+						// get user inputs
+						EditText username = (EditText) dialogView.findViewById(R.id.hike_username);
+						EditText hikeName = (EditText) dialogView.findViewById(R.id.hike_name);
+						EditText hikeDesc = (EditText) dialogView.findViewById(R.id.hike_desc);
+						mHike.setUsername(username.getText().toString());
+						mHike.setName(hikeName.getText().toString());
+						mHike.setDescription(hikeDesc.getText().toString());
+						mHike.upload(mContext, mUploadHandler);
 					}
 				}).create().show();
+	}
+
+	private Handler mUploadHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			if (msg.what == NetworkConstants.FAILURE) {
+				// retry
+				showRetryDialog();
+			} else { // success
+				Toast.makeText(mContext, "Your hike was uploaded successfully", Toast.LENGTH_LONG).show();
+			}
+		}
+	};
+
+	private void showRetryDialog() {
+		new AlertDialog.Builder(this).setTitle("Oh No!").setMessage(
+				"Something went wrong during the upload.\nWould you like to try again?").setPositiveButton("Re-try",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mHike.upload(mContext, mUploadHandler);
+					}
+				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+			}
+		}).create().show();
 	}
 }

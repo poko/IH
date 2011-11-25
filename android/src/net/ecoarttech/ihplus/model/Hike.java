@@ -9,16 +9,19 @@ import net.ecoarttech.ihplus.network.UploadHikeTask;
 
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.Handler;
 
 import com.google.android.maps.GeoPoint;
 
 public class Hike {
+	@SuppressWarnings("unused")
 	private static final String TAG = "IH+ - Hike";
 	private static final String JSON_NAME = "name";
 	private static final String JSON_DESC = "desc";
 	private static final String JSON_CREATE_DATE = "date";
 	private static final String JSON_USERNAME = "username";
+	public static final String TABLE_NAME = "hikes";
 	private Double startLat;
 	private Double startLng;
 	private ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
@@ -61,8 +64,16 @@ public class Hike {
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getDescription() {
 		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getCreateDate() {
@@ -82,6 +93,10 @@ public class Hike {
 		return username;
 	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public Double getStartLat() {
 		return startLat;
 	}
@@ -98,8 +113,19 @@ public class Hike {
 		return true;
 	}
 
-	public void upload(Handler completionListener) {
-		new UploadHikeTask(this, completionListener).execute();
+	public String getVistasAsJson(Context context) {
+		StringBuilder sb = new StringBuilder("[");
+		for (ScenicVista vista : vistas) {
+			sb.append(vista.toJson(context));
+			sb.append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1); // remove last comma
+		sb.append("]");
+		return sb.toString();
+	}
+
+	public void upload(Context context, Handler completionListener) {
+		new UploadHikeTask(context, this, completionListener).execute();
 	}
 
 	public static Hike fromJson(JSONObject json) {

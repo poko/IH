@@ -1,10 +1,15 @@
 package net.ecoarttech.ihplus.model;
 
 import net.ecoarttech.ihplus.db.DBHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -22,6 +27,7 @@ public class ScenicVista {
 	public static final String COL_NOTE = "note";
 	public static final String COL_PHOTO = "photo";
 	public static final String COL_DATE = "date";
+	private long id;
 	private Double latitude;
 	private Double longitude;
 	private GeoPoint point;
@@ -107,8 +113,7 @@ public class ScenicVista {
 
 	public void save(Context context, int hikeId) {
 		// save to database.
-		DBHelper helper = new DBHelper(context);
-		SQLiteDatabase db = helper.getWritableDatabase();
+		SQLiteDatabase db = DBHelper.getDB(context);
 		ContentValues values = new ContentValues();
 		values.put(COL_HIKE_ID, hikeId);
 		values.put(COL_LAT, latitude);
@@ -117,12 +122,36 @@ public class ScenicVista {
 		values.put(COL_NOTE, note);
 		if (photo != null)
 			values.put(COL_PHOTO, photo.toString());
-		db.insert(TABLE_NAME, null, values);
+		id = db.insert(TABLE_NAME, null, values);
 		db.close();
 	}
 
 	public void complete() {
 		this.complete = true;
+	}
+
+	public String toJson(Context context) {
+		SQLiteDatabase db = DBHelper.getDB(context);
+		Cursor query = db.query(TABLE_NAME, null, "id=" + id, null, null, null, null);
+		String date = "";
+		if (query.moveToFirst()) {
+			date = query.getString(query.getColumnIndex(COL_DATE));
+		}
+		JSONObject json = new JSONObject();
+		try {
+			json.put(COL_LAT, latitude);
+			json.put(COL_LNG, longitude);
+			json.put(COL_ACTION_ID, actionId);
+			json.put(COL_NOTE, note);
+			json.put(COL_PHOTO, photo);
+			json.put(COL_DATE, date);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		query.close();
+		db.close();
+		return json.toString();
 	}
 
 	@Override

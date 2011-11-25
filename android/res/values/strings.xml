@@ -2,8 +2,11 @@
 <resources>
     <string name="app_name">IH+</string>
     <string name="cont">continue &gt;</string>
+    <string name="create_hike_desc">hike description:</string>
+    <string name="create_hike_name">hike name:</string>
+    <string name="create_hike_username">your name:</string>
     <string name="current_hike">your current hike</string>
-    <string name="empty_search">FPO no search results here</string>
+    <string name="empty_search">no search results here</string>
     <string name="enter_start">enter start address</string>
     <string name="enter_end">enter end address</string>
     <string name="hit_trail">hit the trail &gt;</string>
