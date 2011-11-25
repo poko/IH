@@ -1,7 +1,7 @@
 package net.ecoarttech.ihplus.gps;
 
+import net.ecoarttech.ihplus.R;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 
@@ -30,7 +30,7 @@ public class DirectionPathOverlay extends Overlay {
 			paint.setAntiAlias(true);
 			Point point = new Point();
 			projection.toPixels(gp1, point);
-			paint.setColor(Color.BLUE);
+			paint.setColor(R.color.link_blue);
 			Point point2 = new Point();
 			projection.toPixels(gp2, point2);
 			paint.setStrokeWidth(3);

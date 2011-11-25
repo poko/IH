@@ -115,14 +115,14 @@ public class ScenicVista {
 		values.put(COL_LNG, longitude);
 		values.put(COL_ACTION_ID, actionId);
 		values.put(COL_NOTE, note);
-		values.put(COL_PHOTO, photo.toString());
+		if (photo != null)
+			values.put(COL_PHOTO, photo.toString());
 		db.insert(TABLE_NAME, null, values);
 		db.close();
 	}
 
 	public void complete() {
 		this.complete = true;
-		// cancelIntent(c, m);
 	}
 
 	@Override

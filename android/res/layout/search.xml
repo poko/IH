@@ -8,18 +8,21 @@
 	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/vista_bg">
-		<!-- <ImageView 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:src="@drawable/create_top_bar"/> -->
-		<ImageView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content" 
-			android:layout_alignParentRight="true"
-			android:src="@drawable/search_top_btn"
-			android:clickable="true"
-			android:onClick="onSearchClick"/>
+		android:background="@drawable/search_top_bar">
 	</RelativeLayout>
+	<EditText android:id="@+id/search_bar"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	    android:hint="@string/search_hint"
+	    android:textColorHint="@color/light_gray"/>
+	<ListView android:id="@android:id/list"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:dividerHeight="2dp"/>
+	<TextView android:id="@android:id/empty"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/empty_search"/>
+	
 	
 </LinearLayout>

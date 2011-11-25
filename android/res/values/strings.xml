@@ -3,8 +3,10 @@
     <string name="app_name">IH+</string>
     <string name="cont">continue &gt;</string>
     <string name="current_hike">your current hike</string>
+    <string name="empty_search">FPO no search results here</string>
     <string name="enter_start">enter start address</string>
     <string name="enter_end">enter end address</string>
     <string name="hit_trail">hit the trail &gt;</string>
+    <string name="search_hint">Search for a street or zipcode</string>
     <string name="this_is_vista">This is a IH+ Scenic Vista:</string>
 </resources>

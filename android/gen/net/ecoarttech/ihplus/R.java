@@ -28,38 +28,63 @@ public final class R {
         public static final int gps_indicator3=0x7f020007;
         public static final int gps_indicator4=0x7f020008;
         public static final int hikes_top_btn=0x7f020009;
-        public static final int icon=0x7f02000a;
-        public static final int notes_tab=0x7f02000b;
-        public static final int notes_tab_btn=0x7f02000c;
-        public static final int notes_tab_btn_active=0x7f02000d;
-        public static final int photo_tab=0x7f02000e;
-        public static final int photo_tab_btn=0x7f02000f;
-        public static final int photo_tab_btn_active=0x7f020010;
-        public static final int scenic_vista_point=0x7f020011;
-        public static final int search_top_btn=0x7f020012;
+        public static final int hiking_top_bar=0x7f02000a;
+        public static final int icon=0x7f02000b;
+        public static final int notes_tab=0x7f02000c;
+        public static final int notes_tab_btn=0x7f02000d;
+        public static final int notes_tab_btn_active=0x7f02000e;
+        public static final int orig_create_top_bar=0x7f02000f;
+        public static final int photo_tab=0x7f020010;
+        public static final int photo_tab_btn=0x7f020011;
+        public static final int photo_tab_btn_active=0x7f020012;
+        public static final int scenic_vista_point=0x7f020013;
+        public static final int search_top_bar=0x7f020014;
+        public static final int search_top_btn=0x7f020015;
+        public static final int vista_bg=0x7f020016;
     }
     public static final class id {
         public static final int end_address=0x7f070001;
-        public static final int hike_gallery=0x7f070006;
-        public static final int hike_name=0x7f070004;
-        public static final int hike_note=0x7f070005;
-        public static final int hike_photo=0x7f070007;
-        public static final int map_view=0x7f070008;
-        public static final int search_btn=0x7f070003;
+        public static final int hike_desc=0x7f070010;
+        public static final int hike_info=0x7f070011;
+        public static final int hike_layout=0x7f070005;
+        public static final int hike_name=0x7f070006;
+        public static final int hikes_btn=0x7f070003;
+        public static final int hit_trail=0x7f070012;
+        public static final int map_view=0x7f070009;
+        public static final int search_bar=0x7f07000f;
+        public static final int search_btn=0x7f070004;
         public static final int start_address=0x7f070000;
         public static final int start_hike=0x7f070002;
+        public static final int vista_cont=0x7f07000d;
+        public static final int vista_gallery=0x7f070008;
+        public static final int vista_info=0x7f07000c;
+        public static final int vista_label=0x7f07000b;
+        public static final int vista_layout=0x7f07000a;
+        public static final int vista_note=0x7f07000e;
+        public static final int vista_task=0x7f070007;
     }
     public static final class layout {
         public static final int create_hike=0x7f030000;
         public static final int map=0x7f030001;
+        public static final int note_dialog=0x7f030002;
+        public static final int search=0x7f030003;
+        public static final int search_item=0x7f030004;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
-        public static final int enter_end=0x7f050002;
-        public static final int enter_start=0x7f050001;
-        public static final int hit_trail=0x7f050003;
+        public static final int cont=0x7f050001;
+        public static final int current_hike=0x7f050002;
+        public static final int empty_search=0x7f050003;
+        public static final int enter_end=0x7f050005;
+        public static final int enter_start=0x7f050004;
+        public static final int hit_trail=0x7f050006;
+        public static final int search_hint=0x7f050007;
+        public static final int this_is_vista=0x7f050008;
     }
     public static final class style {
         public static final int IHTheme=0x7f060000;
+        public static final int bold=0x7f060001;
+        public static final int boldBlack=0x7f060002;
+        public static final int boldBlue=0x7f060003;
     }
 }

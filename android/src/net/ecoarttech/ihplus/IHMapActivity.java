@@ -16,7 +16,7 @@ import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
-import net.ecoarttech.ihplus.network.VistaDownloadTask;
+import net.ecoarttech.ihplus.network.DownloadVistaActionsTask;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -179,16 +179,17 @@ public class IHMapActivity extends MapActivity {
 		for (ScenicVista vista : mHike.getVistas()) {
 			vista.cancelIntent(mContext, mLocMgr);
 		}
-		// TODO - unregister all recievers unregisterReceiver(mBroadReceiver);
 	}
 
 	private void drawPath(String[] pairs) {
 		String[] lngLat = pairs[0].split(",");
 		// STARTING POINT
-		GeoPoint startGP = new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double
-				.parseDouble(lngLat[0]) * 1E6));
+		double startLat = Double.parseDouble(lngLat[1]);
+		double startLng = Double.parseDouble(lngLat[0]);
+		GeoPoint startGP = new GeoPoint((int) (startLat * 1E6), (int) (startLng * 1E6));
 
 		mHike.addPoint(startGP);
+		mHike.setStartPoints(startLat, startLng);
 		mMapController = mMapView.getController();
 		geoPoint = startGP;
 		mMapController.setCenter(geoPoint); // TODO - center on user's location?
@@ -299,7 +300,7 @@ public class IHMapActivity extends MapActivity {
 			mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
 		}
 		// get vista 'tasks' from server
-		new VistaDownloadTask(mHike.getVistas(), mActionHandler).execute();
+		new DownloadVistaActionsTask(mHike.getVistas(), mActionHandler).execute();
 		// TODO - if the server has error, should have some kind of vista info on the phone
 	}
 
@@ -441,5 +442,27 @@ public class IHMapActivity extends MapActivity {
 		vista.cancelIntent(mContext, mLocMgr);
 		// save vista info to db
 		vista.save(this, mHike.hashCode());
+		// check if the hike is complete
+		if (mHike.isComplete()) {
+			completeHike();
+		}
+	}
+
+	private void completeHike() {
+		// TODO - input some things??
+		new AlertDialog.Builder(this).setTitle("Complete Hike").setPositiveButton("Upload",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						mHike.upload(new Handler() {
+							@Override
+							public void handleMessage(Message msg) {
+								// TODO Auto-generated method stub
+								super.handleMessage(msg);
+							}
+						});
+					}
+				}).create().show();
 	}
 }

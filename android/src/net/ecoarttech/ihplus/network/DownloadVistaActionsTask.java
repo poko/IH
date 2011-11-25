@@ -1,0 +1,97 @@
+package net.ecoarttech.ihplus.network;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import net.ecoarttech.ihplus.model.ScenicVista;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.util.Log;
+
+public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse> {
+
+	private static final String TAG = "IH+ - VistaDownloadTask";
+	private ArrayList<ScenicVista> mVistas;
+	private Handler mHandler;
+
+	public DownloadVistaActionsTask(ArrayList<ScenicVista> vistas, Handler handler) {
+		this.mVistas = vistas;
+		this.mHandler = handler;
+	}
+
+	@Override
+	protected void onPreExecute() {
+	}
+
+	@Override
+	protected HttpResponse doInBackground(Void... arg0) {
+		Uri.Builder builder = Uri.parse(NetworkConstants.GET_VISTA_URL).buildUpon();
+		builder.appendQueryParameter("amount", Integer.toString(mVistas.size()));
+		Uri uri = builder.build();
+		Log.d(TAG, "Uri: " + uri);
+		HttpGet request = new HttpGet(uri.toString());
+		DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
+		HttpResponse response;
+		try {
+			response = httpClient.execute(request);
+			return response;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	protected void onPostExecute(HttpResponse result) {
+		if (result != null) {
+			try {
+				InputStreamReader is = new InputStreamReader(result.getEntity().getContent());
+				BufferedReader br = new BufferedReader(is);
+				StringBuilder responseText = new StringBuilder();
+				String line;
+				while ((line = br.readLine()) != null) {
+					responseText.append(line);
+				}
+				Log.d(TAG, "Server response: " + responseText);
+				// parse out vista_actions
+				JSONObject responseJson = new JSONObject(responseText.toString());
+				JSONArray vistaActions = responseJson.getJSONArray("vista_actions");
+				for (int i = 0; i < mVistas.size(); i++) {
+					ScenicVista v = mVistas.get(i);
+					JSONObject vistaJson = vistaActions.getJSONObject(i);
+					v.setActionId(vistaJson.getInt("vista_id"));
+					v.setAction(vistaJson.getString("verbiage"));
+					v.setActionType(vistaJson.getString("action_type"));
+				}
+				mHandler.sendEmptyMessage(23); // TODO
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		super.onPostExecute(result);
+	}
+}
