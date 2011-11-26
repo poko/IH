@@ -52,7 +52,6 @@ $height = intval($ratio*$height);
     imagejpeg($thumbImg, $pathinfo['dirname'] . "/" . $outFile, 95);
 }
 
-
 $hike_name = $_POST["hike_name"];
 $hike_desc = $_POST["description"];
 $username = $_POST["username"];
@@ -96,25 +95,31 @@ if (!$result) {
     $message .= 'Whole query: ' . $query;
     die($message);
 }
-// upload each vista point
-echo "vistas: ";
-echo print_r($vistas);
-//$query = sprintf("insert into original_vistas (filename, path, coords, point_id, ip_address, username) values ('%s', '%s', GeomFromText('POINT(%s %s)'), '%s', INET_ATON('%s'), '%s')",
-//                  mysql_real_escape_string(basename($uploadfile)),
-//                  mysql_real_escape_string($today_dir),
-//                  mysql_real_escape_string($lat),
-//                  mysql_real_escape_string($lng),
-//                  mysql_real_escape_string($point_id),
- //                 mysql_real_escape_string($ip_address),
-//                  mysql_real_escape_string($username));
-//$result = mysql_query($query);
+$hike_id = mysql_insert_id();
+
+// save each vista point
+$vista_json = json_decode(str_replace('\\', '', $vistas), true);
+foreach ($vista_json as $v){
+	$query = sprintf("insert into original_vistas (hike_id, action_id, longitude, latitude, date, note) values ('%s', '%s', '%s', '%s', '%s', '%s')",
+                  mysql_real_escape_string($hike_id),
+                  mysql_real_escape_string($v["action_id"]),
+                  mysql_real_escape_string($v["latitude"]),
+                  mysql_real_escape_string($v["longitude"]),
+                  mysql_real_escape_string($v["date"]),
+                  mysql_real_escape_string($v["note"]));
+	$result = mysql_query($query);
+	if (!$result){
+		$message  = 'Invalid query: ' . mysql_error() . "\n";
+    	$message .= 'Whole query: ' . $query;
+    	die($message);
+	}
+}
+
 
 // can get last insert id with mysql_insert_id()
 
 include 'db_close.php';
 
-//echo "<textarea>";
-echo "{\"result\":\"success\"}";
-//echo "</textarea>";
+echo "{\"result\":\"true\"}";
 
 ?>
