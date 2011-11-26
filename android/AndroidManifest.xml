@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
 		<activity android:name=".IHMapActivity" android:screenOrientation="portrait"/>
-		<activity android:name=".SearchActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".SearchActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden"/>
       <uses-library android:name="com.google.android.maps" />
     </application>
 </manifest>
