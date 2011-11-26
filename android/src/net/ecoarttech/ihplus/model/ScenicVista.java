@@ -1,5 +1,6 @@
 package net.ecoarttech.ihplus.model;
 
+import net.ecoarttech.ihplus.IHMapActivity;
 import net.ecoarttech.ihplus.db.DBHelper;
 
 import org.json.JSONException;
@@ -9,6 +10,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
@@ -93,6 +95,25 @@ public class ScenicVista {
 		pi = null;
 	}
 
+	public void pauseIntent(Context c, LocationManager m) {
+		Log.d(TAG, "pausing intents for : " + point);
+		if (br != null)
+			c.unregisterReceiver(br);
+		if (pi != null)
+			m.removeProximityAlert(pi);
+	}
+
+	public void reenableIntent(Context c, LocationManager m) {
+		if (!complete) {
+			if (br != null) {
+				IntentFilter filter = new IntentFilter(IHMapActivity.PROXIMITY_INTENT + hashCode());
+				c.registerReceiver(br, filter);
+			}
+			if (pi != null)
+				m.addProximityAlert(latitude, longitude, 25, -1, pi);
+		}
+	}
+
 	public void setNote(String note) {
 		this.note = note;
 		complete = note.length() > 0;
@@ -146,7 +167,6 @@ public class ScenicVista {
 			json.put(COL_PHOTO, photo);
 			json.put(COL_DATE, date);
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		query.close();

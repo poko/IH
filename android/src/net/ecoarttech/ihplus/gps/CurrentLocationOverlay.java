@@ -27,6 +27,8 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 	private Bitmap mGPS2;
 	private Bitmap mGPS3;
 	private Bitmap mGPS4;
+	private int bitWidth;
+	private int bitHeight;
 	private Paint paint = new Paint();
 
 	public CurrentLocationOverlay(Context context, MapView mapView) {
@@ -36,6 +38,8 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 		mGPS3 = BitmapFactory.decodeResource(context.getResources(), R.drawable.gps_indicator3);
 		mGPS4 = BitmapFactory.decodeResource(context.getResources(), R.drawable.gps_indicator4);
 		currentBitmap = mGPS1;
+		bitWidth = currentBitmap.getWidth() / 2;
+		bitHeight = currentBitmap.getHeight() / 2;
 	}
 
 	@Override
@@ -58,10 +62,9 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 		Point loc = p.toPixels(myLocation, null);
 		paint.setAntiAlias(true);
 		paint.setAlpha(255);
-		canvas.drawBitmap(currentBitmap, loc.x, loc.y, paint);
-		// prompt a redraw for animation?!?
+		canvas.drawBitmap(currentBitmap, loc.x - bitWidth, loc.y - bitHeight, paint);
+		// prompt a redraw for animation
 		mapView.postInvalidateDelayed(ANIMATION_DURATION - 100);
-		// super.drawMyLocation(canvas, mapView, lastFix, myLocation, when);
 	}
 
 	private void incrementBitmap() {

@@ -60,6 +60,14 @@ public class Hike {
 		return vistas;
 	}
 
+	public ScenicVista getVistaByHashCode(int hashcode) {
+		for (ScenicVista vista : vistas) {
+			if (vista.hashCode() == hashcode)
+				return vista;
+		}
+		return null;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -106,6 +114,8 @@ public class Hike {
 	}
 
 	public boolean isComplete() {
+		if (vistas.size() == 0)
+			return false;
 		for (ScenicVista vista : vistas) {
 			if (!vista.isComplete())
 				return false;

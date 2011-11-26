@@ -164,14 +164,24 @@ public class IHMapActivity extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		Log.d(TAG, "onResume");
 		mCurrentLocationOverlay.enableMyLocation();
 		// enable all vista locationListeners - TODO
+		if (!mHike.isComplete()) {
+			Log.d(TAG, "hike isn't done yet! Let's re-enable the vista listeners");
+			for (ScenicVista vista : mHike.getVistas()) {
+				Log.d(TAG, "we have a vista!");
+				vista.reenableIntent(mContext, mLocMgr);
+			}
+		}
 	}
 
 	protected void onPause() {
 		super.onPause();
 		mCurrentLocationOverlay.disableMyLocation();
-		// disable all vista locationListeners - TODO
+		for (ScenicVista vista : mHike.getVistas()) {
+			vista.pauseIntent(mContext, mLocMgr);
+		}
 	};
 
 	@Override
@@ -312,11 +322,10 @@ public class IHMapActivity extends MapActivity {
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "got message! " + msg.what);
 			// enable all the Vista proximity alerts?
-			for (int i = 0; i < mHike.getVistas().size(); i++) {// (ScenicVista vista : mHike.getVistas()) {
-
-				ScenicVista vista = mHike.getVistas().get(i);
+			for (ScenicVista vista : mHike.getVistas()) {// (int i = 0; i < mHike.getVistas().size(); i++) {//
+				// ScenicVista vista = mHike.getVistas().get(i);
 				// setup proximity alert
-				Intent intent = new Intent(PROXIMITY_INTENT + i);
+				Intent intent = new Intent(PROXIMITY_INTENT + vista.hashCode());
 				Log.d(TAG, "intent action: " + intent.getAction());
 				PendingIntent pi = PendingIntent.getBroadcast(mContext, VISTA_ENTERED, intent, 0);
 
@@ -324,7 +333,7 @@ public class IHMapActivity extends MapActivity {
 				Log.d(TAG, "added alert for: " + vista.getLat() + " long: " + vista.getLong());
 
 				// set up pending intent recievers
-				IntentFilter filter = new IntentFilter(PROXIMITY_INTENT + i);
+				IntentFilter filter = new IntentFilter(PROXIMITY_INTENT + vista.hashCode());
 				VistaEnteredReceiver br = new VistaEnteredReceiver();
 				registerReceiver(br, filter);
 				vista.setPendingIntentAndReceiver(pi, br);
@@ -355,15 +364,12 @@ public class IHMapActivity extends MapActivity {
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "IH broadcast, test: " + intent.getAction());
 			Bundle extras = intent.getExtras();
-			// int i = extras.getInt(BUNDLE_VISTA);
 			String index = intent.getAction().split(PROXIMITY_INTENT)[1];
 			Integer i = Integer.valueOf(index);
-			Log.d(TAG, "I: " + i);
 			boolean entering = extras.getBoolean(LocationManager.KEY_PROXIMITY_ENTERING);
-			Log.d(TAG, "entering: " + entering);
 			String enter = entering ? "Entering" : "Leaving";
 			Toast.makeText(mContext, enter + " a scenic vista.", Toast.LENGTH_LONG).show();
-			final ScenicVista enteredVista = mHike.getVistas().get(i);
+			final ScenicVista enteredVista = mHike.getVistaByHashCode(i);
 			if (entering) {
 				// display hike & vista info at top of screen
 				findViewById(R.id.hike_layout).setVisibility(View.VISIBLE);
@@ -377,9 +383,8 @@ public class IHMapActivity extends MapActivity {
 				View vistaCont = findViewById(R.id.vista_cont);
 				View actionButton = findViewById(R.id.vista_task);
 				setActionClickListeners(enteredVista, vistaCont, actionButton);
-
 			} else {
-				// if vista task is not completed, tsk tsk!
+				// TODO - if vista task is not completed, tsk tsk!
 				// else, get rid of vista info bar
 			}
 		}
@@ -444,9 +449,9 @@ public class IHMapActivity extends MapActivity {
 		// save vista info to db
 		vista.save(this, mHike.hashCode());
 		// check if the hike is complete
-		// if (mHike.isComplete()) { TODO - uncomment!
-		completeHike();
-		// }
+		if (mHike.isComplete()) {
+			completeHike();
+		}
 	}
 
 	private void completeHike() {
@@ -472,7 +477,6 @@ public class IHMapActivity extends MapActivity {
 	private Handler mUploadHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
 			super.handleMessage(msg);
 			if (msg.what == NetworkConstants.FAILURE) {
 				// retry
