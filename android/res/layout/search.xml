@@ -15,7 +15,8 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 	    android:hint="@string/search_hint"
-	    android:textColorHint="@color/light_gray"/>
+	    android:textColorHint="@color/light_gray"
+	    android:singleLine="true"/>
 	<ListView android:id="@android:id/list"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"

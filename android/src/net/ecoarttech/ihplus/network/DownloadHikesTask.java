@@ -23,9 +23,13 @@ public class DownloadHikesTask extends AsyncTask<Void, Void, HttpResponse> {
 
 	private static final String TAG = "IH+ - DownloadHikesTask";
 	private Handler mHandler;
+	private double mLat;
+	private double mLng;
 
-	public DownloadHikesTask(Handler handler) {
+	public DownloadHikesTask(Handler handler, double lat, double lng) {
 		this.mHandler = handler;
+		this.mLat = lat;
+		this.mLng = lng;
 	}
 
 	@Override
@@ -35,7 +39,8 @@ public class DownloadHikesTask extends AsyncTask<Void, Void, HttpResponse> {
 	@Override
 	protected HttpResponse doInBackground(Void... arg0) {
 		Uri.Builder builder = Uri.parse(NetworkConstants.SEARCH_HIKES_URL).buildUpon();
-		// TODO - add params builder.appendQueryParameter("amount", Integer.toString(mVistas.size()));
+		builder.appendQueryParameter("latitude", Double.toString(mLat));
+		builder.appendQueryParameter("longitude", Double.toString(mLng));
 		Uri uri = builder.build();
 		Log.d(TAG, "Uri: " + uri);
 		HttpGet request = new HttpGet(uri.toString());

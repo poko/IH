@@ -13,6 +13,9 @@ import org.json.JSONException;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +27,7 @@ public class SearchActivity extends ListActivity {
 	private Context mContext;
 	private SearchListAdapter mAdapter;
 	private ProgressDialog mDialog;
+	private LocationManager mLocMgr;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,11 +37,19 @@ public class SearchActivity extends ListActivity {
 
 		mDialog = ProgressDialog.show(mContext, "", "FPO - Searching hikes");
 		mDialog.setCancelable(true);
-		new DownloadHikesTask(downloadHikesHandler).execute();
+		// try to get last known location,
+		mLocMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		Location lastKnown = mLocMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (lastKnown == null || (System.currentTimeMillis() - lastKnown.getTime()) > 10 * 60 * 1000) {
+			// if it is null, or more than 10 minutes old, fetch a new one instead.
+			Log.d(TAG, "last known location is null or more than 10 mins old: " + lastKnown);
+			mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		} else {
+			searchHikes(lastKnown.getLatitude(), lastKnown.getLongitude());
+		}
 
 		mAdapter = new SearchListAdapter(this, null);
 		setListAdapter(mAdapter);
-		getListView().requestFocus();
 	}
 
 	private Handler downloadHikesHandler = new Handler() {
@@ -55,13 +67,49 @@ public class SearchActivity extends ListActivity {
 					}
 					mAdapter.setHikes(hikes);
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+					showError();
 				}
 			} else {
-				Toast.makeText(mContext, "FPO sorry, an error occured searching for hikes", Toast.LENGTH_LONG).show();
+				showError();
 			}
 		}
 	};
 
+	private LocationListener locationListener = new LocationListener() {
+
+		@Override
+		public void onLocationChanged(Location location) {
+			// start search call,
+			searchHikes(location.getLatitude(), location.getLongitude());
+			// remove request for updates.
+			mLocMgr.removeUpdates(this);
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			// TODO Auto-generated method stub
+
+		}
+	};
+
+	private void searchHikes(double lat, double lng) {
+		new DownloadHikesTask(downloadHikesHandler, lat, lng).execute();
+	}
+
+	private void showError() {
+		Toast.makeText(mContext, "FPO sorry, an error occured searching for hikes", Toast.LENGTH_LONG).show();
+	}
 }
