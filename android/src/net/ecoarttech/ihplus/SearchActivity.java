@@ -35,7 +35,7 @@ public class SearchActivity extends ListActivity {
 		setContentView(R.layout.search);
 		this.mContext = this;
 
-		mDialog = ProgressDialog.show(mContext, "", "FPO - Searching hikes");
+		mDialog = ProgressDialog.show(mContext, "", "Searching for hikes nearby");
 		mDialog.setCancelable(true);
 		// try to get last known location,
 		mLocMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -110,6 +110,6 @@ public class SearchActivity extends ListActivity {
 	}
 
 	private void showError() {
-		Toast.makeText(mContext, "FPO sorry, an error occured searching for hikes", Toast.LENGTH_LONG).show();
+		Toast.makeText(mContext, "sorry, an error occured searching for hikes", Toast.LENGTH_LONG).show();
 	}
 }
