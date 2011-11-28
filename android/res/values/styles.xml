@@ -4,9 +4,15 @@
         <item name="android:windowBackground">@drawable/background_color</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:editTextStyle">@style/IHEditText</item>
+        <item name="android:alertDialogStyle">@style/IHAlertDialog</item>
     </style> 
+    
    <style name="IHEditText" parent="android:Widget.EditText">
         <item name="android:background">@drawable/ih_edittext</item>
+    </style> 
+    
+   <style name="IHAlertDialog" parent="android:Widget.EditText">
+        <item name="android:windowBackground">@color/tabbar_gray</item>
     </style> 
     
    <style name="bold" parent="android:Widget.TextView">

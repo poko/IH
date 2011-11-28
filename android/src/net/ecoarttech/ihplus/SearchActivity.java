@@ -40,7 +40,7 @@ public class SearchActivity extends ListActivity {
 		// try to get last known location,
 		mLocMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		Location lastKnown = mLocMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (lastKnown == null || (System.currentTimeMillis() - lastKnown.getTime()) > 10 * 60 * 1000) {
+		if (lastKnown == null) {// TODO || (System.currentTimeMillis() - lastKnown.getTime()) > 10 * 60 * 1000) {
 			// if it is null, or more than 10 minutes old, fetch a new one instead.
 			Log.d(TAG, "last known location is null or more than 10 mins old: " + lastKnown);
 			mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);

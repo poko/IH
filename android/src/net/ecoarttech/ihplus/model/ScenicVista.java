@@ -1,8 +1,11 @@
 package net.ecoarttech.ihplus.model;
 
+import java.io.File;
+
 import net.ecoarttech.ihplus.IHMapActivity;
 import net.ecoarttech.ihplus.db.DBHelper;
 
+import org.apache.http.entity.mime.content.FileBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +18,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
@@ -80,25 +84,41 @@ public class ScenicVista {
 		return actionType;
 	}
 
+	public String getPhotoTitle() {
+		return "IHPlus_" + point;// latitude + "_" + longitude;
+	}
+
+	public FileBody getUploadFile(Context c) {
+		if (photo != null) {
+			Log.d(TAG, "photo: " + photo);
+			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), photo.getEncodedPath());
+			Log.d(TAG, "file? " + file);
+			Log.d(TAG, "file size: " + file.length());
+			return new FileBody(file);
+		}
+		return null;
+	}
+
 	public void setPendingIntentAndReceiver(PendingIntent p, BroadcastReceiver b) {
 		this.pi = p;
 		this.br = b;
 	}
 
-	public void cancelIntent(Context c, LocationManager m) {
-		Log.d(TAG, "canceling intent for : " + point);
-		if (br != null)
-			c.unregisterReceiver(br);
+	public void cancelIntent() {
+		Log.d(TAG, "canceling intents for : " + point);
 		br = null;
-		if (pi != null)
-			m.removeProximityAlert(pi);
 		pi = null;
 	}
 
 	public void pauseIntent(Context c, LocationManager m) {
 		Log.d(TAG, "pausing intents for : " + point);
-		if (br != null)
-			c.unregisterReceiver(br);
+		if (br != null) {
+			try {
+				c.unregisterReceiver(br);
+			} catch (IllegalArgumentException e) {
+				Log.e(TAG, "Receiver not registered, failed to unregisster it.");
+			}
+		}
 		if (pi != null)
 			m.removeProximityAlert(pi);
 	}
@@ -164,7 +184,7 @@ public class ScenicVista {
 			json.put(COL_LNG, longitude);
 			json.put(COL_ACTION_ID, actionId);
 			json.put(COL_NOTE, note);
-			json.put(COL_PHOTO, photo);
+			json.put(COL_PHOTO, photo.getEncodedPath());
 			json.put(COL_DATE, date);
 		} catch (JSONException e) {
 			e.printStackTrace();

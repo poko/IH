@@ -18,6 +18,7 @@ import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.DownloadVistaActionsTask;
 import net.ecoarttech.ihplus.network.NetworkConstants;
 import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
+import net.ecoarttech.ihplus.util.PhotoProvider;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -26,6 +27,7 @@ import org.w3c.dom.NodeList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -71,6 +73,7 @@ public class IHMapActivity extends MapActivity {
 	private LocationManager mLocMgr;
 	private ScenicVista mPhotoVista;
 	private Uri mPhotoUri;
+	private ProgressDialog mDialog;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -92,10 +95,14 @@ public class IHMapActivity extends MapActivity {
 		});
 		mMapView.getOverlays().add(mCurrentLocationOverlay);
 
+		// generate hike
+		mDialog = new ProgressDialog(this);
+		mDialog.setMessage("Generating Hike");
+		mDialog.show();// ProgressDialog.show(this, null, "Generating Hike.");
 		Bundle extras = getIntent().getExtras();
 		final String start = URLEncoder.encode(extras.getString(BUNDLE_START));
 		final String end = URLEncoder.encode(extras.getString(BUNDLE_END));
-		randomPoint = extras.getBoolean(BUNDLE_RANDOM);
+		randomPoint = extras.getBoolean(BUNDLE_RANDOM); // TODO - always randomize.
 		// get start/end points from bundle
 		Log.d(TAG, "randomizing?? " + randomPoint);
 		if (randomPoint) {
@@ -188,7 +195,7 @@ public class IHMapActivity extends MapActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		for (ScenicVista vista : mHike.getVistas()) {
-			vista.cancelIntent(mContext, mLocMgr);
+			vista.cancelIntent();
 		}
 	}
 
@@ -275,26 +282,26 @@ public class IHMapActivity extends MapActivity {
 	private void generateScenicVistas(String[] points) {
 		Log.d(TAG, "pairs amount:" + points.length);
 		ArrayList<Integer> existingVistas = new ArrayList<Integer>();
-		if (points.length < 3) {
-			// each point is a new scenic vista
-			for (int i = 0; i < points.length; i++) {
-				createNewVista(points[i]);
+		// if (points.length < 3) {
+		// // each point is a new scenic vista
+		// for (int i = 0; i < points.length; i++) {
+		// createNewVista(points[i]);
+		// }
+		// } else {
+		// generate random number between 2-4 (for 4-8 total scenic vistas)
+		Random rand = new Random();
+		int vistaAmount = 1;// rand.nextInt(2) + 2;// random method (2,3, or 4);
+		Log.d(TAG, "Vistas: " + vistaAmount);
+		int i = 0;
+		while (i < vistaAmount) {
+			int r = rand.nextInt(points.length);
+			Log.d(TAG, "trying vista : " + r);
+			if (!existingVistas.contains(r)) {
+				createNewVista(points[r]);
+				existingVistas.add(r);
+				i++;
 			}
-		} else {
-			// generate random number between 2-4 (for 4-8 total scenic vistas)
-			Random rand = new Random();
-			int vistaAmount = rand.nextInt(2) + 2;// random method (2,3, or 4);
-			Log.d(TAG, "Vistas: " + vistaAmount);
-			int i = 0;
-			while (i < vistaAmount) {
-				int r = rand.nextInt(points.length);
-				Log.d(TAG, "trying vista : " + r);
-				if (!existingVistas.contains(r)) {
-					createNewVista(points[r]);
-					existingVistas.add(r);
-					i++;
-				}
-			}
+			// }
 		}
 	}
 
@@ -312,7 +319,6 @@ public class IHMapActivity extends MapActivity {
 		}
 		// get vista 'tasks' from server
 		new DownloadVistaActionsTask(mHike.getVistas(), mActionHandler).execute();
-		// TODO - if the server has error, should have some kind of vista info on the phone
 	}
 
 	private static final int VISTA_ENTERED = 1;
@@ -321,6 +327,9 @@ public class IHMapActivity extends MapActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "got message! " + msg.what);
+			// TODO - check that msg from was successful
+			// TODO - if the server has error, should have some kind of vista info on the phone
+			mDialog.dismiss();
 			// enable all the Vista proximity alerts?
 			for (ScenicVista vista : mHike.getVistas()) {// (int i = 0; i < mHike.getVistas().size(); i++) {//
 				// ScenicVista vista = mHike.getVistas().get(i);
@@ -349,13 +358,13 @@ public class IHMapActivity extends MapActivity {
 	}
 
 	public void onSearchClick(View v) {
-		Log.d(TAG, "search click");
-		// TODO - Implement
+		Intent i = new Intent(this, SearchActivity.class);
+		startActivity(i);
 	}
 
 	public void onHikesClick(View v) {
 		Log.d(TAG, "hike click");
-		// TODO - Implement
+		// TODO - Implement (warn that current hike will be lost)
 	}
 
 	public class VistaEnteredReceiver extends BroadcastReceiver {
@@ -429,10 +438,15 @@ public class IHMapActivity extends MapActivity {
 		Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 		ContentValues cameraValues = new ContentValues();
+		// cameraValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+		// cameraValues.put(MediaStore.Images.Media.TITLE, vista.getPhotoTitle());
+		// cameraValues.put(MediaStore.Images.Media.DESCRIPTION, mContext.getResources().getString(R.string.app_name));
+		// Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cameraValues);
+
 		cameraValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-		cameraValues.put(MediaStore.Images.Media.TITLE, "IHPlus_" + vista.getLat() + "_" + vista.getLong());
+		cameraValues.put(MediaStore.Images.Media.TITLE, vista.getPhotoTitle());
 		cameraValues.put(MediaStore.Images.Media.DESCRIPTION, mContext.getResources().getString(R.string.app_name));
-		Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cameraValues);
+		Uri uri = mContext.getContentResolver().insert(Uri.parse("content://" + PhotoProvider.AUTHORITY), cameraValues);
 
 		pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 		mPhotoUri = uri;
@@ -445,7 +459,8 @@ public class IHMapActivity extends MapActivity {
 		findViewById(R.id.hike_layout).setVisibility(View.GONE);
 		findViewById(R.id.vista_layout).setVisibility(View.GONE);
 		// remove pending intent
-		vista.cancelIntent(mContext, mLocMgr);
+		vista.pauseIntent(mContext, mLocMgr);
+		vista.cancelIntent();
 		// save vista info to db
 		vista.save(this, mHike.hashCode());
 		// check if the hike is complete

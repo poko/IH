@@ -3,21 +3,22 @@ package net.ecoarttech.ihplus.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
+import net.ecoarttech.ihplus.model.ActionType;
 import net.ecoarttech.ihplus.model.Hike;
+import net.ecoarttech.ihplus.model.ScenicVista;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 	private Context mContext;
 	private Hike mHike;
 	private Handler mHandler;
+	private ProgressDialog mDialog;
 
 	public UploadHikeTask(Context context, Hike hike, Handler handler) {
 		this.mContext = context;
@@ -40,35 +42,49 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 
 	@Override
 	protected void onPreExecute() {
-		// TODO - add progress dialog.
+		mDialog = new ProgressDialog(mContext);
+		mDialog.setMessage("Uploading hike data.");
+		mDialog.show();
 	}
 
 	@Override
 	protected HttpResponse doInBackground(Void... arg0) {
 		Uri.Builder builder = Uri.parse(NetworkConstants.UPLOAD_HIKE_URL).buildUpon();
 		Uri uri = builder.build();
-		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
-		parameters.add(new BasicNameValuePair("hike_name", mHike.getName()));
-		parameters.add(new BasicNameValuePair("username", mHike.getUsername()));
-		parameters.add(new BasicNameValuePair("description", mHike.getDescription()));
-		parameters.add(new BasicNameValuePair("vistas", mHike.getVistasAsJson(mContext)));
-		parameters.add(new BasicNameValuePair("start_lat", mHike.getStartLat().toString()));
-		parameters.add(new BasicNameValuePair("start_lng", mHike.getStartLng().toString()));
+		// ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+		// parameters.add(new BasicNameValuePair("hike_name", mHike.getName()));
+		// parameters.add(new BasicNameValuePair("username", mHike.getUsername()));
+		// parameters.add(new BasicNameValuePair("description", mHike.getDescription()));
+		// parameters.add(new BasicNameValuePair("vistas", mHike.getVistasAsJson(mContext)));
+		// parameters.add(new BasicNameValuePair("start_lat", mHike.getStartLat().toString()));
+		// parameters.add(new BasicNameValuePair("start_lng", mHike.getStartLng().toString()));
 		// TODO - if vistas are photos, add photos
 		try {
 			Log.d(TAG, "Uri: " + uri);
-			Log.d(TAG, "params: " + parameters);
+			// Log.d(TAG, "params: " + parameters);
 			HttpPost request = new HttpPost(uri.toString());
-			request.setEntity(new UrlEncodedFormEntity(parameters));
+			MultipartEntity entity = new MultipartEntity();
+			entity.addPart("hike_name", new StringBody(mHike.getName()));
+			entity.addPart("username", new StringBody(mHike.getUsername()));
+			entity.addPart("description", new StringBody(mHike.getDescription()));
+			entity.addPart("vistas", new StringBody(mHike.getVistasAsJson(mContext)));
+			entity.addPart("start_lat", new StringBody(mHike.getStartLat().toString()));
+			entity.addPart("start_lng", new StringBody(mHike.getStartLng().toString()));
+			// add any photos
+			for (ScenicVista vista : mHike.getVistas()) {
+				if (vista.getActionType() == ActionType.PHOTO) {
+					entity.addPart("photos", vista.getUploadFile(mContext));
+					// entity.addPart(vista.getPhotoTitle(), vista.getUploadFile(mContext));
+				}
+			}
+			request.setEntity(entity);// new UrlEncodedFormEntity(parameters));
 			DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
 			HttpResponse response;
 			response = httpClient.execute(request);
 			return response;
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -76,6 +92,7 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 
 	@Override
 	protected void onPostExecute(HttpResponse result) {
+		mDialog.dismiss();
 		if (result != null) {
 			Message msg = new Message();
 			msg.what = NetworkConstants.FAILURE;

@@ -66,6 +66,8 @@ $today_upload_dir = $base_upload_dir . $today_dir;
 
 is_dir($today_upload_dir) || mkdir($today_upload_dir, 0755);
 
+print_r($_FILES);
+
 // create target folder/filename and move it there
 //$uploadfile = $today_upload_dir . "/" . date("H.i.s") . "-" . basename($_FILES['picfile']['name']);
 //if (move_uploaded_file($_FILES['picfile']['tmp_name'], $uploadfile)) {
@@ -100,13 +102,14 @@ $hike_id = mysql_insert_id();
 // save each vista point
 $vista_json = json_decode(str_replace('\\', '', $vistas), true);
 foreach ($vista_json as $v){
-	$query = sprintf("insert into original_vistas (hike_id, action_id, longitude, latitude, date, note) values ('%s', '%s', '%s', '%s', '%s', '%s')",
+	$query = sprintf("insert into original_vistas (hike_id, action_id, longitude, latitude, date, note, filename) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($hike_id),
                   mysql_real_escape_string($v["action_id"]),
                   mysql_real_escape_string($v["latitude"]),
                   mysql_real_escape_string($v["longitude"]),
                   mysql_real_escape_string($v["date"]),
-                  mysql_real_escape_string($v["note"]));
+                  mysql_real_escape_string($v["note"]),
+                  mysql_real_escape_string($v["photo"]));
 	$result = mysql_query($query);
 	if (!$result){
 		$message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -115,11 +118,33 @@ foreach ($vista_json as $v){
 	}
 }
 
+// save the photos
+
+//foreach ($_FILES["photos"]["error"] as $key => $error) {
+//    if ($error == UPLOAD_ERR_OK) {
+  //      $tmp_name = $_FILES["photos"]["tmp_name"][$key];
+    //    $name = $_FILES["photos"]["name"][$key];
+//        move_uploaded_file($tmp_name, "$today_upload_dir/". date("H.i.s") ."$name");
+//    }
+//}
+
+foreach ($_FILES as $file){
+	// create target folder/filename and move it there
+	$uploadfile = $today_upload_dir . "/" . date("H.i.s") . "-" . basename($file['name']).".jpg";
+	echo "up file: ".$uploadfile;
+	if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
+	    echo "File is valid, and was successfully uploaded.\n";
+	} else {
+	    error_log("Couldn't upload file.  Maybe it's too big?");
+	}
+}
+
+
 
 // can get last insert id with mysql_insert_id()
 
 include 'db_close.php';
 
-echo "{\"result\":\"true\"}";
+echo "{\"result\":\"success\"}";
 
 ?>
