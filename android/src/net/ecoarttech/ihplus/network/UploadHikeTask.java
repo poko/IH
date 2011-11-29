@@ -51,14 +51,6 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 	protected HttpResponse doInBackground(Void... arg0) {
 		Uri.Builder builder = Uri.parse(NetworkConstants.UPLOAD_HIKE_URL).buildUpon();
 		Uri uri = builder.build();
-		// ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
-		// parameters.add(new BasicNameValuePair("hike_name", mHike.getName()));
-		// parameters.add(new BasicNameValuePair("username", mHike.getUsername()));
-		// parameters.add(new BasicNameValuePair("description", mHike.getDescription()));
-		// parameters.add(new BasicNameValuePair("vistas", mHike.getVistasAsJson(mContext)));
-		// parameters.add(new BasicNameValuePair("start_lat", mHike.getStartLat().toString()));
-		// parameters.add(new BasicNameValuePair("start_lng", mHike.getStartLng().toString()));
-		// TODO - if vistas are photos, add photos
 		try {
 			Log.d(TAG, "Uri: " + uri);
 			// Log.d(TAG, "params: " + parameters);
@@ -70,6 +62,7 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 			entity.addPart("vistas", new StringBody(mHike.getVistasAsJson(mContext)));
 			entity.addPart("start_lat", new StringBody(mHike.getStartLat().toString()));
 			entity.addPart("start_lng", new StringBody(mHike.getStartLng().toString()));
+			// TODO - add all hike points.
 			// add any photos
 			for (ScenicVista vista : mHike.getVistas()) {
 				if (vista.getActionType() == ActionType.PHOTO) {

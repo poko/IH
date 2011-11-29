@@ -98,13 +98,14 @@ public class IHMapActivity extends MapActivity {
 		// generate hike
 		mDialog = new ProgressDialog(this);
 		mDialog.setMessage("Generating Hike");
-		mDialog.show();// ProgressDialog.show(this, null, "Generating Hike.");
+		mDialog.show();
 		Bundle extras = getIntent().getExtras();
 		final String start = URLEncoder.encode(extras.getString(BUNDLE_START));
 		final String end = URLEncoder.encode(extras.getString(BUNDLE_END));
 		randomPoint = extras.getBoolean(BUNDLE_RANDOM); // TODO - always randomize.
 		// get start/end points from bundle
 		Log.d(TAG, "randomizing?? " + randomPoint);
+		//TODO - make random end point a vista site.
 		if (randomPoint) {
 			// get address for random geo points
 			getRandomAddress(start, end);
@@ -114,7 +115,6 @@ public class IHMapActivity extends MapActivity {
 
 		// create new Hike object
 		mHike = new Hike();
-		Log.d(TAG, "hike hashcode: " + mHike.hashCode());
 	}
 
 	/*
@@ -129,6 +129,37 @@ public class IHMapActivity extends MapActivity {
 				// allow user to move on to the next vista
 				markVistaAsCompleted(mPhotoVista);
 			}
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume");
+		mCurrentLocationOverlay.enableMyLocation();
+		// enable all vista locationListeners - TODO
+		if (!mHike.isComplete()) {
+			Log.d(TAG, "hike isn't done yet! Let's re-enable the vista listeners");
+			for (ScenicVista vista : mHike.getVistas()) {
+				Log.d(TAG, "we have a vista!");
+				vista.reenableIntent(mContext, mLocMgr);
+			}
+		}
+	}
+
+	protected void onPause() {
+		super.onPause();
+		mCurrentLocationOverlay.disableMyLocation();
+		for (ScenicVista vista : mHike.getVistas()) {
+			vista.pauseIntent(mContext, mLocMgr);
+		}
+	};
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		for (ScenicVista vista : mHike.getVistas()) {
+			vista.cancelIntent();
 		}
 	}
 
@@ -162,41 +193,11 @@ public class IHMapActivity extends MapActivity {
 					getDirectionData(to, end);
 				} catch (IOException e) {
 					e.printStackTrace();
+					//TODO - display retry dialog. 
 				}
 			}
 		});
 		startTask.execute();
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Log.d(TAG, "onResume");
-		mCurrentLocationOverlay.enableMyLocation();
-		// enable all vista locationListeners - TODO
-		if (!mHike.isComplete()) {
-			Log.d(TAG, "hike isn't done yet! Let's re-enable the vista listeners");
-			for (ScenicVista vista : mHike.getVistas()) {
-				Log.d(TAG, "we have a vista!");
-				vista.reenableIntent(mContext, mLocMgr);
-			}
-		}
-	}
-
-	protected void onPause() {
-		super.onPause();
-		mCurrentLocationOverlay.disableMyLocation();
-		for (ScenicVista vista : mHike.getVistas()) {
-			vista.pauseIntent(mContext, mLocMgr);
-		}
-	};
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		for (ScenicVista vista : mHike.getVistas()) {
-			vista.cancelIntent();
-		}
 	}
 
 	private void drawPath(String[] pairs) {

@@ -17,6 +17,7 @@ import com.google.android.maps.GeoPoint;
 public class Hike {
 	@SuppressWarnings("unused")
 	private static final String TAG = "IH+ - Hike";
+	private static final String JSON_ID = "hike_id";
 	private static final String JSON_NAME = "name";
 	private static final String JSON_DESC = "desc";
 	private static final String JSON_CREATE_DATE = "date";
@@ -26,16 +27,17 @@ public class Hike {
 	private Double startLng;
 	private ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
 	private ArrayList<ScenicVista> vistas = new ArrayList<ScenicVista>();
+	private int id;
 	private String name;
 	private String description;
 	private String createDate;
 	private String username;
 
 	public Hike() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public Hike(String name, String desc, String createDate, String user) {
+	public Hike(int id, String name, String desc, String createDate, String user) {
+		this.id = id;
 		this.name = name;
 		this.description = desc;
 		this.createDate = createDate;
@@ -66,6 +68,10 @@ public class Hike {
 				return vista;
 		}
 		return null;
+	}
+	
+	public int getId(){
+		return id;
 	}
 
 	public String getName() {
@@ -139,7 +145,7 @@ public class Hike {
 	}
 
 	public static Hike fromJson(JSONObject json) {
-		return new Hike(json.optString(JSON_NAME), json.optString(JSON_DESC), json.optString(JSON_CREATE_DATE), json
+		return new Hike(json.optInt(JSON_ID), json.optString(JSON_NAME), json.optString(JSON_DESC), json.optString(JSON_CREATE_DATE), json
 				.optString(JSON_USERNAME));
 	}
 }

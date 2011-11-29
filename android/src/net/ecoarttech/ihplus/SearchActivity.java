@@ -6,6 +6,7 @@ import net.ecoarttech.ihplus.adapter.SearchListAdapter;
 import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.network.DownloadHikesTask;
 import net.ecoarttech.ihplus.network.NetworkConstants;
+import net.ecoarttech.ihplus.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import org.json.JSONException;
 import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -20,6 +22,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
 public class SearchActivity extends ListActivity {
@@ -50,6 +55,15 @@ public class SearchActivity extends ListActivity {
 
 		mAdapter = new SearchListAdapter(this, null);
 		setListAdapter(mAdapter);
+		getListView().setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent i = new Intent(mContext, ViewOrHikeActivity.class);
+				i.putExtra(Constants.BUNDLE_HIKE_ID, ((Hike)mAdapter.getItem(position)).getId());
+				startActivity(i);
+			}
+		});
 	}
 
 	private Handler downloadHikesHandler = new Handler() {
