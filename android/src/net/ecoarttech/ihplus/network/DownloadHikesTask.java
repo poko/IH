@@ -39,8 +39,8 @@ public class DownloadHikesTask extends AsyncTask<Void, Void, HttpResponse> {
 	@Override
 	protected HttpResponse doInBackground(Void... arg0) {
 		Uri.Builder builder = Uri.parse(NetworkConstants.SEARCH_HIKES_URL).buildUpon();
-		builder.appendQueryParameter("latitude", Double.toString(mLat));
-		builder.appendQueryParameter("longitude", Double.toString(mLng));
+		builder.appendQueryParameter(NetworkConstants.REQUEST_JSON_HIKES_LAT, Double.toString(mLat));
+		builder.appendQueryParameter(NetworkConstants.REQUEST_JSON_HIKES_LNG, Double.toString(mLng));
 		Uri uri = builder.build();
 		Log.d(TAG, "Uri: " + uri);
 		HttpGet request = new HttpGet(uri.toString());
@@ -50,10 +50,8 @@ public class DownloadHikesTask extends AsyncTask<Void, Void, HttpResponse> {
 			response = httpClient.execute(request);
 			return response;
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -61,9 +59,9 @@ public class DownloadHikesTask extends AsyncTask<Void, Void, HttpResponse> {
 
 	@Override
 	protected void onPostExecute(HttpResponse result) {
+		Message msg = new Message();
+		msg.what = NetworkConstants.FAILURE;
 		if (result != null) {
-			Message msg = new Message();
-			msg.what = NetworkConstants.FAILURE;
 			try {
 				InputStreamReader is = new InputStreamReader(result.getEntity().getContent());
 				BufferedReader br = new BufferedReader(is);
@@ -77,20 +75,17 @@ public class DownloadHikesTask extends AsyncTask<Void, Void, HttpResponse> {
 				JSONObject responseJson = new JSONObject(responseText.toString());
 				msg.what = NetworkConstants.SUCCESS;
 				Bundle data = new Bundle();
-				data.putString(NetworkConstants.HIKES_JSON_KEY, responseJson.getString("hikes"));
+				data.putString(NetworkConstants.HIKES_JSON_KEY, responseJson.getString(NetworkConstants.RESPONSE_JSON_HIKES));
 				msg.setData(data);
 			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			mHandler.sendMessage(msg);
 		}
+		mHandler.sendMessage(msg);
 		super.onPostExecute(result);
 	}
 }

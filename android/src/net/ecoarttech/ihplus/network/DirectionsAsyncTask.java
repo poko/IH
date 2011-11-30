@@ -43,8 +43,6 @@ public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 		mRequestQueries = new HashMap<String, Object>();
 		mRequestQueries.put("f", "d");
 		mRequestQueries.put("hl", "en");
-		// mRequestQueries.put("saddr", from);
-		// mRequestQueries.put("daddr", to);
 		mRequestQueries.put("ie", "UTF8&0");
 		mRequestQueries.put("om", "0");
 		mRequestQueries.put("output", "kml");
@@ -110,19 +108,6 @@ public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 			mDialog.dismiss();
 		if (mCompletionListener != null)
 			mCompletionListener.onComplete(result);
-	}
-
-	public void addRequestParam(String key, Object value) {
-		mRequestQueries.put(key, value);
-	}
-
-	public void showDialog() {
-		mShowDialog = true;
-	}
-
-	public void showDialog(String label) {
-		mShowDialog = true;
-		mLabel = label;
 	}
 
 }

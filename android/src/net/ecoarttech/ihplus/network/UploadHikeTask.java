@@ -56,18 +56,18 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 			// Log.d(TAG, "params: " + parameters);
 			HttpPost request = new HttpPost(uri.toString());
 			MultipartEntity entity = new MultipartEntity();
-			entity.addPart("hike_name", new StringBody(mHike.getName()));
-			entity.addPart("username", new StringBody(mHike.getUsername()));
-			entity.addPart("description", new StringBody(mHike.getDescription()));
-			entity.addPart("vistas", new StringBody(mHike.getVistasAsJson(mContext)));
-			entity.addPart("start_lat", new StringBody(mHike.getStartLat().toString()));
-			entity.addPart("start_lng", new StringBody(mHike.getStartLng().toString()));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_NAME, new StringBody(mHike.getName()));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_USER, new StringBody(mHike.getUsername()));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_DESC, new StringBody(mHike.getDescription()));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_VISTAS, new StringBody(mHike.getVistasAsJson(mContext)));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_LAT, new StringBody(mHike.getStartLat().toString()));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_LNG, new StringBody(mHike.getStartLng().toString()));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_POINTS, new StringBody(mHike.getPointsAsJson()));
 			// TODO - add all hike points.
 			// add any photos
 			for (ScenicVista vista : mHike.getVistas()) {
 				if (vista.getActionType() == ActionType.PHOTO) {
-					entity.addPart("photos", vista.getUploadFile(mContext));
-					// entity.addPart(vista.getPhotoTitle(), vista.getUploadFile(mContext));
+					entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_PHOTOS, vista.getUploadFile(mContext));
 				}
 			}
 			request.setEntity(entity);// new UrlEncodedFormEntity(parameters));
@@ -98,7 +98,7 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 					responseText.append(line);
 				}
 				Log.d(TAG, "Server response: " + responseText);
-				// TODO - parse out success/failure
+				// parse out success/failure
 				try {
 					JSONObject respJson = new JSONObject(responseText.toString());
 					if (respJson.getBoolean(NetworkConstants.SERVER_RESULT))

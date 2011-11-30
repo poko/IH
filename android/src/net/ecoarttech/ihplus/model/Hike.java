@@ -128,6 +128,19 @@ public class Hike {
 		}
 		return true;
 	}
+	
+	public String getPointsAsJson(){
+		StringBuilder sb = new StringBuilder("[");
+		for (int i = 0; i < points.size(); i++){
+			GeoPoint p = points.get(i);
+			sb.append(String.format("{\"index\": %d, \"latitude\": %d, \"longitude\": %d}", i, p.getLatitudeE6(), p.getClass()));
+			sb.append(",");
+		}
+		sb.deleteCharAt(sb.length() - 1); // remove last comma
+		sb.append("]");
+		return sb.toString();
+		
+	}
 
 	public String getVistasAsJson(Context context) {
 		StringBuilder sb = new StringBuilder("[");

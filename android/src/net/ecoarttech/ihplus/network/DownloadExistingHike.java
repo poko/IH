@@ -32,16 +32,12 @@ public class DownloadExistingHike extends AsyncTask<Void, Void, HttpResponse> {
 
 	@Override
 	protected void onPreExecute() {
-		// TODO - dialog? 
-//		mDialog = new ProgressDialog(mContext);
-//		mDialog.setMessage("Downloading Hike");
-//		mDialog.show();
 	}
 
 	@Override
 	protected HttpResponse doInBackground(Void... arg0) {
 		Uri.Builder builder = Uri.parse(NetworkConstants.GET_HIKE_URL).buildUpon();
-		builder.appendQueryParameter("hike_id", Integer.toString(mHikeId));
+		builder.appendQueryParameter(NetworkConstants.REQUEST_JSON_HIKE_ID, Integer.toString(mHikeId));
 		Uri uri = builder.build();
 		Log.d(TAG, "Uri: " + uri);
 		HttpGet request = new HttpGet(uri.toString());
@@ -76,7 +72,7 @@ public class DownloadExistingHike extends AsyncTask<Void, Void, HttpResponse> {
 				JSONObject responseJson = new JSONObject(responseText.toString());
 				msg.what = NetworkConstants.SUCCESS;
 				Bundle data = new Bundle();
-				data.putString(NetworkConstants.HIKE_JSON_KEY, responseJson.getString("hike"));
+				data.putString(NetworkConstants.HIKE_JSON_KEY, responseJson.getString(NetworkConstants.RESPONSE_JSON_HIKE));
 				msg.setData(data);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();

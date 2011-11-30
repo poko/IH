@@ -104,18 +104,4 @@ public class StartCoordsAsyncTask extends AsyncTask<Void, Void, Document> {
 		if (mCompletionListener != null)
 			mCompletionListener.onComplete(result);
 	}
-
-	public void addRequestParam(String key, Object value) {
-		mRequestQueries.put(key, value);
-	}
-
-	public void showDialog() {
-		mShowDialog = true;
-	}
-
-	public void showDialog(String label) {
-		mShowDialog = true;
-		mLabel = label;
-	}
-
 }

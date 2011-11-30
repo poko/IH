@@ -39,7 +39,7 @@ public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse
 	@Override
 	protected HttpResponse doInBackground(Void... arg0) {
 		Uri.Builder builder = Uri.parse(NetworkConstants.GET_VISTA_URL).buildUpon();
-		builder.appendQueryParameter("amount", Integer.toString(mVistas.size()));
+		builder.appendQueryParameter(NetworkConstants.REQUEST_JSON_VISTAS_AMOUNT, Integer.toString(mVistas.size()));
 		Uri uri = builder.build();
 		Log.d(TAG, "Uri: " + uri);
 		HttpGet request = new HttpGet(uri.toString());
@@ -72,13 +72,13 @@ public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse
 				Log.d(TAG, "Server response: " + responseText);
 				// parse out vista_actions
 				JSONObject responseJson = new JSONObject(responseText.toString());
-				JSONArray vistaActions = responseJson.getJSONArray("vista_actions");
+				JSONArray vistaActions = responseJson.getJSONArray(NetworkConstants.RESPONSE_JSON_VISTAS_ACTIONS);
 				for (int i = 0; i < mVistas.size(); i++) {
 					ScenicVista v = mVistas.get(i);
 					JSONObject vistaJson = vistaActions.getJSONObject(i);
-					v.setActionId(vistaJson.getInt("vista_id"));
-					v.setAction(vistaJson.getString("verbiage"));
-					v.setActionType(vistaJson.getString("action_type"));
+					v.setActionId(vistaJson.getInt(NetworkConstants.RESPONSE_JSON_VISTAS_ID));
+					v.setAction(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE));
+					v.setActionType(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE));
 				}
 				mHandler.sendEmptyMessage(23); // TODO
 			} catch (IllegalStateException e) {
