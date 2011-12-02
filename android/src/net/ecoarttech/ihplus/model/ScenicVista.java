@@ -184,7 +184,8 @@ public class ScenicVista {
 			json.put(COL_LNG, longitude);
 			json.put(COL_ACTION_ID, actionId);
 			json.put(COL_NOTE, note);
-			json.put(COL_PHOTO, photo.getEncodedPath());
+			if (photo != null)
+				json.put(COL_PHOTO, photo.getEncodedPath());
 			json.put(COL_DATE, date);
 		} catch (JSONException e) {
 			e.printStackTrace();

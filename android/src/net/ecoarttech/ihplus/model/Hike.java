@@ -133,7 +133,7 @@ public class Hike {
 		StringBuilder sb = new StringBuilder("[");
 		for (int i = 0; i < points.size(); i++){
 			GeoPoint p = points.get(i);
-			sb.append(String.format("{\"index\": %d, \"latitude\": %d, \"longitude\": %d}", i, p.getLatitudeE6(), p.getClass()));
+			sb.append(String.format("{\"index\": %d, \"latitude\": %d, \"longitude\": %d}", i, p.getLatitudeE6(), p.getLongitudeE6()));
 			sb.append(",");
 		}
 		sb.deleteCharAt(sb.length() - 1); // remove last comma

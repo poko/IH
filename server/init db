@@ -14,7 +14,7 @@ CREATE TABLE `original_hikes` (
   `description` varchar(255) NOT NULL,
   `date` varchar(255) collate utf8_unicode_ci NOT NULL,
   `start_lat` double NOT NULL,
-  `startling` double NOT NULL,
+  `start_lng` double NOT NULL,
   `ip_address` varchar(255) NOT NULL,
   PRIMARY KEY  (`hike_id`)
 );

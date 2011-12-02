@@ -59,6 +59,7 @@ $vistas = $_POST["vistas"];
 $start_lat = $_POST["start_lat"];
 $start_lng = $_POST["start_lng"];
 $ip_address = $_SERVER["REMOTE_ADDR"];
+$points = $_POST["points"];
 
 // create target folder
 $today_dir = date("Y-m-d");
@@ -66,7 +67,7 @@ $today_upload_dir = $base_upload_dir . $today_dir;
 
 is_dir($today_upload_dir) || mkdir($today_upload_dir, 0755);
 
-print_r($_FILES);
+//print_r($_FILES);
 
 // create target folder/filename and move it there
 //$uploadfile = $today_upload_dir . "/" . date("H.i.s") . "-" . basename($_FILES['picfile']['name']);
@@ -83,6 +84,7 @@ print_r($_FILES);
 
 include 'db_open.php';
 
+// save hike data
 $query = sprintf("insert into original_hikes (username, name, description, start_lat, start_lng, ip_address) values ('%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($username),
                   mysql_real_escape_string($hike_name),
@@ -97,12 +99,29 @@ if (!$result) {
     $message .= 'Whole query: ' . $query;
     die($message);
 }
-//$hike_id = mysql_insert_id();
+$hike_id = mysql_insert_id();
+
+// save hike 'points' for drawing on map
+$points_json = json_decode(str_replace('\\', '', $points), true);
+foreach ($points_json as $p){
+		$query = sprintf("insert into original_hike_points(hike_id, indx, longitude, latitude) values ('%s','%s','%s','%s')",
+				mysql_real_escape_string($hike_id),
+				mysql_real_escape_string($p["index"]),
+				mysql_real_escape_string($p["latitude"]),
+				mysql_real_escape_string($p["longitude"]));
+		$result = mysql_query($query);
+		if (!$result){
+			$message  = 'Invalid query: ' . mysql_error() . "\n";
+   	 		$message .= 'Whole query: ' . $query;
+   	 		die($message);
+		}
+}
 
 // save each vista point
 $vista_json = json_decode(str_replace('\\', '', $vistas), true);
 foreach ($vista_json as $v){
-	$query = sprintf("insert into original_vistas (action_id, longitude, latitude, date, note, filename) values ('%s', '%s', '%s', '%s', '%s', '%s')",
+	$query = sprintf("insert into original_vistas (hike_id, action_id, longitude, latitude, date, note, filename) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+                  mysql_real_escape_string($hike_id),
                   mysql_real_escape_string($v["action_id"]),
                   mysql_real_escape_string($v["latitude"]),
                   mysql_real_escape_string($v["longitude"]),
@@ -115,32 +134,9 @@ foreach ($vista_json as $v){
     	$message .= 'Whole query: ' . $query;
     	die($message);
 	}
-	$hike_id = mysql_insert_id();
-	foreach ($v["points"] as $p){
-		$query = sprintf("insert into original_vista_points(hike_id, index, longitude, latitude) values ('%s','%s','%s','%s')",
-				mysql_real_escape_string($hike_id),
-				mysql_real_escape_string($p["index"]),
-				mysql_real_escape_string($p["latitude"]),
-				mysql_real_escape_string($p["longitude"])));
-		$result = mysql_query($query);
-		if (!$result){
-			$message  = 'Invalid query: ' . mysql_error() . "\n";
-   	 		$message .= 'Whole query: ' . $query;
-   	 		die($message);
-		}
-	}
 }
 
 // save the photos
-
-//foreach ($_FILES["photos"]["error"] as $key => $error) {
-//    if ($error == UPLOAD_ERR_OK) {
-  //      $tmp_name = $_FILES["photos"]["tmp_name"][$key];
-    //    $name = $_FILES["photos"]["name"][$key];
-//        move_uploaded_file($tmp_name, "$today_upload_dir/". date("H.i.s") ."$name");
-//    }
-//}
-
 foreach ($_FILES as $file){
 	// create target folder/filename and move it there
 	$uploadfile = $today_upload_dir . "/" . date("H.i.s") . "-" . basename($file['name']).".jpg";
@@ -153,11 +149,8 @@ foreach ($_FILES as $file){
 }
 
 
-
-// can get last insert id with mysql_insert_id()
-
 include 'db_close.php';
 
-echo "{\"result\":\"success\"}";
+echo "{\"result\":\"true\"}";
 
 ?>
