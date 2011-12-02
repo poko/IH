@@ -97,13 +97,12 @@ if (!$result) {
     $message .= 'Whole query: ' . $query;
     die($message);
 }
-$hike_id = mysql_insert_id();
+//$hike_id = mysql_insert_id();
 
 // save each vista point
 $vista_json = json_decode(str_replace('\\', '', $vistas), true);
 foreach ($vista_json as $v){
-	$query = sprintf("insert into original_vistas (hike_id, action_id, longitude, latitude, date, note, filename) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                  mysql_real_escape_string($hike_id),
+	$query = sprintf("insert into original_vistas (action_id, longitude, latitude, date, note, filename) values ('%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($v["action_id"]),
                   mysql_real_escape_string($v["latitude"]),
                   mysql_real_escape_string($v["longitude"]),
@@ -115,6 +114,20 @@ foreach ($vista_json as $v){
 		$message  = 'Invalid query: ' . mysql_error() . "\n";
     	$message .= 'Whole query: ' . $query;
     	die($message);
+	}
+	$hike_id = mysql_insert_id();
+	foreach ($v["points"] as $p){
+		$query = sprintf("insert into original_vista_points(hike_id, index, longitude, latitude) values ('%s','%s','%s','%s')",
+				mysql_real_escape_string($hike_id),
+				mysql_real_escape_string($p["index"]),
+				mysql_real_escape_string($p["latitude"]),
+				mysql_real_escape_string($p["longitude"])));
+		$result = mysql_query($query);
+		if (!$result){
+			$message  = 'Invalid query: ' . mysql_error() . "\n";
+   	 		$message .= 'Whole query: ' . $query;
+   	 		die($message);
+		}
 	}
 }
 
