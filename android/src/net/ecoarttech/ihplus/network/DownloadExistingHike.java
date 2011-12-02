@@ -70,9 +70,10 @@ public class DownloadExistingHike extends AsyncTask<Void, Void, HttpResponse> {
 				Log.d(TAG, "Server response: " + responseText);
 				// parse out hike data
 				JSONObject responseJson = new JSONObject(responseText.toString());
+				String hikeString = responseJson.getString(NetworkConstants.RESPONSE_JSON_HIKE);
 				msg.what = NetworkConstants.SUCCESS;
 				Bundle data = new Bundle();
-				data.putString(NetworkConstants.HIKE_JSON_KEY, responseJson.getString(NetworkConstants.RESPONSE_JSON_HIKE));
+				data.putString(NetworkConstants.HIKE_JSON_KEY, hikeString);
 				msg.setData(data);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();

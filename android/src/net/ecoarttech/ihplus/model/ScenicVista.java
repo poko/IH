@@ -46,10 +46,19 @@ public class ScenicVista {
 	private BroadcastReceiver br;
 	private boolean complete = false;
 
-	public ScenicVista(Context context, String lat, String lon) {
+	public ScenicVista(String lat, String lon) {
 		this.latitude = Double.parseDouble(lat);
 		this.longitude = Double.parseDouble(lon);
 		this.point = new GeoPoint((int) (latitude * 1E6), (int) (longitude * 1E6));
+	}
+	
+	public static ScenicVista newFromJson(JSONObject json) throws JSONException{
+		ScenicVista vista = new ScenicVista(json.optString(COL_LAT), json.optString(COL_LNG));
+		JSONObject newAction = json.getJSONObject("new_vista_action");
+		vista.setActionId(newAction.getInt("vista_id"));
+		vista.setActionType(newAction.getString("action_type"));
+		vista.setAction(newAction.getString("verbiage"));
+		return vista;
 	}
 
 	public Double getLat() {

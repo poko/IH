@@ -161,7 +161,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private void createNewVista(String coordsStr) {
 		// create a new scenic vista here!
 		String[] lngLat = coordsStr.split(",");
-		ScenicVista vista = new ScenicVista(this, lngLat[1], lngLat[0]);
+		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
 		mHike.addVista(vista);
 		Log.d(TAG, "new vista!" + coordsStr);
 	}

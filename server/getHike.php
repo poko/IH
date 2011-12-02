@@ -5,24 +5,44 @@ include 'db_open.php';
 $hike_id = $_GET["hike_id"];
 
 //$result=mysql_query("select * from original_hikes");
-$query = sprtintf("SELECT * from original_hikes where hike_id = '%s'", mysql_real_escape_string($hike_id));
+$query = sprintf("SELECT * from original_hikes where hike_id = '%s'", mysql_real_escape_string($hike_id));
 $result=mysql_query($query);
+if (!$result) {
+    $message  = 'Invalid query: ' . mysql_error() . "\n";
+    $message .= 'Whole query: ' . $query;
+    die($message);
+}
 
-$row = mysql_fetch_object($result);
-$hike_resp = array('hike'=> $row);
-echo $hike_resp;
+$hike = mysql_fetch_object($result);
 
-//$first = true;
-//echo "{\"hikes\":[\n";
-//while ($row = mysql_fetch_object($result)) {
-//    if ($first !== true) {
-//        echo ",\n";
-//    } 
-//    echo "{\"hike_id\":\"$row->hike_id\",\"name\":\"" . htmlspecialchars($row->name) . "\",\"desc\":\"" . htmlspecialchars($row->description) . "\",\"date\":\"" . htmlspecialchars($row->date) . "\",\"username\":\"" . htmlspecialchars($row->username) . "\"}";
-//    $first = false;
-//}
-//echo "\n]}";
+// get points
+$query = sprintf("SELECT * from original_hike_points where hike_id = '%s'", mysql_real_escape_string($hike_id));
+$result=mysql_query($query);
+$points_json = array();
+while ($row = mysql_fetch_object($result)) {
+	$points_json[] = $row;
+}
+$hike->points = $points_json;
 
+// get vistas
+$query = sprintf("SELECT * from original_vistas where hike_id = '%s'", mysql_real_escape_string($hike_id));
+$result=mysql_query($query);
+$vista_json = array();
+while ($row = mysql_fetch_object($result)) {
+	$vista_json[] = $row;
+}
+$hike->vistas = $vista_json;
 
+// set vista actions
+$vista_length = count($vista_json);
+$query = "SELECT vista_id, verbiage, action_type from vista_actions order by rand() limit $vista_length";
+$result=mysql_query($query);
+for ($i=0; $i<mysql_num_rows($result); $i++) {
+	$row = mysql_fetch_object($result);
+	$vista_json[$i]->new_vista_action = $row;
+}
+
+$hike_resp = array('hike'=> $hike);
+echo json_encode($hike_resp);
 include 'db_close.php';
 ?>
