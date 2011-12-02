@@ -1,0 +1,53 @@
+drop database if exists ih_plus;
+create database ih_plus;
+
+GRANT USAGE ON *.* TO 'ih_plus_admin'@'localhost';
+DROP USER 'ih_plus_admin'@'localhost';
+create user 'ih_plus_admin'@'localhost' identified by '????HIKE';
+GRANT ALL ON ih_plus.* TO 'ih_plus_admin'@'localhost';
+
+
+CREATE TABLE `original_hikes` (
+  `hike_id` int(255) NOT NULL auto_increment,
+  `name` varchar(255) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `date` varchar(255) collate utf8_unicode_ci NOT NULL,
+  `start_lat` double NOT NULL,
+  `startling` double NOT NULL,
+  `ip_address` varchar(255) NOT NULL,
+  PRIMARY KEY  (`hike_id`)
+);
+
+
+
+CREATE TABLE `original_vistas` (
+  `id` int(255) NOT NULL auto_increment,
+  `hike_id` int(255) NOT NULL,
+  `action_id` int(255) NOT NULL,
+  `longitude` double NOT NULL,
+  `latitude` double NOT NULL,
+  `date` varchar(255) collate utf8_unicode_ci NOT NULL,
+  `note` varchar(255) collate utf8_unicode_ci default NULL,
+  `filename` varchar(255) collate utf8_unicode_ci default NULL,
+  PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `vista_actions` (
+  `vista_id` int(11) NOT NULL auto_increment COMMENT 'pk',
+  `verbiage` varchar(10000) collate utf8_unicode_ci NOT NULL,
+  `action_type` set('photo','note') collate utf8_unicode_ci NOT NULL,
+  PRIMARY KEY  (`vista_id`)
+);
+
+
+INSERT INTO `vista_actions` VALUES (1, 'Take a picture of a cat', 'photo');
+INSERT INTO `vista_actions` VALUES (2, 'make note of the grass', 'photo');
+INSERT INTO `vista_actions` VALUES (3, 'Find a penny. Take a picture of it.', 'photo');
+INSERT INTO `vista_actions` VALUES (4, 'What color is the sky?', 'photo');
+INSERT INTO `vista_actions` VALUES (5, 'hug a tree', 'photo');
+INSERT INTO `vista_actions` VALUES (6, 'find a leaf', 'photo');
+INSERT INTO `vista_actions` VALUES (7, 'jump up and down', 'photo');
+INSERT INTO `vista_actions` VALUES (8, 'take a nap', 'photo');
+INSERT INTO `vista_actions` VALUES (9, 'run in place', 'photo');
+INSERT INTO `vista_actions` VALUES (10, 'note how you are feeling', 'photo');
