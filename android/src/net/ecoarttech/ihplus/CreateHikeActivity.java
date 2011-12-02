@@ -37,7 +37,7 @@ public class CreateHikeActivity extends Activity {
 			return;
 		}
 		// start map Activity
-		Intent i = new Intent(this, IHMapActivity.class);
+		Intent i = new Intent(this, OriginalHikeActivity.class);
 		i.putExtra(IHMapActivity.BUNDLE_START, start);
 		i.putExtra(IHMapActivity.BUNDLE_END, end);
 		startActivityForResult(i, CREATE_HIKE);
