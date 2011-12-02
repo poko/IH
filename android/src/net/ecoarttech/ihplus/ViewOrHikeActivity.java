@@ -1,45 +1,42 @@
 package net.ecoarttech.ihplus;
 
-import net.ecoarttech.ihplus.util.Util;
+import net.ecoarttech.ihplus.util.Constants;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
 
 public class ViewOrHikeActivity extends Activity {
-	private static String TAG = "IH+ - CreateHikeActivity";
-	private static int CREATE_HIKE = 1;
+	private static String TAG = "IH+ - ViewOrHikeActivity";
+	private int mHikeId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.create_hike);
-		// set fonts
-		Util.setFont(this, findViewById(R.id.start_address), findViewById(R.id.end_address));
-		Util.setBoldFont(this, findViewById(R.id.start_hike));
+		setContentView(R.layout.view_or_hike);
+		Bundle extras = getIntent().getExtras();
+		if (extras != null)
+			mHikeId = extras.getInt(Constants.BUNDLE_HIKE_ID);
 	}
 
-	public void onSearchClick(View v) {
-		// start the search activity
-		Log.d(TAG, "search click");
-		startActivity(new Intent(this, SearchActivity.class));
+	/** onClickListener for 'View Hike' button.
+	 * @param v
+	 */
+	public void onViewClick(View v) {
+		Log.d(TAG, "view click");
+		Intent intent = new Intent(this, SearchActivity.class);
+		intent.putExtra(Constants.BUNDLE_HIKE_ID, mHikeId);
+		startActivity(intent);
 	}
 
-	public void onHitTrailClick(View v) {
-		// make sure we have a start and end point
-		String start = ((EditText) findViewById(R.id.start_address)).getText().toString();
-		String end = ((EditText) findViewById(R.id.end_address)).getText().toString();
-		if (start.length() == 0 || end.length() == 0) {
-			Toast.makeText(this, "Please enter a start and end address", Toast.LENGTH_LONG).show();
-			return;
-		}
-		// start map Activity
-		Intent i = new Intent(this, IHMapActivity.class);
-		i.putExtra(IHMapActivity.BUNDLE_START, start);
-		i.putExtra(IHMapActivity.BUNDLE_END, end);
-		startActivityForResult(i, CREATE_HIKE);
+	/** onClickListnener for 'Hike' button.
+	 * @param v
+	 */
+	public void onHikeClick(View v) {
+		Log.d(TAG, "hike click");
+		Intent intent = new Intent(this, SearchActivity.class);
+		intent.putExtra(Constants.BUNDLE_HIKE_ID, mHikeId);
+		startActivity(intent);
 	}
 }
