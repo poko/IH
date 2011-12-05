@@ -19,15 +19,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-public class DownloadExistingHike extends AsyncTask<Void, Void, HttpResponse> {
+public class DownloadByHikeId extends AsyncTask<Void, Void, HttpResponse> {
 
 	private static final String TAG = "IH+ - DownloadExistingHikeTask";
 	private Handler mHandler;
 	private int mHikeId;
+	private String mUrl;
+	private String mResponseField;
 
-	public DownloadExistingHike(Handler handler, int id) {
+	public DownloadByHikeId(Handler handler, int id, String url, String responseField) {
 		this.mHandler = handler;
 		this.mHikeId = id;
+		this.mUrl = url;
+		this.mResponseField = responseField;
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class DownloadExistingHike extends AsyncTask<Void, Void, HttpResponse> {
 
 	@Override
 	protected HttpResponse doInBackground(Void... arg0) {
-		Uri.Builder builder = Uri.parse(NetworkConstants.GET_HIKE_URL).buildUpon();
+		Uri.Builder builder = Uri.parse(mUrl).buildUpon();
 		builder.appendQueryParameter(NetworkConstants.REQUEST_JSON_HIKE_ID, Integer.toString(mHikeId));
 		Uri uri = builder.build();
 		Log.d(TAG, "Uri: " + uri);
@@ -70,10 +74,10 @@ public class DownloadExistingHike extends AsyncTask<Void, Void, HttpResponse> {
 				Log.d(TAG, "Server response: " + responseText);
 				// parse out hike data
 				JSONObject responseJson = new JSONObject(responseText.toString());
-				String hikeString = responseJson.getString(NetworkConstants.RESPONSE_JSON_HIKE);
+				String response = responseJson.getString(mResponseField);
 				msg.what = NetworkConstants.SUCCESS;
 				Bundle data = new Bundle();
-				data.putString(NetworkConstants.HIKE_JSON_KEY, hikeString);
+				data.putString(NetworkConstants.HIKE_JSON_KEY, response);
 				msg.setData(data);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();

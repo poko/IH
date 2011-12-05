@@ -54,10 +54,19 @@ public class ScenicVista {
 	
 	public static ScenicVista newFromJson(JSONObject json) throws JSONException{
 		ScenicVista vista = new ScenicVista(json.optString(COL_LAT), json.optString(COL_LNG));
-		JSONObject newAction = json.getJSONObject("new_vista_action");
-		vista.setActionId(newAction.getInt("vista_id"));
-		vista.setActionType(newAction.getString("action_type"));
-		vista.setAction(newAction.getString("verbiage"));
+		JSONObject newAction = json.optJSONObject("new_vista_action");
+		if (newAction != null){
+			vista.setActionId(newAction.getInt("action_id"));
+			vista.setActionType(newAction.getString("action_type"));
+			vista.setAction(newAction.getString("verbiage"));
+		}
+		else{ // downloading an existing vista action
+			vista.setActionId(json.getInt("action_id"));
+			vista.setActionType(json.getString("action_type"));
+			vista.setAction(json.getString("verbiage"));
+			vista.setNote(json.optString("note"));
+			// TODO - vista.setPhotoUri(json.optString("photo"));
+		}
 		return vista;
 	}
 

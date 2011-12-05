@@ -4,7 +4,6 @@ include 'db_open.php';
 
 $hike_id = $_GET["hike_id"];
 
-//$result=mysql_query("select * from original_hikes");
 $query = sprintf("SELECT * from original_hikes where hike_id = '%s'", mysql_real_escape_string($hike_id));
 $result=mysql_query($query);
 if (!$result) {
@@ -35,7 +34,7 @@ $hike->vistas = $vista_json;
 
 // set vista actions
 $vista_length = count($vista_json);
-$query = "SELECT vista_id, verbiage, action_type from vista_actions order by rand() limit $vista_length";
+$query = "SELECT action_id, verbiage, action_type from vista_actions order by rand() limit $vista_length";
 $result=mysql_query($query);
 for ($i=0; $i<mysql_num_rows($result); $i++) {
 	$row = mysql_fetch_object($result);

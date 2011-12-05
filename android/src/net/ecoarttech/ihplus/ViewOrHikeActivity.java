@@ -25,7 +25,7 @@ public class ViewOrHikeActivity extends Activity {
 	 */
 	public void onViewClick(View v) {
 		Log.d(TAG, "view click");
-		Intent intent = new Intent(this, SearchActivity.class);
+		Intent intent = new Intent(this, ViewHikeActivity.class);
 		intent.putExtra(Constants.BUNDLE_HIKE_ID, mHikeId);
 		startActivity(intent);
 	}

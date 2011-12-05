@@ -59,9 +59,9 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_NAME, new StringBody(mHike.getName()));
 			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_USER, new StringBody(mHike.getUsername()));
 			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_DESC, new StringBody(mHike.getDescription()));
+			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_VISTAS, new StringBody(mHike.getVistasAsJson(mContext)));
 			entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_ORIG, new StringBody(mHike.isOriginal().toString()));
 			if (mHike.isOriginal()){
-				entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_VISTAS, new StringBody(mHike.getVistasAsJson(mContext)));
 				entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_LAT, new StringBody(mHike.getStartLat().toString()));
 				entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_LNG, new StringBody(mHike.getStartLng().toString()));
 				entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_POINTS, new StringBody(mHike.getPointsAsJson()));

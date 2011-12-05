@@ -2,20 +2,25 @@
 include 'json_headers.php';
 include 'db_open.php';
 
-$user_lat = $_GET["latitude"];
-$user_lng = $_GET["longitude"];
+$hike_id = $_GET["hike_id"];
 
-//$result=mysql_query("select * from original_hikes");
-$query = "SELECT hike_id, name, description, date, username, ( 3959 * acos( cos( radians($user_lat) ) * cos( radians( start_lat ) ) * cos( radians( start_lng ) - radians($user_lng) ) + sin( radians($user_lat) ) * sin( radians( start_lat ) ) ) ) AS distance FROM original_hikes WHERE original=true HAVING distance < 25 ORDER BY distance LIMIT 0 , 20";
+$query = "SELECT hike_id, name, description, date, username FROM original_hikes WHERE hike_id = $hike_id OR original_hike_id = $hike_id";
 $result=mysql_query($query);
 $first = true;
-
 echo "{\"hikes\":[\n";
-while ($row = mysql_fetch_object($result)) {
+while ($hike = mysql_fetch_object($result)) {
     if ($first !== true) {
         echo ",\n";
     } 
-    echo "{\"hike_id\":\"$row->hike_id\",\"name\":\"" . htmlspecialchars($row->name) . "\",\"desc\":\"" . htmlspecialchars($row->description) . "\",\"date\":\"" . htmlspecialchars($row->date) . "\",\"username\":\"" . htmlspecialchars($row->username) . "\"}";
+    // get vistas & actions
+	$query = sprintf("SELECT * from original_vistas INNER JOIN vista_actions WHERE original_vistas.action_id = vista_actions.action_id AND hike_id = '%s'", mysql_real_escape_string($hike->hike_id));
+	$res=mysql_query($query);
+	$vista_json = array();
+	while ($row = mysql_fetch_object($res)) {
+		$vista_json[] = $row;
+	}
+	$hike->vistas = $vista_json;
+    echo json_encode($hike);
     $first = false;
 }
 echo "\n]}";

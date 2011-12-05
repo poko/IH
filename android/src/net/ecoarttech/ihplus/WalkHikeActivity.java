@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.model.ScenicVista;
-import net.ecoarttech.ihplus.network.DownloadExistingHike;
+import net.ecoarttech.ihplus.network.DownloadByHikeId;
 import net.ecoarttech.ihplus.network.NetworkConstants;
 import net.ecoarttech.ihplus.util.Constants;
 
@@ -29,18 +29,16 @@ public class WalkHikeActivity extends IHMapActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		// download hike
 		// get hike id
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			mHikeId = extras.getInt(Constants.BUNDLE_HIKE_ID);
-			new DownloadExistingHike(hikeDownloadHanler, mHikeId).execute();
+			new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL, NetworkConstants.RESPONSE_JSON_HIKE).execute();
 		}
 	}
 
-	
-	private Handler hikeDownloadHanler = new Handler(){
+	private Handler hikeDownloadHandler = new Handler(){
 		@Override
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "got message:" + msg.what);
@@ -89,7 +87,7 @@ public class WalkHikeActivity extends IHMapActivity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				new DownloadExistingHike(hikeDownloadHanler, mHikeId).execute();				
+				new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL, NetworkConstants.RESPONSE_JSON_HIKE).execute();				
 			}
 		}).show();
 	}
