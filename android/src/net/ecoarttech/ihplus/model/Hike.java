@@ -34,11 +34,13 @@ public class Hike {
 	private String description;
 	private String createDate;
 	private String username;
+	private boolean original;
 
 	public Hike() {
+		this.original = true; // hike created on device
 	}
 
-	public Hike(int id, String name, String desc, String createDate, String user, Double startLat, Double startLng) {
+	public Hike(int id, String name, String desc, String createDate, String user, Double startLat, Double startLng, boolean original) {
 		this.id = id;
 		this.name = name;
 		this.description = desc;
@@ -46,6 +48,7 @@ public class Hike {
 		this.username = user;
 		this.startLat = startLat;
 		this.startLng = startLng;
+		this.original = original;
 	}
 
 	public void addVista(ScenicVista vista) {
@@ -89,6 +92,10 @@ public class Hike {
 	public String getDescription() {
 		return description;
 	}
+	
+	public Boolean isOriginal(){
+		return original;
+	}
 
 	public void setDescription(String description) {
 		this.description = description;
@@ -121,6 +128,10 @@ public class Hike {
 
 	public Double getStartLng() {
 		return startLng;
+	}
+	
+	public ArrayList<GeoPoint> getPoints(){
+		return points;
 	}
 
 	public boolean isComplete() {
@@ -161,8 +172,8 @@ public class Hike {
 		new UploadHikeTask(context, this, completionListener).execute();
 	}
 
-	public static Hike fromJson(JSONObject json) {
+	public static Hike fromJson(JSONObject json, boolean isOriginal) {
 		return new Hike(json.optInt(JSON_ID), json.optString(JSON_NAME), json.optString(JSON_DESC), json.optString(JSON_CREATE_DATE), json
-				.optString(JSON_USERNAME), json.optDouble(JSON_START_LAT), json.optDouble(JSON_START_LNG));
+				.optString(JSON_USERNAME), json.optDouble(JSON_START_LAT), json.optDouble(JSON_START_LNG), isOriginal);
 	}
 }

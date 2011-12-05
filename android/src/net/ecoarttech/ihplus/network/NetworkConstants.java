@@ -19,6 +19,7 @@ public class NetworkConstants {
 	public final static String REQUEST_JSON_HIKE_NAME = "hike_name";
 	public final static String REQUEST_JSON_HIKE_USER = "username";
 	public final static String REQUEST_JSON_HIKE_DESC = "description";
+	public final static String REQUEST_JSON_HIKE_ORIG = "original";
 	public final static String REQUEST_JSON_HIKE_VISTAS = "vistas";
 	public final static String REQUEST_JSON_HIKE_LAT = "start_lat";
 	public final static String REQUEST_JSON_HIKE_LNG = "start_lng";

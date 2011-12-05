@@ -29,10 +29,6 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private static final String TAG = "OriginalHikeActivity";
 	private boolean randomPoint = true;
 	private int mPathCalls = 0;
-//	private LocationManager mLocMgr;
-//	private ScenicVista mPhotoVista;
-//	private Uri mPhotoUri;
-//	private ProgressDialog mDialog;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -154,7 +150,6 @@ public class OriginalHikeActivity extends IHMapActivity {
 				existingVistas.add(r);
 				i++;
 			}
-			// }
 		}
 	}
 

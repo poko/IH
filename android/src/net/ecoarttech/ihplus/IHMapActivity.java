@@ -120,43 +120,6 @@ public class IHMapActivity extends MapActivity {
 		}
 	}
 
-//	private void getRandomAddress(final String start, final String end) {
-//		StartCoordsAsyncTask startTask = new StartCoordsAsyncTask(this, start, new DirectionCompletionListener() {
-//
-//			@Override
-//			public void onComplete(Document doc) {
-//				NodeList nl = doc.getElementsByTagName("coordinates");
-//				String coordsElm = nl.item(0).getFirstChild().getNodeValue();
-//				String[] coords = coordsElm.split(",");
-//				// long = 0, lat = 1
-//				double lat = Double.valueOf(coords[1]);
-//				double lng = Double.valueOf(coords[0]);
-//				// randomize offset
-//				Geocoder g = new Geocoder(mContext, Locale.getDefault());
-//				double randLat = lat - getRandomOffset();
-//				double randLong = lng - getRandomOffset();
-//				List<Address> myList;
-//				try {
-//					myList = g.getFromLocation(randLat, randLong, 1);
-//					Log.d(TAG, "XXXXXXresult:" + myList.get(0));
-//					String to = null;
-//					if (myList.size() > 0) {
-//						Address addy = myList.get(0);
-//						to = URLEncoder.encode(addy.getAddressLine(0));
-//						Log.d(TAG, "To: " + to);
-//					}
-//
-//					getDirectionData(start, to);
-//					getDirectionData(to, end);
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//					//TODO - display retry dialog. 
-//				}
-//			}
-//		});
-//		startTask.execute();
-//	}
-
 	protected void drawPath(String[] pairs) {
 		String[] lngLat = pairs[0].split(",");
 		// STARTING POINT
@@ -176,7 +139,6 @@ public class IHMapActivity extends MapActivity {
 		GeoPoint gp1;
 		GeoPoint gp2 = startGP;
 		for (int i = 1; i < pairs.length; i++) {
-
 			lngLat = pairs[i].split(",");
 			gp1 = gp2;
 			// watch out! For GeoPoint, first:latitude, second:longitude
@@ -438,6 +400,10 @@ public class IHMapActivity extends MapActivity {
 				showRetryDialog();
 			} else { // success
 				Toast.makeText(mContext, "Your hike was uploaded successfully", Toast.LENGTH_LONG).show();
+				// start 'Share Screen' and finish this one
+				Intent i = new Intent(mContext, ShareHikeActivity.class);
+				startActivity(i);
+				finish();
 			}
 		}
 	};

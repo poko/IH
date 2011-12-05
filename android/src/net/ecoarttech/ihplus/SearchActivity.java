@@ -77,7 +77,7 @@ public class SearchActivity extends ListActivity {
 				try {
 					hikesJson = new JSONArray(msg.getData().getString(NetworkConstants.HIKES_JSON_KEY));
 					for (int i = 0; i < hikesJson.length(); i++) {
-						hikes.add(Hike.fromJson(hikesJson.getJSONObject(i)));
+						hikes.add(Hike.fromJson(hikesJson.getJSONObject(i), true));
 					}
 					mAdapter.setHikes(hikes);
 				} catch (JSONException e) {

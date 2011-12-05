@@ -1,5 +1,7 @@
 package net.ecoarttech.ihplus;
 
+import java.util.ArrayList;
+
 import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DownloadExistingHike;
@@ -47,7 +49,7 @@ public class WalkHikeActivity extends IHMapActivity {
 				try {
 					JSONObject json = new JSONObject(msg.getData().getString(NetworkConstants.HIKE_JSON_KEY));
 					// create hike object
-					mHike = Hike.fromJson(json);
+					mHike = Hike.fromJson(json, false);
 					JSONArray points = json.getJSONArray("points"); //TODO paramize
 					for (int i = 0; i < points.length(); i++) {
 						JSONObject point = points.getJSONObject(i);
@@ -59,8 +61,17 @@ public class WalkHikeActivity extends IHMapActivity {
 						mHike.addVista(ScenicVista.newFromJson(vistas.getJSONObject(i)));
 					}
 					// draw path
+					ArrayList<GeoPoint> geoPoints = mHike.getPoints();
+					String[] pairs = new String[geoPoints.size()];
+					for (int i = 0; i < geoPoints.size(); i++){
+						GeoPoint gp = geoPoints.get(i);
+						pairs[i] = String.format("%f,%f", (float)gp.getLongitudeE6()*.000001, (float)gp.getLatitudeE6()*.000001);
+					}
+					drawPath(pairs);
 					// draw vistas
+					drawVistas();
 					// setup vista intents
+					enableVistaProximityAlerts();
 				} catch (JSONException e) {
 					e.printStackTrace();
 					showFailureDialog();
