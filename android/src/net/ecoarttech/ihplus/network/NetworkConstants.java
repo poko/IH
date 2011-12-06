@@ -38,6 +38,10 @@ public class NetworkConstants {
 	public final static String RESPONSE_JSON_VISTAS_TYPE = "action_type";
 	public final static String RESPONSE_JSON_HIKES = "hikes";
 	public final static String RESPONSE_JSON_HIKE = "hike";
+	public final static String RESPONSE_JSON_VISTAS = "vistas";
+	public final static String RESPONSE_JSON_POINTS = "points";
+	public final static String RESPONSE_JSON_LAT = "latitude";
+	public final static String RESPONSE_JSON_LNG = "longitude";
 	
 	// bundle keys
 	public final static String HIKES_JSON_KEY = "hikes_json_key";

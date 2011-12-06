@@ -48,13 +48,13 @@ public class WalkHikeActivity extends IHMapActivity {
 					JSONObject json = new JSONObject(msg.getData().getString(NetworkConstants.HIKE_JSON_KEY));
 					// create hike object
 					mHike = Hike.fromJson(json, false);
-					JSONArray points = json.getJSONArray("points"); //TODO paramize
+					JSONArray points = json.getJSONArray(NetworkConstants.RESPONSE_JSON_POINTS);
 					for (int i = 0; i < points.length(); i++) {
 						JSONObject point = points.getJSONObject(i);
-						GeoPoint gp = new GeoPoint(point.getInt("latitude"), point.getInt("longitude"));
+						GeoPoint gp = new GeoPoint(point.getInt(NetworkConstants.RESPONSE_JSON_LAT), point.getInt(NetworkConstants.RESPONSE_JSON_LNG));
 						mHike.addPoint(gp);
 					}
-					JSONArray vistas = json.getJSONArray("vistas");
+					JSONArray vistas = json.getJSONArray(NetworkConstants.RESPONSE_JSON_VISTAS);
 					for (int i = 0; i < vistas.length(); i++) {
 						mHike.addVista(ScenicVista.newFromJson(vistas.getJSONObject(i)));
 					}
@@ -82,12 +82,21 @@ public class WalkHikeActivity extends IHMapActivity {
 	};
 	
 	private void showFailureDialog(){
-		// TODO - improve
-		new AlertDialog.Builder(this).setPositiveButton("Retry", new OnClickListener() {
+		new AlertDialog.Builder(this)
+		.setTitle("uh oh something went wrong")
+		.setMessage("Try again?")
+		.setPositiveButton("Retry", new OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL, NetworkConstants.RESPONSE_JSON_HIKE).execute();				
+			}
+		})
+		.setNegativeButton("Cancel", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
 			}
 		}).show();
 	}

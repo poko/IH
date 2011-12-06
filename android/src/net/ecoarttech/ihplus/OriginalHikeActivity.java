@@ -11,13 +11,16 @@ import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.DownloadVistaActionsTask;
+import net.ecoarttech.ihplus.network.NetworkConstants;
 import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -29,6 +32,8 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private static final String TAG = "OriginalHikeActivity";
 	private boolean randomPoint = true;
 	private int mPathCalls = 0;
+	private String mStart;
+	private String mEnd;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -40,25 +45,29 @@ public class OriginalHikeActivity extends IHMapActivity {
 		mDialog.setMessage("Generating Hike");
 		mDialog.show();
 		Bundle extras = getIntent().getExtras();
-		final String start = URLEncoder.encode(extras.getString(BUNDLE_START));
-		final String end = URLEncoder.encode(extras.getString(BUNDLE_END));
+		mStart = URLEncoder.encode(extras.getString(BUNDLE_START));
+		mEnd = URLEncoder.encode(extras.getString(BUNDLE_END));
 		randomPoint = false; // TODO - always randomize.
 		// get start/end points from bundle
 		Log.d(TAG, "randomizing?? " + randomPoint);
-		//TODO - make random end point a vista site.
 		if (randomPoint) {
 			// get address for random geo points
-			getRandomAddress(start, end);
+			getRandomAddress();
 		} else {
-			getDirectionData(start, end);
+			getDirectionData(mStart, mEnd);
 		}
 	}
 
-	private void getRandomAddress(final String start, final String end) {
-		StartCoordsAsyncTask startTask = new StartCoordsAsyncTask(this, start, new DirectionCompletionListener() {
+	private void getRandomAddress() {
+		StartCoordsAsyncTask startTask = new StartCoordsAsyncTask(this, mStart, coordsListener);
+		startTask.execute();
+	}
+	
+	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
 
-			@Override
-			public void onComplete(Document doc) {
+		@Override
+		public void onComplete(Document doc) {
+			if (doc != null){
 				NodeList nl = doc.getElementsByTagName("coordinates");
 				String coordsElm = nl.item(0).getFirstChild().getNodeValue();
 				String[] coords = coordsElm.split(",");
@@ -79,16 +88,40 @@ public class OriginalHikeActivity extends IHMapActivity {
 						to = URLEncoder.encode(addy.getAddressLine(0));
 						Log.d(TAG, "To: " + to);
 					}
-
-					getDirectionData(start, to);
-					getDirectionData(to, end);
+					getDirectionData(mStart, to);
+					getDirectionData(to, mEnd);
 				} catch (IOException e) {
-					e.printStackTrace();
-					//TODO - display retry dialog. 
+					e.printStackTrace(); 
+					displayRetryDialog();
 				}
 			}
-		});
-		startTask.execute();
+			else{
+				//display retry dialog. 
+				displayRetryDialog();
+			}
+		}
+	};
+	
+	private void displayRetryDialog(){
+		new AlertDialog.Builder(this)
+		.setTitle("oh no there was an error generating your hike.")
+		.setMessage("would you like to try again?")
+		.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				new StartCoordsAsyncTask(mContext, mStart, coordsListener).execute();
+			}
+		})
+		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				finish(); // TODO - CP - verify what to do here 
+			}
+		})
+		.show();
 	}
 
 	private void getDirectionData(String srcPlace, String destPlace) {
@@ -113,15 +146,23 @@ public class OriginalHikeActivity extends IHMapActivity {
 							String[] tempContent = pathConent.split(" ");
 							generateScenicVistas(tempContent);
 							drawPath(tempContent);
-							if (randomPoint) {
+//							if (randomPoint) {
 								mPathCalls++;
+								if (mPathCalls == 1){
+									// add the random mid-point to scenic vistas (addVista() call will prevent double vistas)
+									createNewVista(tempContent[tempContent.length-1]);
+								}
 								if (mPathCalls == 2) {
 									drawVistasAndDownloadTasks();
 								}
-							} else {
-								// we're done!
-								drawVistasAndDownloadTasks();
-							}
+//							} 
+//							else {
+//								// we're done!
+//								drawVistasAndDownloadTasks();
+//							}
+						}
+						else{
+							// TODO = handle error
 						}
 					}
 				});
@@ -170,12 +211,15 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private Handler mDownloadActionsHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			Log.d(TAG, "got message! " + msg.what);
-			// TODO - check that msg from was successful
-			// TODO - if the server has error, should have some kind of vista info on the phone
+			Log.d(TAG, "got message from vista action downloader! " + msg.what);
 			mDialog.dismiss();
-			// enable all the Vista proximity alerts?
-			enableVistaProximityAlerts();
+			if (msg.what == NetworkConstants.SUCCESS){
+				// enable all the Vista proximity alerts
+				enableVistaProximityAlerts();
+			}
+			else{
+				// TODO - if the server has error, should have some kind of vista info on the phone
+			}
 		}
 	};
 

@@ -84,7 +84,7 @@ public class ViewHikeActivity extends Activity {
 					// create hike objects
 					for (int i = 0; i< json.length(); i++){
 						Hike h = Hike.fromJson(json.getJSONObject(i), false);
-						JSONArray vistas = json.getJSONObject(i).getJSONArray("vistas");
+						JSONArray vistas = json.getJSONObject(i).getJSONArray(NetworkConstants.RESPONSE_JSON_VISTAS);
 						for (int j = 0; j < vistas.length(); j++) {
 							h.addVista(ScenicVista.newFromJson(vistas.getJSONObject(j)));
 						}
@@ -102,12 +102,21 @@ public class ViewHikeActivity extends Activity {
 	};
 
 	private void showFailureDialog() {
-		// TODO - improve
-		new AlertDialog.Builder(this).setPositiveButton("Retry", new OnClickListener() {
+		new AlertDialog.Builder(this)
+		.setTitle("uh oh something went wrong")
+		.setMessage("Try again?")
+		.setPositiveButton("Retry", new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKES_URL, NetworkConstants.RESPONSE_JSON_HIKES).execute();
+			}
+		})
+		.setNegativeButton("Cancel", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
 			}
 		}).show();
 	}

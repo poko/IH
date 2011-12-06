@@ -34,7 +34,6 @@ public class PhotoProvider extends ContentProvider {
 	@Override
 	public Uri insert(Uri uri, ContentValues values) {
 		Log.d(TAG, "insert: " + uri);
-		// TODO - make a file?
 		return uri.buildUpon().appendEncodedPath(values.getAsString(MediaStore.Images.Media.TITLE)).build();
 	}
 
@@ -59,8 +58,6 @@ public class PhotoProvider extends ContentProvider {
 	public ParcelFileDescriptor openFile(Uri uri, String mode) throws FileNotFoundException {
 		Log.d(TAG, "open file:" + uri);
 		String path = uri.getEncodedPath();
-		// Log.d(TAG, "path: " + path);
-		// TODO - check that sd card is available (here? probably in mapview)
 		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), path);
 		try {
 			if (!file.exists())

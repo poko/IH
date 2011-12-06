@@ -22,7 +22,7 @@ import android.util.Log;
 
 public class StartCoordsAsyncTask extends AsyncTask<Void, Void, Document> {
 
-	private static final String TAG = "DirectionsAsyncTask";
+	private static final String TAG = "StartCoordsAsyncTask";
 	public final static String SERVER_URL = "http://maps.google.com/maps";
 	protected Context mContext;
 	protected HashMap<String, Object> mRequestQueries;
@@ -41,8 +41,6 @@ public class StartCoordsAsyncTask extends AsyncTask<Void, Void, Document> {
 		mRequestQueries = new HashMap<String, Object>();
 		mRequestQueries.put("hl", "en");
 		mRequestQueries.put("output", "kml");
-		// mRequestQueries.put("f", "d");
-		// mRequestQueries.put("ie", "UTF8&0");
 	}
 
 	@Override
@@ -81,16 +79,12 @@ public class StartCoordsAsyncTask extends AsyncTask<Void, Void, Document> {
 			Document doc = db.parse(urlConnection.getInputStream());
 			return doc;
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

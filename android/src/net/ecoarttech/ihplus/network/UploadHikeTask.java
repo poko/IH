@@ -67,7 +67,6 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 				entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_POINTS, new StringBody(mHike.getPointsAsJson()));
 			}
 			Log.d(TAG, "entity? " + entity);
-			// TODO - add all hike points.
 			// add any photos
 			for (ScenicVista vista : mHike.getVistas()) {
 				if (vista.getActionType() == ActionType.PHOTO) {

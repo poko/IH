@@ -11,11 +11,6 @@
 	<Button 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="Share on Facebook"
-		android:onClick="onFacebookClick"/>
-	<Button 
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:text="Share on Twitter"
-		android:onClick="onTwitterClick"/>
+		android:text="Share This Hike"
+		android:onClick="onShareClick"/>
 </LinearLayout>

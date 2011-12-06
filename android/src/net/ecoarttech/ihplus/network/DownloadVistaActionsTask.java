@@ -19,6 +19,7 @@ import org.json.JSONObject;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse> {
@@ -49,10 +50,8 @@ public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse
 			response = httpClient.execute(request);
 			return response;
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -60,6 +59,8 @@ public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse
 
 	@Override
 	protected void onPostExecute(HttpResponse result) {
+		Message msg = new Message();
+		msg.what = NetworkConstants.FAILURE;
 		if (result != null) {
 			try {
 				InputStreamReader is = new InputStreamReader(result.getEntity().getContent());
@@ -80,18 +81,15 @@ public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse
 					v.setAction(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE));
 					v.setActionType(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE));
 				}
-				mHandler.sendEmptyMessage(23); // TODO
 			} catch (IllegalStateException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		mHandler.sendMessage(msg);
 		super.onPostExecute(result);
 	}
 }

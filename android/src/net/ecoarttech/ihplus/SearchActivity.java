@@ -102,20 +102,15 @@ public class SearchActivity extends ListActivity {
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onProviderEnabled(String provider) {
-			// TODO Auto-generated method stub
-
 		}
 
 		@Override
 		public void onProviderDisabled(String provider) {
-			// TODO Auto-generated method stub
-
+			Toast.makeText(mContext, "Please make sure GPS is enabled.", Toast.LENGTH_LONG).show();
 		}
 	};
 

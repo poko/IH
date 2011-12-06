@@ -107,8 +107,8 @@ public class Hike {
 		try {
 			date = s.parse(createDate);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("MM.dd.yy");
 		return sdf.format(date);

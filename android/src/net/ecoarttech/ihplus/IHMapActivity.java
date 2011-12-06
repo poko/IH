@@ -21,6 +21,7 @@ import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -94,7 +95,7 @@ public class IHMapActivity extends MapActivity {
 		super.onResume();
 		Log.d(TAG, "onResume");
 		mCurrentLocationOverlay.enableMyLocation();
-		// enable all vista locationListeners - TODO
+		// enable all vista locationListeners
 		if (!mHike.isComplete()) {
 			Log.d(TAG, "hike isn't done yet! Let's re-enable the vista listeners");
 			for (ScenicVista vista : mHike.getVistas()) {
@@ -131,7 +132,7 @@ public class IHMapActivity extends MapActivity {
 		mHike.setStartPoints(startLat, startLng);
 		mMapController = mMapView.getController();
 		geoPoint = startGP;
-		mMapController.setCenter(geoPoint); // TODO - center on user's location?
+		mMapController.setCenter(geoPoint); // TODO - CP - center on user's location?
 		mMapController.setZoom(16);
 		mMapView.getOverlays().add(new DirectionPathOverlay(startGP, startGP));
 
@@ -161,77 +162,6 @@ public class IHMapActivity extends MapActivity {
 	protected boolean isRouteDisplayed() {
 		return mRouteShown;
 	}
-
-//	private void getDirectionData(String srcPlace, String destPlace) {
-//		DirectionsAsyncTask task = new DirectionsAsyncTask(this, srcPlace, destPlace,
-//				new DirectionCompletionListener() {
-//
-//					@Override
-//					public void onComplete(Document doc) {
-//						String pathConent = "";
-//						Log.d(TAG, "doc: " + doc);
-//						if (doc != null) {
-//							NodeList nl = doc.getElementsByTagName("LineString");
-//							for (int s = 0; s < nl.getLength(); s++) {
-//								Node rootNode = nl.item(s);
-//								NodeList configItems = rootNode.getChildNodes();
-//								for (int x = 0; x < configItems.getLength(); x++) {
-//									Node lineStringNode = configItems.item(x);
-//									NodeList path = lineStringNode.getChildNodes();
-//									pathConent = path.item(0).getNodeValue();
-//								}
-//							}
-//							String[] tempContent = pathConent.split(" ");
-//							generateScenicVistas(tempContent);
-//							drawPath(tempContent);
-//							if (randomPoint) {
-//								mPathCalls++;
-//								if (mPathCalls == 2) {
-//									drawVistas();
-//								}
-//							} else {
-//								// we're done!
-//								drawVistas();
-//							}
-//						}
-//					}
-//				});
-//		task.execute();
-//	}
-
-//	private void generateScenicVistas(String[] points) {
-//		Log.d(TAG, "pairs amount:" + points.length);
-//		ArrayList<Integer> existingVistas = new ArrayList<Integer>();
-//		// if (points.length < 3) {
-//		// // each point is a new scenic vista
-//		// for (int i = 0; i < points.length; i++) {
-//		// createNewVista(points[i]);
-//		// }
-//		// } else {
-//		// generate random number between 2-4 (for 4-8 total scenic vistas)
-//		Random rand = new Random();
-//		int vistaAmount = 1;// rand.nextInt(2) + 2;// random method (2,3, or 4);
-//		Log.d(TAG, "Vistas: " + vistaAmount);
-//		int i = 0;
-//		while (i < vistaAmount) {
-//			int r = rand.nextInt(points.length);
-//			Log.d(TAG, "trying vista : " + r);
-//			if (!existingVistas.contains(r)) {
-//				createNewVista(points[r]);
-//				existingVistas.add(r);
-//				i++;
-//			}
-//			// }
-//		}
-//	}
-//
-//	private void createNewVista(String coordsStr) {
-//		// create a new scenic vista here!
-//		String[] lngLat = coordsStr.split(",");
-//		ScenicVista vista = new ScenicVista(this, lngLat[1], lngLat[0]);
-//		mHike.addVista(vista);
-//		Log.d(TAG, "new vista!" + coordsStr);
-//	}
 
 	protected void drawVistas() {
 		for (ScenicVista vista : mHike.getVistas()) {
@@ -266,7 +196,27 @@ public class IHMapActivity extends MapActivity {
 
 	public void onHikesClick(View v) {
 		Log.d(TAG, "hike click");
-		// TODO - Implement (warn that current hike will be lost)
+		// (warn that current hike will be lost)
+		new AlertDialog.Builder(this)
+		.setTitle("Create A New Hike")
+		.setMessage("Are you sure you would like to create a new hike?\nThe current hike will be lost!")
+		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish(); //TODO - this will not work on 're-hike', will take user back to view it or hike it screen .... 
+				//TODO - this will also not clear out the start points
+				dialog.dismiss();
+			}
+		})
+		.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		})
+		.show();
 	}
 
 	public class VistaEnteredReceiver extends BroadcastReceiver {
@@ -332,7 +282,12 @@ public class IHMapActivity extends MapActivity {
 	}
 
 	private void startCameraIntent(ScenicVista vista) {
-		// TODO - check that sdcard is available
+		// check that sdcard is available
+		String state = Environment.getExternalStorageState();  
+	    if (!Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {  
+	    	Toast.makeText(this, "Please make sure SD Card is available before taking photos.", Toast.LENGTH_LONG).show();
+	        return;  
+	    } 
 		// save the vista for which we are saving the photo
 		mPhotoVista = vista;
 
