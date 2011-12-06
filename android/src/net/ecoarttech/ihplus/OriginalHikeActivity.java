@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import net.ecoarttech.ihplus.db.DBHelper;
 import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
@@ -21,6 +22,7 @@ import org.w3c.dom.NodeList;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -219,6 +221,14 @@ public class OriginalHikeActivity extends IHMapActivity {
 			}
 			else{
 				// TODO - if the server has error, should have some kind of vista info on the phone
+				Cursor cursor = DBHelper.getVistaActions(mHike.getVistas().size());
+				for (int i = 0; i < mHike.getVistas().size(); i++) {
+					cursor.moveToPosition(i);
+					ScenicVista v = mHike.getVistas().get(i);
+					v.setActionId(cursor.getInt(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_ID)));
+					v.setAction(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE)));
+					v.setActionType(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE)));
+				}
 			}
 		}
 	};
