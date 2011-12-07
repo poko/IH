@@ -148,7 +148,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 							String[] tempContent = pathConent.split(" ");
 							generateScenicVistas(tempContent);
 							drawPath(tempContent);
-//							if (randomPoint) {
+							if (randomPoint) {
 								mPathCalls++;
 								if (mPathCalls == 1){
 									// add the random mid-point to scenic vistas (addVista() call will prevent double vistas)
@@ -157,11 +157,11 @@ public class OriginalHikeActivity extends IHMapActivity {
 								if (mPathCalls == 2) {
 									drawVistasAndDownloadTasks();
 								}
-//							} 
-//							else {
-//								// we're done!
-//								drawVistasAndDownloadTasks();
-//							}
+							} 
+							else {
+								// we're done!
+								drawVistasAndDownloadTasks();
+							}
 						}
 						else{
 							// TODO = handle error
@@ -220,8 +220,8 @@ public class OriginalHikeActivity extends IHMapActivity {
 				enableVistaProximityAlerts();
 			}
 			else{
-				// TODO - if the server has error, should have some kind of vista info on the phone
-				Cursor cursor = DBHelper.getVistaActions(mHike.getVistas().size());
+				// if the server has error, should have some kind of vista info on the phone
+				Cursor cursor = DBHelper.getVistaActions(mContext, mHike.getVistas().size());
 				for (int i = 0; i < mHike.getVistas().size(); i++) {
 					cursor.moveToPosition(i);
 					ScenicVista v = mHike.getVistas().get(i);
@@ -229,6 +229,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 					v.setAction(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE)));
 					v.setActionType(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE)));
 				}
+				cursor.close();
 			}
 		}
 	};

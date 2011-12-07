@@ -14,7 +14,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,7 +73,7 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 				}
 			}
 			request.setEntity(entity);// new UrlEncodedFormEntity(parameters));
-			DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
+			DefaultHttpClient httpClient = new DefaultHttpClient(NetworkConstants.getHttpParams());
 			HttpResponse response;
 			response = httpClient.execute(request);
 			return response;

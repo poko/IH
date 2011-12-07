@@ -8,7 +8,6 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +43,7 @@ public class DownloadHikesTask extends AsyncTask<Void, Void, HttpResponse> {
 		Uri uri = builder.build();
 		Log.d(TAG, "Uri: " + uri);
 		HttpGet request = new HttpGet(uri.toString());
-		DefaultHttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
+		DefaultHttpClient httpClient = new DefaultHttpClient(NetworkConstants.getHttpParams());
 		HttpResponse response;
 		try {
 			response = httpClient.execute(request);

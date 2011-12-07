@@ -1,5 +1,9 @@
 package net.ecoarttech.ihplus.network;
 
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+
 public class NetworkConstants {
 	//general 
 	public final static String SERVER_URL = "http://10.22.97.38:8888/IHServer/";
@@ -47,4 +51,16 @@ public class NetworkConstants {
 	public final static String HIKES_JSON_KEY = "hikes_json_key";
 	public final static String HIKE_JSON_KEY = "hike_json_key";
 
+	
+	public static HttpParams getHttpParams(){
+		HttpParams params = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		int timeoutConnection = 5000;
+		HttpConnectionParams.setConnectionTimeout(params, timeoutConnection);
+		// Set the default socket timeout (SO_TIMEOUT) 
+		// in milliseconds which is the timeout for waiting for data.
+		int timeoutSocket = 7000;
+		HttpConnectionParams.setSoTimeout(params, timeoutSocket);
+		return params;
+	}
 }
