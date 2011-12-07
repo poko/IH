@@ -49,6 +49,7 @@ public class SearchActivity extends ListActivity {
 			// if it is null, or more than 10 minutes old, fetch a new one instead.
 			Log.d(TAG, "last known location is null or more than 10 mins old: " + lastKnown);
 			mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+			mLocMgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		} else {
 			searchHikes(lastKnown.getLatitude(), lastKnown.getLongitude());
 		}
@@ -64,6 +65,12 @@ public class SearchActivity extends ListActivity {
 				startActivity(i);
 			}
 		});
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mLocMgr.removeUpdates(locationListener); 
 	}
 
 	private Handler downloadHikesHandler = new Handler() {

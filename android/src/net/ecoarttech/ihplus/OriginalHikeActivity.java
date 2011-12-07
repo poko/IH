@@ -164,7 +164,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 							}
 						}
 						else{
-							// TODO = handle error
+							displayRetryDialog();
 						}
 					}
 				});
