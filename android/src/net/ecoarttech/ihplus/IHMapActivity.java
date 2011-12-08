@@ -73,7 +73,8 @@ public class IHMapActivity extends MapActivity {
 				mMapView.getController().animateTo(mCurrentLocationOverlay.getMyLocation());
 			}
 		});
-		mMapView.getOverlays().add(mCurrentLocationOverlay);	}
+		mMapView.getOverlays().add(mCurrentLocationOverlay);	
+	}
 
 	/*
 	 * Return back to Hike Activity from taking a photo. Mark vista as complete if the activity succeeded.
@@ -167,6 +168,9 @@ public class IHMapActivity extends MapActivity {
 		for (ScenicVista vista : mHike.getVistas()) {
 			mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
 		}
+		//remove and re-add current location over lay (so it will display on top of the vistas)
+		mMapView.getOverlays().remove(mCurrentLocationOverlay);
+		mMapView.getOverlays().add(mCurrentLocationOverlay);	
 	}
 
 	private static final int VISTA_ENTERED = 1;

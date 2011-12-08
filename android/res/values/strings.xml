@@ -10,6 +10,6 @@
     <string name="enter_start">enter start address</string>
     <string name="enter_end">enter end address</string>
     <string name="hit_trail">hit the trail &gt;</string>
-    <string name="search_hint">Search for a street or zipcode</string>
+    <string name="search_hint">Search for a city or zipcode</string>
     <string name="this_is_vista">This is a IH+ Scenic Vista:</string>
 </resources>

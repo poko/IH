@@ -1,15 +1,20 @@
 package net.ecoarttech.ihplus;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import net.ecoarttech.ihplus.adapter.SearchListAdapter;
 import net.ecoarttech.ihplus.model.Hike;
+import net.ecoarttech.ihplus.network.DirectionCompletionListener;
 import net.ecoarttech.ihplus.network.DownloadHikesTask;
 import net.ecoarttech.ihplus.network.NetworkConstants;
+import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
 import net.ecoarttech.ihplus.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -22,9 +27,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 public class SearchActivity extends ListActivity {
@@ -65,7 +75,52 @@ public class SearchActivity extends ListActivity {
 				startActivity(i);
 			}
 		});
+		
+		// setup search bar listener
+		EditText searchBar = (EditText) findViewById(R.id.search_bar);
+		searchBar.setOnEditorActionListener(new OnEditorActionListener() {
+			
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if ( (event == null && actionId == EditorInfo.IME_ACTION_SEARCH ) || (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN)){
+				    Log.d(TAG, "dooo eeit once.");
+				    // TODO make sure user has input something
+				    // start progress dialog
+				    mDialog = ProgressDialog.show(mContext, "", "Searching for hikes near " + v.getText().toString());
+					mDialog.setCancelable(true);
+				    // reverse geocode the search term
+				    new StartCoordsAsyncTask(SearchActivity.this, URLEncoder.encode(v.getText().toString()), coordsListener).execute();
+				}
+				return true;
+			}
+		});
 	}
+	
+	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
+
+		@Override
+		public void onComplete(Document doc) {
+			if (doc != null){
+				NodeList nl = doc.getElementsByTagName("coordinates");
+				if (nl != null){
+					String coordsElm = nl.item(0).getFirstChild().getNodeValue();
+					String[] coords = coordsElm.split(",");
+					// long = 0, lat = 1
+					double lat = Double.valueOf(coords[1]);
+					double lng = Double.valueOf(coords[0]);
+					//TODO - check for validity
+				    // send coords up to server. bam.
+					searchHikes(lat, lng);
+				}
+				else{
+					showError();
+				}
+			}
+			else{
+				showError();
+			}
+		}
+	};
 	
 	@Override
 	protected void onPause() {
