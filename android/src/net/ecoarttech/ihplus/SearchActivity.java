@@ -83,7 +83,6 @@ public class SearchActivity extends ListActivity {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if ( (event == null && actionId == EditorInfo.IME_ACTION_SEARCH ) || (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN)){
-				    Log.d(TAG, "dooo eeit once.");
 				    // TODO make sure user has input something
 				    // start progress dialog
 				    mDialog = ProgressDialog.show(mContext, "", "Searching for hikes near " + v.getText().toString());

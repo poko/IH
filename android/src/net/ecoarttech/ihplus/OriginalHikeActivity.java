@@ -215,12 +215,8 @@ public class OriginalHikeActivity extends IHMapActivity {
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "got message from vista action downloader! " + msg.what);
 			mDialog.dismiss();
-			if (msg.what == NetworkConstants.SUCCESS){
-				// enable all the Vista proximity alerts
-				enableVistaProximityAlerts();
-			}
-			else{
-				// if the server has error, should have some kind of vista info on the phone
+			if (msg.what != NetworkConstants.SUCCESS){
+				// if the server has error, will have some kind of vista info on the phone
 				Cursor cursor = DBHelper.getVistaActions(mContext, mHike.getVistas().size());
 				for (int i = 0; i < mHike.getVistas().size(); i++) {
 					cursor.moveToPosition(i);
@@ -231,6 +227,8 @@ public class OriginalHikeActivity extends IHMapActivity {
 				}
 				cursor.close();
 			}
+			// enable all the Vista proximity alerts
+			enableVistaProximityAlerts();
 		}
 	};
 

@@ -13,7 +13,8 @@ while ($hike = mysql_fetch_object($result)) {
         echo ",\n";
     } 
     // get vistas & actions
-	$query = sprintf("SELECT * from original_vistas INNER JOIN vista_actions WHERE original_vistas.action_id = vista_actions.action_id AND hike_id = '%s'", mysql_real_escape_string($hike->hike_id));
+	$query = sprintf("SELECT hike_id, name, username, description, date, start_lat, start_lng, original, original_hike_id from original_vistas INNER JOIN vista_actions WHERE original_vistas.action_id = vista_actions.action_id AND hike_id = '%s'",
+					mysql_real_escape_string($hike->hike_id));
 	$res=mysql_query($query);
 	$vista_json = array();
 	while ($row = mysql_fetch_object($res)) {

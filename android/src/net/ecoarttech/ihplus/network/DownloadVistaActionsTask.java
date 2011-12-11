@@ -80,6 +80,7 @@ public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse
 					v.setAction(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE));
 					v.setActionType(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE));
 				}
+				msg.what = NetworkConstants.SUCCESS;
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
