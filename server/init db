@@ -53,3 +53,13 @@ INSERT INTO `vista_actions` VALUES (7, 'jump up and down', 'photo');
 INSERT INTO `vista_actions` VALUES (8, 'take a nap', 'photo');
 INSERT INTO `vista_actions` VALUES (9, 'run in place', 'photo');
 INSERT INTO `vista_actions` VALUES (10, 'note how you are feeling', 'photo');
+
+CREATE TABLE `original_hike_points` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `hike_id` int(255) DEFAULT NULL,
+  `indx` int(255) DEFAULT NULL,
+  `latitude` int(255) DEFAULT NULL,
+  `longitude` int(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
