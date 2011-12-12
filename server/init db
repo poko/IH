@@ -7,26 +7,26 @@ create user 'ih_plus_admin'@'localhost' identified by '????HIKE';
 GRANT ALL ON ih_plus.* TO 'ih_plus_admin'@'localhost';
 
 
-CREATE TABLE `original_hikes` (
-  `hike_id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE ih_plus.original_hikes (
+  `hike_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` text NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `start_lat` double NOT NULL,
   `start_lng` double NOT NULL,
   `ip_address` varchar(255) NOT NULL,
   `original` enum('true','false') NOT NULL,
-  `original_hike_id` int(255) DEFAULT NULL,
+  `original_hike_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`hike_id`)
 )
 
 
 
-CREATE TABLE `original_vistas` (
-  `id` int(255) NOT NULL auto_increment,
-  `hike_id` int(255) NOT NULL,
-  `action_id` int(255) NOT NULL,
+CREATE TABLE ih_plus.original_vistas (
+  `id` int(11) NOT NULL auto_increment,
+  `hike_id` int(11) NOT NULL,
+  `action_id` int(11) NOT NULL,
   `longitude` double NOT NULL,
   `latitude` double NOT NULL,
   `date` varchar(255) collate utf8_unicode_ci NOT NULL,
@@ -35,8 +35,8 @@ CREATE TABLE `original_vistas` (
   PRIMARY KEY  (`id`)
 );
 
-CREATE TABLE `vista_actions` (
-  `vista_id` int(11) NOT NULL auto_increment COMMENT 'pk',
+CREATE TABLE ih_plus.vista_actions (
+  `action_id` int(11) NOT NULL auto_increment COMMENT 'pk',
   `verbiage` varchar(10000) collate utf8_unicode_ci NOT NULL,
   `action_type` set('photo','note') collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`vista_id`)
