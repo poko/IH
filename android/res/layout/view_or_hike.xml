@@ -4,14 +4,75 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	> 
-	<Button 
+	<!-- Top Bar -->
+	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="View it"
-		android:onClick="onViewClick"/>
-	<Button 
+		android:background="@drawable/search_top_bar">
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/hikes_top_btn"
+			android:clickable="true"
+			android:onClick="onHikesClick"/>
+	</RelativeLayout>
+	<LinearLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="Hike it"
-		android:onClick="onHikeClick"/>
+		android:orientation="vertical"
+		android:background="@color/tabbar_gray"
+		android:padding="15dp">
+		<TextView android:id="@+id/hike_desc"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/boldWhite"/>
+		<TextView android:id="@+id/hike_name_date"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			style="@style/boldWhite"/>
+		</LinearLayout>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/light_gray"
+		android:paddingBottom="10dp"
+		android:layout_marginBottom="2dp"
+		android:clickable="true"
+		android:onClick="onHikeClick">
+	    <ImageView android:id="@+id/hike_icon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/do_hike_icon"
+			android:layout_margin="10dp"/>
+		<TextView 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/hike_icon"
+			android:layout_centerVertical="true"
+			android:textColor="#000000"
+			android:textStyle="bold"
+			android:text="Hike it"/>
+	</RelativeLayout>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/light_gray"
+		android:paddingBottom="10dp"
+		android:clickable="true"
+		android:onClick="onViewClick">
+	    <ImageView android:id="@+id/view_icon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/view_hike_icon"
+			android:layout_margin="10dp"/>
+		<TextView 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/view_icon"
+			android:layout_centerVertical="true"
+			android:textColor="#000000"
+			android:textStyle="bold"
+			android:text="View Documentation"/>
+	</RelativeLayout>
 </LinearLayout>

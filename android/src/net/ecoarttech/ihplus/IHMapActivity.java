@@ -166,7 +166,7 @@ public class IHMapActivity extends MapActivity {
 
 	protected void drawVistas() {
 		for (ScenicVista vista : mHike.getVistas()) {
-			mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista.getPoint()));
+			mMapView.getOverlays().add(new SingleVistaOverlay(mContext, vista));
 		}
 		//remove and re-add current location over lay (so it will display on top of the vistas)
 		mMapView.getOverlays().remove(mCurrentLocationOverlay);

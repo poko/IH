@@ -27,4 +27,9 @@
    <style name="boldBlue" parent="bold">
         <item name="android:textColor">@color/link_blue</item>
     </style> 
+    
+   <style name="boldWhite" parent="bold">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">12sp</item>
+    </style> 
 </resources>

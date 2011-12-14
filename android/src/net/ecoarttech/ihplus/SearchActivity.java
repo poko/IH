@@ -71,7 +71,10 @@ public class SearchActivity extends ListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent i = new Intent(mContext, ViewOrHikeActivity.class);
-				i.putExtra(Constants.BUNDLE_HIKE_ID, ((Hike)mAdapter.getItem(position)).getId());
+				Hike hike = (Hike) mAdapter.getItem(position);
+				i.putExtra(Constants.BUNDLE_HIKE_ID, hike.getId());
+				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE1, hike.getName() + ". " + hike.getDescription());
+				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE2, "created by " + hike.getUsername() + ", " + hike.getCreateDate());
 				startActivity(i);
 			}
 		});

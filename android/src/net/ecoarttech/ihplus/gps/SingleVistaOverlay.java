@@ -1,6 +1,7 @@
 package net.ecoarttech.ihplus.gps;
 
 import net.ecoarttech.ihplus.R;
+import net.ecoarttech.ihplus.model.ScenicVista;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,13 +16,17 @@ import com.google.android.maps.Projection;
 
 public class SingleVistaOverlay extends Overlay {
 
+	private ScenicVista mVista;
 	private GeoPoint mGeoPoint;
 	Paint mPaint = new Paint();
-	Bitmap mBitmap;
+	Bitmap mVistaBitmap;
+	Bitmap mVisitedBitmap;
 
-	public SingleVistaOverlay(Context c, GeoPoint point) {
-		this.mGeoPoint = point;
-		this.mBitmap = BitmapFactory.decodeResource(c.getResources(), R.drawable.scenic_vista_point);
+	public SingleVistaOverlay(Context c, ScenicVista vista) {
+		this.mVista = vista;
+		this.mGeoPoint = vista.getPoint();
+		this.mVistaBitmap = BitmapFactory.decodeResource(c.getResources(), R.drawable.scenic_vista_point);
+		this.mVisitedBitmap = BitmapFactory.decodeResource(c.getResources(), R.drawable.visited_vista);
 	}
 
 	@Override
@@ -31,9 +36,9 @@ public class SingleVistaOverlay extends Overlay {
 			mPaint.setAntiAlias(true);
 			Point point = new Point();
 			projection.toPixels(mGeoPoint, point);
-
-			canvas.drawBitmap(mBitmap, (float) point.x - (mBitmap.getWidth() / 2), (float) point.y
-					- (mBitmap.getHeight() / 2), mPaint);
+			Bitmap bitmap = mVista.isComplete() ? mVisitedBitmap : mVistaBitmap;
+			canvas.drawBitmap(bitmap, (float) point.x - (bitmap.getWidth() / 2), (float) point.y
+					- (bitmap.getHeight() / 2), mPaint);
 		}
 		return super.draw(canvas, mapView, shadow, when);
 	}

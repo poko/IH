@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 public class ViewOrHikeActivity extends Activity {
 	private static String TAG = "IH+ - ViewOrHikeActivity";
@@ -18,6 +19,9 @@ public class ViewOrHikeActivity extends Activity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null)
 			mHikeId = extras.getInt(Constants.BUNDLE_HIKE_ID);
+		// setup hike data
+		((TextView) findViewById(R.id.hike_desc)).setText(extras.getString(Constants.BUNDLE_HIKE_DESC_LINE1));
+		((TextView) findViewById(R.id.hike_name_date)).setText(extras.getString(Constants.BUNDLE_HIKE_DESC_LINE2));
 	}
 
 	/** onClickListener for 'View Hike' button.
@@ -38,5 +42,12 @@ public class ViewOrHikeActivity extends Activity {
 		Intent intent = new Intent(this, WalkHikeActivity.class);
 		intent.putExtra(Constants.BUNDLE_HIKE_ID, mHikeId);
 		startActivity(intent);
+	}
+
+	/** onClickListnener for 'Create Hike' button.
+	 * @param v
+	 */
+	public void onHikesClick(View v){
+		//TODO - implement
 	}
 }

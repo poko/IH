@@ -6,7 +6,7 @@ import org.apache.http.params.HttpParams;
 
 public class NetworkConstants {
 	// general
-	public final static String SERVER_URL = "http://192.168.1.6:8888/IHServer/";
+	public final static String SERVER_URL = "http://10.22.97.38:8888/IHServer/";
 	public final static int FAILURE = -1;
 	public final static int SUCCESS = 1;
 	public final static String SERVER_RESULT = "result";
