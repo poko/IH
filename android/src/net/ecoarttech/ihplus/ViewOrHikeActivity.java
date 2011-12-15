@@ -48,6 +48,7 @@ public class ViewOrHikeActivity extends Activity {
 	 * @param v
 	 */
 	public void onHikesClick(View v){
-		//TODO - implement
+		Intent i = new Intent(this, CreateHikeActivity.class);
+		startActivity(i);
 	}
 }

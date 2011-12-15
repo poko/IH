@@ -120,7 +120,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				finish(); // TODO - CP - verify what to do here 
+				finish(); // TODO - Clear out endpoints 
 			}
 		})
 		.show();

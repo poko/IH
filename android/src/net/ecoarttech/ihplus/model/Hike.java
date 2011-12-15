@@ -143,6 +143,16 @@ public class Hike {
 		}
 		return true;
 	}
+
+	public boolean isPartiallyComplete() {
+		if (vistas.size() == 0)
+			return false;
+		for (ScenicVista vista : vistas) {
+			if (vista.isComplete())
+				return true;
+		}
+		return false;
+	}
 	
 	public String getPointsAsJson(){
 		StringBuilder sb = new StringBuilder("[");

@@ -121,6 +121,16 @@ public class IHMapActivity extends MapActivity {
 			vista.cancelIntent();
 		}
 	}
+	
+	@Override
+	public void onBackPressed() {
+		if (mHike.isPartiallyComplete()){
+			showHikeWarning();
+		}
+		else{
+			super.onBackPressed();
+		}
+	}
 
 	protected void drawPath(String[] pairs) {
 		String[] lngLat = pairs[0].split(",");
@@ -133,7 +143,7 @@ public class IHMapActivity extends MapActivity {
 		mHike.setStartPoints(startLat, startLng);
 		mMapController = mMapView.getController();
 		geoPoint = startGP;
-		mMapController.setCenter(geoPoint); // TODO - CP - center on user's location?
+		mMapController.setCenter(geoPoint);
 		mMapController.setZoom(16);
 		mMapView.getOverlays().add(new DirectionPathOverlay(startGP, startGP));
 
@@ -199,28 +209,37 @@ public class IHMapActivity extends MapActivity {
 	}
 
 	public void onHikesClick(View v) {
-		Log.d(TAG, "hike click");
-		// (warn that current hike will be lost)
-		new AlertDialog.Builder(this)
-		.setTitle("Create A New Hike")
-		.setMessage("Are you sure you would like to create a new hike?\nThe current hike will be lost!")
-		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				finish(); //TODO - this will not work on 're-hike', will take user back to view it or hike it screen .... 
-				//TODO - this will also not clear out the start points
-				dialog.dismiss();
-			}
-		})
-		.setNegativeButton("No", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		})
-		.show();
+		showHikeWarning();
+	}
+
+	private void showHikeWarning() {
+		if (mHike.isOriginal()){
+			// (warn that current hike will be lost)
+			new AlertDialog.Builder(this)
+			.setTitle("Create A New Hike")
+			.setMessage("Are you sure you would like to create a new hike?\nThe current hike will be lost!")
+			.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					Intent i = new Intent(IHMapActivity.this, CreateHikeActivity.class);
+					startActivity(i);
+					dialog.dismiss();
+				}
+			})
+			.setNegativeButton("No", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			})
+			.show();
+		}
+		else{ //just start create hike activity
+			Intent i = new Intent(this, CreateHikeActivity.class);
+			startActivity(i);
+		}
 	}
 
 	public class VistaEnteredReceiver extends BroadcastReceiver {
@@ -332,8 +351,8 @@ public class IHMapActivity extends MapActivity {
 
 	private void completeHike() {
 		// inflate input dialog
-		final View dialogView = getLayoutInflater().inflate(R.layout.complete_hike_dialog, null);
-		new AlertDialog.Builder(this).setTitle("Complete Hike").setView(dialogView).setPositiveButton("Upload",
+		final View dialogView = getLayoutInflater().inflate(mHike.isOriginal() ? R.layout.complete_hike_dialog : R.layout.complete_walk_hike_dialog, null);
+		new AlertDialog.Builder(this).setTitle("Complete Hike").setView(dialogView).setPositiveButton("Share",
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -343,8 +362,10 @@ public class IHMapActivity extends MapActivity {
 						EditText hikeName = (EditText) dialogView.findViewById(R.id.hike_name);
 						EditText hikeDesc = (EditText) dialogView.findViewById(R.id.hike_desc);
 						mHike.setUsername(username.getText().toString());
-						mHike.setName(hikeName.getText().toString());
-						mHike.setDescription(hikeDesc.getText().toString());
+						if (mHike.isOriginal()){
+							mHike.setName(hikeName.getText().toString());
+							mHike.setDescription(hikeDesc.getText().toString());
+						}
 						mHike.upload(mContext, mUploadHandler);
 					}
 				}).create().show();

@@ -7,11 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateHikeActivity extends Activity {
 	private static String TAG = "IH+ - CreateHikeActivity";
-	private static int CREATE_HIKE = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,15 @@ public class CreateHikeActivity extends Activity {
 		// set fonts
 		Util.setFont(this, findViewById(R.id.start_address), findViewById(R.id.end_address));
 		Util.setBoldFont(this, findViewById(R.id.start_hike));
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Log.d(TAG, "new intent");
+		// clear out end & start addresses
+		((TextView) findViewById(R.id.start_address)).setText("");
+		((TextView) findViewById(R.id.end_address)).setText("");
 	}
 
 	public void onSearchClick(View v) {
@@ -40,6 +49,6 @@ public class CreateHikeActivity extends Activity {
 		Intent i = new Intent(this, OriginalHikeActivity.class);
 		i.putExtra(IHMapActivity.BUNDLE_START, start);
 		i.putExtra(IHMapActivity.BUNDLE_END, end);
-		startActivityForResult(i, CREATE_HIKE);
+		startActivity(i);
 	}
 }
