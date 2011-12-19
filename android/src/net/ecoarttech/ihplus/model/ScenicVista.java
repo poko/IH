@@ -1,6 +1,7 @@
 package net.ecoarttech.ihplus.model;
 
 import java.io.File;
+import java.io.Serializable;
 
 import net.ecoarttech.ihplus.IHMapActivity;
 import net.ecoarttech.ihplus.db.DBHelper;
@@ -23,7 +24,8 @@ import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 
-public class ScenicVista {
+public class ScenicVista implements Serializable{
+	private static final long serialVersionUID = -4922122191674605309L;
 	private static final String TAG = "IH+ - ScenicVista";
 	public static final String TABLE_NAME = "vistas";
 	public static final String COL_HIKE_ID = "hike_id";
@@ -36,7 +38,7 @@ public class ScenicVista {
 	private long id;
 	private Double latitude;
 	private Double longitude;
-	private GeoPoint point;
+	private transient GeoPoint point;
 	private Integer actionId;
 	private String action;
 	private ActionType actionType;

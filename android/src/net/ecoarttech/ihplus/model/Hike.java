@@ -1,5 +1,6 @@
 package net.ecoarttech.ihplus.model;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,12 +15,13 @@ import android.os.Handler;
 
 import com.google.android.maps.GeoPoint;
 
-public class Hike {
+public class Hike implements Serializable {
+	private static final long serialVersionUID = 1736610345348262961L;
 	@SuppressWarnings("unused")
 	private static final String TAG = "IH+ - Hike";
 	private static final String JSON_ID = "hike_id";
 	private static final String JSON_NAME = "name";
-	private static final String JSON_DESC = "desc";
+	private static final String JSON_DESC = "description";
 	private static final String JSON_CREATE_DATE = "date";
 	private static final String JSON_USERNAME = "username";
 	private static final String JSON_START_LAT = "start_lat";

@@ -21,6 +21,7 @@
 		<activity android:name=".SearchActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" android:taskAffinity="net.ecoarttech.ihplus.CreatHikeActivity"/>
 		<activity android:name=".ShareHikeActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".ViewHikeActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".ViewHikesListActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".ViewOrHikeActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".WalkHikeActivity" android:screenOrientation="portrait"/>
       <uses-library android:name="com.google.android.maps" />
