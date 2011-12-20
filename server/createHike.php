@@ -122,7 +122,7 @@ foreach ($points_json as $p){
 // save each vista point
 $vista_json = json_decode(str_replace('\\', '', $vistas), true);
 foreach ($vista_json as $v){
-	$query = sprintf("insert into original_vistas (hike_id, action_id, latitude, longitude, date, note, filename) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+	$query = sprintf("insert into original_vistas (hike_id, action_id, latitude, longitude, date, note, photo) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($hike_id),
                   mysql_real_escape_string($v["action_id"]),
                   mysql_real_escape_string($v["latitude"]),

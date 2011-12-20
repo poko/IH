@@ -31,7 +31,7 @@ CREATE TABLE ih_plus.original_vistas (
   `latitude` double NOT NULL,
   `date` varchar(255) collate utf8_unicode_ci NOT NULL,
   `note` varchar(255) collate utf8_unicode_ci default NULL,
-  `filename` varchar(255) collate utf8_unicode_ci default NULL,
+  `photo` varchar(255) collate utf8_unicode_ci default NULL,
   PRIMARY KEY  (`id`)
 );
 

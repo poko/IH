@@ -3,14 +3,16 @@ package net.ecoarttech.ihplus;
 import net.ecoarttech.ihplus.model.ActionType;
 import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.model.ScenicVista;
+import net.ecoarttech.ihplus.network.NetworkConstants;
 import net.ecoarttech.ihplus.util.Constants;
+import net.ecoarttech.ihplus.util.Util;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 public class ViewHikeActivity extends Activity {
@@ -33,35 +35,28 @@ public class ViewHikeActivity extends Activity {
 	private void updateUI(){
 		((TextView) findViewById(R.id.hike_name)).setText(mHike.getName());
 		((TextView) findViewById(R.id.hike_desc)).setText(mHike.getDescription());
+		((TextView) findViewById(R.id.hike_info)).setText(String.format("Hiked by %s on %s", mHike.getUsername(), mHike.getCreateDate()));
 		LinearLayout holder = (LinearLayout) findViewById(R.id.vistas_holder);
+		Log.d(TAG, "vistas amoutn: "+ mHike.getVistas().size());
 		for (int i = 0; i < mHike.getVistas().size(); i++){
 			ScenicVista vista =  mHike.getVistas().get(i);
-			// Vista divider
-			TextView divider = new TextView(this);
-			divider.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-			divider.setText("Scenic Vista #"+(i+1));
-			divider.setBackgroundColor(getResources().getColor(R.color.header_gray));
-			divider.setPadding(10, 5, 5, 5);
-			holder.addView(divider);
-			// Verbiage
-			TextView verbiage = new TextView(this);
-			verbiage.setText("Instructions:\n"+Html.fromHtml(vista.getAction()));
-			verbiage.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-			verbiage.setBackgroundColor(getResources().getColor(R.color.light_gray));
-			verbiage.setPadding(10, 5, 5, 5);
-			holder.addView(verbiage);
+			// inflate vista item, fill in data
+			View vistaItem = getLayoutInflater().inflate(R.layout.vista_item, null);
+			((TextView) vistaItem.findViewById(R.id.vista_divider)).setText("Scenic Vista #"+(i+1));
+			((TextView) vistaItem.findViewById(R.id.vista_action)).setText("Instructions:\n"+Html.fromHtml(vista.getAction()));
 			// Content
 			View content;
 			if (vista.getActionType() == ActionType.NOTE){
-				content = new TextView(this);
-				((TextView) content).setText(vista.getNote());
+				content = ((TextView) vistaItem.findViewById(R.id.vista_content_note));
+				((TextView) content).setText("Response:\n"+vista.getNote());
+				content.setVisibility(View.VISIBLE);
 			}
 			else{
-				content = new ImageView(this);
-				//TODO - dl image from server
+				content = ((ImageView) vistaItem.findViewById(R.id.vista_content_photo));
+				//dl image from server
+				Util.downloadImage(NetworkConstants.PHOTO_URL + vista.getPhotoUrl(), (ImageView) content);
 			}
-			content.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-			holder.addView(content);
+			holder.addView(vistaItem);
 		}
 	}
 }

@@ -44,6 +44,7 @@ public class ScenicVista implements Serializable{
 	private ActionType actionType;
 	private String note;
 	private Uri photo;
+	private String photoPath;
 	private PendingIntent pi;
 	private BroadcastReceiver br;
 	private boolean complete = false;
@@ -67,7 +68,7 @@ public class ScenicVista implements Serializable{
 			vista.setActionType(json.getString("action_type"));
 			vista.setAction(json.getString("verbiage"));
 			vista.setNote(json.optString("note"));
-			// TODO - vista.setPhotoUri(json.optString("photo"));
+			vista.setPhotoUri(json.optString("photo"));
 		}
 		return vista;
 	}
@@ -166,6 +167,15 @@ public class ScenicVista implements Serializable{
 	public void setPhotoUri(Uri uri) {
 		this.photo = uri;
 		complete = uri != null;
+	}
+	
+	public void setPhotoUri(String path){
+		if (path != null)
+			this.photoPath = path;
+	}
+	
+	public String getPhotoUrl(){
+		return photoPath;
 	}
 
 	public boolean isComplete() {

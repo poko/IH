@@ -48,7 +48,7 @@ public class ViewHikesListActivity extends ListActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				// TODO start individual hike view activity
+				// start individual hike view activity
 				Intent i = new Intent(ViewHikesListActivity.this, ViewHikeActivity.class);
 				i.putExtra(Constants.BUNDLE_HIKE, (Hike) mAdapter.getItem(position));
 				startActivity(i);
@@ -62,36 +62,6 @@ public class ViewHikesListActivity extends ListActivity {
 		((TextView) findViewById(R.id.hike_desc)).setText(mHikes.get(0).getDescription());
 		//populate list with hikes
 		mAdapter.notifyDataSetChanged();
-		
-		// for now, create a button for each vista
-//		LinearLayout holder = (LinearLayout) findViewById(R.id.vistas_holder);
-//		if (mHikes.size() > 0) {
-//			for ( int i = 0; i< mHikes.get(0).getVistas().size(); i++){//(final ScenicVista vista : mHikes.get(0).getVistas()) {
-//				final int index = i;
-//				final ScenicVista vista =  mHikes.get(0).getVistas().get(i);
-//				Button button = new Button(this);
-//				button.setText("View vista data. \nLat: " + vista.getLat() + "\nLng: " + vista.getLong());
-//				button.setOnClickListener(new View.OnClickListener() {
-//					
-//					@Override
-//					public void onClick(View v) {
-//						// TODO show gallery of all actions here .. 
-//						StringBuilder sb = new StringBuilder();
-//						sb.append("Vista Directions: " + vista.getAction()); //TODO - handle photos
-//						sb.append(String.format("\nUser %s had this to say: %s", mHikes.get(0).getUsername(), vista.getNote()));
-//						for (int j = 1; j < mHikes.size(); j++){
-//							Hike h = mHikes.get(j);
-//							if (h.getVistas().size() > index){
-//								ScenicVista sv = h.getVistas().get(index);
-//								sb.append(String.format("\nUser %s had this to say: %s", h.getUsername(), sv.getNote()));
-//							}
-//						}
-//						Toast.makeText(ViewHikeActivity.this, sb.toString(), Toast.LENGTH_LONG).show();
-//					}
-//				});
-//				holder.addView(button);
-//			}
-//		}
 	}
 
 	private Handler hikeDownloadHandler = new Handler() {

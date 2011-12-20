@@ -17,6 +17,7 @@ public class NetworkConstants {
 	public final static String SEARCH_HIKES_URL = SERVER_URL + "getHikesByLocation.php";
 	public final static String GET_HIKE_URL = SERVER_URL + "getHike.php";
 	public final static String GET_HIKES_URL = SERVER_URL + "getHikes.php";
+	public final static String PHOTO_URL = SERVER_URL + "uploads/";
 
 	// request keys
 	public final static String REQUEST_JSON_ = "";
