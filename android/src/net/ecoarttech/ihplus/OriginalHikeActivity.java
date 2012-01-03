@@ -106,8 +106,8 @@ public class OriginalHikeActivity extends IHMapActivity {
 	
 	private void displayRetryDialog(){
 		new AlertDialog.Builder(this)
-		.setTitle("oh no there was an error generating your hike.")
-		.setMessage("would you like to try again?")
+		.setTitle("Oh No!")
+		.setMessage("There was an error generating your hike.\nWould you like to try again?")
 		.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
 			
 			@Override

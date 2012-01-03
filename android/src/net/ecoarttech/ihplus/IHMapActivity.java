@@ -25,6 +25,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -259,7 +260,7 @@ public class IHMapActivity extends MapActivity {
 				findViewById(R.id.hike_layout).setVisibility(View.VISIBLE);
 				findViewById(R.id.vista_layout).setVisibility(View.VISIBLE);
 				TextView vistaInfo = (TextView) findViewById(R.id.vista_info);
-				vistaInfo.setText(enteredVista.getAction());
+				vistaInfo.setText(Html.fromHtml(enteredVista.getAction()));
 				// Util.setBoldFont(mContext, findViewById(R.id.hike_name), findViewById(R.id.vista_label), vistaInfo,
 				// vistaCont);
 				// set click listeners

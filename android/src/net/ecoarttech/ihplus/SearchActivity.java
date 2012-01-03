@@ -183,6 +183,6 @@ public class SearchActivity extends ListActivity {
 	}
 
 	private void showError() {
-		Toast.makeText(mContext, "sorry, an error occured searching for hikes", Toast.LENGTH_LONG).show();
+		Toast.makeText(mContext, "sorry, an error occurred searching for hikes", Toast.LENGTH_LONG).show();
 	}
 }

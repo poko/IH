@@ -86,7 +86,7 @@ is_dir($today_upload_dir) || mkdir($today_upload_dir, 0755);
 include 'db_open.php';
 
 // save hike data
-$query = sprintf("insert into original_hikes (username, name, description, start_lat, start_lng, ip_address, original) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+$query = sprintf("insert into hikes (username, name, description, start_lat, start_lng, ip_address, original) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($username),
                   mysql_real_escape_string($hike_name),
                   mysql_real_escape_string($hike_desc),
@@ -106,7 +106,7 @@ $hike_id = mysql_insert_id();
 // save hike 'points' for drawing on map
 $points_json = json_decode(str_replace('\\', '', $points), true);
 foreach ($points_json as $p){
-		$query = sprintf("insert into original_hike_points(hike_id, indx, latitude, longitude) values ('%s','%s','%s','%s')",
+		$query = sprintf("insert into hike_points(hike_id, indx, latitude, longitude) values ('%s','%s','%s','%s')",
 				mysql_real_escape_string($hike_id),
 				mysql_real_escape_string($p["index"]),
 				mysql_real_escape_string($p["latitude"]),
@@ -122,7 +122,7 @@ foreach ($points_json as $p){
 // save each vista point
 $vista_json = json_decode(str_replace('\\', '', $vistas), true);
 foreach ($vista_json as $v){
-	$query = sprintf("insert into original_vistas (hike_id, action_id, latitude, longitude, date, note, photo) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+	$query = sprintf("insert into vistas (hike_id, action_id, latitude, longitude, date, note, photo) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($hike_id),
                   mysql_real_escape_string($v["action_id"]),
                   mysql_real_escape_string($v["latitude"]),

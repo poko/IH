@@ -4,7 +4,7 @@ include 'db_open.php';
 
 $hike_id = $_GET["hike_id"];
 
-$query = sprintf("SELECT * from original_hikes where hike_id = '%s'", mysql_real_escape_string($hike_id));
+$query = sprintf("SELECT * from hikes where hike_id = '%s'", mysql_real_escape_string($hike_id));
 $result=mysql_query($query);
 if (!$result) {
     $message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -15,7 +15,7 @@ if (!$result) {
 $hike = mysql_fetch_object($result);
 
 // get points
-$query = sprintf("SELECT * from original_hike_points where hike_id = '%s'", mysql_real_escape_string($hike_id));
+$query = sprintf("SELECT * from hike_points where hike_id = '%s'", mysql_real_escape_string($hike_id));
 $result=mysql_query($query);
 $points_json = array();
 while ($row = mysql_fetch_object($result)) {
@@ -24,7 +24,7 @@ while ($row = mysql_fetch_object($result)) {
 $hike->points = $points_json;
 
 // get vistas
-$query = sprintf("SELECT * from original_vistas where hike_id = '%s'", mysql_real_escape_string($hike_id));
+$query = sprintf("SELECT * from vistas where hike_id = '%s'", mysql_real_escape_string($hike_id));
 $result=mysql_query($query);
 $vista_json = array();
 while ($row = mysql_fetch_object($result)) {

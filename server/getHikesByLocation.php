@@ -5,7 +5,7 @@ include 'db_open.php';
 $user_lat = $_GET["latitude"];
 $user_lng = $_GET["longitude"];
 
-$query = "SELECT hike_id, name, description, date, username, ( 3959 * acos( cos( radians($user_lat) ) * cos( radians( start_lat ) ) * cos( radians( start_lng ) - radians($user_lng) ) + sin( radians($user_lat) ) * sin( radians( start_lat ) ) ) ) AS distance FROM original_hikes WHERE original=true HAVING distance < 25 ORDER BY distance LIMIT 0 , 20";
+$query = "SELECT hike_id, name, description, date, username, ( 3959 * acos( cos( radians($user_lat) ) * cos( radians( start_lat ) ) * cos( radians( start_lng ) - radians($user_lng) ) + sin( radians($user_lat) ) * sin( radians( start_lat ) ) ) ) AS distance FROM hikes WHERE original=true HAVING distance < 25 ORDER BY distance LIMIT 0 , 20";
 $result=mysql_query($query);
 $first = true;
 

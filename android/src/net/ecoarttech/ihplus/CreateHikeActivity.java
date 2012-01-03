@@ -38,6 +38,7 @@ public class CreateHikeActivity extends Activity {
 	}
 
 	public void onHitTrailClick(View v) {
+		Log.d(TAG, "hit the trail click!");
 		// make sure we have a start and end point
 		String start = ((EditText) findViewById(R.id.start_address)).getText().toString();
 		String end = ((EditText) findViewById(R.id.end_address)).getText().toString();
