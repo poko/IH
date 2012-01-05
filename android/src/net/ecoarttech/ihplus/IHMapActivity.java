@@ -1,5 +1,8 @@
 package net.ecoarttech.ihplus;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import net.ecoarttech.ihplus.gps.CurrentLocationOverlay;
 import net.ecoarttech.ihplus.gps.DirectionPathOverlay;
 import net.ecoarttech.ihplus.gps.SingleVistaOverlay;
@@ -13,23 +16,29 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -299,6 +308,41 @@ public class IHMapActivity extends MapActivity {
 					} else if (vista.getActionType() == ActionType.PHOTO) {
 						// open camera intent
 						startCameraIntent(vista);
+					} else if (vista.getActionType() == ActionType.TEXT){
+						final View alertContent = getLayoutInflater().inflate(R.layout.text_dialog, null);
+						// TODO populate drop down selector with contacts
+						HashMap<String, ArrayList<String>> contactsMap = new HashMap<String, ArrayList<String>>();
+						ContentResolver cr = getContentResolver();
+						Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, new String[] { "_ID", "DISPLAY_NAME" },
+							    "HAS_PHONE_NUMBER = ?", new String[] { "1" }, null);
+						while (cur.moveToNext()) {
+					        String contactId = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+		                    String contactName  = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+		                    Cursor phones = cr.query(Phone.CONTENT_URI, null, Phone.CONTACT_ID + " = " + contactId, null, null);
+		                    ArrayList<String> numbers = new ArrayList<String>();
+	                        while (phones.moveToNext()) {
+	                            String number = phones.getString(phones.getColumnIndex(Phone.NUMBER));
+	                            numbers.add(number);
+	                        }
+	                        phones.close();
+		                    contactsMap.put(contactName, numbers);
+		                } 
+						cur.close();
+						// populate contacts dropdown 
+						Spinner contactSpinner = (Spinner) alertContent.findViewById(R.id.vista_contact);
+						contactSpinner.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, (String[]) contactsMap.keySet().toArray()));
+						new AlertDialog.Builder(mContext).setTitle("Send a Field Note").setIcon(0).setView(alertContent)
+								.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface d, int which) {
+										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
+										vista.setNote(noteInput.getText().toString());
+										// TODO send SMS note to contact
+										if (vista.isComplete()) {
+											// allow user to move on to the next vista
+											markVistaAsCompleted(vista);
+										}
+									}
+								}).create().show();
 					}
 				}
 			});
