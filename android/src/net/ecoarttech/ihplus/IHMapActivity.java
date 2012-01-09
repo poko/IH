@@ -16,7 +16,6 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,8 +29,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.MediaStore;
+import android.telephony.SmsManager;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +63,7 @@ public class IHMapActivity extends MapActivity {
 	protected ScenicVista mPhotoVista;
 	protected Uri mPhotoUri;
 	protected ProgressDialog mDialog;
+	protected HashMap<String, String> mContacts = new HashMap<String, String>();
 
 	/** Called when the activity is first created. */
 	@Override
@@ -84,6 +84,34 @@ public class IHMapActivity extends MapActivity {
 			}
 		});
 		mMapView.getOverlays().add(mCurrentLocationOverlay);	
+		
+		// populate user's contact list for any text actions (to prevent db lookups every time this kind of action takes place)
+		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+		String[] projection = new String[] {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+		                ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.TYPE};
+
+		Cursor cur = getContentResolver().query(uri, projection, null, null, null);
+
+		int indexName = cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+		int indexNumber = cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+		int indexType = cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE);
+
+		cur.moveToFirst();
+		do {
+		    String name = cur.getString(indexName);
+		    String number = cur.getString(indexNumber);
+		    int type = cur.getInt(indexType);
+		    String phoneType;
+		    switch(type){
+			    case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE: { phoneType=" (Mobile)"; break;}
+			    case ContactsContract.CommonDataKinds.Phone.TYPE_HOME: { phoneType=" (Home)"; break;}
+			    case ContactsContract.CommonDataKinds.Phone.TYPE_WORK: { phoneType=" (Work)"; break;}
+			    default: { phoneType=" (Other)"; break;}
+		    }
+		    mContacts.put(name + phoneType, number);
+		    // Do work...
+		} while (cur.moveToNext());
+		cur.close();
 	}
 
 	/*
@@ -310,33 +338,19 @@ public class IHMapActivity extends MapActivity {
 						startCameraIntent(vista);
 					} else if (vista.getActionType() == ActionType.TEXT){
 						final View alertContent = getLayoutInflater().inflate(R.layout.text_dialog, null);
-						// TODO populate drop down selector with contacts
-						HashMap<String, ArrayList<String>> contactsMap = new HashMap<String, ArrayList<String>>();
-						ContentResolver cr = getContentResolver();
-						Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, new String[] { "_ID", "DISPLAY_NAME" },
-							    "HAS_PHONE_NUMBER = ?", new String[] { "1" }, null);
-						while (cur.moveToNext()) {
-					        String contactId = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-		                    String contactName  = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-		                    Cursor phones = cr.query(Phone.CONTENT_URI, null, Phone.CONTACT_ID + " = " + contactId, null, null);
-		                    ArrayList<String> numbers = new ArrayList<String>();
-	                        while (phones.moveToNext()) {
-	                            String number = phones.getString(phones.getColumnIndex(Phone.NUMBER));
-	                            numbers.add(number);
-	                        }
-	                        phones.close();
-		                    contactsMap.put(contactName, numbers);
-		                } 
-						cur.close();
 						// populate contacts dropdown 
-						Spinner contactSpinner = (Spinner) alertContent.findViewById(R.id.vista_contact);
-						contactSpinner.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, (String[]) contactsMap.keySet().toArray()));
+						final Spinner contactSpinner = (Spinner) alertContent.findViewById(R.id.vista_contact);
+						contactSpinner.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet())));
 						new AlertDialog.Builder(mContext).setTitle("Send a Field Note").setIcon(0).setView(alertContent)
 								.setPositiveButton("Send", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface d, int which) {
 										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
 										vista.setNote(noteInput.getText().toString());
 										// TODO send SMS note to contact
+										Log.d(TAG, "selected number to send to: " + mContacts.get(contactSpinner.getSelectedItem()));
+										PendingIntent pi = PendingIntent.getActivity(mContext, 0, null, 0);                
+									    SmsManager sms = SmsManager.getDefault();
+									    sms.sendTextMessage(mContacts.get(contactSpinner.getSelectedItem()), null, noteInput.getText().toString(), pi, null);
 										if (vista.isComplete()) {
 											// allow user to move on to the next vista
 											markVistaAsCompleted(vista);
