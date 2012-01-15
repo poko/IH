@@ -6,17 +6,17 @@ import org.apache.http.params.HttpParams;
 
 public class NetworkConstants {
 	// general
-	public final static String SERVER_URL = "http://ecoarttech.net/ih_plus/scripts";
+	public final static String SERVER_URL = "http://ecoarttech.net/ih_plus/";
 	public final static int FAILURE = -1;
 	public final static int SUCCESS = 1;
 	public final static String SERVER_RESULT = "result";
 
 	// urls
-	public final static String GET_VISTA_URL = SERVER_URL + "getVistaAction.php";
-	public final static String UPLOAD_HIKE_URL = SERVER_URL + "createHike.php";
-	public final static String SEARCH_HIKES_URL = SERVER_URL + "getHikesByLocation.php";
-	public final static String GET_HIKE_URL = SERVER_URL + "getHike.php";
-	public final static String GET_HIKES_URL = SERVER_URL + "getHikes.php";
+	public final static String GET_VISTA_URL = SERVER_URL + "scripts/getVistaAction.php";
+	public final static String UPLOAD_HIKE_URL = SERVER_URL + "scripts/createHike.php";
+	public final static String SEARCH_HIKES_URL = SERVER_URL + "scripts/getHikesByLocation.php";
+	public final static String GET_HIKE_URL = SERVER_URL + "scripts/getHike.php";
+	public final static String GET_HIKES_URL = SERVER_URL + "scripts/getHikes.php";
 	public final static String PHOTO_URL = SERVER_URL + "uploads/";
 
 	// request keys
