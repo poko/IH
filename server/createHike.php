@@ -3,8 +3,8 @@
 
 if (version_compare(PHP_VERSION, '5.1.0', '>=')) { date_default_timezone_set('UTC'); }
 
-//$base_upload_dir = "/home/ecoar4/public_html/hikes/uploads/";
-$base_upload_dir = "/Applications/MAMP/htdocs/IHServer/uploads/";
+$base_upload_dir = "/home/ecoar4/public_html/ih_plus/uploads/";
+//$base_upload_dir = "/Applications/MAMP/htdocs/IHServer/uploads/";
 
 function createThumbnail($inFile, $outFile, $maxWidth, $maxHeight) {
     $pathinfo = pathinfo($inFile);
@@ -141,8 +141,7 @@ foreach ($vista_json as $v){
 // save the photos
 foreach ($_FILES as $file){
 	// create target folder/filename and move it there
-	$uploadfile = $today_upload_dir . "/" . date("H.i.s") . "-" . basename($file['name']).".jpg";
-	echo "up file: ".$uploadfile;
+	$uploadfile = $today_upload_dir . "/" . date("H:i:s") . "_" . basename($file['name']).".jpg";
 	if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
 	    echo "File is valid, and was successfully uploaded.\n";
 	} else {
