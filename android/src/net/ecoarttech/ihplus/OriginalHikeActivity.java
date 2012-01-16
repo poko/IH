@@ -175,7 +175,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 		} else {
 			// generate random number between 2-4 (for 4-8 total scenic vistas)
 			Random rand = new Random();
-			int vistaAmount = 1;// rand.nextInt(2) + 2;// random method (2,3, or 4);
+			int vistaAmount = rand.nextInt(2) + 2;// random method (2,3, or 4);
 			Log.d(TAG, "Vistas: " + vistaAmount);
 			int i = 0;
 			while (i < vistaAmount) {
