@@ -340,7 +340,9 @@ public class IHMapActivity extends MapActivity {
 						final View alertContent = getLayoutInflater().inflate(R.layout.text_dialog, null);
 						// populate contacts dropdown 
 						final Spinner contactSpinner = (Spinner) alertContent.findViewById(R.id.vista_contact);
-						contactSpinner.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet())));
+						ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet()));
+						arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						contactSpinner.setAdapter(arrayAdapter);
 						new AlertDialog.Builder(mContext).setTitle("Send a Field Note").setIcon(0).setView(alertContent)
 								.setPositiveButton("Send", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface d, int which) {
