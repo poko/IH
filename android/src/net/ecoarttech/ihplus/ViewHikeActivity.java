@@ -46,7 +46,7 @@ public class ViewHikeActivity extends Activity {
 			((TextView) vistaItem.findViewById(R.id.vista_action)).setText("Instructions:\n"+Html.fromHtml(vista.getAction()));
 			// Content
 			View content;
-			if (vista.getActionType() == ActionType.NOTE){
+			if (vista.getActionType() == ActionType.NOTE || vista.getActionType() == ActionType.TEXT){
 				content = ((TextView) vistaItem.findViewById(R.id.vista_content_note));
 				((TextView) content).setText("Response:\n"+vista.getNote());
 				content.setVisibility(View.VISIBLE);

@@ -143,7 +143,7 @@ foreach ($_FILES as $file){
 	// create target folder/filename and move it there
 	$uploadfile = $today_upload_dir . "/" . date("H:i:s") . "_" . basename($file['name']).".jpg";
 	if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
-	    echo "File is valid, and was successfully uploaded.\n";
+	    //echo "File is valid, and was successfully uploaded.\n";
 	} else {
 	    error_log("Couldn't upload file.  Maybe it's too big?");
 	}
