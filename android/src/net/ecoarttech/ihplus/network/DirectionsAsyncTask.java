@@ -22,7 +22,7 @@ import android.util.Log;
 
 public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 
-	private static final String TAG = "DirectionsAsyncTask";
+	private static final String TAG = "IH+ - DirectionsAsyncTask";
 	public final static String SERVER_URL = "http://maps.google.com/maps";
 	protected Context mContext;
 	protected HashMap<String, Object> mRequestQueries;
@@ -34,8 +34,7 @@ public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 	private String sAdd;
 	private String dAdd;
 
-	public DirectionsAsyncTask(Context context, String from, String to,
-			DirectionCompletionListener listener) {
+	public DirectionsAsyncTask(Context context, String from, String to, DirectionCompletionListener listener) {
 		this.mCompletionListener = listener;
 		this.mContext = context;
 		sAdd = from;
@@ -64,8 +63,7 @@ public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 		Uri.Builder uriBuilder = Uri.parse(SERVER_URL).buildUpon();
 		for (String key : mRequestQueries.keySet()) {
 			if (mRequestQueries.get(key) != null) {
-				uriBuilder.appendQueryParameter(key, (String) mRequestQueries
-						.get(key));
+				uriBuilder.appendQueryParameter(key, (String) mRequestQueries.get(key));
 			}
 		}
 		URL url;
@@ -75,8 +73,7 @@ public class DirectionsAsyncTask extends AsyncTask<Void, Void, Document> {
 			uriStr = uriStr + "&daddr=" + dAdd;
 			url = new URL(uriStr);
 			Log.d(TAG, "Uri: " + url);
-			HttpURLConnection urlConnection = (HttpURLConnection) url
-					.openConnection();
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 			urlConnection.setRequestMethod("GET");
 			urlConnection.setDoOutput(true);
 			urlConnection.setDoInput(true);

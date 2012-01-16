@@ -23,8 +23,9 @@ import android.util.Log;
 import com.google.android.maps.GeoPoint;
 
 public class WalkHikeActivity extends IHMapActivity {
-	private static final String TAG = "WalkHikeActivity";
+	private static final String TAG = "IH+ - WalkHikeActivity";
 	private int mHikeId;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,15 +35,16 @@ public class WalkHikeActivity extends IHMapActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			mHikeId = extras.getInt(Constants.BUNDLE_HIKE_ID);
-			new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL, NetworkConstants.RESPONSE_JSON_HIKE).execute();
+			new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL,
+					NetworkConstants.RESPONSE_JSON_HIKE).execute();
 		}
 	}
 
-	private Handler hikeDownloadHandler = new Handler(){
+	private Handler hikeDownloadHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "got message:" + msg.what);
-			if (msg.what == NetworkConstants.SUCCESS){
+			if (msg.what == NetworkConstants.SUCCESS) {
 				// parse hike data out from server response
 				try {
 					JSONObject json = new JSONObject(msg.getData().getString(NetworkConstants.HIKE_JSON_KEY));
@@ -51,7 +53,8 @@ public class WalkHikeActivity extends IHMapActivity {
 					JSONArray points = json.getJSONArray(NetworkConstants.RESPONSE_JSON_POINTS);
 					for (int i = 0; i < points.length(); i++) {
 						JSONObject point = points.getJSONObject(i);
-						GeoPoint gp = new GeoPoint(point.getInt(NetworkConstants.RESPONSE_JSON_LAT), point.getInt(NetworkConstants.RESPONSE_JSON_LNG));
+						GeoPoint gp = new GeoPoint(point.getInt(NetworkConstants.RESPONSE_JSON_LAT), point
+								.getInt(NetworkConstants.RESPONSE_JSON_LNG));
 						mHike.addPoint(gp);
 					}
 					JSONArray vistas = json.getJSONArray(NetworkConstants.RESPONSE_JSON_VISTAS);
@@ -61,9 +64,10 @@ public class WalkHikeActivity extends IHMapActivity {
 					// draw path
 					ArrayList<GeoPoint> geoPoints = mHike.getPoints();
 					String[] pairs = new String[geoPoints.size()];
-					for (int i = 0; i < geoPoints.size(); i++){
+					for (int i = 0; i < geoPoints.size(); i++) {
 						GeoPoint gp = geoPoints.get(i);
-						pairs[i] = String.format("%f,%f", (float)gp.getLongitudeE6()*.000001, (float)gp.getLatitudeE6()*.000001);
+						pairs[i] = String.format("%f,%f", (float) gp.getLongitudeE6() * .000001, (float) gp
+								.getLatitudeE6() * .000001);
 					}
 					drawPath(pairs);
 					// draw vistas
@@ -74,25 +78,22 @@ public class WalkHikeActivity extends IHMapActivity {
 					e.printStackTrace();
 					showFailureDialog();
 				}
-			}
-			else{
+			} else {
 				showFailureDialog();
 			}
 		}
 	};
-	
-	private void showFailureDialog(){
-		new AlertDialog.Builder(this)
-		.setTitle("uh oh something went wrong")
-		.setMessage("Try again?")
-		.setPositiveButton("Retry", new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL, NetworkConstants.RESPONSE_JSON_HIKE).execute();				
-			}
-		})
-		.setNegativeButton("Cancel", new OnClickListener() {
+
+	private void showFailureDialog() {
+		new AlertDialog.Builder(this).setTitle("oops something went wrong").setMessage("try again?").setPositiveButton(
+				"Retry", new OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL,
+								NetworkConstants.RESPONSE_JSON_HIKE).execute();
+					}
+				}).setNegativeButton("Cancel", new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

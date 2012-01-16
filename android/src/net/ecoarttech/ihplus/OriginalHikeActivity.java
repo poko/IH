@@ -31,7 +31,7 @@ import android.os.Message;
 import android.util.Log;
 
 public class OriginalHikeActivity extends IHMapActivity {
-	private static final String TAG = "OriginalHikeActivity";
+	private static final String TAG = "IH+ - OriginalHikeActivity";
 	private boolean randomPoint = true;
 	private int mPathCalls = 0;
 	private String mStart;
@@ -44,14 +44,12 @@ public class OriginalHikeActivity extends IHMapActivity {
 
 		// generate hike
 		mDialog = new ProgressDialog(this);
-		mDialog.setMessage("Generating Hike");
+		mDialog.setMessage("generating hike");
 		mDialog.show();
 		Bundle extras = getIntent().getExtras();
 		mStart = URLEncoder.encode(extras.getString(BUNDLE_START));
 		mEnd = URLEncoder.encode(extras.getString(BUNDLE_END));
-		randomPoint = false; // TODO - always randomize.
 		// get start/end points from bundle
-		Log.d(TAG, "randomizing?? " + randomPoint);
 		if (randomPoint) {
 			// get address for random geo points
 			getRandomAddress();
@@ -64,12 +62,12 @@ public class OriginalHikeActivity extends IHMapActivity {
 		StartCoordsAsyncTask startTask = new StartCoordsAsyncTask(this, mStart, coordsListener);
 		startTask.execute();
 	}
-	
+
 	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
 
 		@Override
 		public void onComplete(Document doc) {
-			if (doc != null){
+			if (doc != null) {
 				NodeList nl = doc.getElementsByTagName("coordinates");
 				String coordsElm = nl.item(0).getFirstChild().getNodeValue();
 				String[] coords = coordsElm.split(",");
@@ -93,37 +91,33 @@ public class OriginalHikeActivity extends IHMapActivity {
 					getDirectionData(mStart, to);
 					getDirectionData(to, mEnd);
 				} catch (IOException e) {
-					e.printStackTrace(); 
+					e.printStackTrace();
 					displayRetryDialog();
 				}
-			}
-			else{
-				//display retry dialog. 
+			} else {
+				// display retry dialog.
 				displayRetryDialog();
 			}
 		}
 	};
-	
-	private void displayRetryDialog(){
-		new AlertDialog.Builder(this)
-		.setTitle("Oh No!")
-		.setMessage("There was an error generating your hike.\nWould you like to try again?")
-		.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				new StartCoordsAsyncTask(mContext, mStart, coordsListener).execute();
-			}
-		})
-		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			
+
+	private void displayRetryDialog() {
+		new AlertDialog.Builder(this).setTitle("oops").setMessage(
+				"there was an error generating your hike.\ntry again?").setPositiveButton("Retry",
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						new StartCoordsAsyncTask(mContext, mStart, coordsListener).execute();
+					}
+				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				finish(); // TODO - Clear out endpoints 
+				finish(); // TODO - Clear out endpoints
 			}
-		})
-		.show();
+		}).show();
 	}
 
 	private void getDirectionData(String srcPlace, String destPlace) {
@@ -150,20 +144,19 @@ public class OriginalHikeActivity extends IHMapActivity {
 							drawPath(tempContent);
 							if (randomPoint) {
 								mPathCalls++;
-								if (mPathCalls == 1){
-									// add the random mid-point to scenic vistas (addVista() call will prevent double vistas)
-									createNewVista(tempContent[tempContent.length-1]);
+								if (mPathCalls == 1) {
+									// add the random mid-point to scenic vistas (addVista() call will prevent double
+									// vistas)
+									createNewVista(tempContent[tempContent.length - 1]);
 								}
 								if (mPathCalls == 2) {
 									drawVistasAndDownloadTasks();
 								}
-							} 
-							else {
+							} else {
 								// we're done!
 								drawVistasAndDownloadTasks();
 							}
-						}
-						else{
+						} else {
 							displayRetryDialog();
 						}
 					}
@@ -174,24 +167,25 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private void generateScenicVistas(String[] points) {
 		Log.d(TAG, "pairs amount:" + points.length);
 		ArrayList<Integer> existingVistas = new ArrayList<Integer>();
-		// if (points.length < 3) { // TODO uncomment after testing
-		// // each point is a new scenic vista
-		// for (int i = 0; i < points.length; i++) {
-		// createNewVista(points[i]);
-		// }
-		// } else {
-		// generate random number between 2-4 (for 4-8 total scenic vistas)
-		Random rand = new Random();
-		int vistaAmount = 1;// rand.nextInt(2) + 2;// random method (2,3, or 4);
-		Log.d(TAG, "Vistas: " + vistaAmount);
-		int i = 0;
-		while (i < vistaAmount) {
-			int r = rand.nextInt(points.length);
-			Log.d(TAG, "trying vista : " + r);
-			if (!existingVistas.contains(r)) {
-				createNewVista(points[r]);
-				existingVistas.add(r);
-				i++;
+		if (points.length < 3) {
+			// each point is a new scenic vista
+			for (int i = 0; i < points.length; i++) {
+				createNewVista(points[i]);
+			}
+		} else {
+			// generate random number between 2-4 (for 4-8 total scenic vistas)
+			Random rand = new Random();
+			int vistaAmount = 1;// rand.nextInt(2) + 2;// random method (2,3, or 4);
+			Log.d(TAG, "Vistas: " + vistaAmount);
+			int i = 0;
+			while (i < vistaAmount) {
+				int r = rand.nextInt(points.length);
+				Log.d(TAG, "trying vista : " + r);
+				if (!existingVistas.contains(r)) {
+					createNewVista(points[r]);
+					existingVistas.add(r);
+					i++;
+				}
 			}
 		}
 	}
@@ -215,15 +209,19 @@ public class OriginalHikeActivity extends IHMapActivity {
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "got message from vista action downloader! " + msg.what);
 			mDialog.dismiss();
-			if (msg.what != NetworkConstants.SUCCESS){
+			if (msg.what != NetworkConstants.SUCCESS) {
 				// if the server has error, will have some kind of vista info on the phone
 				Cursor cursor = DBHelper.getVistaActions(mContext, mHike.getVistas().size());
 				for (int i = 0; i < mHike.getVistas().size(); i++) {
 					cursor.moveToPosition(i);
 					ScenicVista v = mHike.getVistas().get(i);
 					v.setActionId(cursor.getInt(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_ID)));
-					v.setAction(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE)));
-					v.setActionType(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE)));
+					v
+							.setAction(cursor.getString(cursor
+									.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE)));
+					v
+							.setActionType(cursor.getString(cursor
+									.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE)));
 				}
 				cursor.close();
 			}

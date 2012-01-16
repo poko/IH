@@ -73,14 +73,17 @@ public class DownloadVistaActionsTask extends AsyncTask<Void, Void, HttpResponse
 				// parse out vista_actions
 				JSONObject responseJson = new JSONObject(responseText.toString());
 				JSONArray vistaActions = responseJson.getJSONArray(NetworkConstants.RESPONSE_JSON_VISTAS_ACTIONS);
-				for (int i = 0; i < mVistas.size(); i++) {
-					ScenicVista v = mVistas.get(i);
-					JSONObject vistaJson = vistaActions.getJSONObject(i);
-					v.setActionId(vistaJson.getInt(NetworkConstants.RESPONSE_JSON_VISTAS_ID));
-					v.setAction(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE));
-					v.setActionType(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE));
+				if (vistaActions.length() > 0) { // if server didn't return any vista actions, we'll use the ones stored
+					// in the local db.
+					for (int i = 0; i < mVistas.size(); i++) {
+						ScenicVista v = mVistas.get(i);
+						JSONObject vistaJson = vistaActions.getJSONObject(i);
+						v.setActionId(vistaJson.getInt(NetworkConstants.RESPONSE_JSON_VISTAS_ID));
+						v.setAction(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE));
+						v.setActionType(vistaJson.getString(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE));
+					}
+					msg.what = NetworkConstants.SUCCESS;
 				}
-				msg.what = NetworkConstants.SUCCESS;
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

@@ -31,11 +31,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView.OnEditorActionListener;
 
 public class SearchActivity extends ListActivity {
 	private static String TAG = "IH+ - SearchActivity";
@@ -50,12 +50,12 @@ public class SearchActivity extends ListActivity {
 		setContentView(R.layout.search);
 		this.mContext = this;
 
-		mDialog = ProgressDialog.show(mContext, "", "Searching for hikes nearby");
+		mDialog = ProgressDialog.show(mContext, "", "searching for hikes nearby");
 		mDialog.setCancelable(true);
 		// try to get last known location,
 		mLocMgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		Location lastKnown = mLocMgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (lastKnown == null) {// TODO || (System.currentTimeMillis() - lastKnown.getTime()) > 10 * 60 * 1000) {
+		if (lastKnown == null || (System.currentTimeMillis() - lastKnown.getTime()) > 10 * 60 * 1000) {
 			// if it is null, or more than 10 minutes old, fetch a new one instead.
 			Log.d(TAG, "last known location is null or more than 10 mins old: " + lastKnown);
 			mLocMgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
@@ -74,60 +74,65 @@ public class SearchActivity extends ListActivity {
 				Hike hike = (Hike) mAdapter.getItem(position);
 				i.putExtra(Constants.BUNDLE_HIKE_ID, hike.getId());
 				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE1, hike.getName() + ". " + hike.getDescription());
-				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE2, "created by " + hike.getUsername() + ", " + hike.getCreateDate());
+				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE2, "created by " + hike.getUsername() + ", "
+						+ hike.getCreateDate());
 				startActivity(i);
 			}
 		});
-		
+
 		// setup search bar listener
 		EditText searchBar = (EditText) findViewById(R.id.search_bar);
 		searchBar.setOnEditorActionListener(new OnEditorActionListener() {
-			
+
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if ( (event == null && actionId == EditorInfo.IME_ACTION_SEARCH ) || (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN)){
-				    // TODO make sure user has input something
-				    // start progress dialog
-				    mDialog = ProgressDialog.show(mContext, "", "Searching for hikes near " + v.getText().toString());
-					mDialog.setCancelable(true);
-				    // reverse geocode the search term
-				    new StartCoordsAsyncTask(SearchActivity.this, URLEncoder.encode(v.getText().toString()), coordsListener).execute();
+				if ((event == null && actionId == EditorInfo.IME_ACTION_SEARCH)
+						|| (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN)) {
+					// start progress dialog
+					String input = v.getText().toString();
+					if (input.length() > 0) {
+						mDialog = ProgressDialog.show(mContext, "", "searching for hikes near " + input);
+						mDialog.setCancelable(true);
+						// reverse geocode the search term
+						new StartCoordsAsyncTask(SearchActivity.this, URLEncoder.encode(input), coordsListener)
+								.execute();
+					} else {
+						Toast.makeText(mContext, "enter a search term", Toast.LENGTH_SHORT).show();
+					}
 				}
 				return true;
 			}
 		});
 	}
-	
+
 	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
 
 		@Override
 		public void onComplete(Document doc) {
-			if (doc != null){
+			if (doc != null) {
 				NodeList nl = doc.getElementsByTagName("coordinates");
-				if (nl != null){
+				if (nl != null) {
 					String coordsElm = nl.item(0).getFirstChild().getNodeValue();
 					String[] coords = coordsElm.split(",");
 					// long = 0, lat = 1
 					double lat = Double.valueOf(coords[1]);
 					double lng = Double.valueOf(coords[0]);
-					//TODO - check for validity
-				    // send coords up to server. bam.
+					// TODO - check for validity
+					// send coords up to server. bam.
 					searchHikes(lat, lng);
-				}
-				else{
+				} else {
 					showError();
 				}
-			}
-			else{
+			} else {
 				showError();
 			}
 		}
 	};
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mLocMgr.removeUpdates(locationListener); 
+		mLocMgr.removeUpdates(locationListener);
 	}
 
 	private Handler downloadHikesHandler = new Handler() {
@@ -174,7 +179,7 @@ public class SearchActivity extends ListActivity {
 
 		@Override
 		public void onProviderDisabled(String provider) {
-			Toast.makeText(mContext, "Please make sure GPS is enabled.", Toast.LENGTH_LONG).show();
+			Toast.makeText(mContext, "make sure gps is enabled.", Toast.LENGTH_LONG).show();
 		}
 	};
 
@@ -183,6 +188,6 @@ public class SearchActivity extends ListActivity {
 	}
 
 	private void showError() {
-		Toast.makeText(mContext, "sorry, an error occurred searching for hikes", Toast.LENGTH_LONG).show();
+		Toast.makeText(mContext, "oops, an error occurred searching for hikes", Toast.LENGTH_LONG).show();
 	}
 }

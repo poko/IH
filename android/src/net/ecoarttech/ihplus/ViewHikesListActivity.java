@@ -14,8 +14,8 @@ import org.json.JSONException;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,9 +23,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class ViewHikesListActivity extends ListActivity {
 	private static String TAG = "IH+ - ViewHikeActivity";
@@ -40,7 +40,8 @@ public class ViewHikesListActivity extends ListActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			mHikeId = extras.getInt(Constants.BUNDLE_HIKE_ID);
-			new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKES_URL, NetworkConstants.RESPONSE_JSON_HIKES).execute();
+			new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKES_URL,
+					NetworkConstants.RESPONSE_JSON_HIKES).execute();
 		}
 		mAdapter = new HikeListAdapter();
 		setListAdapter(mAdapter);
@@ -55,12 +56,12 @@ public class ViewHikesListActivity extends ListActivity {
 			}
 		});
 	}
-	
+
 	private void updateUI() {
 		// populate hike info
 		((TextView) findViewById(R.id.hike_name)).setText(mHikes.get(0).getName());
 		((TextView) findViewById(R.id.hike_desc)).setText(mHikes.get(0).getDescription());
-		//populate list with hikes
+		// populate list with hikes
 		mAdapter.notifyDataSetChanged();
 	}
 
@@ -74,7 +75,7 @@ public class ViewHikesListActivity extends ListActivity {
 					JSONArray json = new JSONArray(msg.getData().getString(NetworkConstants.HIKE_JSON_KEY));
 					mHikes = new ArrayList<Hike>();
 					// create hike objects
-					for (int i = 0; i< json.length(); i++){
+					for (int i = 0; i < json.length(); i++) {
 						Hike h = Hike.fromJson(json.getJSONObject(i), false);
 						JSONArray vistas = json.getJSONObject(i).getJSONArray(NetworkConstants.RESPONSE_JSON_VISTAS);
 						for (int j = 0; j < vistas.length(); j++) {
@@ -94,26 +95,24 @@ public class ViewHikesListActivity extends ListActivity {
 	};
 
 	private void showFailureDialog() {
-		new AlertDialog.Builder(this)
-		.setTitle("uh oh something went wrong")
-		.setMessage("Try again?")
-		.setPositiveButton("Retry", new OnClickListener() {
+		new AlertDialog.Builder(this).setTitle("oops something went wrong").setMessage("try again?").setPositiveButton(
+				"Retry", new OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKES_URL, NetworkConstants.RESPONSE_JSON_HIKES).execute();
-			}
-		})
-		.setNegativeButton("Cancel", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKES_URL,
+								NetworkConstants.RESPONSE_JSON_HIKES).execute();
+					}
+				}).setNegativeButton("Cancel", new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
-		}).show(); 
+		}).show();
 	}
-	
-	private class HikeListAdapter extends BaseAdapter{
+
+	private class HikeListAdapter extends BaseAdapter {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -132,6 +131,7 @@ public class ViewHikesListActivity extends ListActivity {
 
 			return convertView;
 		}
+
 		@Override
 		public int getCount() {
 			if (mHikes == null)
@@ -150,7 +150,7 @@ public class ViewHikesListActivity extends ListActivity {
 		public long getItemId(int position) {
 			return position;
 		}
-		
+
 	}
 
 	private static class ViewHolder {

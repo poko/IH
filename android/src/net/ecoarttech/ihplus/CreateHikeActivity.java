@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
+
 public class CreateHikeActivity extends Activity {
 	private static String TAG = "IH+ - CreateHikeActivity";
 
@@ -20,8 +22,10 @@ public class CreateHikeActivity extends Activity {
 		// set fonts
 		Util.setFont(this, findViewById(R.id.start_address), findViewById(R.id.end_address));
 		Util.setBoldFont(this, findViewById(R.id.start_hike));
+		// setup bugsense
+		BugSenseHandler.setup(this, "492f90da");
 	}
-	
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
@@ -43,7 +47,7 @@ public class CreateHikeActivity extends Activity {
 		String start = ((EditText) findViewById(R.id.start_address)).getText().toString();
 		String end = ((EditText) findViewById(R.id.end_address)).getText().toString();
 		if (start.length() == 0 || end.length() == 0) {
-			Toast.makeText(this, "Please enter a start and end address", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "please enter a start and end address", Toast.LENGTH_LONG).show();
 			return;
 		}
 		// start map Activity
