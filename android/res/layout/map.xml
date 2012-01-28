@@ -67,7 +67,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:clickable="true"
-			android:apiKey="02hzpyogklthR3YriJBgTP1dlr1jvpQhIJFcIsQ"/> 
+			android:apiKey="02hzpyogkltgXmwhI6v1e8-yuCP1eDUHZn3M4BA"/> 
 		<!-- Vista Info bar -->
 		<LinearLayout android:id="@+id/vista_layout"
 			android:layout_width="fill_parent"
