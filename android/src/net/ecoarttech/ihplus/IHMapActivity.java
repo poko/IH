@@ -60,7 +60,7 @@ public class IHMapActivity extends MapActivity {
 	protected boolean mRouteShown = false;
 	protected Hike mHike = new Hike();
 	protected LocationManager mLocMgr;
-	protected ScenicVista mPhotoVista;
+	protected static ScenicVista mPhotoVista;
 	protected Uri mPhotoUri;
 	protected ProgressDialog mDialog;
 	protected HashMap<String, String> mContacts = new HashMap<String, String>();
@@ -243,7 +243,7 @@ public class IHMapActivity extends MapActivity {
 			Log.d(TAG, "intent action: " + intent.getAction());
 			PendingIntent pi = PendingIntent.getBroadcast(mContext, VISTA_ENTERED, intent, 0);
 
-			mLocMgr.addProximityAlert(vista.getLat(), vista.getLong(), 25, -1, pi);
+			mLocMgr.addProximityAlert(vista.getLat(), vista.getLong(), 15, -1, pi);
 			Log.d(TAG, "added alert for: " + vista.getLat() + " long: " + vista.getLong());
 
 			// set up pending intent recievers
@@ -342,6 +342,9 @@ public class IHMapActivity extends MapActivity {
 										}
 									}
 								}).create().show();
+					} else if (vista.getActionType() == ActionType.MEDITATE){
+						markVistaAsCompleted(vista);
+						
 					} else if (vista.getActionType() == ActionType.PHOTO) {
 						// open camera intent
 						startCameraIntent(vista);

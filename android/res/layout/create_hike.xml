@@ -27,12 +27,14 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_start"
-		android:textColorHint="@color/background_gray"/>	
+		android:textColorHint="@color/background_gray"
+		android:text="11 lansdale st, rochester, ny"/>	
 	<EditText android:id="@+id/end_address"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_end"
-		android:textColorHint="@color/background_gray"/>	
+		android:textColorHint="@color/background_gray"
+		android:text="62 marshall st, rochester, ny"/>	
 	</LinearLayout>
 	<TextView android:id="@+id/start_hike"
 		android:layout_width="fill_parent"
