@@ -10,8 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
-
 public class CreateHikeActivity extends Activity {
 	private static String TAG = "IH+ - CreateHikeActivity";
 
@@ -23,7 +21,7 @@ public class CreateHikeActivity extends Activity {
 		Util.setFont(this, findViewById(R.id.start_address), findViewById(R.id.end_address));
 		Util.setBoldFont(this, findViewById(R.id.start_hike));
 		// setup bugsense
-		BugSenseHandler.setup(this, "492f90da");
+		//BugSenseHandler.setup(this, "492f90da");
 	}
 
 	@Override

@@ -139,6 +139,10 @@ public class OriginalHikeActivity extends IHMapActivity {
 									pathConent = path.item(0).getNodeValue();
 								}
 							}
+							if (pathConent.length() == 0){
+								displayRetryDialog();
+								return;
+							}
 							String[] tempContent = pathConent.split(" ");
 							generateScenicVistas(tempContent);
 							drawPath(tempContent);
@@ -165,12 +169,11 @@ public class OriginalHikeActivity extends IHMapActivity {
 	}
 
 	private void generateScenicVistas(String[] points) {
-		Log.d(TAG, "pairs amount:" + points.length);
 		ArrayList<Integer> existingVistas = new ArrayList<Integer>();
 		if (points.length < 3) {
 			// each point is a new scenic vista
 			for (int i = 0; i < points.length; i++) {
-				createNewVista(points[i]);
+					createNewVista(points[i]);
 			}
 		} else {
 			// generate random number between 2-4 (for 4-8 total scenic vistas)
@@ -231,9 +234,9 @@ public class OriginalHikeActivity extends IHMapActivity {
 	};
 
 	private static double getRandomOffset() {
-		double num = Math.random() * (.009);
-		double offset = Math.floor(num * 1000 + 0.5) / 1000;
-		int i = (offset / .001) % 2 == 0 ? 1 : -1;
+		double num = Math.random() * (.09);
+		double offset = Math.floor(num * 100 + 0.5) / 100;
+		int i = (offset / .01) % 2 == 0 ? 1 : -1;
 		return offset * i;
 	}
 }
