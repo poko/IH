@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="header_gray">#444444</color>
+	<color name="splash_gray">#333333</color>
 	<color name="tabbar_gray">#848181</color>
 	<color name="link_blue">#21D9FC</color>
 	<color name="background_gray">#BCBBBB</color>

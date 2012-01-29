@@ -27,24 +27,23 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_start"
-		android:textColorHint="@color/background_gray"
-		android:text="11 lansdale st, rochester, ny"/>	
+		android:textColorHint="@color/background_gray"/>	
 	<EditText android:id="@+id/end_address"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_end"
-		android:textColorHint="@color/background_gray"
-		android:text="62 marshall st, rochester, ny"/>	
+		android:textColorHint="@color/background_gray"/>	
 	</LinearLayout>
-	<TextView android:id="@+id/start_hike"
+	<RelativeLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:gravity="right"
-		android:paddingRight="20dp"
-		android:textSize="20dp"
-		android:textColor="@color/link_blue"
 		android:background="@color/light_gray"
-		android:text="@string/hit_trail"
-		android:clickable="true"
-		android:onClick="onHitTrailClick"/>
+		android:padding="5dp">
+		<Button android:id="@+id/start_hike"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:background="@drawable/hit_the_trail_btn"
+			android:onClick="onHitTrailClick"/>
+	</RelativeLayout>
 </LinearLayout>

@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -342,9 +343,9 @@ public class IHMapActivity extends MapActivity {
 										}
 									}
 								}).create().show();
-					} else if (vista.getActionType() == ActionType.MEDITATE){
+					} else if (vista.getActionType() == ActionType.MEDITATE) {
 						markVistaAsCompleted(vista);
-						
+
 					} else if (vista.getActionType() == ActionType.PHOTO) {
 						// open camera intent
 						startCameraIntent(vista);
@@ -478,5 +479,10 @@ public class IHMapActivity extends MapActivity {
 			public void onClick(DialogInterface dialog, int which) {
 			}
 		}).create().show();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
 	}
 }

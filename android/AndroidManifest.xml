@@ -12,20 +12,20 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
 
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/IHTheme" >
-        <activity android:name=".CreateHikeActivity"
-                  android:label="@string/app_name" android:screenOrientation="portrait" android:launchMode="singleTask">
+        <activity android:name=".SplashActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity android:name=".OriginalHikeActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".CreateHikeActivity" android:screenOrientation="portrait" android:launchMode="singleTask"/>
+		<activity android:name=".OriginalHikeActivity" android:screenOrientation="portrait" android:configChanges="orientation"/>
 		<activity android:name=".SearchActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" android:taskAffinity="net.ecoarttech.ihplus.CreatHikeActivity"/>
 		<activity android:name=".ShareHikeActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".ViewHikeActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".ViewHikesListActivity" android:screenOrientation="portrait"/>
 		<activity android:name=".ViewOrHikeActivity" android:screenOrientation="portrait"/>
-		<activity android:name=".WalkHikeActivity" android:screenOrientation="portrait"/>
+		<activity android:name=".WalkHikeActivity" android:screenOrientation="portrait" android:configChanges="orientation"/>
       <uses-library android:name="com.google.android.maps" />
       <provider android:name=".util.PhotoProvider" android:authorities="net.ecoarttech.ihplus" /> 
     </application>
