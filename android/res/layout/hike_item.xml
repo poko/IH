@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_height="40dp"
 	android:paddingLeft="10dp"
 	android:paddingRight="10dp"
 	android:paddingTop="5dp"
@@ -13,5 +13,12 @@
 	    style="@style/boldBlack"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/hike_desc"/>
+		android:layout_centerVertical="true"/>
+	<TextView android:id="@+id/hike_info"
+	    style="@style/boldBlue"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+		android:text="view >>"/>
 </RelativeLayout>

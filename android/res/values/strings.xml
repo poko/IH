@@ -6,6 +6,7 @@
     <string name="create_hike_desc">hike description:</string>
     <string name="create_hike_name">hike name:</string>
     <string name="create_hike_username">your name:</string>
+    <string name="credits">an ecoarttech project\n\ndevelopment by\nPolina Koronkevich</string>
     <string name="current_hike">your current hike</string>
     <string name="empty_search">no search results here</string>
     <string name="enter_start">enter start address</string>

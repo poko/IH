@@ -21,8 +21,6 @@ public class CreateHikeActivity extends Activity {
 		// set fonts
 		Util.setFont(this, findViewById(R.id.start_address), findViewById(R.id.end_address));
 		Util.setBoldFont(this, findViewById(R.id.start_hike));
-		// setup bugsense
-		// BugSenseHandler.setup(this, "492f90da");
 		mStart = (EditText) findViewById(R.id.start_address);
 		mEnd = (EditText) findViewById(R.id.end_address);
 	}
