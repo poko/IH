@@ -32,7 +32,9 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
-		android:background="@android:drawable/ic_menu_compass"
+		android:layout_marginRight="7dp"
+		android:layout_marginTop="7dp"
+		android:background="@drawable/your_location_img"
 		android:onClick="onCurrentLocationClick"/>
 	<EditText android:id="@+id/end_address"
 		android:layout_width="fill_parent"

@@ -6,7 +6,17 @@
     <string name="create_hike_desc">hike description:</string>
     <string name="create_hike_name">hike name:</string>
     <string name="create_hike_username">your name:</string>
-    <string name="credits">an ecoarttech project\n\ndevelopment by\nPolina Koronkevich</string>
+    <string name="credits"> a project by ecoarttech\n\nsoftware development polina koronkevich\n\n
+		created with funding from:\n
+		new york state council on the arts\n
+		new york foundation for the arts\n
+		whitney museum of american art\n
+		rochester university\n
+		\n		
+		(cc) 2011 ecoarttech\n
+		attribution - noncommercial - share alike\n
+		www.ecoarttech.net
+    </string>
     <string name="current_hike">your current hike</string>
     <string name="empty_search">no search results here</string>
     <string name="enter_start">enter start address</string>
