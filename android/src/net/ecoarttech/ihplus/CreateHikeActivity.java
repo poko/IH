@@ -7,11 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateHikeActivity extends Activity {
 	private static String TAG = "IH+ - CreateHikeActivity";
+	private EditText mStart;
+	private EditText mEnd;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,9 @@ public class CreateHikeActivity extends Activity {
 		Util.setFont(this, findViewById(R.id.start_address), findViewById(R.id.end_address));
 		Util.setBoldFont(this, findViewById(R.id.start_hike));
 		// setup bugsense
-		//BugSenseHandler.setup(this, "492f90da");
+		// BugSenseHandler.setup(this, "492f90da");
+		mStart = (EditText) findViewById(R.id.start_address);
+		mEnd = (EditText) findViewById(R.id.end_address);
 	}
 
 	@Override
@@ -29,8 +32,8 @@ public class CreateHikeActivity extends Activity {
 		super.onNewIntent(intent);
 		Log.d(TAG, "new intent");
 		// clear out end & start addresses
-		((TextView) findViewById(R.id.start_address)).setText("");
-		((TextView) findViewById(R.id.end_address)).setText("");
+		mStart.setText("");
+		mEnd.setText("");
 	}
 
 	public void onSearchClick(View v) {
@@ -42,8 +45,8 @@ public class CreateHikeActivity extends Activity {
 	public void onHitTrailClick(View v) {
 		Log.d(TAG, "hit the trail click!");
 		// make sure we have a start and end point
-		String start = ((EditText) findViewById(R.id.start_address)).getText().toString();
-		String end = ((EditText) findViewById(R.id.end_address)).getText().toString();
+		String start = mStart.getText().toString();
+		String end = mEnd.getText().toString();
 		if (start.length() == 0 || end.length() == 0) {
 			Toast.makeText(this, "please enter a start and end address", Toast.LENGTH_LONG).show();
 			return;
@@ -53,5 +56,9 @@ public class CreateHikeActivity extends Activity {
 		i.putExtra(IHMapActivity.BUNDLE_START, start);
 		i.putExtra(IHMapActivity.BUNDLE_END, end);
 		startActivity(i);
+	}
+
+	public void onCurrentLocationClick(View v) {
+		mStart.setText("Current Location");
 	}
 }

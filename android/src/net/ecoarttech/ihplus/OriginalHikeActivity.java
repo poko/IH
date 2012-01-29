@@ -30,6 +30,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.google.android.maps.GeoPoint;
+
 public class OriginalHikeActivity extends IHMapActivity {
 	private static final String TAG = "IH+ - OriginalHikeActivity";
 	private boolean randomPoint = true;
@@ -49,12 +51,19 @@ public class OriginalHikeActivity extends IHMapActivity {
 		Bundle extras = getIntent().getExtras();
 		mStart = URLEncoder.encode(extras.getString(BUNDLE_START));
 		mEnd = URLEncoder.encode(extras.getString(BUNDLE_END));
-		// get start/end points from bundle
-		if (randomPoint) {
-			// get address for random geo points
-			getRandomAddress();
-		} else {
-			getDirectionData(mStart, mEnd);
+		// if start is current location -- get current location
+		if (mStart.equals("Current+Location")) {
+			Log.d(TAG, "current location being used.");
+			// wait for callback from MyLocationListener
+			mCurrentLocationOverlay.setCallback(currentLocationFixHandler);
+		} else { // business as usual
+			// get start/end points from bundle
+			if (randomPoint) {
+				// get address for random geo points
+				getRandomAddress();
+			} else {
+				getDirectionData(mStart, mEnd);
+			}
 		}
 	}
 
@@ -62,6 +71,19 @@ public class OriginalHikeActivity extends IHMapActivity {
 		StartCoordsAsyncTask startTask = new StartCoordsAsyncTask(this, mStart, coordsListener);
 		startTask.execute();
 	}
+
+	private void getRandomAddress(GeoPoint currentLocation) {
+		// reverse GeoCode current location
+		randomizePoints(currentLocation.getLatitudeE6() / 1E6, currentLocation.getLongitudeE6() / 1E6, true);
+	}
+
+	private Handler currentLocationFixHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			GeoPoint currentLocation = (GeoPoint) msg.obj;
+			mCurrentLocationOverlay.callbackReceived();
+			getRandomAddress(currentLocation);
+		}
+	};
 
 	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
 
@@ -75,31 +97,43 @@ public class OriginalHikeActivity extends IHMapActivity {
 				double lat = Double.valueOf(coords[1]);
 				double lng = Double.valueOf(coords[0]);
 				// randomize offset
-				Geocoder g = new Geocoder(mContext, Locale.getDefault());
-				double randLat = lat - getRandomOffset();
-				double randLong = lng - getRandomOffset();
-				List<Address> myList;
-				try {
-					myList = g.getFromLocation(randLat, randLong, 1);
-					Log.d(TAG, "XXXXXXresult:" + myList.get(0));
-					String to = null;
-					if (myList.size() > 0) {
-						Address addy = myList.get(0);
-						to = URLEncoder.encode(addy.getAddressLine(0));
-						Log.d(TAG, "To: " + to);
-					}
-					getDirectionData(mStart, to);
-					getDirectionData(to, mEnd);
-				} catch (IOException e) {
-					e.printStackTrace();
-					displayRetryDialog();
-				}
+				randomizePoints(lat, lng, false);
 			} else {
 				// display retry dialog.
 				displayRetryDialog();
 			}
 		}
 	};
+
+	private void randomizePoints(double lat, double lng, boolean isStart) {
+		Geocoder g = new Geocoder(mContext, Locale.getDefault());
+		double randLat = lat - getRandomOffset();
+		double randLong = lng - getRandomOffset();
+		List<Address> myList;
+		try {
+			if (isStart) {
+				// reverse geocode start location, too
+				List<Address> startAddy = g.getFromLocation(lat, lng, 1);
+				if (startAddy.size() > 0) {
+					Address start = startAddy.get(0);
+					mStart = URLEncoder.encode(start.getAddressLine(0));
+				}
+			}
+			myList = g.getFromLocation(randLat, randLong, 1);
+			Log.d(TAG, "XXXXXXresult:" + myList.get(0));
+			String to = null;
+			if (myList.size() > 0) {
+				Address addy = myList.get(0);
+				to = URLEncoder.encode(addy.getAddressLine(0));
+				Log.d(TAG, "To: " + to);
+			}
+			getDirectionData(mStart, to);
+			getDirectionData(to, mEnd);
+		} catch (IOException e) {
+			e.printStackTrace();
+			displayRetryDialog();
+		}
+	}
 
 	private void displayRetryDialog() {
 		new AlertDialog.Builder(this).setTitle("oops").setMessage(
@@ -139,7 +173,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 									pathConent = path.item(0).getNodeValue();
 								}
 							}
-							if (pathConent.length() == 0){
+							if (pathConent.length() == 0) {
 								displayRetryDialog();
 								return;
 							}
@@ -173,7 +207,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 		if (points.length < 3) {
 			// each point is a new scenic vista
 			for (int i = 0; i < points.length; i++) {
-					createNewVista(points[i]);
+				createNewVista(points[i]);
 			}
 		} else {
 			// generate random number between 2-4 (for 4-8 total scenic vistas)

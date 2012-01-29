@@ -8,6 +8,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.location.Location;
+import android.os.Handler;
+import android.os.Message;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -15,6 +17,8 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Projection;
 
 public class CurrentLocationOverlay extends MyLocationOverlay {
+	// public static final String LAT = "lat";
+	// public static final String LNG = "lng";
 	private static final int ANIMATION_DURATION = 200;
 	@SuppressWarnings("unused")
 	private static final String TAG = "IH+ - CurrentLocationOverlay";
@@ -30,6 +34,8 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 	private int bitWidth;
 	private int bitHeight;
 	private Paint paint = new Paint();
+	private Handler callback;
+	private boolean callbackActive;
 
 	public CurrentLocationOverlay(Context context, MapView mapView) {
 		super(context, mapView);
@@ -45,6 +51,15 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 	@Override
 	protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
 		// Log.d(TAG, "Drawing my location: when: " + when);
+		if (callback != null && callbackActive && myLocation != null) {
+			// Bundle data = new Bundle();
+			// data.putDouble(LAT, myLocation.getLatitudeE6() / 1E6);
+			// data.putDouble(LNG, myLocation.getLongitudeE6() / 1E6);
+			Message msg = new Message();
+			msg.obj = myLocation;
+			// msg.setData(data);
+			callback.sendMessage(msg);
+		}
 		if (animationState == 1) {
 			startTime = when;
 			animationState = 2;
@@ -93,4 +108,12 @@ public class CurrentLocationOverlay extends MyLocationOverlay {
 		}
 	}
 
+	public void setCallback(Handler h) {
+		this.callbackActive = true;
+		this.callback = h;
+	}
+
+	public void callbackReceived() {
+		this.callbackActive = false;
+	}
 }
