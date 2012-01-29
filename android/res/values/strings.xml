@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">IH+</string>
     <string name="cont">continue &gt;</string>
+    <string name="create_hike">Create a new indeterminate hike</string>
     <string name="create_hike_desc">hike description:</string>
     <string name="create_hike_name">hike name:</string>
     <string name="create_hike_username">your name:</string>
@@ -10,6 +11,8 @@
     <string name="enter_start">enter start address</string>
     <string name="enter_end">enter end address</string>
     <string name="hit_trail">hit the trail &gt;</string>
+    <string name="search_hike">Search for an indeterminate hike</string>
     <string name="search_hint">Search for a city or zipcode</string>
     <string name="this_is_vista">This is a IH+ Scenic Vista:</string>
+    <string name="welcome">Welcome!\nIH+ is an Android app that helps facilitate\nan ecological awareness of everyday environments.</string>
 </resources>

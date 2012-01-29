@@ -17,7 +17,7 @@ public class SplashActivity extends Activity {
 			@Override
 			public void run() {
 				// start create hike activity
-				Intent i = new Intent(SplashActivity.this, CreateHikeActivity.class);
+				Intent i = new Intent(SplashActivity.this, IntroActivity.class);
 				startActivity(i);
 				finish();
 			}

@@ -28,7 +28,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class ViewHikesListActivity extends ListActivity {
-	private static String TAG = "IH+ - ViewHikeActivity";
+	private static String TAG = "IH+ - ViewHikesListActivity";
 	private int mHikeId;
 	private ArrayList<Hike> mHikes;
 	private HikeListAdapter mAdapter;
