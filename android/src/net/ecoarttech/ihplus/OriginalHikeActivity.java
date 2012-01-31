@@ -268,9 +268,9 @@ public class OriginalHikeActivity extends IHMapActivity {
 	};
 
 	private static double getRandomOffset() {
-		double num = Math.random() * (.09);
-		double offset = Math.floor(num * 100 + 0.5) / 100;
-		int i = (offset / .01) % 2 == 0 ? 1 : -1;
+		double num = Math.random() * (.0009);
+		double offset = Math.floor(num * 10000 + 0.5) / 10000;
+		int i = (offset / .0001) % 2 == 0 ? 1 : -1;
 		return offset * i;
 	}
 }
