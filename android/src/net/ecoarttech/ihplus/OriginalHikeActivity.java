@@ -124,7 +124,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 			String to = null;
 			if (myList.size() > 0) {
 				Address addy = myList.get(0);
-				to = URLEncoder.encode(addy.getAddressLine(0));
+				to = URLEncoder.encode(addy.getAddressLine(0) + " " + addy.getAddressLine(1));
 				Log.d(TAG, "To: " + to);
 			}
 			getDirectionData(mStart, to);
@@ -270,6 +270,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private static double getRandomOffset() {
 		double num = Math.random() * (.0009);
 		double offset = Math.floor(num * 10000 + 0.5) / 10000;
+		Log.d(TAG, "offset:" + offset);
 		int i = (offset / .0001) % 2 == 0 ? 1 : -1;
 		return offset * i;
 	}
