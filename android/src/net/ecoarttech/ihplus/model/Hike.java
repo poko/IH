@@ -105,6 +105,8 @@ public class Hike implements Serializable {
 
 	public String getCreateDate() {
 		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if (createDate == null) // make today's date the create date (only for newly created hikes)
+			createDate = s.format(new Date());
 		Date date = null;
 		try {
 			date = s.parse(createDate);

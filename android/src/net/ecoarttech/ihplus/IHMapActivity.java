@@ -10,6 +10,7 @@ import net.ecoarttech.ihplus.model.ActionType;
 import net.ecoarttech.ihplus.model.Hike;
 import net.ecoarttech.ihplus.model.ScenicVista;
 import net.ecoarttech.ihplus.network.NetworkConstants;
+import net.ecoarttech.ihplus.util.Constants;
 import net.ecoarttech.ihplus.util.PhotoProvider;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -459,6 +460,7 @@ public class IHMapActivity extends MapActivity {
 				Toast.makeText(mContext, "hike was uploaded successfully", Toast.LENGTH_LONG).show();
 				// start 'Share Screen' and finish this one
 				Intent i = new Intent(mContext, ShareHikeActivity.class);
+				i.putExtra(Constants.BUNDLE_HIKE, mHike);
 				startActivity(i);
 				finish();
 			}

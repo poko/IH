@@ -24,6 +24,7 @@
     <string name="hit_trail">hit the trail &gt;</string>
     <string name="search_hike">Search for an indeterminate hike</string>
     <string name="search_hint">Search for a city or zipcode</string>
+    <string name="share_hike">Your hike was successfully uploaded to the IH+ database!</string>
     <string name="this_is_vista">This is a IH+ Scenic Vista:</string>
     <string name="welcome">Welcome!\nIH+ is an Android app that helps facilitate\nan ecological awareness of everyday environments.</string>
 </resources>
