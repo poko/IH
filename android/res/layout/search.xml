@@ -3,7 +3,6 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:background="@color/tabbar_gray"
 	> 
 	<!-- Top Bar -->
 	<RelativeLayout 
@@ -11,13 +10,39 @@
 		android:layout_height="wrap_content"
 		android:background="@drawable/search_top_bar">
 	</RelativeLayout>
-	<EditText android:id="@+id/search_bar"
+	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-	    android:hint="@string/search_hint"
-	    android:textColorHint="@color/light_gray"
-	    android:singleLine="true"
-	    android:imeOptions="actionSearch"/>
+		android:background="@color/tabbar_gray">
+		<EditText android:id="@+id/search_bar"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+		    android:hint="@string/search_hint"
+		    android:textColorHint="@color/light_gray"
+		    android:singleLine="true"
+		    android:imeOptions="actionSearch"/>
+		<Button android:id="@+id/your_loc"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:layout_marginRight="5dp"
+			android:background="@drawable/your_location_img"
+			android:onClick="searchForNearbyHikes"/>
+	</RelativeLayout>
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:padding="5dp"
+		android:background="@color/light_gray"
+		android:layout_marginBottom="2dp">
+		<Button 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:background="@drawable/go_search_btn"
+			android:onClick="onSearchClick"/>
+	</RelativeLayout>
 	<ListView android:id="@android:id/list"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
@@ -25,7 +50,7 @@
 	<TextView android:id="@android:id/empty"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:text="@string/empty_search"/>
-	
-	
+		android:padding="5dp"
+		android:text="@string/empty_search"
+		android:visibility="invisible"/>
 </LinearLayout>

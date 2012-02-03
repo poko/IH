@@ -136,6 +136,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 	}
 
 	private void displayRetryDialog() {
+		mDialog.dismiss();
 		new AlertDialog.Builder(this).setTitle("oops").setMessage(
 				"there was an error generating your hike.\ntry again?").setPositiveButton("Retry",
 				new DialogInterface.OnClickListener() {

@@ -55,4 +55,18 @@
 			android:background="@drawable/hit_the_trail_btn"
 			android:onClick="onHitTrailClick"/>
 	</RelativeLayout>
+	<ImageView 
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:gravity="center"
+		android:src="@drawable/main_screen_bkg_img"/>
+	<Button 
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="left"
+		android:layout_marginLeft="10dp"
+		android:layout_marginBottom="10dp"
+		android:background="@drawable/credits_btn"
+		android:onClick="onCreditsClick"/>
 </LinearLayout>
