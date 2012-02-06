@@ -6,16 +6,18 @@
     <string name="create_hike_desc">hike description:</string>
     <string name="create_hike_name">hike name:</string>
     <string name="create_hike_username">your name:</string>
-    <string name="credits"> a project by ecoarttech\n\nsoftware development polina koronkevich\n\n
-		created with funding from:\n
+    <string name="credits"> a project by\n
+    	ecoarttech / leila nadir &amp; cary peppermint\n\n
+    	software development polina koronkevich\n\n
+		created with funding from\n
 		new york state council on the arts\n
 		new york foundation for the arts\n
 		whitney museum of american art\n
-		rochester university\n
+		and\n
+		university of rochester\n
 		\n		
 		(cc) 2011 ecoarttech\n
 		attribution - noncommercial - share alike\n
-		www.ecoarttech.net
     </string>
     <string name="current_hike">your current hike</string>
     <string name="empty_search">no search results here</string>
@@ -25,5 +27,5 @@
     <string name="search_hike">Search for an indeterminate hike</string>
     <string name="search_hint">Search for a city or zipcode</string>
     <string name="this_is_vista">This is a IH+ Scenic Vista:</string>
-    <string name="welcome">Welcome!\nIH+ is an Android app that helps facilitate\nan ecological awareness of everyday environments.</string>
+    <string name="welcome">Welcome!\nIH+ facilitates ecological awareness of everyday environments.</string>
 </resources>
