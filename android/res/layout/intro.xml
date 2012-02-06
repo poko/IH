@@ -79,4 +79,10 @@
 			android:textStyle="bold"
 			android:text="@string/search_hike"/>
 	</RelativeLayout>
+	<ImageView 
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:gravity="center"
+		android:src="@drawable/main_screen_bkg_img"/>
 </LinearLayout>
