@@ -394,11 +394,6 @@ public class IHMapActivity extends MapActivity {
 		Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
 		ContentValues cameraValues = new ContentValues();
-		// cameraValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-		// cameraValues.put(MediaStore.Images.Media.TITLE, vista.getPhotoTitle());
-		// cameraValues.put(MediaStore.Images.Media.DESCRIPTION, mContext.getResources().getString(R.string.app_name));
-		// Uri uri = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cameraValues);
-
 		cameraValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
 		cameraValues.put(MediaStore.Images.Media.TITLE, vista.getPhotoTitle());
 		cameraValues.put(MediaStore.Images.Media.DESCRIPTION, mContext.getResources().getString(R.string.app_name));

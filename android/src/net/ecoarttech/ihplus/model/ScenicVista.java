@@ -1,6 +1,7 @@
 package net.ecoarttech.ihplus.model;
 
-import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.Serializable;
 
 import net.ecoarttech.ihplus.IHMapActivity;
@@ -17,6 +18,10 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory.Options;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
@@ -24,7 +29,7 @@ import android.util.Log;
 
 import com.google.android.maps.GeoPoint;
 
-public class ScenicVista implements Serializable{
+public class ScenicVista implements Serializable {
 	private static final long serialVersionUID = -4922122191674605309L;
 	private static final String TAG = "IH+ - ScenicVista";
 	public static final String TABLE_NAME = "vistas";
@@ -54,16 +59,15 @@ public class ScenicVista implements Serializable{
 		this.longitude = Double.parseDouble(lon);
 		this.point = new GeoPoint((int) (latitude * 1E6), (int) (longitude * 1E6));
 	}
-	
-	public static ScenicVista newFromJson(JSONObject json) throws JSONException{
+
+	public static ScenicVista newFromJson(JSONObject json) throws JSONException {
 		ScenicVista vista = new ScenicVista(json.optString(COL_LAT), json.optString(COL_LNG));
 		JSONObject newAction = json.optJSONObject("new_vista_action");
-		if (newAction != null){
+		if (newAction != null) {
 			vista.setActionId(newAction.getInt("action_id"));
 			vista.setActionType(newAction.getString("action_type"));
 			vista.setAction(newAction.getString("verbiage"));
-		}
-		else{ // downloading an existing vista action
+		} else { // downloading an existing vista action
 			vista.setActionId(json.getInt("action_id"));
 			vista.setActionType(json.getString("action_type"));
 			vista.setAction(json.getString("verbiage"));
@@ -111,11 +115,23 @@ public class ScenicVista implements Serializable{
 
 	public FileBody getUploadFile(Context c) {
 		if (photo != null) {
-			Log.d(TAG, "photo: " + photo);
-			File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(), photo.getEncodedPath());
-			Log.d(TAG, "file? " + file);
-			Log.d(TAG, "file size: " + file.length());
-			return new FileBody(file);
+			// Log.d(TAG, "photo: " + photo);
+			// File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
+			// photo.getEncodedPath());
+			// Log.d(TAG, "file? " + file);
+			// Log.d(TAG, "file size: " + file.length());
+			try {
+				BitmapFactory.Options opts = new Options();
+				opts.inSampleSize = 4;
+				Bitmap scaled = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()
+						+ photo.getEncodedPath(), opts);
+				FileOutputStream os;
+				os = c.openFileOutput(photo.getEncodedPath(), Context.MODE_PRIVATE);
+				scaled.compress(CompressFormat.JPEG, 90, os);
+				return new FileBody(c.getFileStreamPath(photo.getEncodedPath()));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
@@ -168,13 +184,13 @@ public class ScenicVista implements Serializable{
 		this.photo = uri;
 		complete = uri != null;
 	}
-	
-	public void setPhotoUri(String path){
+
+	public void setPhotoUri(String path) {
 		if (path != null)
 			this.photoPath = path;
 	}
-	
-	public String getPhotoUrl(){
+
+	public String getPhotoUrl() {
 		return photoPath;
 	}
 
