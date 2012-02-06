@@ -33,6 +33,10 @@ public class CreateHikeActivity extends Activity {
 		mStart.setText("");
 		mEnd.setText("");
 	}
+	
+	public void onCreditsClick(View v){
+		startActivity(new Intent(this, InfoActivity.class));
+	}
 
 	public void onSearchClick(View v) {
 		// start the search activity

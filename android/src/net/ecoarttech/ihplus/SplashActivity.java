@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.bugsense.trace.BugSenseHandler;
-
 public class SplashActivity extends Activity {
 
 	@Override
@@ -15,7 +13,7 @@ public class SplashActivity extends Activity {
 		setContentView(R.layout.splash);
 
 		// setup bugsense
-		BugSenseHandler.setup(this, "492f90da");
+		//BugSenseHandler.setup(this, "492f90da");
 
 		new Handler().postDelayed(new Runnable() {
 
@@ -26,6 +24,6 @@ public class SplashActivity extends Activity {
 				startActivity(i);
 				finish();
 			}
-		}, 1000);
+		}, 3000);
 	}
 }
