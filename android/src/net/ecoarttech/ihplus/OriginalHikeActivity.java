@@ -34,7 +34,7 @@ import com.google.android.maps.GeoPoint;
 
 public class OriginalHikeActivity extends IHMapActivity {
 	private static final String TAG = "IH+ - OriginalHikeActivity";
-	private boolean randomPoint = false; // TODO!!!
+	private boolean randomPoint = true; 
 	private int mPathCalls = 0;
 	private String mStart;
 	private String mEnd;

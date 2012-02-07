@@ -19,8 +19,8 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -107,7 +107,7 @@ public class ScenicVista implements Serializable {
 	}
 
 	public ActionType getActionType() {
-		return ActionType.PHOTO;// actionType;
+		return actionType;
 	}
 
 	public String getPhotoTitle() {
