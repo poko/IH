@@ -48,7 +48,6 @@ public class ViewHikeActivity extends Activity {
 					+ Html.fromHtml(vista.getAction()));
 			// Content
 			View content;
-			// TODO- handle MEDIATE
 			if (vista.getActionType() == ActionType.NOTE || vista.getActionType() == ActionType.TEXT) {
 				content = ((TextView) vistaItem.findViewById(R.id.vista_content_note));
 				((TextView) content).setText("Response:\n" + vista.getNote());

@@ -27,7 +27,8 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:hint="@string/enter_start"
-		android:textColorHint="@color/background_gray"/>	
+		android:textColorHint="@color/background_gray"
+		android:singleLine="true"/>	
 	<Button android:id="@+id/current_location"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -41,7 +42,8 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/start_address"
 		android:hint="@string/enter_end"
-		android:textColorHint="@color/background_gray"/>	
+		android:textColorHint="@color/background_gray"
+		android:singleLine="true"/>	
 	</RelativeLayout>
 	<RelativeLayout
 		android:layout_width="fill_parent"

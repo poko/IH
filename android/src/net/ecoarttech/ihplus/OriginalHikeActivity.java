@@ -34,7 +34,7 @@ import com.google.android.maps.GeoPoint;
 
 public class OriginalHikeActivity extends IHMapActivity {
 	private static final String TAG = "IH+ - OriginalHikeActivity";
-	private boolean randomPoint = true;
+	private boolean randomPoint = false; // TODO!!!
 	private int mPathCalls = 0;
 	private String mStart;
 	private String mEnd;
@@ -189,6 +189,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 									createNewVista(tempContent[tempContent.length - 1]);
 								}
 								if (mPathCalls == 2) {
+									createEndVista(tempContent[tempContent.length - 1]);
 									drawVistasAndDownloadTasks();
 								}
 							} else {
@@ -236,6 +237,15 @@ public class OriginalHikeActivity extends IHMapActivity {
 		Log.d(TAG, "new vista!" + coordsStr);
 	}
 
+	private void createEndVista(String coordsStr) {
+		// create a new scenic vista here!
+		String[] lngLat = coordsStr.split(",");
+		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
+		vista.setIsEnd();
+		mHike.addVista(vista);
+		Log.d(TAG, "new vista!" + coordsStr);
+	}
+
 	private void drawVistasAndDownloadTasks() {
 		drawVistas();
 		// get vista 'tasks' from server
@@ -271,7 +281,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private static double getRandomOffset() {
 		float min = .0005f;
 		float max = .005f;
-		double num = Math.random() * (max-min);
+		double num = Math.random() * (max - min);
 		double offset = Math.floor(num * 10000 + 0.5) / 10000;
 		Log.d(TAG, "offset:" + offset);
 		int i = (offset / .0001) % 2 == 0 ? 1 : -1;

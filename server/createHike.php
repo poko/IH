@@ -129,7 +129,7 @@ foreach ($vista_json as $v){
                   mysql_real_escape_string($v["longitude"]),
                   mysql_real_escape_string($v["date"]),
                   mysql_real_escape_string($v["note"]),
-                  mysql_real_escape_string($v["photo"]));
+                  mysql_real_escape_string($today_dir."/".$hike_id."_".str_replace('\\', '', $v["photo"]).".jpg");
 	$result = mysql_query($query);
 	if (!$result){
 		$message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -141,7 +141,7 @@ foreach ($vista_json as $v){
 // save the photos
 foreach ($_FILES as $file){
 	// create target folder/filename and move it there
-	$uploadfile = $today_upload_dir . "/" . date("H:i:s") . "_" . basename($file['name']).".jpg";
+	$uploadfile = $today_upload_dir . "/".$hike_id."_".basename($file['name']);
 	if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
 	    //echo "File is valid, and was successfully uploaded.\n";
 	} else {

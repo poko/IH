@@ -31,11 +31,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.TextView.OnEditorActionListener;
 
 public class SearchActivity extends ListActivity {
 	private static String TAG = "IH+ - SearchActivity";
@@ -51,7 +51,6 @@ public class SearchActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search);
 		this.mContext = this;
-
 
 		mAdapter = new SearchListAdapter(this, null);
 		setListAdapter(mAdapter);
@@ -85,15 +84,14 @@ public class SearchActivity extends ListActivity {
 		mEmptyView = (TextView) getListView().getEmptyView();
 		mEmptyView.setVisibility(View.GONE);
 	}
-	
+
 	private void searchByText(String input) {
 		// start progress dialog
 		if (input.length() > 0) {
 			mDialog = ProgressDialog.show(mContext, "", "searching for hikes near " + input);
 			mDialog.setCancelable(true);
 			// reverse geocode the search term
-			new StartCoordsAsyncTask(SearchActivity.this, URLEncoder.encode(input), coordsListener)
-					.execute();
+			new StartCoordsAsyncTask(SearchActivity.this, URLEncoder.encode(input), coordsListener).execute();
 		} else {
 			Toast.makeText(mContext, "enter a search term", Toast.LENGTH_SHORT).show();
 		}
@@ -114,8 +112,8 @@ public class SearchActivity extends ListActivity {
 			searchHikes(lastKnown.getLatitude(), lastKnown.getLongitude());
 		}
 	}
-	
-	public void onSearchClick(View v){
+
+	public void onSearchClick(View v) {
 		searchByText(mSearchBar.getText().toString());
 	}
 
@@ -126,7 +124,7 @@ public class SearchActivity extends ListActivity {
 			if (doc != null) {
 				NodeList nl = doc.getElementsByTagName("coordinates");
 				if (nl != null) {
-					try{
+					try {
 						String coordsElm = nl.item(0).getFirstChild().getNodeValue();
 						String[] coords = coordsElm.split(",");
 						// long = 0, lat = 1
@@ -135,8 +133,7 @@ public class SearchActivity extends ListActivity {
 						// TODO - check for validity
 						// send coords up to server. bam.
 						searchHikes(lat, lng);
-					}
-					catch(NullPointerException e){
+					} catch (NullPointerException e) {
 						showError();
 					}
 				} else {
@@ -151,7 +148,8 @@ public class SearchActivity extends ListActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		mLocMgr.removeUpdates(locationListener);
+		if (mLocMgr != null)
+			mLocMgr.removeUpdates(locationListener);
 	}
 
 	private Handler downloadHikesHandler = new Handler() {
@@ -169,7 +167,7 @@ public class SearchActivity extends ListActivity {
 					}
 					mAdapter.setHikes(hikes);
 					mEmptyView.setVisibility(hikes.size() == 0 ? View.VISIBLE : View.INVISIBLE);
-					
+
 				} catch (JSONException e) {
 					e.printStackTrace();
 					showError();
@@ -209,7 +207,7 @@ public class SearchActivity extends ListActivity {
 	}
 
 	private void showError() {
-		if (mDialog != null && mDialog.isShowing()){
+		if (mDialog != null && mDialog.isShowing()) {
 			mDialog.dismiss();
 		}
 		Toast.makeText(mContext, "oops, an error occurred searching for hikes", Toast.LENGTH_LONG).show();

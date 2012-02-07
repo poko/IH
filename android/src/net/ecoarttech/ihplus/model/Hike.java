@@ -29,7 +29,7 @@ public class Hike implements Serializable {
 	public static final String TABLE_NAME = "hikes";
 	private Double startLat;
 	private Double startLng;
-	private ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+	private transient ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
 	private ArrayList<ScenicVista> vistas = new ArrayList<ScenicVista>();
 	private int id;
 	private String name;
@@ -42,7 +42,8 @@ public class Hike implements Serializable {
 		this.original = true; // hike created on device
 	}
 
-	public Hike(int id, String name, String desc, String createDate, String user, Double startLat, Double startLng, boolean original) {
+	public Hike(int id, String name, String desc, String createDate, String user, Double startLat, Double startLng,
+			boolean original) {
 		this.id = id;
 		this.name = name;
 		this.description = desc;
@@ -78,8 +79,8 @@ public class Hike implements Serializable {
 		}
 		return null;
 	}
-	
-	public int getId(){
+
+	public int getId() {
 		return id;
 	}
 
@@ -94,8 +95,8 @@ public class Hike implements Serializable {
 	public String getDescription() {
 		return description;
 	}
-	
-	public Boolean isOriginal(){
+
+	public Boolean isOriginal() {
 		return original;
 	}
 
@@ -133,8 +134,8 @@ public class Hike implements Serializable {
 	public Double getStartLng() {
 		return startLng;
 	}
-	
-	public ArrayList<GeoPoint> getPoints(){
+
+	public ArrayList<GeoPoint> getPoints() {
 		return points;
 	}
 
@@ -157,18 +158,19 @@ public class Hike implements Serializable {
 		}
 		return false;
 	}
-	
-	public String getPointsAsJson(){
+
+	public String getPointsAsJson() {
 		StringBuilder sb = new StringBuilder("[");
-		for (int i = 0; i < points.size(); i++){
+		for (int i = 0; i < points.size(); i++) {
 			GeoPoint p = points.get(i);
-			sb.append(String.format("{\"index\": %d, \"latitude\": %d, \"longitude\": %d}", i, p.getLatitudeE6(), p.getLongitudeE6()));
+			sb.append(String.format("{\"index\": %d, \"latitude\": %d, \"longitude\": %d}", i, p.getLatitudeE6(), p
+					.getLongitudeE6()));
 			sb.append(",");
 		}
 		sb.deleteCharAt(sb.length() - 1); // remove last comma
 		sb.append("]");
 		return sb.toString();
-		
+
 	}
 
 	public String getVistasAsJson(Context context) {
@@ -187,7 +189,8 @@ public class Hike implements Serializable {
 	}
 
 	public static Hike fromJson(JSONObject json, boolean isOriginal) {
-		return new Hike(json.optInt(JSON_ID), json.optString(JSON_NAME), json.optString(JSON_DESC), json.optString(JSON_CREATE_DATE), json
-				.optString(JSON_USERNAME), json.optDouble(JSON_START_LAT), json.optDouble(JSON_START_LNG), isOriginal);
+		return new Hike(json.optInt(JSON_ID), json.optString(JSON_NAME), json.optString(JSON_DESC), json
+				.optString(JSON_CREATE_DATE), json.optString(JSON_USERNAME), json.optDouble(JSON_START_LAT), json
+				.optDouble(JSON_START_LNG), isOriginal);
 	}
 }

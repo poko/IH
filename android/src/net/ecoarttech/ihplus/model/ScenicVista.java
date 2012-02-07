@@ -48,11 +48,12 @@ public class ScenicVista implements Serializable {
 	private String action;
 	private ActionType actionType;
 	private String note;
-	private Uri photo;
+	private transient Uri photo;
 	private String photoPath;
 	private PendingIntent pi;
 	private BroadcastReceiver br;
 	private boolean complete = false;
+	private boolean isEnd = false;
 
 	public ScenicVista(String lat, String lon) {
 		this.latitude = Double.parseDouble(lat);
@@ -106,29 +107,24 @@ public class ScenicVista implements Serializable {
 	}
 
 	public ActionType getActionType() {
-		return actionType;
+		return ActionType.PHOTO;// actionType;
 	}
 
 	public String getPhotoTitle() {
-		return "IHPlus_" + point;// latitude + "_" + longitude;
+		return "IH_" + point;// latitude + "_" + longitude;
 	}
 
 	public FileBody getUploadFile(Context c) {
 		if (photo != null) {
-			// Log.d(TAG, "photo: " + photo);
-			// File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-			// photo.getEncodedPath());
-			// Log.d(TAG, "file? " + file);
-			// Log.d(TAG, "file size: " + file.length());
 			try {
 				BitmapFactory.Options opts = new Options();
 				opts.inSampleSize = 4;
 				Bitmap scaled = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()
 						+ photo.getEncodedPath(), opts);
 				FileOutputStream os;
-				os = c.openFileOutput(photo.getEncodedPath(), Context.MODE_PRIVATE);
+				os = c.openFileOutput(getPhotoTitle() + ".jpg", Context.MODE_PRIVATE);
 				scaled.compress(CompressFormat.JPEG, 90, os);
-				return new FileBody(c.getFileStreamPath(photo.getEncodedPath()));
+				return new FileBody(c.getFileStreamPath(getPhotoTitle() + ".jpg"));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -192,6 +188,14 @@ public class ScenicVista implements Serializable {
 
 	public String getPhotoUrl() {
 		return photoPath;
+	}
+
+	public void setIsEnd() {
+		isEnd = true;
+	}
+
+	public boolean isEndVista() {
+		return isEnd;
 	}
 
 	public boolean isComplete() {
