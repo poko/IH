@@ -91,13 +91,19 @@ public class OriginalHikeActivity extends IHMapActivity {
 		public void onComplete(Document doc) {
 			if (doc != null) {
 				NodeList nl = doc.getElementsByTagName("coordinates");
-				String coordsElm = nl.item(0).getFirstChild().getNodeValue();
-				String[] coords = coordsElm.split(",");
-				// long = 0, lat = 1
-				double lat = Double.valueOf(coords[1]);
-				double lng = Double.valueOf(coords[0]);
-				// randomize offset
-				randomizePoints(lat, lng, false);
+				try{
+					String coordsElm = nl.item(0).getFirstChild().getNodeValue();
+					String[] coords = coordsElm.split(",");
+					// long = 0, lat = 1
+					double lat = Double.valueOf(coords[1]);
+					double lng = Double.valueOf(coords[0]);
+					// randomize offset
+					randomizePoints(lat, lng, false);
+				}
+				catch( NullPointerException e){
+					e.printStackTrace();
+					displayRetryDialog();
+				}
 			} else {
 				// display retry dialog.
 				displayRetryDialog();
@@ -116,7 +122,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 				List<Address> startAddy = g.getFromLocation(lat, lng, 1);
 				if (startAddy.size() > 0) {
 					Address start = startAddy.get(0);
-					mStart = URLEncoder.encode(start.getAddressLine(0));
+					mStart = URLEncoder.encode(start.getAddressLine(0) + " " + start.getAddressLine(1));
 				}
 			}
 			myList = g.getFromLocation(randLat, randLong, 1);
@@ -136,23 +142,25 @@ public class OriginalHikeActivity extends IHMapActivity {
 	}
 
 	private void displayRetryDialog() {
-		mDialog.dismiss();
-		new AlertDialog.Builder(this).setTitle("oops").setMessage(
-				"there was an error generating your hike.\ntry again?").setPositiveButton("Retry",
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						new StartCoordsAsyncTask(mContext, mStart, coordsListener).execute();
-					}
-				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				finish(); // TODO - Clear out endpoints
-			}
-		}).show();
+		if (!isFinishing()){
+			mDialog.dismiss();
+			new AlertDialog.Builder(this).setTitle("oops").setMessage(
+					"there was an error generating your hike.\ntry again?").setPositiveButton("Retry",
+					new DialogInterface.OnClickListener() {
+	
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							new StartCoordsAsyncTask(mContext, mStart, coordsListener).execute();
+						}
+					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					finish(); // TODO - Clear out endpoints
+				}
+			}).show();
+		}
 	}
 
 	private void getDirectionData(String srcPlace, String destPlace) {
