@@ -2,10 +2,12 @@ package net.ecoarttech.ihplus;
 
 import net.ecoarttech.ihplus.util.Util;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -53,6 +55,9 @@ public class CreateHikeActivity extends Activity {
 			Toast.makeText(this, "please enter a start and end address", Toast.LENGTH_LONG).show();
 			return;
 		}
+		// hide keyboard
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mEnd.getWindowToken(), 0);
 		// start map Activity
 		Intent i = new Intent(this, OriginalHikeActivity.class);
 		i.putExtra(IHMapActivity.BUNDLE_START, start);

@@ -30,12 +30,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 public class SearchActivity extends ListActivity {
 	private static String TAG = "IH+ - SearchActivity";
@@ -88,6 +89,9 @@ public class SearchActivity extends ListActivity {
 	private void searchByText(String input) {
 		// start progress dialog
 		if (input.length() > 0) {
+			// hide keyboard
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(mSearchBar.getWindowToken(), 0);
 			mDialog = ProgressDialog.show(mContext, "", "searching for hikes near " + input);
 			mDialog.setCancelable(true);
 			// reverse geocode the search term

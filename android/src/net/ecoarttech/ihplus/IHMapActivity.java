@@ -319,10 +319,12 @@ public class IHMapActivity extends MapActivity {
 				View vistaCont = findViewById(R.id.vista_cont);
 				setActionClickListeners(enteredVista, vistaCont);
 			} else {
-				// TODO - if vista task is not completed, tsk tsk!
-				// else, get rid of vista info bar
-				findViewById(R.id.hike_layout).setVisibility(View.GONE);
-				findViewById(R.id.vista_layout).setVisibility(View.GONE);
+				// TODO - if vista task is not completed, tsk tsk! ??
+				if (enteredVista.isComplete()){
+					// if vista is complete, get rid of vista info bar
+					findViewById(R.id.hike_layout).setVisibility(View.GONE);
+					findViewById(R.id.vista_layout).setVisibility(View.GONE);
+				}
 			}
 		}
 	}
