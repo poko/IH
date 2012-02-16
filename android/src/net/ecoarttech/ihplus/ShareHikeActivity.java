@@ -1,6 +1,7 @@
 package net.ecoarttech.ihplus;
 
 import net.ecoarttech.ihplus.model.Hike;
+import net.ecoarttech.ihplus.network.NetworkConstants;
 import net.ecoarttech.ihplus.util.Constants;
 import android.app.Activity;
 import android.content.Intent;
@@ -24,8 +25,8 @@ public class ShareHikeActivity extends Activity {
 	public void onShareClick(View v) {
 		Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
 		shareIntent.setType("text/html");
-		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "I took a hike");
-		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "View it <a href='http://www.ecoarttech.net'>here</a>");
+		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "I went on an Indeterminate Hike today");
+		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, String.format("<a href='%s/web/hike.php?id=%d'>Click here see documentation from my Indeterminate Hike</a>", NetworkConstants.SERVER_URL, mHike.getId()));
 
 		startActivity(Intent.createChooser(shareIntent, "Share your hike"));
 	}
