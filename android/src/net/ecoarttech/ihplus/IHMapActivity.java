@@ -254,7 +254,7 @@ public class IHMapActivity extends MapActivity {
 			Log.d(TAG, "intent action: " + intent.getAction());
 			PendingIntent pi = PendingIntent.getBroadcast(mContext, VISTA_ENTERED, intent, 0);
 
-			mLocMgr.addProximityAlert(vista.getLat(), vista.getLong(), 15, -1, pi);
+			mLocMgr.addProximityAlert(vista.getLat(), vista.getLong(), 10, -1, pi);
 			Log.d(TAG, "added alert for: " + vista.getLat() + " long: " + vista.getLong());
 
 			// set up pending intent recievers
@@ -487,6 +487,8 @@ public class IHMapActivity extends MapActivity {
 				showRetryDialog();
 			} else { // success
 				Toast.makeText(mContext, "hike was uploaded successfully", Toast.LENGTH_LONG).show();
+				// get hike id as passed back from server
+				mHike.setId((Integer) msg.obj);
 				// start 'Share Screen' and finish this one
 				Intent i = new Intent(mContext, ShareHikeActivity.class);
 				i.putExtra(Constants.BUNDLE_HIKE, mHike);

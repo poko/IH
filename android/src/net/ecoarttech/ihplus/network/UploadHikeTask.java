@@ -67,9 +67,11 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 			}
 			Log.d(TAG, "entity? " + entity);
 			// add any photos
-			for (ScenicVista vista : mHike.getVistas()) {
+			//for (ScenicVista vista : mHike.getVistas()) {
+			for (int i = 0; i < mHike.getVistas().size(); i++){
+				ScenicVista vista = mHike.getVistas().get(i);
 				if (vista.getActionType() == ActionType.PHOTO) {
-					entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_PHOTOS, vista.getUploadFile(mContext));
+					entity.addPart(NetworkConstants.REQUEST_JSON_HIKE_PHOTOS+"_"+i, vista.getUploadFile(mContext));
 				}
 			}
 			request.setEntity(entity);// new UrlEncodedFormEntity(parameters));
@@ -100,11 +102,13 @@ public class UploadHikeTask extends AsyncTask<Void, Void, HttpResponse> {
 					responseText.append(line);
 				}
 				Log.d(TAG, "Server response: " + responseText);
-				// parse out success/failure
+				// parse out success/failure and hike id
 				try {
 					JSONObject respJson = new JSONObject(responseText.toString());
-					if (respJson.getBoolean(NetworkConstants.SERVER_RESULT))
+					if (respJson.getBoolean(NetworkConstants.SERVER_RESULT)){
 						msg.what = NetworkConstants.SUCCESS;
+						msg.obj = respJson.optInt("hike_id");
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

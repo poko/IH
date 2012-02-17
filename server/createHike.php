@@ -129,7 +129,7 @@ foreach ($vista_json as $v){
                   mysql_real_escape_string($v["longitude"]),
                   mysql_real_escape_string($v["date"]),
                   mysql_real_escape_string($v["note"]),
-                  mysql_real_escape_string($today_dir."/".$hike_id."_".str_replace('\\', '', $v["photo"]).".jpg");
+                  mysql_real_escape_string($today_dir."/".$hike_id."_".str_replace('/', '', $v["photo"]).".jpg"));
 	$result = mysql_query($query);
 	if (!$result){
 		$message  = 'Invalid query: ' . mysql_error() . "\n";
@@ -152,6 +152,6 @@ foreach ($_FILES as $file){
 
 include 'db_close.php';
 
-echo "{\"result\":\"true\"}";
+echo "{\"result\":\"true\", \"hike_id\":\"".$hike_id."\"}";
 
 ?>

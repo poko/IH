@@ -83,6 +83,10 @@ public class Hike implements Serializable {
 	public int getId() {
 		return id;
 	}
+	
+	public void setId(Integer id){
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
