@@ -11,6 +11,30 @@
         <link rel="SHORTCUT ICON" href="http://www.ecoarttech.net/images/favicon.ico" />
 <link href="../eco_art11.css" rel="stylesheet" type="text/css" />
         <script src="Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA-hCqc1MrMdUWQd60F08eTdGi8BI0TUv0&sensor=false">
+    </script>
+    <script type="text/javascript">
+    	function initAll(){
+    		for (i=0; i < 4; i++){
+    			//initialize(i);
+    			latLngStr = document.getElementById("map_canvas_"+i).title;
+    			alert(latLngStr);
+    			latLng = latLngStr.split(",");
+    			initialize(latLng[0], latLng[1], i);
+    		}
+    	}
+      function initialize(lat, long, id) {
+        var myOptions = {
+          center: new google.maps.LatLng(lat, long),
+          zoom: 14,
+          disableDefaultUI: true,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        var map = new google.maps.Map(document.getElementById("map_canvas_"+id),
+            myOptions);
+      }
+    </script>
 <style type="text/css">
 <!--
 body {
@@ -21,7 +45,7 @@ body {
 -->
 </style></head>
 
-	<body>
+	<body onload="initAll()">
 		<table width="980" border="0" cellspacing="2" cellpadding="2" align="center">
 	  <tr>
 				<td align="left" valign="top" bgcolor="#CCCCCC"><a href="http://www.ecoarttech.net"><img src="../images/feature_work_ban_img.gif" width="980" height="64" border="0" /></a><br />
@@ -84,17 +108,17 @@ Join our email list on the left nav to subscribe and we will let you know as soo
                           <td width="42%" align="left" valign="top"></p>
                             <table width="100%" border="0" cellspacing="4" cellpadding="2">
                               <tr>
-                                <td align="left" valign="top"><span class="bigHighlite">recent hikes</span><br /></td>
+                                <td align="left" valign="top"><span class="bigHighlite">recent hikes</span><br />
+                                <div id="map_canvas" style="width:300px; height:100px"></div></td>
                               </tr>
                             </table>
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
                                 <td align="left" valign="top" >
-                                
 <?php
 include '../scripts/db_open.php';
 
-$query = "SELECT hike_id, name, description, date, username FROM hikes order by hike_id desc limit 4";
+$query = "SELECT hike_id, name, description, date, username, start_lat, start_lng FROM hikes order by hike_id desc limit 4";
 $result=mysql_query($query);
 $hikes = array();
 while ($hike = mysql_fetch_object($result)) {
@@ -118,11 +142,13 @@ while ($hike = mysql_fetch_object($result)) {
     array_push($hikes, $hike);
 }
 
-foreach ($hikes as $h){
+//foreach ($hikes as $h){
+for ($i=0; $i < sizeof($hikes); $i++){
+$h = $hikes[$i];
 echo "<table width=\"100%\" border=\"0\" cellspacing=\"4\" cellpadding=\"2\">";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\"><a href=\"http://www.ecoarttech.net/ih_plus/web/hike.php?id=".$h->hike_id."\">";
-			echo "<img src=\"\" width=\"355\" height=\"123\" border=\"0\" /></a></td>";
+			echo "<div id=\"map_canvas_".$i."\" title=\"".$h->start_lat.",".$h->start_lng."\" style=\"width:355px; height:123px; border:1px\"/></td>";
 	echo "</tr>";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\" class=\"bodystyle\">";
