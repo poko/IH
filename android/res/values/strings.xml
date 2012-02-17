@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">IH+</string>
+    <string name="about">IH+ transforms everyday landscapes into sites of bio-cultural
+diversity and wild happenings. Mobile phones are generally deployed as
+devices of rapid communication and consumerism, to get you what you
+want and where you want as quickly as possible. This app re-uses this
+technology as a tool of environmental imagination and slowing-down. By
+importing "nature" and wilderness into virtually any location, IH+
+encourages its users to experience seemingly common places as sublime
+landscapes.</string>
     <string name="cont">continue &gt;</string>
     <string name="create_hike">Create a new indeterminate hike</string>
     <string name="create_hike_desc">hike description:</string>
