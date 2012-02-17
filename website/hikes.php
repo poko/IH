@@ -17,22 +17,44 @@
     <script type="text/javascript">
     	function initAll(){
     		for (i=0; i < 4; i++){
-    			//initialize(i);
-    			latLngStr = document.getElementById("map_canvas_"+i).title;
-    			alert(latLngStr);
+    			title = document.getElementById("map_canvas_"+i).title;
+    			//alert(latLngStr);
+    			titleSplit = title.split("|");
+    			// start point
+    			latLngStr = titleSplit[0];
     			latLng = latLngStr.split(",");
-    			initialize(latLng[0], latLng[1], i);
+    			m = initialize(latLng[0], latLng[1], i);
+    			// rest of vistsas
+    			vistasSplit = titleSplit[1].split(";");
+    			for (j = 0; j < vistasSplit.length; j++){
+    				vLatLng = vistasSplit[j].split(",");
+    				addMarker(vLatLng[0], vLatLng[1], m);
+    			}
     		}
     	}
       function initialize(lat, long, id) {
+		var latLng = new google.maps.LatLng(lat, long);
         var myOptions = {
-          center: new google.maps.LatLng(lat, long),
+          center: latLng,
           zoom: 14,
           disableDefaultUI: true,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas_"+id),
             myOptions);
+        var marker = new google.maps.Marker({
+       		position: latLng, 
+      		map: map,
+    	});
+    	return map;
+      }
+      
+      function addMarker(lat, long, map){
+		var latLng = new google.maps.LatLng(lat, long);
+        var marker = new google.maps.Marker({
+       		position: latLng, 
+      		map: map,
+    	});
       }
     </script>
 <style type="text/css">
@@ -123,7 +145,7 @@ $result=mysql_query($query);
 $hikes = array();
 while ($hike = mysql_fetch_object($result)) {
     // get vistas & actions
-	$query = sprintf("SELECT id, hike_id, vistas.action_id, longitude, latitude, date, note, photo, verbiage, action_type from vistas INNER JOIN vista_actions WHERE vistas.action_id = vista_actions.action_id AND hike_id = '%s'",
+	$query = sprintf("SELECT id, hike_id, vistas.action_id, longitude, latitude, photo, action_type from vistas INNER JOIN vista_actions WHERE vistas.action_id = vista_actions.action_id AND hike_id = '%s'",
 					mysql_real_escape_string($hike->hike_id));
 	$res=mysql_query($query);
 	$vistas = array();
@@ -142,13 +164,21 @@ while ($hike = mysql_fetch_object($result)) {
     array_push($hikes, $hike);
 }
 
+function vistaLocs($vistas){
+	$res = "";
+	foreach ($vistas as $v){
+		$res .= $v->latitude.",".$v->longitude.";";
+	}
+	return (string)$res;
+}
+
 //foreach ($hikes as $h){
 for ($i=0; $i < sizeof($hikes); $i++){
 $h = $hikes[$i];
 echo "<table width=\"100%\" border=\"0\" cellspacing=\"4\" cellpadding=\"2\">";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\"><a href=\"http://www.ecoarttech.net/ih_plus/web/hike.php?id=".$h->hike_id."\">";
-			echo "<div id=\"map_canvas_".$i."\" title=\"".$h->start_lat.",".$h->start_lng."\" style=\"width:355px; height:123px; border:1px\"/></td>";
+			echo "<div id=\"map_canvas_".$i."\" title=\"".$h->start_lat.",".$h->start_lng."|".vistaLocs($h->vistas)."\" style=\"width:355px; height:123px; border:1px\"/></td>";
 	echo "</tr>";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\" class=\"bodystyle\">";
