@@ -38,7 +38,10 @@ import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -104,27 +107,29 @@ public class IHMapActivity extends MapActivity {
 			do {
 				String name = cur.getString(indexName);
 				String number = cur.getString(indexNumber);
-				int type = cur.getInt(indexType);
-				String phoneType;
-				switch (type) {
-				case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE: {
-					phoneType = " (Mobile)";
-					break;
+				if (number != null) {
+					int type = cur.getInt(indexType);
+					String phoneType;
+					switch (type) {
+					case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE: {
+						phoneType = " (Mobile)";
+						break;
+					}
+					case ContactsContract.CommonDataKinds.Phone.TYPE_HOME: {
+						phoneType = " (Home)";
+						break;
+					}
+					case ContactsContract.CommonDataKinds.Phone.TYPE_WORK: {
+						phoneType = " (Work)";
+						break;
+					}
+					default: {
+						phoneType = " (Other)";
+						break;
+					}
+					}
+					mContacts.put(name + phoneType, number);
 				}
-				case ContactsContract.CommonDataKinds.Phone.TYPE_HOME: {
-					phoneType = " (Home)";
-					break;
-				}
-				case ContactsContract.CommonDataKinds.Phone.TYPE_WORK: {
-					phoneType = " (Work)";
-					break;
-				}
-				default: {
-					phoneType = " (Other)";
-					break;
-				}
-				}
-				mContacts.put(name + phoneType, number);
 				// Do work...
 			} while (cur.moveToNext());
 		}
@@ -339,7 +344,7 @@ public class IHMapActivity extends MapActivity {
 					// open note dialog
 					if (vista.getActionType() == ActionType.NOTE) {
 						final View alertContent = getLayoutInflater().inflate(R.layout.note_dialog, null);
-						new AlertDialog.Builder(mContext).setTitle("take a field note").setIcon(0)
+						new AlertDialog.Builder(mContext).setTitle("make a field note").setIcon(0)
 								.setView(alertContent).setPositiveButton("Done", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface d, int which) {
 										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
@@ -360,21 +365,44 @@ public class IHMapActivity extends MapActivity {
 						final View alertContent = getLayoutInflater().inflate(R.layout.text_dialog, null);
 						// populate contacts dropdown
 						final Spinner contactSpinner = (Spinner) alertContent.findViewById(R.id.vista_contact);
+						final EditText confirmView = (EditText) alertContent.findViewById(R.id.confirm_contact);
+						final Button editConfirm = (Button) alertContent.findViewById(R.id.edit_confirm);
 						ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext,
 								android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet()));
 						arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						contactSpinner.setAdapter(arrayAdapter);
+						// set on selection listener to display selected number
+						contactSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+							@Override
+							public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+								confirmView.setText(mContacts.get(contactSpinner.getSelectedItem()));
+							}
+
+							@Override
+							public void onNothingSelected(AdapterView<?> parent) {}
+						});
+						// set listener for confirm button
+						editConfirm.setOnClickListener(new OnClickListener() {
+							
+							@Override
+							public void onClick(View v) {
+								confirmView.setEnabled(true);
+							}
+						});
 						new AlertDialog.Builder(mContext).setTitle("send a field note").setIcon(0)
 								.setView(alertContent).setPositiveButton("Send", new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface d, int which) {
 										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
 										vista.setNote(noteInput.getText().toString());
-										Log.d(TAG, "selected number to send to: "
-												+ mContacts.get(contactSpinner.getSelectedItem()));
-										PendingIntent pi = PendingIntent.getActivity(mContext, 0, null, 0);
-										SmsManager sms = SmsManager.getDefault();
-										sms.sendTextMessage(mContacts.get(contactSpinner.getSelectedItem()), null,
-												noteInput.getText().toString(), pi, null);
+										String number = confirmView.getText().toString();//mContacts.get(contactSpinner.getSelectedItem());
+										Log.d(TAG, "selected number to send to: " + number);
+										if (number != null){
+											PendingIntent pi = PendingIntent.getActivity(mContext, 0, null, 0);
+											SmsManager sms = SmsManager.getDefault();
+											sms.sendTextMessage(number, null,
+													noteInput.getText().toString(), pi, null);
+										}
 										if (vista.isComplete()) {
 											// allow user to move on to the next vista
 											markVistaAsCompleted(vista);
