@@ -102,11 +102,19 @@ while ($hike = mysql_fetch_object($result)) {
 	$query = sprintf("SELECT id, hike_id, vistas.action_id, longitude, latitude, date, note, photo, verbiage, action_type from vistas INNER JOIN vista_actions WHERE vistas.action_id = vista_actions.action_id AND hike_id = '%s'",
 					mysql_real_escape_string($hike->hike_id));
 	$res=mysql_query($query);
-	$vista_json = array();
+	$vistas = array();
 	while ($row = mysql_fetch_object($res)) {
-		$vista_json[] = $row;
+		$vistas[] = $row;
 	}
-	$hike->vistas = $vista_json;
+	// grab a random image from the hike (if it exists)
+	$hike->sample_photo = "sample_photo.jpg";
+	foreach ($vistas as $v){
+		if ($v->action_type == 'photo' && file_exists("../../ih_plus/uploads/".$v->photo)){
+			$hike->sample_photo = $v->photo;
+			break;
+		}	
+	}
+	$hike->vistas = $vistas;
     array_push($hikes, $hike);
 }
 
@@ -114,16 +122,17 @@ foreach ($hikes as $h){
 echo "<table width=\"100%\" border=\"0\" cellspacing=\"4\" cellpadding=\"2\">";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\"><a href=\"http://www.ecoarttech.net/ih_plus/web/hike.php?id=".$h->hike_id."\">";
-			echo "<img src=\"images/hike_example1_img.jpg\" width=\"355\" height=\"123\" border=\"0\" /></a></td>";
+			echo "<img src=\"\" width=\"355\" height=\"123\" border=\"0\" /></a></td>";
 	echo "</tr>";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\" class=\"bodystyle\">";
 			echo "<table width=\"100%\" border=\"0\" cellspacing=\"1\" cellpadding=\"1\">";
 				echo "<tr>";
-					echo "<td width=\"27%\" align=\"left\" valign=\"top\"><a href=\"http://www.ecoarttech.net/ih_plus/web/hike.php?id=".$h->hike_id."\"><img src=\"images/hike_example1b_img.jpg\" alt=\"hike image\" width=\"120\" height=\"90\" border=\"0\" /></a></td>";
-					echo "<td width=\"73%\" align=\"left\" valign=\"top\" class=\"bodystyle\"><strong>West Chestnut Street Hike -<br />";
+					echo "<td width=\"27%\" align=\"left\" valign=\"top\"><a href=\"http://www.ecoarttech.net/ih_plus/web/hike.php?id=".$h->hike_id."\">";
+					echo "<img src=\"http://www.ecoarttech.net/ih_plus/uploads/".$h->sample_photo."\" alt=\"hike image\" width=\"120\" height=\"90\" border=\"0\" /></a></td>";
+					echo "<td width=\"73%\" align=\"left\" valign=\"top\" class=\"bodystyle\"><strong>".$h->name." -<br />";
 					echo "Pioneered by ".$h->username."</strong>.<br />";
-					echo "A Hike around Cestnut street with many interesting things along the way... <br />";
+					echo $h->description."<br />";
 					echo "<a href=\"http://www.ecoarttech.net/ih_plus/web/hike.php?id=".$h->hike_id."\">More&gt;</a></td>";
 				echo "</tr>";
 			echo "</table>";
@@ -135,69 +144,6 @@ echo "<img src=\"images/line_img.jpg\" width=\"355\" height=\"1\" alt=\"line\" /
 
 include '../scripts/db_close.php';
 ?>
-                           
-                                <table width="100%" border="0" cellspacing="4" cellpadding="2">
-                                  <tr>
-                                    <td align="left" valign="top"><a href="hikepages/index.html">
-                                    <img src="images/hike_example2_img.jpg" alt="" width="355" height="123" border="0" /></a>
-                                    </td>
-                                  </tr>
-                                  <tr>
-                                    <td align="left" valign="top" class="bodystyle">
-                                    <table width="100%" border="0" cellspacing="1" cellpadding="1">
-                                      <tr>
-                                        <td width="27%" align="left" valign="top">
-                                        	<a href="hikepages/index.html">
-                                        	<img src="images/hike_example2b_img.jpg" alt="hike image" width="120" height="90" border="0" /></a>
-                                        </td>
-                                        <td width="73%" align="left" valign="top" class="bodystyle">
-                                        	<strong>Main Street Hike - <br />
-                                        	Pioneered by C. Peppermint</strong><br />
-                                         	A Hike around Main Street with many interesting things along the way... <br />
-                                          <a href="hikepages/index.html">More&gt;</a>
-                                        </td>
-                                      </tr>
-                                    </table>
-                                      <a href="poko_hike.html"></a></td>
-                                  </tr>
-                                </table>
-                                <img src="images/line_img.jpg" width="355" height="1" alt="line" /><br />
-                                <table width="100%" border="0" cellspacing="4" cellpadding="2">
-                                  <tr>
-                                    <td align="left" valign="top"><a href="hikepages/index.html"><img src="images/hike_example3_img.jpg" alt="" width="355" height="123" border="0" /></a></td>
-                                  </tr>
-                                  <tr>
-                                    <td align="left" valign="top" class="bodystyle"><table width="100%" border="0" cellspacing="1" cellpadding="1">
-                                      <tr>
-                                        <td width="27%" align="left" valign="top"><a href="hikepages/index.html"><img src="images/hike_example3b_img.jpg" alt="hike image" width="120" height="90" border="0" /></a></td>
-                                        <td width="73%" align="left" valign="top" class="bodystyle"><strong>Beecher Playground Hike - <br />
-                                        Pioneered by L. Nadir</strong><br />
-                                          A Hike around  the playground with many interesting things along the way... <br />
-                                          <a href="hikepages/index.html">More&gt;</a></td>
-                                      </tr>
-                                    </table>
-                                      <a href="poko_hike.html"></a></td>
-                                  </tr>
-                                </table>
-                                <img src="images/line_img.jpg" width="355" height="1" alt="line" /><br />
-                                <table width="100%" border="0" cellspacing="4" cellpadding="2">
-                                  <tr>
-                                    <td align="left" valign="top"><a href="hikepages/index.html"><img src="images/hike_example4_img.jpg" alt="" width="355" height="123" border="0" /></a></td>
-                                  </tr>
-                                  <tr>
-                                    <td align="left" valign="top" class="bodystyle"><table width="100%" border="0" cellspacing="1" cellpadding="1">
-                                      <tr>
-                                        <td width="27%" align="left" valign="top"><a href="hikepages/index.html"><img src="images/hike_example4b_img.jpg" alt="hike image" width="120" height="90" border="0" /></a></td>
-                                        <td width="73%" align="left" valign="top" class="bodystyle"><strong>River Hike - <br />
-                                        Pioneered J.Colivita</strong><br />
-                                          A Hike around the rivert with many interesting things along the way... <br />
-                                          <a href="hikepages/index.html">More&gt;</a></td>
-                                      </tr>
-                                    </table>
-                                      <a href="poko_hike.html"></a></td>
-                                  </tr>
-                                </table>
-                                <img src="images/line_img.jpg" width="355" height="1" alt="line" /><br /></td>
                               </tr>
                           </table>
                             <br />
