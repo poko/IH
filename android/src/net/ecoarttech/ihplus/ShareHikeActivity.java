@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 public class ShareHikeActivity extends Activity {
+	@SuppressWarnings("unused")
 	private static String TAG = "IH+ - ShareHikeActivity";
 	private Hike mHike;
 	@Override
