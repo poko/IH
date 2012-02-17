@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 	private static final String DB_NAME = "IHPlus.db";
-	private static final int DB_VERSION = 5;
+	private static final int DB_VERSION = 6;
 	private static DBHelper instance;
 
 	private static ArrayList<String> TABLE_COLUMNS = new ArrayList<String>() {
@@ -56,23 +56,24 @@ public class DBHelper extends SQLiteOpenHelper {
 		db
 				.execSQL("INSERT INTO `vista_actions` VALUES(1, 'There were people here before you that have left traces upon the landscape. Take a picture as evidence that their specters still walk amongst us.', 'photo');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(2, 'If you are near a place of business, walk inside and browse the inventory. If there is no business nearby, sit down and enjoy a respite from commerce.', 'note');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(2, 'Turn your nose to the air and sniff the wifi. Text a friend and tell her what the wifi smells like.', 'text');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(3, 'Turn your nose to the air and sniff the wifi. Text a friend and tell him/her what the wifi smells like.', 'text');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(3, 'Put your ear against the ground if you can and listen to the mood of the earth for at least 2 minutes. Write a field note that begins: The earth here sounds like...', 'note');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(4, 'Put your ear against the ground if you can and listen to the mood of the earth for at least 2 minutes. Write a field note that says: \"The earth here sounds like...\"', 'note');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(4, 'Locate a dwelling, whether a cave, a den, an apartment, a cabin, or a nest. Imagine who might live there and what life is like for this creature. Take a photo of this place.', 'photo');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(5, 'Locate a dwelling, whether a cave, a den, an apartment, a cabin, or a nest. Take a photo of this place. and imagine who lives there and what life might be like for them.', 'photo');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(5, 'Search for a creative plant, an obedient plant, or a badly behaving plant. Move closer, study its behavior, and take a picture.', 'photo');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(6, 'Search for a creative plant, an obedient plant, or a badly behaving plant. Move closer, study its behavior, and take a picture.', 'photo');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(6, 'Make friends with the nearest tree. If there is no tree then locate a mailbox or a stone. Place your hand upon your new friend and commend it for its valuable role in our networked ecological system. Take photo that best represents your interactions.', 'photo');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(7, 'Make friends with the nearest tree. If there is no tree then locate a mailbox or a stone. Place your hand upon your new friend and commend it for its valuable role in our networked ecological system. Take photo that best represents your interactions.', 'photo');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(7, 'Look for symbolic markings on the rocks, buildings or trees. Compose a field note that details where you saw them and what you think these markings mean.', 'note');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(8, 'Listen: Something serious, frivolous, or meaningless is being uttered here and will quickly be forgotten. Write down the message you hear and text it to yourself.', 'text');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(9, 'This place used to be different. Slowly turn around in a complete circle keeping your eyes on the horizon. If you think something seems strange or out of place then take a picture. If you think everything is as it should be then take a picture.', 'photo');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(9, 'Look for symbolic markings on the rocks, buildings or trees. Compose a field note about what you think the markings’s location and what you think they mean.', 'note');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(10, 'Stop here and find a place to sit down. Close your eyes and listen for 2-5 minutes. In a fieldnote create a list of the sounds you hear.', 'note');");
 		db
-				.execSQL("INSERT INTO `vista_actions` VALUES(10, 'This place used to be different than it is today. Slowly turn around in a complete circle keeping your eyes on the horizon. If you notice anything strange and out of place then take a picture. If you think everything is as it should be then take a picture.', 'photo');");
+				.execSQL("INSERT INTO `vista_actions` VALUES(11, 'Wildness is transient, fleeting, and unpredictable. The wild is here all around you right now. Take a photo of something wild that you think may not be here tomorrow.', 'photo');");
+
 	}
 
 	public static Cursor getVistaActions(Context context, Integer size) {
