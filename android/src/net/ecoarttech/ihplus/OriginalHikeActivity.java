@@ -250,7 +250,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 		String[] lngLat = coordsStr.split(",");
 		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
 		vista.setIsEnd();
-		mHike.addVista(vista);
+		mHike.addEndVista(vista);
 		Log.d(TAG, "new vista!" + coordsStr);
 	}
 

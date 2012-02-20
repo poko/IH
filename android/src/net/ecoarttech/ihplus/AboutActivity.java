@@ -3,7 +3,9 @@ package net.ecoarttech.ihplus;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.util.Linkify;
 import android.view.View;
+import android.widget.TextView;
 
 public class AboutActivity extends Activity {
 
@@ -11,6 +13,9 @@ public class AboutActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
+		
+		TextView about = (TextView) findViewById(R.id.about);
+		Linkify.addLinks(about, Linkify.ALL);
 	}
 	
 	public void onCreditsClick(View v){

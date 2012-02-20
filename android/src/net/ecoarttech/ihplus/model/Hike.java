@@ -59,6 +59,14 @@ public class Hike implements Serializable {
 			vistas.add(vista);
 	}
 
+	public void addEndVista(ScenicVista vista) {
+		if (!vistas.contains(vista))
+			vistas.add(vista);
+		else{ // vista is there, mark it as the end vista
+			vistas.get(vistas.indexOf(vista)).isEndVista();
+		}
+	}
+	
 	public void setStartPoints(Double lat, Double lng) {
 		this.startLat = lat;
 		this.startLng = lng;

@@ -43,7 +43,7 @@
 	    <ImageView android:id="@+id/hike_icon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/do_hike_icon"
+			android:src="@drawable/hike_it_img"
 			android:layout_margin="10dp"/>
 		<TextView 
 			android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
 	    <ImageView android:id="@+id/view_icon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:src="@drawable/view_hike_icon"
+			android:src="@drawable/view_it_img"
 			android:layout_margin="10dp"/>
 		<TextView 
 			android:layout_width="wrap_content"

@@ -8,8 +8,20 @@
 	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/search_top_bar">
+		android:background="@drawable/top_bar_logo_full"
+		android:gravity="center_vertical">
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/hikes_top_btn"
+			android:clickable="true"
+			android:onClick="onHikesClick"/>
 	</RelativeLayout>
+	<ImageView android:id="@+id/msg_bar"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:src="@drawable/message_bar_search_btn"/>
 	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"

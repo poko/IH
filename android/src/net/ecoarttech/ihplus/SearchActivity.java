@@ -120,6 +120,11 @@ public class SearchActivity extends ListActivity {
 	public void onSearchClick(View v) {
 		searchByText(mSearchBar.getText().toString());
 	}
+	
+	public void onHikesClick(View v) {
+		Intent i = new Intent(this, CreateHikeActivity.class);
+		startActivity(i);
+	}
 
 	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
 

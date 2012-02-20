@@ -356,8 +356,8 @@ public class IHMapActivity extends MapActivity {
 									}
 								}).create().show();
 					} else if (vista.getActionType() == ActionType.MEDITATE) {
+						vista.complete();
 						markVistaAsCompleted(vista);
-
 					} else if (vista.getActionType() == ActionType.PHOTO) {
 						// open camera intent
 						startCameraIntent(vista);

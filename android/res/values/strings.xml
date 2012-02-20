@@ -8,24 +8,29 @@ want and where you want as quickly as possible. This app re-uses this
 technology as a tool of environmental imagination and slowing-down. By
 importing "nature" and wilderness into virtually any location, IH+
 encourages its users to experience seemingly common places as sublime
-landscapes.</string>
+landscapes.\nwww.ecoarttech.org</string>
     <string name="cont">continue &gt;</string>
     <string name="create_hike">Create a new indeterminate hike</string>
     <string name="create_hike_desc">hike description:</string>
     <string name="create_hike_name">hike name:</string>
     <string name="create_hike_username">your name:</string>
-    <string name="credits"> a project by\n
-    	ecoarttech / leila nadir &amp; cary peppermint\n\n
-    	software development polina koronkevich\n\n
-		created with funding from\n
+    <string name="credits">
+        a project by ecoarttech\n
+		(leila nadir &amp; cary peppermint)\n
+		\n
+		software development:\n
+		polina koronkevich\n
+		\n
+		created with funding from:\n
 		new york state council on the arts\n
 		new york foundation for the arts\n
 		whitney museum of american art\n
-		and\n
 		university of rochester\n
-		\n		
+		\n
 		(cc) 2011 ecoarttech\n
-		attribution - noncommercial - share alike\n
+		attribution - noncommercial\n
+		share alike\n
+		www.ecoarttech.org
     </string>
     <string name="current_hike">your current hike</string>
     <string name="empty_search">no search results here</string>
