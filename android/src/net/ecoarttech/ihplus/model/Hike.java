@@ -63,7 +63,7 @@ public class Hike implements Serializable {
 		if (!vistas.contains(vista))
 			vistas.add(vista);
 		else{ // vista is there, mark it as the end vista
-			vistas.get(vistas.indexOf(vista)).isEndVista();
+			vistas.get(vistas.indexOf(vista)).setIsEnd();
 		}
 	}
 	
