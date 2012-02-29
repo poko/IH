@@ -27,7 +27,7 @@ public class ShareHikeActivity extends Activity {
 		Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
 		shareIntent.setType("text/html");
 		shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "I went on an Indeterminate Hike today");
-		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, String.format("Click here see documentation from my Indeterminate Hike: %s/web/hike.php?id=%d", NetworkConstants.SERVER_URL, mHike.getId()));
+		shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, String.format("Click here see documentation from my Indeterminate Hike: %sweb/hike.php?id=%d", NetworkConstants.SERVER_URL, mHike.getId()));
 
 		startActivity(Intent.createChooser(shareIntent, "Share your hike"));
 	}
