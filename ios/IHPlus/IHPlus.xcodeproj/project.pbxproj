@@ -18,6 +18,9 @@
 		A67D3D6A15126D5C00391EE5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D6915126D5C00391EE5 /* ViewController.m */; };
 		A67D3D7515128E6C00391EE5 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7415128E6C00391EE5 /* MapViewController.m */; };
 		A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D781512998400391EE5 /* MapKit.framework */; };
+		A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7C15139AD100391EE5 /* CreditsViewController.m */; };
+		A67D3D801513A73000391EE5 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7F1513A73000391EE5 /* SearchViewController.m */; };
+		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,12 @@
 		A67D3D7315128E6C00391EE5 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
 		A67D3D7415128E6C00391EE5 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		A67D3D781512998400391EE5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		A67D3D7B15139AD100391EE5 /* CreditsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsViewController.h; sourceTree = "<group>"; };
+		A67D3D7C15139AD100391EE5 /* CreditsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsViewController.m; sourceTree = "<group>"; };
+		A67D3D7E1513A73000391EE5 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		A67D3D7F1513A73000391EE5 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
+		A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,15 +95,14 @@
 		A67D3D5615126D5C00391EE5 /* IHPlus */ = {
 			isa = PBXGroup;
 			children = (
+				A67D3D7A1513984600391EE5 /* ViewControllers */,
 				A67D3D5F15126D5C00391EE5 /* AppDelegate.h */,
 				A67D3D6015126D5C00391EE5 /* AppDelegate.m */,
 				A67D3D6215126D5C00391EE5 /* MainStoryboard_iPhone.storyboard */,
 				A67D3D6515126D5C00391EE5 /* MainStoryboard_iPad.storyboard */,
-				A67D3D6815126D5C00391EE5 /* ViewController.h */,
-				A67D3D6915126D5C00391EE5 /* ViewController.m */,
 				A67D3D5715126D5C00391EE5 /* Supporting Files */,
-				A67D3D7315128E6C00391EE5 /* MapViewController.h */,
-				A67D3D7415128E6C00391EE5 /* MapViewController.m */,
+				A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */,
+				A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */,
 			);
 			path = IHPlus;
 			sourceTree = "<group>";
@@ -108,6 +116,21 @@
 				A67D3D5E15126D5C00391EE5 /* IHPlus-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A67D3D7A1513984600391EE5 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A67D3D6815126D5C00391EE5 /* ViewController.h */,
+				A67D3D6915126D5C00391EE5 /* ViewController.m */,
+				A67D3D7315128E6C00391EE5 /* MapViewController.h */,
+				A67D3D7415128E6C00391EE5 /* MapViewController.m */,
+				A67D3D7B15139AD100391EE5 /* CreditsViewController.h */,
+				A67D3D7C15139AD100391EE5 /* CreditsViewController.m */,
+				A67D3D7E1513A73000391EE5 /* SearchViewController.h */,
+				A67D3D7F1513A73000391EE5 /* SearchViewController.m */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +200,9 @@
 				A67D3D6115126D5C00391EE5 /* AppDelegate.m in Sources */,
 				A67D3D6A15126D5C00391EE5 /* ViewController.m in Sources */,
 				A67D3D7515128E6C00391EE5 /* MapViewController.m in Sources */,
+				A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */,
+				A67D3D801513A73000391EE5 /* SearchViewController.m in Sources */,
+				A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

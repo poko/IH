@@ -1,14 +1,14 @@
 //
-//  MapViewController.m
+//  CreditsViewController.m
 //  IHPlus
 //
-//  Created by Polina Koronkevich on 3/15/12.
+//  Created by Polina Koronkevich on 3/16/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "MapViewController.h"
+#import "CreditsViewController.h"
 
-@implementation MapViewController
+@implementation CreditsViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,36 +33,16 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
- }
- */
+}
+*/
 
-
+/*
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _mapView.delegate = self; 
-    CLLocationCoordinate2D annotationCoord;
-    
-    annotationCoord.latitude = 47.640071;
-    annotationCoord.longitude = -122.129598;
-    
-    MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
-    annotationPoint.coordinate = annotationCoord;
-    [_mapView addAnnotation:annotationPoint];
 }
- 
-
--(void) mapView:(MKMapView *)mapView didAddOverlayViews:(NSArray *)overlayViews{
-    NSLog(@"overlays added");
-}
-
-- (void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
-    
-    NSLog(@"User location lat: %@", userLocation.location );
-    //MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 200, 200);
-    //[mapView setRegion:region animated:YES];
-}
+*/
 
 - (void)viewDidUnload
 {
@@ -75,6 +55,11 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (IBAction)done:(id)sender
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
