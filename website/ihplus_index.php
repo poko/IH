@@ -3,7 +3,7 @@
 <html>
 
 	<head>
-		<title>indeterminate hikes + | ecoarttech</title>
+		<title>indeterminate hikes + | experience ecoarttech's wilderness actualizing app</title>
         <meta http-equiv="Pragma" content="no-cache" />
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 		<meta name="keywords" content="digital and networked environmental art, eco art, green cultural studies, eco criticism, conceptual art, video art, digital video, new media and digital art technologies, New York, NYC, Maine, USA" content="ECOARTTECH draws on ideas in digital art, critical theory, ecology, eco-art, environmental literature, environmental philosophy, ecocriticism, and environmentalist activism.">
@@ -118,13 +118,15 @@ body {
 
                           <strong>IH+ is an Android app that transforms everyday landscapes into sites of bio-cultural diversity and wild happenings</strong>.</strong> Generally devices of rapid communication and consumerism, smartphones are re-appropriated by IH+ as tools of environmental imagination and meditative wonder, renewing awareness of intertwining biological, cultural, and media ecologies and slowing us down at the same time. The app works by importing the rhetoric of wilderness into virtually any place accessible by Google Maps and encouraging its users to treat these locales as spaces worthy of the attention accorded to sublime landscapes, such as canyons and gorges. <br />
                           <br />
-                          <strong>IH+ can be performed in two ways: <br />
-(1) as a participatory public event  led by artist-guides along with a basecamp installation (e.g. at festivals/exhibitions)<br />
+                 
+                          <a href="https://market.android.com/details?id=net.ecoarttech.ihplus&amp;feature=search_result#?t=W251bGwsMSwxLDEsIm5ldC5lY29hcnR0ZWNoLmlocGx1cyJd" target="_blank"><img src="images/android_download.gif" alt="indeterminate hikes android market download" width="166" height="57" border="0" /><br />
+                          <br />
+                          </a><span class="style1"><strong>Apple iOS version coming June 2012.</strong></span><br />
+                          <br />
+                          <strong>IH+ can be experienced in two ways: <br />
+(1) as a participatory public event  led by ecoarttech-guides along with a basecamp installation (e.g. at festivals/exhibitions)<br />
 (2) as a self-guided excursion taken by a hiker equipped with an IH+-enabled smartphone. </strong></p>
-                            <p><span class="style1"><strong>Revision IH+ is now in alpha testing and will debut in mid February. <br />
-Join our email list on the left nav to subscribe and we will let you know as soon as it is released.</strong></span><br />
-<br />
-<img src="images/android_download2.gif" alt="indeterminate hikes android market download" width="166" height="57" border="0" /></p>
+                            <p>&nbsp;</p>
                             <br />
                             <br /></td>
                           <td width="42%" align="left" valign="top"></p>
@@ -219,12 +221,26 @@ include '../ih_plus/scripts/db_close.php';
                       <table width="100%" border="0" cellspacing="4" cellpadding="2">
                         <tr>
                           <td align="left" valign="top" scope="col"><span class="small"><img src="images/nav_line.gif" alt="" width="840" height="1" /><br />
-                            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><br />
-                              <img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/><br />
+                           <br />
+                              a project by ecoarttech (leila nadir &amp; cary peppermint)<br />
+                              <br />
+                              software development:<br />
+                              polina&nbsp;koronkevich<br />
+                              <br />
+                              created with funding from:<br />
+                              new york state council on the arts<br />
+                              new york foundation for the arts<br />
+                              whitney museum of american art<br />
+                              university of rochester<br />
+                              <br />
+                              (cc) 2011 ecoarttech<br />
+                              attribution - noncommercial<br />
+                              share alike<br />
+                              <br />
+                              <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/><br />
                           </a><br/>
                             This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 Unported License</a><br />
-                            <br />
-                            This work is made possible in part by  contributions from the New York Foundation for the Arts (NYFA), New York State Council on the Arts, The University of Rochester, <font face="Arial, Helvetica, sans-serif">the<a href="http://www.hartwick.edu/x446.xml" target="_blank"> Pine Lake Environmental Campus</a> of Hartwick College<font face="Arial, Helvetica, sans-serif">, and</font></font></span> <span class="small"><font face="Arial, Helvetica, sans-serif"><a href="http://www.turbulence.org/" target="_blank">Turbulenc</a></font></span><span class="style8"><font face="Arial, Helvetica, sans-serif"><a href="http://www.turbulence.org/" target="_blank">e.org</a></font></span><span class="small"><font face="Arial, Helvetica, sans-serif">. A</font></span><span class="style8"><font face="Arial, Helvetica, sans-serif">ll canines featured in these works are rescued <a href="http://akitarescuewny.com/ARWNY/facts.htm" target="_blank">Akitas</a> brought into our inter-species family via <a href="http://www.akitarescuewny.com/" target="_blank">Akita Rescue of Western New York</a>.</font></span></td>
+                          </span></td>
                         </tr>
                       </table></td>
                     </tr>

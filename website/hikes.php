@@ -131,7 +131,7 @@ Join our email list on the left nav to subscribe and we will let you know as soo
                             <table width="100%" border="0" cellspacing="4" cellpadding="2">
                               <tr>
                                 <td align="left" valign="top"><span class="bigHighlite">recent hikes</span><br />
-                                <div id="map_canvas" style="width:300px; height:100px"></div></td>
+                                </td>
                               </tr>
                             </table>
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
