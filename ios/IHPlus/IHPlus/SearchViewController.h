@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UITableViewController{
+@interface SearchViewController : UITableViewController <UISearchBarDelegate>{
     NSMutableArray *_hikes;
     IBOutlet UISearchBar *_searchBar;
+   // CLGeocoder *_geocoder;
 }
 
 @end

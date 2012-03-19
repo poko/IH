@@ -235,6 +235,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="K2Z-HB-mYH" id="ODd-NK-isT"/>
+                            </connections>
                         </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="gray" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SearchItem" rowHeight="61" id="2dH-9O-4Cr" customClass="SearchTableViewCell">
@@ -262,13 +265,14 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <connections>
+                                    <outlet property="description" destination="0Fv-SV-HfJ" id="KgR-P1-9xE"/>
+                                    <outlet property="name" destination="Z6v-Vq-xcm" id="Z86-2P-rOp"/>
                                     <segue destination="wG1-iM-XPK" kind="push" identifier="ViewOrHike" id="11K-Rk-Yht"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="K2Z-HB-mYH" id="6WG-yE-Vp2"/>
-                            <outlet property="delegate" destination="K2Z-HB-mYH" id="zst-ZW-foI"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="ibd-TG-5jf"/>
@@ -357,6 +361,10 @@
         </class>
         <class className="SearchTableViewCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="description" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
+            </relationships>
         </class>
         <class className="SearchViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>

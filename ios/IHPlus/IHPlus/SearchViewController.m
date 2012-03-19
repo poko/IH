@@ -7,6 +7,9 @@
 //
 
 #import "SearchViewController.h"
+#import "SearchTableViewCell.h"
+#import <MapKit/MapKit.h>
+
 
 
 @implementation SearchViewController
@@ -35,6 +38,8 @@
     [super viewDidLoad];
     _hikes = [NSMutableArray arrayWithCapacity:3];
     [_hikes addObject:@"Test"];
+    [_searchBar setDelegate: self];
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -77,24 +82,22 @@
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     return [_hikes count];
 }
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SearchItem"];
-    
+    SearchTableViewCell *cell = (SearchTableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"SearchItem"];
+    [[cell name] setText:[_hikes objectAtIndex:indexPath.row]];
     // Configure the cell...
     
     return cell;
@@ -152,4 +155,83 @@
      */
 }
 
+#pragma mark - Search bar delegate
+NSMutableData *receivedData;
+-(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    NSLog(@"oo, we searching %@", searchBar.text);
+    [searchBar resignFirstResponder];
+    // TODO popup loading dialog
+    // reverse geocode the address (?)
+    //geocoder
+    //if (!_geocoder)
+    CLGeocoder *_geocoder = [[CLGeocoder alloc] init];
+    [_geocoder geocodeAddressString:@"1 Infinite Loop" completionHandler:
+        ^(NSArray* placemarks, NSError* error){
+            if ([placemarks count] > 0){
+                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                CLLocationDegrees latitude = placemark.location.coordinate.latitude;
+                CLLocationDegrees longitude = placemark.location.coordinate.longitude;
+                // make server call
+                NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
+                NSLog(@"Sending to url %@", url);
+                NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
+                NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
+                if (connection) {
+                    // Create the NSMutableData to hold the received data.
+                    // receivedData is an instance variable declared elsewhere.
+                    receivedData = [NSMutableData data];
+                } else {
+                    // Inform the user that the connection failed.
+                    NSLog(@"connection failed");
+                }
+            }
+            else{
+                //TODO ERROR
+                NSLog(@"Nothing returned for search");
+            }
+                     
+         }];
+}
+
+#pragma mark - Connection delgate
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    // This method is called when the server has determined that it
+    // has enough information to create the NSURLResponse.
+    
+    // It can be called multiple times, for example in the case of a
+    // redirect, so each time we reset the data.
+    
+    // receivedData is an instance variable declared elsewhere.
+    NSLog(@"didReceiveResponse");
+    [receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    // Append the new data to receivedData.
+    // receivedData is an instance variable declared elsewhere.
+    NSLog(@"didReceiveData");
+    [receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    
+    // inform the user
+    NSLog(@"Connection failed! Error - %@ %@",
+          [error localizedDescription],
+          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    // do something with the data
+    // receivedData is declared as a method instance elsewhere
+    NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
+    NSError *error;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:receivedData options:kNilOptions error:&error];
+    NSLog(@"Here is the response: %@", json);
+}
 @end

@@ -21,6 +21,9 @@
 		A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7C15139AD100391EE5 /* CreditsViewController.m */; };
 		A67D3D801513A73000391EE5 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7F1513A73000391EE5 /* SearchViewController.m */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
+		A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EDACD61513D489000AFB60 /* CoreLocation.framework */; };
+		A6EDACDF1513E84F000AFB60 /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACDE1513E84F000AFB60 /* Hike.m */; };
+		A6EDACE21513E86E000AFB60 /* ScenicVista.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACE11513E86E000AFB60 /* ScenicVista.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +50,11 @@
 		A67D3D7F1513A73000391EE5 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
 		A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
+		A6EDACD61513D489000AFB60 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		A6EDACDD1513E84F000AFB60 /* Hike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hike.h; sourceTree = "<group>"; };
+		A6EDACDE1513E84F000AFB60 /* Hike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hike.m; sourceTree = "<group>"; };
+		A6EDACE01513E86E000AFB60 /* ScenicVista.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenicVista.h; sourceTree = "<group>"; };
+		A6EDACE11513E86E000AFB60 /* ScenicVista.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenicVista.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */,
 				A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */,
 				A67D3D5115126D5C00391EE5 /* UIKit.framework in Frameworks */,
 				A67D3D5315126D5C00391EE5 /* Foundation.framework in Frameworks */,
@@ -67,6 +76,7 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				A6EDACD61513D489000AFB60 /* CoreLocation.framework */,
 				A67D3D781512998400391EE5 /* MapKit.framework */,
 				A67D3D5615126D5C00391EE5 /* IHPlus */,
 				A67D3D4F15126D5C00391EE5 /* Frameworks */,
@@ -95,6 +105,7 @@
 		A67D3D5615126D5C00391EE5 /* IHPlus */ = {
 			isa = PBXGroup;
 			children = (
+				A6EDACDC1513E837000AFB60 /* Models */,
 				A67D3D7A1513984600391EE5 /* ViewControllers */,
 				A67D3D5F15126D5C00391EE5 /* AppDelegate.h */,
 				A67D3D6015126D5C00391EE5 /* AppDelegate.m */,
@@ -131,6 +142,17 @@
 				A67D3D7F1513A73000391EE5 /* SearchViewController.m */,
 			);
 			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A6EDACDC1513E837000AFB60 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A6EDACDD1513E84F000AFB60 /* Hike.h */,
+				A6EDACDE1513E84F000AFB60 /* Hike.m */,
+				A6EDACE01513E86E000AFB60 /* ScenicVista.h */,
+				A6EDACE11513E86E000AFB60 /* ScenicVista.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +225,8 @@
 				A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */,
 				A67D3D801513A73000391EE5 /* SearchViewController.m in Sources */,
 				A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */,
+				A6EDACDF1513E84F000AFB60 /* Hike.m in Sources */,
+				A6EDACE21513E86E000AFB60 /* ScenicVista.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +317,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
 				INFOPLIST_FILE = "IHPlus/IHPlus-Info.plist";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -308,6 +333,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
 				INFOPLIST_FILE = "IHPlus/IHPlus-Info.plist";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -332,6 +358,7 @@
 				A67D3D6F15126D5C00391EE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
