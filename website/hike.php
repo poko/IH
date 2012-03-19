@@ -30,7 +30,8 @@ body {
                         <tr>
                           <th align="left" valign="top" scope="col"><a href="http://www.ecoarttech.net"><img src="../../images/wmv_player.jpg" alt="" width="95" height="58" border="0" /></a><br />
                             <a href="../index.html"><br />
-                            </a> <a href="../../about.html">about</a><br />
+                            </a> <a href="http://www.ecoarttech.net/indeterminatehikes">IH+<br />
+                            </a><a href="../../about.html">about</a><br />
                             <a href="../../works.html">works</a><br />
                             <a href="../../events.html">news/events</a><br />
                             <br />
@@ -60,9 +61,12 @@ body {
                       <br />
                       </span></p></th>
                       <td width="885" align="left" valign="top" scope="col"><br />
-                        
-
-<?php
+<span class="bigHighlite"><strong>indeterminate hikes+</strong></span><strong><br />
+                            <span class="bodystylehighlitePROMPT">ecoarttech's wilderness-actualizing app</span></strong><br />
+                        <br />
+                        <table width="640" border="0" cellspacing="4" cellpadding="2">
+                          <tr>
+                            <td align="left" valign="top"><?php
 include '../scripts/db_open.php';
 $hike_id = $_GET["id"];
 
@@ -85,38 +89,60 @@ while ($row = mysql_fetch_object($result)) {
 }
 $hike->vistas = $vista_json;
 
-echo "<span class=\"big_16pt\"><strong>".$hike->name."<br>".$hike->description."<br>pioneered by ".$hike->username.", ".date("Y.m.d", strtotime($hike->date))."</strong></span><br/>";
+echo "<span class=\"body12point\"><strong>Hike Name: </strong>".$hike->name."<br><strong>Description: </strong>".$hike->description."<br><strong>Pioneered by: </strong>".$hike->username.", ".date("Y.m.d", strtotime($hike->date))."</span><br/>
+<img src=\"../../images/line_600.gif\"><br>";
 for ($i = 0; $i < sizeof($hike->vistas); $i++){
 	$v = $hike->vistas[$i];
-	echo "<br/>".($i + 1).". ".$v->verbiage;
+	echo "<br/><span class=\"bodystylehighlite\">Scenic Vista #".($i + 1).". ".$v->verbiage."</span>";
 	$type = $v->action_type;
 	if ($type == 'text'){
-		echo "<br/>TEXTED TO FRIEND: ".$v->note;
+		echo "<br/><span class=\"bodystylehighlitePROMPT\">TEXTED TO A FRIEND: ".$v->note."</span></br>";
 	}
 	else if ($type == 'note'){
-		echo "<br/>FIELD NOTE: ".$v->note;
+		echo "<br/><span class=\"bodystylehighlitePROMPT\">MADE A FIELD NOTE: ".$v->note."</span></br>";
 	}
 	else if ($type == 'photo'){
-		echo "<br/><img src=\"http://www.ecoarttech.net/ih_plus/uploads/".$v->photo."\"/>";
+		echo "<br/><img src=\"http://www.ecoarttech.net/ih_plus/uploads/".$v->photo."\"/></br>";
 	}
 }
 
 include '../scripts/db_close.php';
-?>
-                        <br />
-                        <p><br />
-                     </p>
+?><br /><br />
+                              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td align="left" valign="top" bgcolor="#FFFFFF"><a href="http://www.ecoarttech.net/indeterminatehikes"><strong>IH+ is a wilderness-actualizing app by ecoarttech... more &gt;&gt;</strong></a></td>
+                                </tr>
+                              </table>
+                            <a href="http://www.ecoarttech.net/indeterminatehikes"></a></td>
+                          </tr>
+                        </table>
+
                         <table width="100%" border="0" cellspacing="4" cellpadding="2">
                           <tr>
-                            <td align="left" valign="top" scope="col"><span class="small"><img src="images/nav_line.gif" alt="" width="840" height="1" /><br />
+                            <td align="left" valign="top" class="small" scope="col"><img src="images/nav_line.gif" alt="" width="840" height="1" /><br />
                               <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><br />
+                                IH+ is a project by ecoarttech (leila nadir &amp; cary peppermint)<br />
+                                <br />
+                                software development:<br />
+                                polina&nbsp;koronkevich<br />
+                                <br />
+                                created with funding from:<br />
+                                new york state council on the arts<br />
+                                new york foundation for the arts<br />
+                                whitney museum of american art<br />
+                                university of rochester<br />
+                                <br />
+                                (cc) 2011 ecoarttech<br />
+                                attribution - noncommercial<br />
+                                share alike<br />
+                                <br />
                                 <img alt="Creative Commons License" style="border-width:0" src="http://creativecommons.org/images/public/somerights20.png"/><br />
                             </a><br/>
                               This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-Noncommercial-No Derivative Works 3.0 Unported License</a><br />
-                              <br />
-                              This work is made possible in part by  contributions from the New York Foundation for the Arts (NYFA), New York State Council on the Arts, The University of Rochester, <font face="Arial, Helvetica, sans-serif">the<a href="http://www.hartwick.edu/x446.xml" target="_blank"> Pine Lake Environmental Campus</a> of Hartwick College<font face="Arial, Helvetica, sans-serif">, and</font></font></span> <span class="small"><font face="Arial, Helvetica, sans-serif"><a href="http://www.turbulence.org/" target="_blank">Turbulenc</a></font></span><span class="style8"><font face="Arial, Helvetica, sans-serif"><a href="http://www.turbulence.org/" target="_blank">e.org</a></font></span><span class="small"><font face="Arial, Helvetica, sans-serif">. A</font></span><span class="style8"><font face="Arial, Helvetica, sans-serif">ll canines featured in these works are rescued <a href="http://akitarescuewny.com/ARWNY/facts.htm" target="_blank">Akitas</a> brought into our inter-species family via <a href="http://www.akitarescuewny.com/" target="_blank">Akita Rescue of Western New York</a>.</font></span></td>
+                            </td>
                           </tr>
-                      </table></td>
+                        </table>                        
+                        </span></td>
                     </tr>
                   </table>	    </td>
 	  </tr>
