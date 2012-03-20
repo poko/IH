@@ -10,6 +10,85 @@
 		<link rel="SHORTCUT ICON" href="http://www.ecoarttech.net/images/favicon.ico" />
 <link href="../../eco_art11.css" rel="stylesheet" type="text/css" />
         <script src="../Scripts/AC_RunActiveContent.js" type="text/javascript"></script>
+		<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA-hCqc1MrMdUWQd60F08eTdGi8BI0TUv0&sensor=false"></script>
+		<script type="text/javascript">
+			function initialize(){
+				title = document.getElementById("map_canvas").title;
+    			//alert(latLngStr);
+    			titleSplit = title.split("|");
+    			// start point
+    			latLngStr = titleSplit[0];
+    			latLng = latLngStr.split(",");
+    			m = map(latLng[0], latLng[1]);
+    			vistasSplit = titleSplit[1].split(";");
+    			var fullBounds = new google.maps.LatLngBounds();
+    			// add all vista markers
+    			for (j = 0; j < vistasSplit.length; j++){
+    				vLatLng = vistasSplit[j].split(",");
+    				addMarker(vLatLng[0], vLatLng[1], m, fullBounds);
+    			}
+    			// add points
+    			pointsSplit = titleSplit[2].split(";");
+    			var pointsCoords = [];
+    			for (k = 0; k < pointsSplit.length; k++){
+    				pLatLng = pointsSplit[k].split(",");
+    				pLat = pLatLng[0]/1000000;
+    				pLng = pLatLng[1]/1000000;
+    				if (pLat != 0 && pLng != 0){
+    					point = new google.maps.LatLng(pLat, pLng);
+    					pointsCoords.push(point);
+    					fullBounds.extend(point);
+    				}
+    			}
+    			var hikePath = new google.maps.Polyline({
+					path: pointsCoords,
+					strokeColor: "#339BF7",
+					strokeOpacity: 1.0,
+					strokeWeight: 3
+				});
+
+				hikePath.setMap(m);
+				m.fitBounds(fullBounds);
+			}
+			
+      		function map(lat, long) {
+				var latLng = new google.maps.LatLng(lat, long);
+        		var myOptions = {
+        			center: latLng,
+          			zoom: 16,
+          			disableDefaultUI: true,
+          			mapTypeId: google.maps.MapTypeId.ROADMAP
+        		};
+        		var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        		var image = new google.maps.MarkerImage('vista.png',new google.maps.Size(17, 17),
+      						// The origin for this image is 0,0.
+      						new google.maps.Point(0,0),
+      						// The anchor for this image is the base of the flagpole at 0,32.
+      						new google.maps.Point(8, 8));
+        		var marker = new google.maps.Marker({
+       				position: latLng, 
+      				map: map,
+      				icon: image
+    			});
+    			return map;
+			}
+      
+      		function addMarker(lat, long, map, bounds){
+				var latLng = new google.maps.LatLng(lat, long);
+				if (lat != 0 && long != 0)
+					bounds.extend(latLng);
+        		var image = new google.maps.MarkerImage('vista.png',new google.maps.Size(17, 17),
+      						// The origin for this image is 0,0.
+      						new google.maps.Point(0,0),
+      						// The anchor for this image is the base of the flagpole at 0,32.
+      						new google.maps.Point(8, 8));
+       			var marker = new google.maps.Marker({
+       				position: latLng, 
+      				map: map,
+      				icon: image,
+    			});
+      	}
+    </script>
 <style type="text/css">
 <!--
 body {
@@ -20,7 +99,7 @@ body {
 -->
 </style></head>
 
-	<body>
+	<body onload="initialize()">
 		<table width="980" border="0" cellspacing="2" cellpadding="2" align="center">
 	  <tr>
 				<td align="left" valign="top" bgcolor="#CCCCCC"><a href="http://www.ecoarttech.net"><img src="../../images/feature_work_ban_img.gif" width="980" height="64" border="0" /></a><br />
@@ -89,8 +168,34 @@ while ($row = mysql_fetch_object($result)) {
 }
 $hike->vistas = $vista_json;
 
+// get points
+$query = sprintf("SELECT * from hike_points where hike_id = '%s'", mysql_real_escape_string($hike_id));
+$result=mysql_query($query);
+$points = array();
+while ($row = mysql_fetch_object($result)) {
+	$points[] = $row;
+}
+$hike->points = $points;
+
+function vistaLocs($vistas){
+	$res = "";
+	foreach ($vistas as $v){
+		$res .= $v->latitude.",".$v->longitude.";";
+	}
+	return (string)$res;
+}
+
+function hikePoints($points){
+	$res = "";
+	foreach ($points as $p){
+		$res .= $p->latitude.",".$p->longitude.";";
+	}
+	return (string)$res;
+}
+
 echo "<span class=\"body12point\"><strong>Hike Name: </strong>".$hike->name."<br><strong>Description: </strong>".$hike->description."<br><strong>Pioneered by: </strong>".$hike->username.", ".date("Y.m.d", strtotime($hike->date))."</span><br/>
-<img src=\"../../images/line_600.gif\"><br>";
+<img src=\"../../images/line_600.gif\"><br><br>";
+echo "<div id=\"map_canvas\" title=\"".$hike->start_lat.",".$hike->start_lng."|".vistaLocs($hike->vistas)."|".hikePoints($hike->points)."\" style=\"width:500px; height:320px; border:1px\"></div>";
 for ($i = 0; $i < sizeof($hike->vistas); $i++){
 	$v = $hike->vistas[$i];
 	echo "<br/><span class=\"bodystylehighlite\">Scenic Vista #".($i + 1).". ".$v->verbiage."</span>";
