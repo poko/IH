@@ -14,6 +14,7 @@
     IBOutlet UITableView *_tableView;
     IBOutlet UISearchBar *_searchBar;
     CLGeocoder *_geocoder;
+    UIActivityIndicatorView *_loadingIndicator;
 }
 
 @end
