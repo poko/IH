@@ -26,34 +26,71 @@
     			m = initialize(latLng[0], latLng[1], i);
     			// rest of vistsas
     			vistasSplit = titleSplit[1].split(";");
+    			var fullBounds = new google.maps.LatLngBounds();
     			for (j = 0; j < vistasSplit.length; j++){
     				vLatLng = vistasSplit[j].split(",");
-    				addMarker(vLatLng[0], vLatLng[1], m);
+    				addMarker(vLatLng[0], vLatLng[1], m, fullBounds);
     			}
+    			// add points
+    			pointsSplit = titleSplit[2].split(";");
+    			var pointsCoords = [];
+    			for (k = 0; k < pointsSplit.length; k++){
+    				pLatLng = pointsSplit[k].split(",");
+    				pLat = pLatLng[0]/1000000;
+    				pLng = pLatLng[1]/1000000;
+    				if (pLat != 0 && pLng != 0){
+    					point = new google.maps.LatLng(pLat, pLng);
+    					pointsCoords.push(point);
+    					fullBounds.extend(point);
+    				}
+    			}
+    			var hikePath = new google.maps.Polyline({
+					path: pointsCoords,
+					strokeColor: "#339BF7",
+					strokeOpacity: 1.0,
+					strokeWeight: 3
+				});
+
+				hikePath.setMap(m);
+				//m.fitBounds(fullBounds);
     		}
     	}
       function initialize(lat, long, id) {
 		var latLng = new google.maps.LatLng(lat, long);
         var myOptions = {
           center: latLng,
-          zoom: 14,
+          zoom: 15,
           disableDefaultUI: true,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById("map_canvas_"+id),
             myOptions);
+        var image = new google.maps.MarkerImage('images/vista.png',new google.maps.Size(17, 17),
+      		// The origin for this image is 0,0.
+      		new google.maps.Point(0,0),
+      		// The anchor for this image is the base of the flagpole at 0,32.
+      		new google.maps.Point(8, 8));
         var marker = new google.maps.Marker({
        		position: latLng, 
       		map: map,
+      		icon: image,
     	});
     	return map;
       }
       
-      function addMarker(lat, long, map){
+      function addMarker(lat, long, map, bounds){
 		var latLng = new google.maps.LatLng(lat, long);
+		if (lat != 0 && long != 0)
+			bounds.extend(latLng);
+        var image = new google.maps.MarkerImage('images/vista.png',new google.maps.Size(17, 17),
+      		// The origin for this image is 0,0.
+      		new google.maps.Point(0,0),
+      		// The anchor for this image is the base of the flagpole at 0,32.
+      		new google.maps.Point(8, 8));
         var marker = new google.maps.Marker({
        		position: latLng, 
       		map: map,
+      		icon: image,
     	});
       }
     </script>
@@ -154,6 +191,14 @@ while ($hike = mysql_fetch_object($result)) {
 	while ($row = mysql_fetch_object($res)) {
 		$vistas[] = $row;
 	}
+	// get points
+	$query = sprintf("SELECT * from hike_points where hike_id = '%s'", mysql_real_escape_string($hike->hike_id));
+	$points_res=mysql_query($query);
+	$points = array();
+	while ($row = mysql_fetch_object($points_res)) {
+		$points[] = $row;
+	}
+	$hike->points = $points;
 	// grab a random image from the hike (if it exists)
 	$hike->sample_photo = "sample_photo.jpg";
 	foreach ($vistas as $v){
@@ -174,13 +219,21 @@ function vistaLocs($vistas){
 	return (string)$res;
 }
 
+function hikePoints($points){
+	$res = "";
+	foreach ($points as $p){
+		$res .= $p->latitude.",".$p->longitude.";";
+	}
+	return (string)$res;
+}
+
 //foreach ($hikes as $h){
 for ($i=0; $i < sizeof($hikes); $i++){
 $h = $hikes[$i];
 echo "<table width=\"100%\" border=\"0\" cellspacing=\"4\" cellpadding=\"2\">";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\"><a href=\"http://www.ecoarttech.net/ih_plus/web/hike.php?id=".$h->hike_id."\">";
-			echo "<div id=\"map_canvas_".$i."\" title=\"".$h->start_lat.",".$h->start_lng."|".vistaLocs($h->vistas)."\" style=\"width:355px; height:123px; border:1px\"/></td>";
+			echo "<div id=\"map_canvas_".$i."\" title=\"".$h->start_lat.",".$h->start_lng."|".vistaLocs($h->vistas)."|".hikePoints($h->points)."\" style=\"width:355px; height:123px; border:1px\"/></td>";
 	echo "</tr>";
 	echo "<tr>";
 		echo "<td align=\"left\" valign=\"top\" class=\"bodystyle\">";
