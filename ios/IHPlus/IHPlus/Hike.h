@@ -10,4 +10,12 @@
 
 @interface Hike : NSObject
 
+@property (nonatomic, strong) NSString *hikeId;
+@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) NSString *username;
+
++ (Hike *) initWithDictionary:(NSDictionary *) dict;
+
 @end

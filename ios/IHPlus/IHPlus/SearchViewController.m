@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "SearchTableViewCell.h"
 #import <MapKit/MapKit.h>
+#import "Hike.h"
 
 
 
@@ -36,10 +37,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _hikes = [NSMutableArray arrayWithCapacity:3];
-    [_hikes addObject:@"Test"];
+    _hikes = [[NSMutableArray alloc] init];
     [_searchBar setDelegate: self];
-    
+    [_tableView setDelegate: self];
+   // [[self navigationController] setna
+    //[self.navigationController setNavigationBarStyle: UIBarStyleBlackTranslucent]];
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -51,6 +54,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    // TODOs
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
@@ -97,8 +101,13 @@
 {
     
     SearchTableViewCell *cell = (SearchTableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"SearchItem"];
-    [[cell name] setText:[_hikes objectAtIndex:indexPath.row]];
+    Hike *hike =  (Hike *) [_hikes objectAtIndex:indexPath.row];
     // Configure the cell...
+    [[cell name] setText:[hike name]];
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM.dd.yyyy"];
+    NSString *desc = [NSString stringWithFormat:@"%@, %@", [hike description], [dateFormatter stringFromDate:[hike date]]];
+    [[cell description] setText:desc];
     
     return cell;
 }
@@ -157,7 +166,8 @@
 
 #pragma mark - Search bar delegate
 NSMutableData *receivedData;
--(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+-(void) searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
     NSLog(@"oo, we searching %@", searchBar.text);
     [searchBar resignFirstResponder];
     // TODO popup loading dialog
@@ -169,29 +179,32 @@ NSMutableData *receivedData;
     [_geocoder geocodeAddressString:[searchBar text] completionHandler:
         ^(NSArray* placemarks, NSError* error){
             if ([placemarks count] > 0){
-//                CLPlacemark *placemark = [placemarks objectAtIndex:0];
-//                CLLocationDegrees *latitude = placemark.location.coordinate.latitude;
-//                CLLocationDegrees *longitude = placemark.location.coordinate.longitude;
-//                // make server call
-//                NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
-//                NSLog(@"Sending to url %@", url);
-//                NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
-//                NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
-//                if (connection) {
-//                    // Create the NSMutableData to hold the received data.
-//                    // receivedData is an instance variable declared elsewhere.
-//                    receivedData = [NSMutableData data];
-//                } else {
-//                    // Inform the user that the connection failed.
-//                    NSLog(@"connection failed");
-//                }
+                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+                CLLocationDegrees latitude = placemark.location.coordinate.latitude;
+                CLLocationDegrees longitude = placemark.location.coordinate.longitude;
+                //TODO - loading dialog
+                // make server call
+                NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
+                NSLog(@"Sending to url %@", url);
+                NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
+                NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
+                if (connection) {
+                    // Create the NSMutableData to hold the received data.
+                    // receivedData is an instance variable declared elsewhere.
+                    receivedData = [NSMutableData data];
+                } else {
+                    // TODO Inform the user that the connection failed.
+                    NSLog(@"connection failed");
+                }
             }
             else{
                 //TODO ERROR
                 NSLog(@"Nothing returned for search");
-            }
-                     
+            } 
          }];
+}
+- (void)searchBarCancelButtonClicked:(UISearchBar *) searchBar{
+    [searchBar resignFirstResponder];
 }
 
 #pragma mark - Connection delgate
@@ -219,11 +232,8 @@ NSMutableData *receivedData;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    
     // inform the user
-    NSLog(@"Connection failed! Error - %@ %@",
-          [error localizedDescription],
-          [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -231,8 +241,25 @@ NSMutableData *receivedData;
     // do something with the data
     // receivedData is declared as a method instance elsewhere
     NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
+    NSString *receivedStr = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+    NSString *escaped = [receivedStr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     NSError *error;
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:receivedData options:kNilOptions error:&error];
-    NSLog(@"Here is the response: %@", json);
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[escaped dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:&error];
+    if (error != nil)
+        NSLog(@"Here is the error: %@", error); //TODO error
+    NSLog(@"Here is the escaped response: %@", json);
+    // parse json into hike objects and update table
+    NSArray *hikes = [json objectForKey:@"hikes"];
+    if ([hikes count] == 0){
+        //TODO show no results.
+        return;
+    }
+    for (NSDictionary* hike in hikes) {
+        NSLog(@"Here is a hike: %@", hike);
+        Hike *hikeObj = [Hike initWithDictionary:hike];
+        [_hikes addObject:hikeObj];
+    }
+    // update table view
+    [_tableView reloadData];
 }
 @end
