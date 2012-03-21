@@ -163,27 +163,28 @@ NSMutableData *receivedData;
     // TODO popup loading dialog
     // reverse geocode the address (?)
     //geocoder
-    //if (!_geocoder)
-    CLGeocoder *_geocoder = [[CLGeocoder alloc] init];
-    [_geocoder geocodeAddressString:@"1 Infinite Loop" completionHandler:
+    if (!_geocoder){
+        _geocoder = [[CLGeocoder alloc] init];
+    }
+    [_geocoder geocodeAddressString:[searchBar text] completionHandler:
         ^(NSArray* placemarks, NSError* error){
             if ([placemarks count] > 0){
-                CLPlacemark *placemark = [placemarks objectAtIndex:0];
-                CLLocationDegrees latitude = placemark.location.coordinate.latitude;
-                CLLocationDegrees longitude = placemark.location.coordinate.longitude;
-                // make server call
-                NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
-                NSLog(@"Sending to url %@", url);
-                NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
-                NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
-                if (connection) {
-                    // Create the NSMutableData to hold the received data.
-                    // receivedData is an instance variable declared elsewhere.
-                    receivedData = [NSMutableData data];
-                } else {
-                    // Inform the user that the connection failed.
-                    NSLog(@"connection failed");
-                }
+//                CLPlacemark *placemark = [placemarks objectAtIndex:0];
+//                CLLocationDegrees *latitude = placemark.location.coordinate.latitude;
+//                CLLocationDegrees *longitude = placemark.location.coordinate.longitude;
+//                // make server call
+//                NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
+//                NSLog(@"Sending to url %@", url);
+//                NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
+//                NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
+//                if (connection) {
+//                    // Create the NSMutableData to hold the received data.
+//                    // receivedData is an instance variable declared elsewhere.
+//                    receivedData = [NSMutableData data];
+//                } else {
+//                    // Inform the user that the connection failed.
+//                    NSLog(@"connection failed");
+//                }
             }
             else{
                 //TODO ERROR

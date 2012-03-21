@@ -11,7 +11,7 @@
 @interface SearchViewController : UITableViewController <UISearchBarDelegate>{
     NSMutableArray *_hikes;
     IBOutlet UISearchBar *_searchBar;
-   // CLGeocoder *_geocoder;
+    CLGeocoder *_geocoder;
 }
 
 @end
