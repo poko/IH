@@ -11,6 +11,7 @@
 @implementation Hike
 
 @synthesize hikeId, date, name, description, username;
+@synthesize vistas;
 
 + (Hike *) initWithDictionary:(NSDictionary *)dict
 {

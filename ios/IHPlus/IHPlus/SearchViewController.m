@@ -10,6 +10,7 @@
 #import "SearchTableViewCell.h"
 #import <MapKit/MapKit.h>
 #import "Hike.h"
+#import "ViewOrHikeViewController.h"
 
 
 
@@ -86,6 +87,24 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView 
+//{
+//    NSLog(@"scroll");
+//    CGRect rect = _searchBar.frame;
+//    rect.origin.y = MIN(0, scrollView.contentOffset.y);
+//    _searchBar.frame = rect;
+//}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // pass off the selected hike to the next view
+    if ([[segue identifier] isEqualToString:@"ViewOrHike"]){
+        ViewOrHikeViewController *nextVC = segue.destinationViewController;
+        NSIndexPath *selected = [_tableView indexPathForSelectedRow];
+        [nextVC setHike:[_hikes objectAtIndex:selected.row]];
+    }
 }
 
 #pragma mark - Table view data source

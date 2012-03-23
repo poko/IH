@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *description;
 @property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSMutableArray *vistas;
 
 + (Hike *) initWithDictionary:(NSDictionary *) dict;
 
