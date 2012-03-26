@@ -15,6 +15,10 @@
     IBOutlet UITextField *_endAddress;
     CLGeocoder *_geocoder;
     UIActivityIndicatorView *_loadingIndicator;
+    NSInteger _callCount;
+    NSMutableArray *_pathPoints;
+    MKPolylineView *_routeLineView;
+    MKPolyline *_routeLine;
 }
 
 -(IBAction)currentLocation:(id)sender;

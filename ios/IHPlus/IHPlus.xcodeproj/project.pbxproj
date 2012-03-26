@@ -26,6 +26,7 @@
 		A687B479151A8972004F08B0 /* ViewOrHikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B478151A8972004F08B0 /* ViewOrHikeViewController.m */; };
 		A687B481151B8A5D004F08B0 /* HikeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B480151B8A5D004F08B0 /* HikeDetailsViewController.m */; };
 		A687B484151BDC19004F08B0 /* HikesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B483151BDC18004F08B0 /* HikesListViewController.m */; };
+		A687B4871520C2E7004F08B0 /* GetDirectionsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */; };
 		A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EDACD61513D489000AFB60 /* CoreLocation.framework */; };
 		A6EDACDF1513E84F000AFB60 /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACDE1513E84F000AFB60 /* Hike.m */; };
 		A6EDACE21513E86E000AFB60 /* ScenicVista.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACE11513E86E000AFB60 /* ScenicVista.m */; };
@@ -63,6 +64,9 @@
 		A687B480151B8A5D004F08B0 /* HikeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HikeDetailsViewController.m; sourceTree = "<group>"; };
 		A687B482151BDC18004F08B0 /* HikesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HikesListViewController.h; sourceTree = "<group>"; };
 		A687B483151BDC18004F08B0 /* HikesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HikesListViewController.m; sourceTree = "<group>"; };
+		A687B4851520C2E5004F08B0 /* GetDirectionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetDirectionsDelegate.h; sourceTree = "<group>"; };
+		A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetDirectionsDelegate.m; sourceTree = "<group>"; };
+		A687B48C1520D1D8004F08B0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A6EDACD61513D489000AFB60 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		A6EDACDD1513E84F000AFB60 /* Hike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hike.h; sourceTree = "<group>"; };
 		A6EDACDE1513E84F000AFB60 /* Hike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hike.m; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				A687B48C1520D1D8004F08B0 /* libz.dylib */,
 				A6EDACD61513D489000AFB60 /* CoreLocation.framework */,
 				A67D3D781512998400391EE5 /* MapKit.framework */,
 				A67D3D5615126D5C00391EE5 /* IHPlus */,
@@ -128,6 +133,8 @@
 				A67D3D5715126D5C00391EE5 /* Supporting Files */,
 				A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */,
 				A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */,
+				A687B4851520C2E5004F08B0 /* GetDirectionsDelegate.h */,
+				A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */,
 			);
 			path = IHPlus;
 			sourceTree = "<group>";
@@ -261,6 +268,7 @@
 				A687B479151A8972004F08B0 /* ViewOrHikeViewController.m in Sources */,
 				A687B481151B8A5D004F08B0 /* HikeDetailsViewController.m in Sources */,
 				A687B484151BDC19004F08B0 /* HikesListViewController.m in Sources */,
+				A687B4871520C2E7004F08B0 /* GetDirectionsDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
