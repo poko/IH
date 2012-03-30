@@ -43,9 +43,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"hello map appeared!");
-    MKMapView *map = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];//[[(AppDelegate *) [[UIApplication sharedApplication] delegate] map];
-    //TODO [self.view addSubview: map];
+    MKMapView *map = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];
+    [self.view insertSubview:map belowSubview:_searchBar];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.

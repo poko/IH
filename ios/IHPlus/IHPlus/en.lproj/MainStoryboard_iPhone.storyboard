@@ -217,15 +217,12 @@
                                     <outlet property="delegate" destination="jYU-9c-ieh" id="dt9-Zn-43p"/>
                                 </connections>
                             </searchBar>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="1yt-Zc-PO3">
-                                <rect key="frame" x="0.0" y="75" width="320" height="292"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="sOl-En-1mV"/>
                     <connections>
+                        <outlet property="_searchBar" destination="e1p-Jl-img" id="lKY-Ei-yUv"/>
                         <segue destination="K2Z-HB-mYH" kind="push" identifier="SearchResults" id="Pas-22-tSJ"/>
                     </connections>
                 </viewController>
