@@ -53,6 +53,8 @@
     [super viewDidLoad];
     NSLog(@"hello map test!");
     _hikes = [[NSMutableArray alloc] init];
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
 }
 
 

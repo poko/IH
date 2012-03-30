@@ -31,25 +31,9 @@
 
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
- }
- */
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"mapview appears");
-    //MKMapView *map = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];//[[(AppDelegate *) [[UIApplication sharedApplication] delegate] map];
     if (_mapView != nil){
-//        NSLog(@"self.view? %@", self.view);
-//        if ([_mapView isDescendantOfView:self.view])
-//            NSLog(@"not descendant" );
-//        else
-//            NSLog(@"is descendant");
-            
-        //[_mapView setHidden:NO];
-        //[self.view addSubview: _mapView];
         [self.view insertSubview:_mapView belowSubview:_inputHolder];
     }
 }
