@@ -8,6 +8,7 @@
 
 #import "MapViewController.h"
 #import "GetDirectionsDelegate.h"
+#import "AppDelegate.h"
 
 @implementation MapViewController
 
@@ -36,12 +37,29 @@
 {
  }
  */
-
+-(void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"mapview appears");
+    //MKMapView *map = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];//[[(AppDelegate *) [[UIApplication sharedApplication] delegate] map];
+    if (_mapView != nil){
+//        NSLog(@"self.view? %@", self.view);
+//        if ([_mapView isDescendantOfView:self.view])
+//            NSLog(@"not descendant" );
+//        else
+//            NSLog(@"is descendant");
+            
+        //[_mapView setHidden:NO];
+        //[self.view addSubview: _mapView];
+        [self.view insertSubview:_mapView belowSubview:_inputHolder];
+    }
+}
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // set map
+    [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
     _mapView.delegate = self;
     [_endAddress setDelegate:self];
     [_startAddress setDelegate:self];

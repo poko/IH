@@ -13,6 +13,7 @@
     IBOutlet MKMapView *_mapView;
     IBOutlet UITextField *_startAddress;
     IBOutlet UITextField *_endAddress;
+    IBOutlet UIView *_inputHolder;
     CLGeocoder *_geocoder;
     UIActivityIndicatorView *_loadingIndicator;
     NSInteger _callCount;

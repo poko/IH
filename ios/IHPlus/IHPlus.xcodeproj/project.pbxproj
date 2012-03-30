@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A613166D15220E8B00C4103E /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A613166C15220E8B00C4103E /* SearchViewController.m */; };
+		A61316701522167D00C4103E /* TabVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A613166F1522167D00C4103E /* TabVC.m */; };
 		A67D3D5115126D5C00391EE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5015126D5C00391EE5 /* UIKit.framework */; };
 		A67D3D5315126D5C00391EE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5215126D5C00391EE5 /* Foundation.framework */; };
 		A67D3D5515126D5C00391EE5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5415126D5C00391EE5 /* CoreGraphics.framework */; };
@@ -19,7 +21,7 @@
 		A67D3D7515128E6C00391EE5 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7415128E6C00391EE5 /* MapViewController.m */; };
 		A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D781512998400391EE5 /* MapKit.framework */; };
 		A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7C15139AD100391EE5 /* CreditsViewController.m */; };
-		A67D3D801513A73000391EE5 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7F1513A73000391EE5 /* SearchViewController.m */; };
+		A67D3D801513A73000391EE5 /* SearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7F1513A73000391EE5 /* SearchResultsController.m */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
 		A687B470151A4882004F08B0 /* titlebar_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A687B46F151A4882004F08B0 /* titlebar_logo.png */; };
 		A687B472151A4890004F08B0 /* titlebar_logo2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A687B471151A4890004F08B0 /* titlebar_logo2x.png */; };
@@ -33,6 +35,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A613166B15220E8B00C4103E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		A613166C15220E8B00C4103E /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		A613166E1522167C00C4103E /* TabVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabVC.h; sourceTree = "<group>"; };
+		A613166F1522167D00C4103E /* TabVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabVC.m; sourceTree = "<group>"; };
 		A67D3D4C15126D5C00391EE5 /* IHPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IHPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67D3D5015126D5C00391EE5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A67D3D5215126D5C00391EE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -52,8 +58,8 @@
 		A67D3D781512998400391EE5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A67D3D7B15139AD100391EE5 /* CreditsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsViewController.h; sourceTree = "<group>"; };
 		A67D3D7C15139AD100391EE5 /* CreditsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsViewController.m; sourceTree = "<group>"; };
-		A67D3D7E1513A73000391EE5 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		A67D3D7F1513A73000391EE5 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		A67D3D7E1513A73000391EE5 /* SearchResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsController.h; sourceTree = "<group>"; };
+		A67D3D7F1513A73000391EE5 /* SearchResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsController.m; sourceTree = "<group>"; };
 		A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
 		A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
 		A687B46F151A4882004F08B0 /* titlebar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = titlebar_logo.png; sourceTree = "<group>"; };
@@ -159,14 +165,18 @@
 				A67D3D7415128E6C00391EE5 /* MapViewController.m */,
 				A67D3D7B15139AD100391EE5 /* CreditsViewController.h */,
 				A67D3D7C15139AD100391EE5 /* CreditsViewController.m */,
-				A67D3D7E1513A73000391EE5 /* SearchViewController.h */,
-				A67D3D7F1513A73000391EE5 /* SearchViewController.m */,
+				A67D3D7E1513A73000391EE5 /* SearchResultsController.h */,
+				A67D3D7F1513A73000391EE5 /* SearchResultsController.m */,
 				A687B477151A8972004F08B0 /* ViewOrHikeViewController.h */,
 				A687B478151A8972004F08B0 /* ViewOrHikeViewController.m */,
 				A687B47F151B8A5C004F08B0 /* HikeDetailsViewController.h */,
 				A687B480151B8A5D004F08B0 /* HikeDetailsViewController.m */,
 				A687B482151BDC18004F08B0 /* HikesListViewController.h */,
 				A687B483151BDC18004F08B0 /* HikesListViewController.m */,
+				A613166B15220E8B00C4103E /* SearchViewController.h */,
+				A613166C15220E8B00C4103E /* SearchViewController.m */,
+				A613166E1522167C00C4103E /* TabVC.h */,
+				A613166F1522167D00C4103E /* TabVC.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -261,7 +271,7 @@
 				A67D3D6A15126D5C00391EE5 /* ViewController.m in Sources */,
 				A67D3D7515128E6C00391EE5 /* MapViewController.m in Sources */,
 				A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */,
-				A67D3D801513A73000391EE5 /* SearchViewController.m in Sources */,
+				A67D3D801513A73000391EE5 /* SearchResultsController.m in Sources */,
 				A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */,
 				A6EDACDF1513E84F000AFB60 /* Hike.m in Sources */,
 				A6EDACE21513E86E000AFB60 /* ScenicVista.m in Sources */,
@@ -269,6 +279,8 @@
 				A687B481151B8A5D004F08B0 /* HikeDetailsViewController.m in Sources */,
 				A687B484151BDC19004F08B0 /* HikesListViewController.m in Sources */,
 				A687B4871520C2E7004F08B0 /* GetDirectionsDelegate.m in Sources */,
+				A613166D15220E8B00C4103E /* SearchViewController.m in Sources */,
+				A61316701522167D00C4103E /* TabVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
