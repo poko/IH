@@ -16,7 +16,7 @@
 
 @implementation SearchResultsController
 
-@synthesize hikes;
+@synthesize searchTerm, hikes;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -45,11 +45,8 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // set header
+    [_header setText:searchTerm];
 }
 
 - (void)viewDidUnload
@@ -97,7 +94,7 @@
 - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     // pass off the selected hike to the next view
-    if ([[segue identifier] isEqualToString:@"ViewOrHike"]){
+    if ([[segue identifier] isEqualToString:@"HikeDetails"]){
         ViewOrHikeViewController *nextVC = segue.destinationViewController;
         NSIndexPath *selected = [_tableView indexPathForSelectedRow];
         [nextVC setHike:[hikes objectAtIndex:selected.row]];

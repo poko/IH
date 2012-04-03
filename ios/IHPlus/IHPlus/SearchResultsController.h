@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface SearchResultsController : UITableViewController <UISearchBarDelegate>{
+    IBOutlet UILabel *_header;
     IBOutlet UITableView *_tableView;
 }
 
+@property (nonatomic, strong) NSString *searchTerm;
 @property (nonatomic, strong) NSMutableArray *hikes;
 
 @end

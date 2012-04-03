@@ -82,8 +82,8 @@
         //if we have not yet created an overlay view for this overlay, create it now.
     if (_routeLineView == nil){
         _routeLineView = [[MKPolylineView alloc] initWithPolyline:_routeLine];
-        _routeLineView.fillColor = [UIColor redColor];
-        _routeLineView.strokeColor = [UIColor redColor];
+        _routeLineView.fillColor = [UIColor blueColor];
+        _routeLineView.strokeColor = [UIColor blueColor];
         _routeLineView.lineWidth = 3;
     }
     overlayView = _routeLineView;
@@ -170,7 +170,7 @@
             }
             MKPolyline *line = [MKPolyline polylineWithCoordinates:points count:[_pathPoints count]];
             _routeLine = line;
-            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([line coordinate], 300, 300);
+            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[_pathPoints objectAtIndex:0 ] coordinate], 400, 400);
             [_mapView setRegion:region animated:YES];
             [_mapView addOverlay:line];
             free(points);

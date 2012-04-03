@@ -37,6 +37,7 @@
     NSLog(@"preparing for segue: %@", segue.identifier);
     SearchResultsController *resultsVC = [segue destinationViewController];
     [resultsVC setHikes:_hikes];
+    [resultsVC setSearchTerm:[_searchBar text]];
 }
 
 #pragma mark - View lifecycle

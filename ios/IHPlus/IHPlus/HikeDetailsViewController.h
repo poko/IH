@@ -10,7 +10,9 @@
 #import "Hike.h"
 
 @interface HikeDetailsViewController : UIViewController <UITableViewDelegate>{
-    //IBOutlet UITableView *_tableView;
+    IBOutlet UILabel *_header;
+    IBOutlet UILabel *_desc;
+    IBOutlet UILabel *_details;
 }
 
 @property (nonatomic, strong) Hike *hike; 
