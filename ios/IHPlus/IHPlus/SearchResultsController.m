@@ -13,10 +13,10 @@
 #import "ViewOrHikeViewController.h"
 
 
-
 @implementation SearchResultsController
 
 @synthesize searchTerm, hikes;
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -96,8 +96,10 @@
     // pass off the selected hike to the next view
     if ([[segue identifier] isEqualToString:@"HikeDetails"]){
         ViewOrHikeViewController *nextVC = segue.destinationViewController;
-        NSIndexPath *selected = [_tableView indexPathForSelectedRow];
-        [nextVC setHike:[hikes objectAtIndex:selected.row]];
+//        NSIndexPath *selected = [_tableView indexPathForSelectedRow];
+//        NSLog(@"Setting hike: %@", [hikes objectAtIndex:selected.row]);
+        
+        [nextVC setHike:[hikes objectAtIndex:[sender tag]]];
     }
 }
 
@@ -120,11 +122,15 @@
     Hike *hike =  (Hike *) [hikes objectAtIndex:indexPath.row];
     // Configure the cell...
     [[cell name] setText:[hike name]];
+    UIColor *color = indexPath.row % 2 == 0 ?
+        [UIColor colorWithRed:(222.0/255.0) green:(222.0/255.0) blue:(224.0/255.0) alpha:1]:
+        [UIColor colorWithRed:(203.0/255.0) green:(204.0/255.0) blue:(208.0/255.0) alpha:1];
+    [[cell contentView] setBackgroundColor:color];
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"MM.dd.yyyy"];
     NSString *desc = [NSString stringWithFormat:@"%@, %@", [hike description], [dateFormatter stringFromDate:[hike date]]];
     [[cell description] setText:desc];
-    
+    [[cell viewButton] setTag:indexPath.row];
     return cell;
 }
 

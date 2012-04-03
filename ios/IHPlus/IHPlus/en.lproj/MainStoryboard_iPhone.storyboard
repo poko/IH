@@ -154,7 +154,7 @@
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" id="zS3-gQ-bXp">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.87058823529999996" green="0.87058823529999996" blue="0.87058823529999996" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="separatorColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="r9C-tn-3u6">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
@@ -231,10 +231,11 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
-                                <color key="backgroundColor" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="description" destination="0Fv-SV-HfJ" id="KgR-P1-9xE"/>
                                     <outlet property="name" destination="Z6v-Vq-xcm" id="Z86-2P-rOp"/>
+                                    <outlet property="viewButton" destination="b8Y-BF-bLG" id="SnW-E8-tJs"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -575,6 +576,7 @@
             <relationships>
                 <relationship kind="outlet" name="description" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="name" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="viewButton" candidateClass="UIButton"/>
             </relationships>
         </class>
         <class className="SearchViewController" superclassName="UIViewController">

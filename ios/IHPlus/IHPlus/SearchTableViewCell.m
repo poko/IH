@@ -10,7 +10,7 @@
 
 @implementation SearchTableViewCell
 
-@synthesize name,description;
+@synthesize name,description, viewButton;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
