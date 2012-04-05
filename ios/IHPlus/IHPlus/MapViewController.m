@@ -114,7 +114,8 @@
     if (_loadingIndicator == nil){
         _loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         [_loadingIndicator setHidesWhenStopped:YES];
-        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 60.0, 60.0);
+        [_loadingIndicator setBackgroundColor:[UIColor colorWithWhite:0 alpha:.5]];
+        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
         _loadingIndicator.center = self.view.center;
     }
     [self.view addSubview: _loadingIndicator];
@@ -123,7 +124,12 @@
 
 -(void)hideLoadingDialog:(NSString *) error
 {
-    
+    [_loadingIndicator stopAnimating];
+    if (error != nil){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Creating Hike" message:[NSString stringWithFormat:@"There was an error creating the hike: %@", error]
+             delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 -(float) getRandomOffset
@@ -153,9 +159,12 @@
                      
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSLog(@"url: %@", req.URL);
-    //GetDirectionsDelegate *connDelegate = [[GetDirectionsDelegate alloc] init];
-    GetDirectionsDelegate *connDelegate = [[GetDirectionsDelegate alloc] initWithHandler:^(NSMutableArray *points, NSError *error) {
+    GetDirectionsDelegate *connDelegate = [[GetDirectionsDelegate alloc] initWithHandler:^(NSMutableArray *points, NSString *error) {
         NSLog(@"handler gets: %i", [points count]);
+        if (error != nil){
+            [self hideLoadingDialog:error];
+            return;
+        }
         _callCount++;
         [_pathPoints addObjectsFromArray:points];
         NSLog(@"compeltion handler!! %i", _callCount);
@@ -178,15 +187,9 @@
         
     }];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:connDelegate];
-    if (connection) {
-        // Create the NSMutableData to hold the received data.
-        // receivedData is an instance variable declared elsewhere.
-        // TODO // ?receivedData = [NSMutableData data];
-    } else {
+    if (!connection) {
         NSLog(@"connection failed");
-//        [_loadingIndicator stopAnimating];
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//        [alert show];
+        [self hideLoadingDialog:@"Could not connect to server"];
     }
 }
 
@@ -265,10 +268,7 @@
              }
              else{
                  NSLog(@"Nothing returned for placemarks search");
-                 // TODO
-//                 [_loadingIndicator stopAnimating];
-//                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Location" message:[NSString stringWithFormat:@"Sorry, %@ isn't a location we can find", [searchBar text]] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                 [alert show];
+                 [self hideLoadingDialog:@"Not a valid starting location"];
              } 
          }];
 
