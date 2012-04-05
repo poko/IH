@@ -7,22 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A613166D15220E8B00C4103E /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A613166C15220E8B00C4103E /* SearchViewController.m */; };
-		A61316701522167D00C4103E /* TabVC.m in Sources */ = {isa = PBXBuildFile; fileRef = A613166F1522167D00C4103E /* TabVC.m */; };
 		A627BA86152DF6CA0056A670 /* VistaCellNote.m in Sources */ = {isa = PBXBuildFile; fileRef = A627BA85152DF6CA0056A670 /* VistaCellNote.m */; };
-		A627BA9F152E479D0056A670 /* x-species_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA93152E479D0056A670 /* x-species_btn2x.png */; };
-		A627BAA0152E479D0056A670 /* search_hike_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA94152E479D0056A670 /* search_hike_btn2x.png */; };
-		A627BAA1152E479D0056A670 /* create_hike_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA95152E479D0056A670 /* create_hike_btn2x.png */; };
-		A627BAA2152E479D0056A670 /* x-species_on_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA96152E479D0056A670 /* x-species_on_btn2x.png */; };
-		A627BAA3152E479D0056A670 /* search_hike_on_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA97152E479D0056A670 /* search_hike_on_btn2x.png */; };
-		A627BAA4152E479D0056A670 /* create_hike_on_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA98152E479D0056A670 /* create_hike_on_btn2x.png */; };
-		A627BAA5152E479D0056A670 /* search_hike_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA99152E479D0056A670 /* search_hike_btn.png */; };
-		A627BAA6152E479D0056A670 /* create_hike_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA9A152E479D0056A670 /* create_hike_btn.png */; };
-		A627BAA7152E479D0056A670 /* x-species_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA9B152E479D0056A670 /* x-species_btn.png */; };
-		A627BAA8152E479D0056A670 /* x-species_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA9C152E479D0056A670 /* x-species_on_btn.png */; };
-		A627BAA9152E479D0056A670 /* search_hike_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA9D152E479D0056A670 /* search_hike_on_btn.png */; };
-		A627BAAA152E479D0056A670 /* create_hike_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BA9E152E479D0056A670 /* create_hike_on_btn.png */; };
-		A627BAAC152E4A4F0056A670 /* black_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAB152E4A4E0056A670 /* black_gradient.png */; };
 		A627BAB0152E4BCB0056A670 /* black_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAD152E4BC80056A670 /* black_gradient.png */; };
 		A627BAB1152E4BCB0056A670 /* create_hike_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAE152E4BC80056A670 /* create_hike_btn2x.png */; };
 		A627BAB2152E4BCB0056A670 /* create_hike_on_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAF152E4BCA0056A670 /* create_hike_on_btn2x.png */; };
@@ -32,6 +17,14 @@
 		A627BABA152E4BE90056A670 /* create_hike_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAB6152E4BE80056A670 /* create_hike_btn.png */; };
 		A627BABD152E4BF20056A670 /* search_hike_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BABB152E4BF00056A670 /* search_hike_on_btn.png */; };
 		A627BABE152E4BF20056A670 /* create_hike_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BABC152E4BF10056A670 /* create_hike_on_btn.png */; };
+		A64C9408152E4CCA0090BD0D /* ScenicVista.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9404152E4CCA0090BD0D /* ScenicVista.m */; };
+		A64C9409152E4CCA0090BD0D /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9406152E4CCA0090BD0D /* Hike.m */; };
+		A64C9419152E4CED0090BD0D /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940B152E4CED0090BD0D /* MapViewController.m */; };
+		A64C941A152E4CED0090BD0D /* HikeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */; };
+		A64C941B152E4CED0090BD0D /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940D152E4CED0090BD0D /* SearchViewController.m */; };
+		A64C941D152E4CED0090BD0D /* SearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9410152E4CED0090BD0D /* SearchResultsController.m */; };
+		A64C941E152E4CED0090BD0D /* HikesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9415152E4CED0090BD0D /* HikesListViewController.m */; };
+		A64C941F152E4CED0090BD0D /* ViewOrHikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */; };
 		A67D3D5115126D5C00391EE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5015126D5C00391EE5 /* UIKit.framework */; };
 		A67D3D5315126D5C00391EE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5215126D5C00391EE5 /* Foundation.framework */; };
 		A67D3D5515126D5C00391EE5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5415126D5C00391EE5 /* CoreGraphics.framework */; };
@@ -40,47 +33,22 @@
 		A67D3D6115126D5C00391EE5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D6015126D5C00391EE5 /* AppDelegate.m */; };
 		A67D3D6415126D5C00391EE5 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A67D3D6215126D5C00391EE5 /* MainStoryboard_iPhone.storyboard */; };
 		A67D3D6715126D5C00391EE5 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A67D3D6515126D5C00391EE5 /* MainStoryboard_iPad.storyboard */; };
-		A67D3D6A15126D5C00391EE5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D6915126D5C00391EE5 /* ViewController.m */; };
-		A67D3D7515128E6C00391EE5 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7415128E6C00391EE5 /* MapViewController.m */; };
 		A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D781512998400391EE5 /* MapKit.framework */; };
 		A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7C15139AD100391EE5 /* CreditsViewController.m */; };
-		A67D3D801513A73000391EE5 /* SearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7F1513A73000391EE5 /* SearchResultsController.m */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
-		A687B479151A8972004F08B0 /* ViewOrHikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B478151A8972004F08B0 /* ViewOrHikeViewController.m */; };
-		A687B481151B8A5D004F08B0 /* HikeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B480151B8A5D004F08B0 /* HikeDetailsViewController.m */; };
-		A687B484151BDC19004F08B0 /* HikesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B483151BDC18004F08B0 /* HikesListViewController.m */; };
 		A687B4871520C2E7004F08B0 /* GetDirectionsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */; };
 		A6AB117815265FB20002D9EE /* hike_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117415265FB10002D9EE /* hike_it_btn.png */; };
 		A6AB117915265FB20002D9EE /* titlebar_logo2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117515265FB10002D9EE /* titlebar_logo2x.png */; };
 		A6AB117A15265FB20002D9EE /* titlebar_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117615265FB20002D9EE /* titlebar_logo.png */; };
 		A6AB117C1526603A0002D9EE /* view_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117B1526603A0002D9EE /* view_it_btn.png */; };
 		A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EDACD61513D489000AFB60 /* CoreLocation.framework */; };
-		A6EDACDF1513E84F000AFB60 /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACDE1513E84F000AFB60 /* Hike.m */; };
-		A6EDACE21513E86E000AFB60 /* ScenicVista.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACE11513E86E000AFB60 /* ScenicVista.m */; };
 		E1C0D524152DC7C0009A1F8D /* VistaCellPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */; };
 		E1C0D527152DC970009A1F8D /* VistaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D526152DC970009A1F8D /* VistaCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A613166B15220E8B00C4103E /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		A613166C15220E8B00C4103E /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
-		A613166E1522167C00C4103E /* TabVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabVC.h; sourceTree = "<group>"; };
-		A613166F1522167D00C4103E /* TabVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabVC.m; sourceTree = "<group>"; };
 		A627BA84152DF6CA0056A670 /* VistaCellNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellNote.h; sourceTree = "<group>"; };
 		A627BA85152DF6CA0056A670 /* VistaCellNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellNote.m; sourceTree = "<group>"; };
-		A627BA93152E479D0056A670 /* x-species_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x-species_btn2x.png"; sourceTree = "<group>"; };
-		A627BA94152E479D0056A670 /* search_hike_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_hike_btn2x.png; sourceTree = "<group>"; };
-		A627BA95152E479D0056A670 /* create_hike_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_hike_btn2x.png; sourceTree = "<group>"; };
-		A627BA96152E479D0056A670 /* x-species_on_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x-species_on_btn2x.png"; sourceTree = "<group>"; };
-		A627BA97152E479D0056A670 /* search_hike_on_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_hike_on_btn2x.png; sourceTree = "<group>"; };
-		A627BA98152E479D0056A670 /* create_hike_on_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_hike_on_btn2x.png; sourceTree = "<group>"; };
-		A627BA99152E479D0056A670 /* search_hike_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_hike_btn.png; sourceTree = "<group>"; };
-		A627BA9A152E479D0056A670 /* create_hike_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_hike_btn.png; sourceTree = "<group>"; };
-		A627BA9B152E479D0056A670 /* x-species_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x-species_btn.png"; sourceTree = "<group>"; };
-		A627BA9C152E479D0056A670 /* x-species_on_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "x-species_on_btn.png"; sourceTree = "<group>"; };
-		A627BA9D152E479D0056A670 /* search_hike_on_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search_hike_on_btn.png; sourceTree = "<group>"; };
-		A627BA9E152E479D0056A670 /* create_hike_on_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_hike_on_btn.png; sourceTree = "<group>"; };
-		A627BAAB152E4A4E0056A670 /* black_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_gradient.png; sourceTree = "<group>"; };
 		A627BAAD152E4BC80056A670 /* black_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black_gradient.png; path = Assets/black_gradient.png; sourceTree = "<group>"; };
 		A627BAAE152E4BC80056A670 /* create_hike_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_hike_btn2x.png; path = Assets/create_hike_btn2x.png; sourceTree = "<group>"; };
 		A627BAAF152E4BCA0056A670 /* create_hike_on_btn2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_hike_on_btn2x.png; path = Assets/create_hike_on_btn2x.png; sourceTree = "<group>"; };
@@ -90,6 +58,22 @@
 		A627BAB6152E4BE80056A670 /* create_hike_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_hike_btn.png; path = Assets/create_hike_btn.png; sourceTree = "<group>"; };
 		A627BABB152E4BF00056A670 /* search_hike_on_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = search_hike_on_btn.png; path = Assets/search_hike_on_btn.png; sourceTree = "<group>"; };
 		A627BABC152E4BF10056A670 /* create_hike_on_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_hike_on_btn.png; path = Assets/create_hike_on_btn.png; sourceTree = "<group>"; };
+		A64C9404152E4CCA0090BD0D /* ScenicVista.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScenicVista.m; path = Models/ScenicVista.m; sourceTree = "<group>"; };
+		A64C9405152E4CCA0090BD0D /* ScenicVista.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScenicVista.h; path = Models/ScenicVista.h; sourceTree = "<group>"; };
+		A64C9406152E4CCA0090BD0D /* Hike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Hike.m; path = Models/Hike.m; sourceTree = "<group>"; };
+		A64C9407152E4CCA0090BD0D /* Hike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hike.h; path = Models/Hike.h; sourceTree = "<group>"; };
+		A64C940B152E4CED0090BD0D /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = "View Controllers/MapViewController.m"; sourceTree = "<group>"; };
+		A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HikeDetailsViewController.m; path = "View Controllers/HikeDetailsViewController.m"; sourceTree = "<group>"; };
+		A64C940D152E4CED0090BD0D /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = "View Controllers/SearchViewController.m"; sourceTree = "<group>"; };
+		A64C940E152E4CED0090BD0D /* HikeDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HikeDetailsViewController.h; path = "View Controllers/HikeDetailsViewController.h"; sourceTree = "<group>"; };
+		A64C9410152E4CED0090BD0D /* SearchResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchResultsController.m; path = "View Controllers/SearchResultsController.m"; sourceTree = "<group>"; };
+		A64C9412152E4CED0090BD0D /* SearchResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultsController.h; path = "View Controllers/SearchResultsController.h"; sourceTree = "<group>"; };
+		A64C9413152E4CED0090BD0D /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = "View Controllers/SearchViewController.h"; sourceTree = "<group>"; };
+		A64C9414152E4CED0090BD0D /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = "View Controllers/MapViewController.h"; sourceTree = "<group>"; };
+		A64C9415152E4CED0090BD0D /* HikesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HikesListViewController.m; path = "View Controllers/HikesListViewController.m"; sourceTree = "<group>"; };
+		A64C9416152E4CED0090BD0D /* HikesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HikesListViewController.h; path = "View Controllers/HikesListViewController.h"; sourceTree = "<group>"; };
+		A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewOrHikeViewController.m; path = "View Controllers/ViewOrHikeViewController.m"; sourceTree = "<group>"; };
+		A64C9418152E4CED0090BD0D /* ViewOrHikeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewOrHikeViewController.h; path = "View Controllers/ViewOrHikeViewController.h"; sourceTree = "<group>"; };
 		A67D3D4C15126D5C00391EE5 /* IHPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IHPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67D3D5015126D5C00391EE5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A67D3D5215126D5C00391EE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -102,23 +86,11 @@
 		A67D3D6015126D5C00391EE5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		A67D3D6315126D5C00391EE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		A67D3D6615126D5C00391EE5 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		A67D3D6815126D5C00391EE5 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		A67D3D6915126D5C00391EE5 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		A67D3D7315128E6C00391EE5 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
-		A67D3D7415128E6C00391EE5 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		A67D3D781512998400391EE5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A67D3D7B15139AD100391EE5 /* CreditsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditsViewController.h; sourceTree = "<group>"; };
 		A67D3D7C15139AD100391EE5 /* CreditsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditsViewController.m; sourceTree = "<group>"; };
-		A67D3D7E1513A73000391EE5 /* SearchResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsController.h; sourceTree = "<group>"; };
-		A67D3D7F1513A73000391EE5 /* SearchResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsController.m; sourceTree = "<group>"; };
 		A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
 		A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
-		A687B477151A8972004F08B0 /* ViewOrHikeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewOrHikeViewController.h; sourceTree = "<group>"; };
-		A687B478151A8972004F08B0 /* ViewOrHikeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewOrHikeViewController.m; sourceTree = "<group>"; };
-		A687B47F151B8A5C004F08B0 /* HikeDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HikeDetailsViewController.h; sourceTree = "<group>"; };
-		A687B480151B8A5D004F08B0 /* HikeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HikeDetailsViewController.m; sourceTree = "<group>"; };
-		A687B482151BDC18004F08B0 /* HikesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HikesListViewController.h; sourceTree = "<group>"; };
-		A687B483151BDC18004F08B0 /* HikesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HikesListViewController.m; sourceTree = "<group>"; };
 		A687B4851520C2E5004F08B0 /* GetDirectionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetDirectionsDelegate.h; sourceTree = "<group>"; };
 		A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetDirectionsDelegate.m; sourceTree = "<group>"; };
 		A687B48C1520D1D8004F08B0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -127,10 +99,6 @@
 		A6AB117615265FB20002D9EE /* titlebar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar_logo.png; path = Assets/titlebar_logo.png; sourceTree = "<group>"; };
 		A6AB117B1526603A0002D9EE /* view_it_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = view_it_btn.png; path = Assets/view_it_btn.png; sourceTree = "<group>"; };
 		A6EDACD61513D489000AFB60 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		A6EDACDD1513E84F000AFB60 /* Hike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hike.h; sourceTree = "<group>"; };
-		A6EDACDE1513E84F000AFB60 /* Hike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hike.m; sourceTree = "<group>"; };
-		A6EDACE01513E86E000AFB60 /* ScenicVista.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenicVista.h; sourceTree = "<group>"; };
-		A6EDACE11513E86E000AFB60 /* ScenicVista.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenicVista.m; sourceTree = "<group>"; };
 		E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellPhoto.h; sourceTree = "<group>"; };
 		E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellPhoto.m; sourceTree = "<group>"; };
 		E1C0D525152DC970009A1F8D /* VistaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCell.h; sourceTree = "<group>"; };
@@ -222,24 +190,20 @@
 		A67D3D7A1513984600391EE5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				A67D3D6815126D5C00391EE5 /* ViewController.h */,
-				A67D3D6915126D5C00391EE5 /* ViewController.m */,
-				A67D3D7315128E6C00391EE5 /* MapViewController.h */,
-				A67D3D7415128E6C00391EE5 /* MapViewController.m */,
+				A64C940B152E4CED0090BD0D /* MapViewController.m */,
+				A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */,
+				A64C940D152E4CED0090BD0D /* SearchViewController.m */,
+				A64C940E152E4CED0090BD0D /* HikeDetailsViewController.h */,
+				A64C9410152E4CED0090BD0D /* SearchResultsController.m */,
+				A64C9412152E4CED0090BD0D /* SearchResultsController.h */,
+				A64C9413152E4CED0090BD0D /* SearchViewController.h */,
+				A64C9414152E4CED0090BD0D /* MapViewController.h */,
+				A64C9415152E4CED0090BD0D /* HikesListViewController.m */,
+				A64C9416152E4CED0090BD0D /* HikesListViewController.h */,
+				A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */,
+				A64C9418152E4CED0090BD0D /* ViewOrHikeViewController.h */,
 				A67D3D7B15139AD100391EE5 /* CreditsViewController.h */,
 				A67D3D7C15139AD100391EE5 /* CreditsViewController.m */,
-				A67D3D7E1513A73000391EE5 /* SearchResultsController.h */,
-				A67D3D7F1513A73000391EE5 /* SearchResultsController.m */,
-				A687B477151A8972004F08B0 /* ViewOrHikeViewController.h */,
-				A687B478151A8972004F08B0 /* ViewOrHikeViewController.m */,
-				A687B47F151B8A5C004F08B0 /* HikeDetailsViewController.h */,
-				A687B480151B8A5D004F08B0 /* HikeDetailsViewController.m */,
-				A687B482151BDC18004F08B0 /* HikesListViewController.h */,
-				A687B483151BDC18004F08B0 /* HikesListViewController.m */,
-				A613166B15220E8B00C4103E /* SearchViewController.h */,
-				A613166C15220E8B00C4103E /* SearchViewController.m */,
-				A613166E1522167C00C4103E /* TabVC.h */,
-				A613166F1522167D00C4103E /* TabVC.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -256,19 +220,6 @@
 				A627BAAD152E4BC80056A670 /* black_gradient.png */,
 				A627BAAE152E4BC80056A670 /* create_hike_btn2x.png */,
 				A627BAAF152E4BCA0056A670 /* create_hike_on_btn2x.png */,
-				A627BAAB152E4A4E0056A670 /* black_gradient.png */,
-				A627BA93152E479D0056A670 /* x-species_btn2x.png */,
-				A627BA94152E479D0056A670 /* search_hike_btn2x.png */,
-				A627BA95152E479D0056A670 /* create_hike_btn2x.png */,
-				A627BA96152E479D0056A670 /* x-species_on_btn2x.png */,
-				A627BA97152E479D0056A670 /* search_hike_on_btn2x.png */,
-				A627BA98152E479D0056A670 /* create_hike_on_btn2x.png */,
-				A627BA99152E479D0056A670 /* search_hike_btn.png */,
-				A627BA9A152E479D0056A670 /* create_hike_btn.png */,
-				A627BA9B152E479D0056A670 /* x-species_btn.png */,
-				A627BA9C152E479D0056A670 /* x-species_on_btn.png */,
-				A627BA9D152E479D0056A670 /* search_hike_on_btn.png */,
-				A627BA9E152E479D0056A670 /* create_hike_on_btn.png */,
 				A6AB117B1526603A0002D9EE /* view_it_btn.png */,
 				A6AB117415265FB10002D9EE /* hike_it_btn.png */,
 				A6AB117515265FB10002D9EE /* titlebar_logo2x.png */,
@@ -280,10 +231,10 @@
 		A6EDACDC1513E837000AFB60 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A6EDACDD1513E84F000AFB60 /* Hike.h */,
-				A6EDACDE1513E84F000AFB60 /* Hike.m */,
-				A6EDACE01513E86E000AFB60 /* ScenicVista.h */,
-				A6EDACE11513E86E000AFB60 /* ScenicVista.m */,
+				A64C9404152E4CCA0090BD0D /* ScenicVista.m */,
+				A64C9405152E4CCA0090BD0D /* ScenicVista.h */,
+				A64C9406152E4CCA0090BD0D /* Hike.m */,
+				A64C9407152E4CCA0090BD0D /* Hike.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -345,19 +296,6 @@
 				A6AB117915265FB20002D9EE /* titlebar_logo2x.png in Resources */,
 				A6AB117A15265FB20002D9EE /* titlebar_logo.png in Resources */,
 				A6AB117C1526603A0002D9EE /* view_it_btn.png in Resources */,
-				A627BA9F152E479D0056A670 /* x-species_btn2x.png in Resources */,
-				A627BAA0152E479D0056A670 /* search_hike_btn2x.png in Resources */,
-				A627BAA1152E479D0056A670 /* create_hike_btn2x.png in Resources */,
-				A627BAA2152E479D0056A670 /* x-species_on_btn2x.png in Resources */,
-				A627BAA3152E479D0056A670 /* search_hike_on_btn2x.png in Resources */,
-				A627BAA4152E479D0056A670 /* create_hike_on_btn2x.png in Resources */,
-				A627BAA5152E479D0056A670 /* search_hike_btn.png in Resources */,
-				A627BAA6152E479D0056A670 /* create_hike_btn.png in Resources */,
-				A627BAA7152E479D0056A670 /* x-species_btn.png in Resources */,
-				A627BAA8152E479D0056A670 /* x-species_on_btn.png in Resources */,
-				A627BAA9152E479D0056A670 /* search_hike_on_btn.png in Resources */,
-				A627BAAA152E479D0056A670 /* create_hike_on_btn.png in Resources */,
-				A627BAAC152E4A4F0056A670 /* black_gradient.png in Resources */,
 				A627BAB0152E4BCB0056A670 /* black_gradient.png in Resources */,
 				A627BAB1152E4BCB0056A670 /* create_hike_btn2x.png in Resources */,
 				A627BAB2152E4BCB0056A670 /* create_hike_on_btn2x.png in Resources */,
@@ -379,22 +317,20 @@
 			files = (
 				A67D3D5D15126D5C00391EE5 /* main.m in Sources */,
 				A67D3D6115126D5C00391EE5 /* AppDelegate.m in Sources */,
-				A67D3D6A15126D5C00391EE5 /* ViewController.m in Sources */,
-				A67D3D7515128E6C00391EE5 /* MapViewController.m in Sources */,
 				A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */,
-				A67D3D801513A73000391EE5 /* SearchResultsController.m in Sources */,
 				A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */,
-				A6EDACDF1513E84F000AFB60 /* Hike.m in Sources */,
-				A6EDACE21513E86E000AFB60 /* ScenicVista.m in Sources */,
-				A687B479151A8972004F08B0 /* ViewOrHikeViewController.m in Sources */,
-				A687B481151B8A5D004F08B0 /* HikeDetailsViewController.m in Sources */,
-				A687B484151BDC19004F08B0 /* HikesListViewController.m in Sources */,
 				A687B4871520C2E7004F08B0 /* GetDirectionsDelegate.m in Sources */,
-				A613166D15220E8B00C4103E /* SearchViewController.m in Sources */,
-				A61316701522167D00C4103E /* TabVC.m in Sources */,
 				E1C0D524152DC7C0009A1F8D /* VistaCellPhoto.m in Sources */,
 				E1C0D527152DC970009A1F8D /* VistaCell.m in Sources */,
 				A627BA86152DF6CA0056A670 /* VistaCellNote.m in Sources */,
+				A64C9408152E4CCA0090BD0D /* ScenicVista.m in Sources */,
+				A64C9409152E4CCA0090BD0D /* Hike.m in Sources */,
+				A64C9419152E4CED0090BD0D /* MapViewController.m in Sources */,
+				A64C941A152E4CED0090BD0D /* HikeDetailsViewController.m in Sources */,
+				A64C941B152E4CED0090BD0D /* SearchViewController.m in Sources */,
+				A64C941D152E4CED0090BD0D /* SearchResultsController.m in Sources */,
+				A64C941E152E4CED0090BD0D /* HikesListViewController.m in Sources */,
+				A64C941F152E4CED0090BD0D /* ViewOrHikeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
