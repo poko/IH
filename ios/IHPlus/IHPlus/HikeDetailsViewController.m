@@ -144,14 +144,15 @@ NSMutableData *receivedData;
     [UIColor colorWithRed:(203.0/255.0) green:(204.0/255.0) blue:(208.0/255.0) alpha:1];
     [[cell contentView] setBackgroundColor:color];
     [cell sizeToFit];
+    NSLog(@"returning cell: %i", indexPath.row);
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ScenicVista *vista = [[hike vistas] objectAtIndex:indexPath.row];
+    NSLog(@"getting height %i", indexPath.row);
     if ([vista getActionType] == PHOTO){
-        NSLog(@"height should be 200.");
         return 200;
     }
     return 150;

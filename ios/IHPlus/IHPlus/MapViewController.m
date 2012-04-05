@@ -49,6 +49,7 @@
     [_startAddress setDelegate:self];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
+    [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
 
     CLLocationCoordinate2D annotationCoord;
     
