@@ -9,6 +9,7 @@
 #import "HikeDetailsViewController.h"
 #import "VistaCell.h"
 #import "VistaCellPhoto.h"
+#import "VistaCellNote.h"
 #import "ScenicVista.h"
 
 @implementation HikeDetailsViewController
@@ -58,7 +59,7 @@ NSMutableData *receivedData;
     [self.view addSubview: _loadingIndicator];
     [_loadingIndicator startAnimating];
     // make server call
-    NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHike.php?hike_id=%@", [hike hikeId]];
+    NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikes.php?hike_id=%@", [hike hikeId]];
     NSLog(@"Sending to url %@", url);
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
@@ -101,27 +102,59 @@ NSMutableData *receivedData;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"cellforrowatIndex, section: %i , row: %i", indexPath.section, indexPath.row);
     ScenicVista *vista = [[hike vistas] objectAtIndex:indexPath.row];
+//    NSLog(@"vista date: %@", vista.date);
+//    NSLog(@"vista action type: %@", [vista getActionType]);
     VistaCell *cell;
-    if ([vista getActionType] == ActionType.PHOTO){
-        *cell = (VistaCellPhoto *) [tableView dequeueReusableCellWithIdentifier:@"PhotoCell"];
-        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.ecoarttech.org/ih_plus/XXX/%@", [vista photoUrl]]];
-        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]]; 
-        [[cell photo] setImage:Image];
-    }
-    else if ([vista getActionType] == ActionType.MEDITATE){
-        *cell = (VistaCellMeditate *) [tableView dequeueReusableCellWithIdentifier:@"MeditateCell"];
-    }
-    else{ //Note/Text type
-        *cell = (VistaCellNote *) [tableView dequeueReusableCellWithIdentifier:@"NoteCell"];
-        [[cell note] setText:[vista response]];
+    switch ([vista getActionType]){
+        case PHOTO:{ 
+            cell = (VistaCellPhoto *) [tableView dequeueReusableCellWithIdentifier:@"PhotoCell"];
+//            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.ecoarttech.org/ih_plus/uploads/%@", [vista photoUrl]]];
+//            UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]]; 
+//            [[(VistaCellPhoto *)cell photo] setImage:img];
+            break;}
+        case MEDITATE:{
+             cell = (VistaCell *) [tableView dequeueReusableCellWithIdentifier:@"MeditateCell"];
+            break;}
+        default:{
+            cell = (VistaCell *) [tableView dequeueReusableCellWithIdentifier:@"NoteCell"];
+//            [[(VistaCellNote *) cell note] setText:[vista note]];
+//            [[(VistaCellNote *) cell note] sizeToFit];
+            break;}
     }
     // Configure the cell...
-    [[cell vistaNum] setText:[NSString stringWithFormat:@"Scenic Vista @i", (indexPath.row + 1)]];
+    [[cell vistaNum] setText:[NSString stringWithFormat:@"Scenic Vista %i", (indexPath.row + 1)]];
     [[cell prompt] setText:[vista prompt]];
-    
+    [[cell prompt] sizeToFit];
+    // adjust things
+    if ([vista getActionType] == PHOTO){
+        //[cell insertSubview:[(VistaCellPhoto *) cell photo] belowSubview:[cell prompt]];
+    }
+    else if ([vista getActionType] == TEXT || [vista getActionType] == NOTE){
+        [[(VistaCellNote *) cell note] setText:[vista note]];
+        [[(VistaCellNote *) cell note] setBackgroundColor:[UIColor redColor]];
+        CGRect frame= [[cell prompt] frame];
+        CGRect noteFrame = CGRectMake(frame.origin.x, (frame.origin.y + frame.size.height), 300, 50);
+        [[(VistaCellNote *) cell note] setFrame:noteFrame];
+        [[(VistaCellNote *) cell note] sizeToFit];
+    }
+    // color bg
+    UIColor *color = indexPath.row % 2 == 0 ?
+    [UIColor colorWithRed:(222.0/255.0) green:(222.0/255.0) blue:(224.0/255.0) alpha:1]:
+    [UIColor colorWithRed:(203.0/255.0) green:(204.0/255.0) blue:(208.0/255.0) alpha:1];
+    [[cell contentView] setBackgroundColor:color];
+    [cell sizeToFit];
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ScenicVista *vista = [[hike vistas] objectAtIndex:indexPath.row];
+    if ([vista getActionType] == PHOTO){
+        NSLog(@"height should be 200.");
+        return 200;
+    }
+    return 150;
 }
 
 #pragma mark - Connection delgate
@@ -171,7 +204,14 @@ NSMutableData *receivedData;
         [alert show];
     }
     NSLog(@"Here is the escaped response: %@", json);
-    hike = [Hike initWithDictionary:[json objectForKey:@"hike"]];
+    NSArray *allHikes = [json objectForKey:@"hikes"];
+    NSLog(@"all hikes count: %i", [allHikes count]);
+    if ([allHikes count] == 1){ //only one person walked this hike before
+        hike = [Hike initWithDictionary:[allHikes objectAtIndex:0]];
+    }
+    else{
+        //TODO - what happens?!
+    }
     // TODO update table view 
     [_table reloadData];
 }

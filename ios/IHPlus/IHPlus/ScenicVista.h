@@ -8,9 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    NOTE,
+    PHOTO,
+    TEXT,
+    MEDITATE
+} ActionType;
+
 @interface ScenicVista : NSObject
 
 @property (nonatomic, strong) NSString *actionId;
+@property (nonatomic, strong) NSString *actionType;
+@property (nonatomic, strong) NSString *prompt;
 @property (nonatomic, strong) NSString *date;
 @property (nonatomic, strong) NSString *lat;
 @property (nonatomic, strong) NSString *lng;
@@ -19,5 +28,6 @@
 // TODO @property (nonatomic, strong) VistaAction *newAction;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *) dict;
+- (ActionType) getActionType;
 
 @end

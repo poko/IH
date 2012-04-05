@@ -105,7 +105,9 @@ NSMutableData *receivedData;
              CLLocationDegrees latitude = placemark.location.coordinate.latitude;
              CLLocationDegrees longitude = placemark.location.coordinate.longitude;
              // make server call
-             NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
+//             NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
+            NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
+
              NSLog(@"Sending to url %@", url);
              
              

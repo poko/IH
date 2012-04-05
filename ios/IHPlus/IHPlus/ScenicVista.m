@@ -8,28 +8,28 @@
 
 #import "ScenicVista.h"
 
-typedef enum {
-    NOTE,
-    PHOTO,
-    TEXT,
-    MEDITATE
-} ActionType;
-
-
 @implementation ScenicVista
 
-@synthesize actionId, date, lat, lng, note, photoUrl;
+@synthesize actionId, actionType, prompt, date, lat, lng, note, photoUrl;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *)dict
 {
     ScenicVista *vista = [[ScenicVista alloc] init];
     [vista setActionId:[dict objectForKey:@"action_id"]];
+    [vista setActionType:[dict objectForKey:@"action_type"]];
+    [vista setPrompt:[dict objectForKey:@"verbiage"]];
     [vista setDate:[dict objectForKey:@"date"]];
     [vista setLat:[dict objectForKey:@"latitude"]];
     [vista setLng:[dict objectForKey:@"longitude"]];
     [vista setNote:[dict objectForKey:@"note"]];
     [vista setPhotoUrl:[dict objectForKey:@"photo"]];
     return vista;
+}
+
+- (ActionType) getActionType{
+    if ([actionType isEqualToString:@"photo"])
+       return PHOTO;
+    return NOTE;
 }
 
 @end
