@@ -54,9 +54,7 @@ NSMutableData *receivedData;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    // do something with the data
-    // receivedData is declared as a method instance elsewhere
-    // TODO [_loadingIndicator stopAnimating];
+    // parse response data
     NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
     NSXMLParser *parser = [[NSXMLParser alloc] initWithData:receivedData];
     [parser setDelegate:self];
@@ -73,6 +71,11 @@ NSMutableString *coordStr;
         NSLog(@"found line string:");
         savingChars = YES;
         coordStr = [NSMutableString string];
+    }
+    else{
+        NSLog(@"didn't find line string: not valid directions");
+        // pass error back to mapView.
+        _handler(nil, @"No valid directions");
     }
 }
 

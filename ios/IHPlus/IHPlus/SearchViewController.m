@@ -87,8 +87,9 @@ NSMutableData *receivedData;
     //loading dialog
     if (_loadingIndicator == nil){
         _loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [_loadingIndicator setBackgroundColor:[UIColor colorWithWhite:0 alpha:.5]];
         [_loadingIndicator setHidesWhenStopped:YES];
-        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 60.0, 60.0);
+        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
         _loadingIndicator.center = self.view.center;
     }
     [self.view addSubview: _loadingIndicator];

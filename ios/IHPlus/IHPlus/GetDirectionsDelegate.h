@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 
-typedef void (^DirectionsCompletionHandler)(NSMutableArray *points, NSError *error);
+typedef void (^DirectionsCompletionHandler)(NSMutableArray *points, NSString *error);
 
 @interface GetDirectionsDelegate : NSObject <NSURLConnectionDelegate, NSXMLParserDelegate>{    DirectionsCompletionHandler _handler;
 }
