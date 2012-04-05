@@ -16,6 +16,11 @@
 @property (nonatomic, strong) NSString *description;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSMutableArray *vistas;
+@property (nonatomic, strong) NSString *original;
+@property (nonatomic, strong) NSString *originalHikeId;
+@property (nonatomic, strong) NSMutableArray *points;
+@property (nonatomic, strong) NSString *startLat;
+@property (nonatomic, strong) NSString *startLng;
 
 + (Hike *) initWithDictionary:(NSDictionary *) dict;
 

@@ -15,7 +15,21 @@ typedef enum {
     MEDITATE
 } ActionType;
 
+
 @implementation ScenicVista
 
+@synthesize actionId, date, lat, lng, note, photoUrl;
+
++ (ScenicVista *) initWithDictionary:(NSDictionary *)dict
+{
+    ScenicVista *vista = [[ScenicVista alloc] init];
+    [vista setActionId:[dict objectForKey:@"action_id"]];
+    [vista setDate:[dict objectForKey:@"date"]];
+    [vista setLat:[dict objectForKey:@"latitude"]];
+    [vista setLng:[dict objectForKey:@"longitude"]];
+    [vista setNote:[dict objectForKey:@"note"]];
+    [vista setPhotoUrl:[dict objectForKey:@"photo"]];
+    return vista;
+}
 
 @end

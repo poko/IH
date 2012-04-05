@@ -7,11 +7,12 @@
 //
 
 #import "Hike.h"
+#import "ScenicVista.h"
 
 @implementation Hike
 
 @synthesize hikeId, date, name, description, username;
-@synthesize vistas;
+@synthesize vistas, original, originalHikeId, points, startLat, startLng;
 
 + (Hike *) initWithDictionary:(NSDictionary *)dict
 {
@@ -25,6 +26,18 @@
     [dateFormatter setDateFormat: @"yyy-MM-dd HH:mm:ss"];
     NSDate *d = [dateFormatter dateFromString:[dict objectForKey:@"date"]];
     [hike setDate:d];
+    // set original flag & id
+    [hike setOriginal:[dict objectForKey:@"orginal"]];
+    [hike setOriginalHikeId:[dict objectForKey:@"orginal_hike_id"]];
+    // set vistas
+    hike.vistas = [NSMutableArray array];
+    NSArray *vistasJson = [dict objectForKey:@"vistas"];
+    for (NSDictionary *vistaJson in vistasJson) {
+        ScenicVista *vista = [ScenicVista initWithDictionary:vistaJson];
+        [hike.vistas addObject:vista];
+    }
+    // set points
+    
     return hike;
 }
 

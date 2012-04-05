@@ -12,6 +12,8 @@
 @implementation HikeDetailsViewController
 @synthesize hike;
 
+NSMutableData *receivedData;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -44,7 +46,30 @@
     NSString *details = [NSString stringWithFormat:@"Pioneered by: %@, %@", [hike username], [dateFormatter stringFromDate:[hike date]]];
     [_details setText:details];
     // make call to load the full hike data
-    
+    //loading dialog
+    if (_loadingIndicator == nil){
+        _loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [_loadingIndicator setHidesWhenStopped:YES];
+        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 60.0, 60.0);
+        _loadingIndicator.center = self.view.center;
+    }
+    [self.view addSubview: _loadingIndicator];
+    [_loadingIndicator startAnimating];
+    // make server call
+    NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHike.php?hike_id=%@", [hike hikeId]];
+    NSLog(@"Sending to url %@", url);
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
+    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
+    if (connection) {
+        // Create the NSMutableData to hold the received data.
+        // receivedData is an instance variable declared elsewhere.
+        receivedData = [NSMutableData data];
+    } else {
+        NSLog(@"connection failed");
+        [_loadingIndicator stopAnimating];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 
@@ -81,6 +106,58 @@
     //[[cell description] setText:desc];
     
     return cell;
+}
+
+#pragma mark - Connection delgate
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    // This method is called when the server has determined that it
+    // has enough information to create the NSURLResponse.
+    
+    // It can be called multiple times, for example in the case of a
+    // redirect, so each time we reset the data.
+    
+    // receivedData is an instance variable declared elsewhere.
+    NSLog(@"didReceiveResponse");
+    [receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    // Append the new data to receivedData.
+    // receivedData is an instance variable declared elsewhere.
+    NSLog(@"didReceiveData");
+    [receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    // inform the user 
+    [_loadingIndicator stopAnimating];
+    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    // do something with the data
+    // receivedData is declared as a method instance elsewhere
+    [_loadingIndicator stopAnimating];
+    NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
+    NSString *receivedStr = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
+    NSString *escaped = [receivedStr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    NSError *error;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[escaped dataUsingEncoding:NSUTF8StringEncoding] options:kNilOptions error:&error];
+    if (error != nil){
+        NSLog(@"Here is the error: %@", error);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was an error with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    NSLog(@"Here is the escaped response: %@", json);
+    hike = [Hike initWithDictionary:[json objectForKey:@"hike"]];
+    // TODO update table view 
+    [_table reloadData];
 }
 
 @end

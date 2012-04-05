@@ -388,6 +388,7 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="egv-X5-Bea" id="ITz-VM-l7b"/>
+                                    <outlet property="delegate" destination="egv-X5-Bea" id="MXi-19-0lf"/>
                                 </connections>
                             </tableView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="jE3-Wc-L1u">
@@ -419,6 +420,7 @@
                         <outlet property="_desc" destination="6of-PU-7B0" id="DJT-8L-s08"/>
                         <outlet property="_details" destination="VBc-g1-Ahd" id="9BF-RZ-835"/>
                         <outlet property="_header" destination="jE3-Wc-L1u" id="0VT-Re-nz2"/>
+                        <outlet property="_table" destination="ZuO-21-zQ4" id="qDM-yr-aTK"/>
                     </connections>
                 </viewController>
             </objects>
@@ -551,6 +553,7 @@
                 <relationship kind="outlet" name="_desc" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="_details" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_table" candidateClass="UITableView"/>
             </relationships>
         </class>
         <class className="MapViewController" superclassName="UIViewController">
