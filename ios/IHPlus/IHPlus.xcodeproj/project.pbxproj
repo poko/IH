@@ -34,6 +34,8 @@
 		A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EDACD61513D489000AFB60 /* CoreLocation.framework */; };
 		A6EDACDF1513E84F000AFB60 /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACDE1513E84F000AFB60 /* Hike.m */; };
 		A6EDACE21513E86E000AFB60 /* ScenicVista.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EDACE11513E86E000AFB60 /* ScenicVista.m */; };
+		E1C0D524152DC7C0009A1F8D /* VistaCellPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */; };
+		E1C0D527152DC970009A1F8D /* VistaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D526152DC970009A1F8D /* VistaCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +84,10 @@
 		A6EDACDE1513E84F000AFB60 /* Hike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hike.m; sourceTree = "<group>"; };
 		A6EDACE01513E86E000AFB60 /* ScenicVista.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenicVista.h; sourceTree = "<group>"; };
 		A6EDACE11513E86E000AFB60 /* ScenicVista.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenicVista.m; sourceTree = "<group>"; };
+		E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellPhoto.h; sourceTree = "<group>"; };
+		E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellPhoto.m; sourceTree = "<group>"; };
+		E1C0D525152DC970009A1F8D /* VistaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCell.h; sourceTree = "<group>"; };
+		E1C0D526152DC970009A1F8D /* VistaCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +151,10 @@
 				A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */,
 				A687B4851520C2E5004F08B0 /* GetDirectionsDelegate.h */,
 				A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */,
+				E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */,
+				E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */,
+				E1C0D525152DC970009A1F8D /* VistaCell.h */,
+				E1C0D526152DC970009A1F8D /* VistaCell.m */,
 			);
 			path = IHPlus;
 			sourceTree = "<group>";
@@ -289,6 +299,8 @@
 				A687B4871520C2E7004F08B0 /* GetDirectionsDelegate.m in Sources */,
 				A613166D15220E8B00C4103E /* SearchViewController.m in Sources */,
 				A61316701522167D00C4103E /* TabVC.m in Sources */,
+				E1C0D524152DC7C0009A1F8D /* VistaCellPhoto.m in Sources */,
+				E1C0D527152DC970009A1F8D /* VistaCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
