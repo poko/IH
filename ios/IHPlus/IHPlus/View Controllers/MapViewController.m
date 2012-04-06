@@ -9,6 +9,9 @@
 #import "MapViewController.h"
 #import "GetDirectionsDelegate.h"
 #import "AppDelegate.h"
+#import "ScenicVista.h"
+
+#define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))//((__MIN__) + arc4random() % ((__MAX__+1) – (__MIN__)))
 
 @implementation MapViewController
 
@@ -89,7 +92,7 @@
     }
     overlayView = _routeLineView;
     }
-    
+    NSLog(@"returning null overlay view? %@", overlay);
     return overlayView;
     
 }
@@ -97,7 +100,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
+    // TODO Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
 
@@ -105,6 +108,17 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+-(void) drawVistas
+{
+    NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
+    for (int i = 0; i < [[_hike vistas] count]; i++){
+        ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
+        MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
+        annotationPoint.coordinate = [[vista location] coordinate];
+        [_mapView addAnnotation:annotationPoint];
+    }
 }
 
 
@@ -150,9 +164,10 @@
     return offset * i;
 }
 
+int midpoint;
 -(void) getDirectionsFrom:(NSString *) from to:(NSString *) to
 {
-    NSLog(@"getting directions from : %@ to: %@", from, to);
+    //NSLog(@"getting directions from : %@ to: %@", from, to);
     NSString *url = [NSString stringWithFormat:@"http://maps.google.com/maps?output=kml&saddr=%@&daddr=%@", 
                      [from stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], 
                      [to stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -170,20 +185,48 @@
         [_pathPoints addObjectsFromArray:points];
         NSLog(@"compeltion handler!! %i", _callCount);
         NSLog(@"we have this many points: %i", [_pathPoints count]);
+        if (_callCount == 1){
+            midpoint = ([_pathPoints count] - 1);
+        }
         if (_callCount == 2){
             NSLog(@"should be drawing now, %i", [_pathPoints count]);
+            // Create the Hike object!
+            _hike = [[Hike alloc] init];
             [_loadingIndicator stopAnimating];
             // draw overlay
-            CLLocationCoordinate2D *points = malloc([_pathPoints count] * sizeof(CLLocationCoordinate2D));
+            CLLocationCoordinate2D *pointsLine = malloc([_pathPoints count] * sizeof(CLLocationCoordinate2D));
             for (int i = 0; i < [_pathPoints count]; i++){
-                points[i] = [(CLLocation *)[_pathPoints objectAtIndex:i ] coordinate];//.coordinate;
+                pointsLine[i] = [(CLLocation *)[_pathPoints objectAtIndex:i ] coordinate];
+                //set point in Hike object for later uploadingz.
+                [_hike addPoint:(CLLocation *)[_pathPoints objectAtIndex:i]];
             }
-            MKPolyline *line = [MKPolyline polylineWithCoordinates:points count:[_pathPoints count]];
+            MKPolyline *line = [MKPolyline polylineWithCoordinates:pointsLine count:[_pathPoints count]];
             _routeLine = line;
             MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[_pathPoints objectAtIndex:0 ] coordinate], 400, 400);
             [_mapView setRegion:region animated:YES];
             [_mapView addOverlay:line];
-            free(points);
+            free(pointsLine);
+            // hide the input view
+            [_inputHolder setHidden:YES];
+            UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(clickedCreateButton:)];
+            [[self navigationItem] setLeftBarButtonItem:createButton];
+            // generate random scenic vistas
+            // make end point and mid point SVs
+            [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:midpoint]];
+            [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:([_pathPoints count] - 1)]];
+            // 1-3 additional vista points per half
+            int vistaAmount = RANDOM_INT(1, 3);
+            int randIndex;
+            for (int i = 0; i < vistaAmount; i++){
+                randIndex = RANDOM_INT(0, midpoint);
+                [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+            }
+            vistaAmount = RANDOM_INT(1, 3);
+            for (int i = 0; i < vistaAmount; i++){
+                randIndex = RANDOM_INT(midpoint, ([_pathPoints count] - 1));
+                [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+            }
+           [self drawVistas];
         }
         
     }];
@@ -194,10 +237,19 @@
     }
 }
 
+- (IBAction) clickedCreateButton:(id)sender{
+    NSLog(@"clicked create!");
+    //TODO check that user hasn't completed any vistas, if they have, warn.
+    //TODO - clear hike
+    [_inputHolder setHidden:NO];
+    [[self navigationItem] setLeftBarButtonItem:nil];
+}
+
 #pragma mark IBActions
 -(IBAction)hitTrail:(id)sender
 {
     NSLog(@"hit trail");
+    // TODO remove map overlay
     // clear out any previous data
     _callCount = 0;
     _pathPoints = [NSMutableArray array];
@@ -232,40 +284,6 @@
                  NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng];
                  [self getDirectionsFrom:start to:randPoint];
                  [self getDirectionsFrom:randPoint to:end];
-//                 [_geocoder reverseGeocodeLocation:randLoc completionHandler:^(NSArray *placemarks, NSError *error) {
-//                    
-//                     NSLog(@"reverse geocoding done. %i", placemarks.count);
-//                     if ([placemarks count] > 0){
-//                         CLPlacemark *randPlacemark = [placemarks objectAtIndex:0];
-//                         NSLog(@"Placemark : %@", randPlacemark);
-//                         NSLog(@"Placemark name: %@", randPlacemark.name);
-//                         NSLog(@"Placemark locality: %@", randPlacemark.locality);
-//                         NSLog(@"Placemark addy dict: %@", randPlacemark.addressDictionary);
-//                         NSString *randPoint = [NSString stringWithFormat:@"%@ %@", [randPlacemark.addressDictionary objectForKey:@"Name"], [randPlacemark.addressDictionary objectForKey:@"ZIP"]];
-//                         NSLog(@"rand point: %@", randPoint);
-//                                                
-//                         // make directions calls to start->random and random->start
-//                     }
-//                     else{
-//                         NSLog(@"Failed to reverse geocode.");
-//                     }
-//                 }];
-//                 NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikesByLocation.php?latitude=%f&longitude=%f", latitude, longitude];
-//                 NSLog(@"Sending to url %@", url);
-//                 
-//                 
-//                 NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
-//                 NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
-//                 if (connection) {
-//                     // Create the NSMutableData to hold the received data.
-//                     // receivedData is an instance variable declared elsewhere.
-//                     receivedData = [NSMutableData data];
-//                 } else {
-//                     NSLog(@"connection failed");
-//                     [_loadingIndicator stopAnimating];
-//                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//                     [alert show];
-//                 }
              }
              else{
                  NSLog(@"Nothing returned for placemarks search");

@@ -136,12 +136,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="gfm-Z0-vay"/>
+                    <navigationItem key="navigationItem" id="gfm-Z0-vay">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="action" id="h7y-qb-eon">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="_endAddress" destination="npn-ip-9Hr" id="Tse-bP-yXU"/>
                         <outlet property="_inputHolder" destination="lKY-kn-u6E" id="pTK-by-8LJ"/>
                         <outlet property="_mapView" destination="kiD-Dg-fAa" id="YbG-Mi-IR9"/>
                         <outlet property="_startAddress" destination="MTV-cx-euP" id="YIb-9s-hCd"/>
+                        <outlet property="_uploadButton" destination="h7y-qb-eon" id="xMw-aU-0iT"/>
                     </connections>
                 </viewController>
             </objects>
@@ -520,6 +525,7 @@
                 <relationship kind="outlet" name="_inputHolder" candidateClass="UIView"/>
                 <relationship kind="outlet" name="_mapView" candidateClass="MKMapView"/>
                 <relationship kind="outlet" name="_startAddress" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="_uploadButton" candidateClass="UIBarButtonItem"/>
             </relationships>
         </class>
         <class className="SearchResultsController" superclassName="UITableViewController">

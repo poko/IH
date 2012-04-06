@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
 typedef enum {
     NOTE,
@@ -26,8 +27,10 @@ typedef enum {
 @property (nonatomic, strong) NSString *note;
 @property (nonatomic, strong) NSString *photoUrl;
 // TODO @property (nonatomic, strong) VistaAction *newAction;
+@property (nonatomic, strong) CLLocation *location;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *) dict;
++ (ScenicVista *) initWithPoint:(CLLocation *) point;
 - (ActionType) getActionType;
 
 @end

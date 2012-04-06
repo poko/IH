@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
 @interface Hike : NSObject
 
@@ -23,5 +24,7 @@
 @property (nonatomic, strong) NSString *startLng;
 
 + (Hike *) initWithDictionary:(NSDictionary *) dict;
+- (void) addPoint:(CLLocation *) point;
+- (void) addVista:(CLLocation *) point;
 
 @end

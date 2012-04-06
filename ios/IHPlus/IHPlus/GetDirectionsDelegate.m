@@ -72,11 +72,6 @@ NSMutableString *coordStr;
         savingChars = YES;
         coordStr = [NSMutableString string];
     }
-    else{
-        NSLog(@"didn't find line string: not valid directions");
-        // pass error back to mapView.
-        _handler(nil, @"No valid directions");
-    }
 }
 
 -(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
@@ -113,6 +108,14 @@ NSMutableString *coordStr;
         }
         // pass points back to mapView.
         _handler(locCoords, nil);
+    }
+}
+
+- (void)parserDidEndDocument:(NSXMLParser *)parser
+{
+    if (coordStr == nil){
+        // here's where there weren't valid directions returned, silly!
+        _handler(nil, @"Invalid directions");
     }
 }
 

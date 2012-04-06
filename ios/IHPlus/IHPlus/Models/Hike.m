@@ -41,4 +41,20 @@
     return hike;
 }
 
+- (void) addPoint:(CLLocation *)point
+{
+    if (points == nil)
+        points = [NSMutableArray array];
+    [points addObject:point];
+}
+
+- (void) addVista:(CLLocation *) point
+{
+    if (vistas == nil)
+        vistas = [NSMutableArray array];
+    ScenicVista *vista = [ScenicVista initWithPoint:point];
+    if (![vistas containsObject:vista])
+        [vistas addObject:vista];
+}
+
 @end

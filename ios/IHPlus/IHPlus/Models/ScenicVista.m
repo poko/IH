@@ -11,6 +11,7 @@
 @implementation ScenicVista
 
 @synthesize actionId, actionType, prompt, date, lat, lng, note, photoUrl;
+@synthesize location;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *)dict
 {
@@ -23,6 +24,13 @@
     [vista setLng:[dict objectForKey:@"longitude"]];
     [vista setNote:[dict objectForKey:@"note"]];
     [vista setPhotoUrl:[dict objectForKey:@"photo"]];
+    return vista;
+}
+
++ (ScenicVista *) initWithPoint:(CLLocation *)point
+{
+    ScenicVista *vista = [[ScenicVista alloc] init];
+    [vista setLocation:point];
     return vista;
 }
 

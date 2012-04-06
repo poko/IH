@@ -190,6 +190,7 @@
 		A67D3D7A1513984600391EE5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A64C9414152E4CED0090BD0D /* MapViewController.h */,
 				A64C940B152E4CED0090BD0D /* MapViewController.m */,
 				A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */,
 				A64C940D152E4CED0090BD0D /* SearchViewController.m */,
@@ -197,7 +198,6 @@
 				A64C9410152E4CED0090BD0D /* SearchResultsController.m */,
 				A64C9412152E4CED0090BD0D /* SearchResultsController.h */,
 				A64C9413152E4CED0090BD0D /* SearchViewController.h */,
-				A64C9414152E4CED0090BD0D /* MapViewController.h */,
 				A64C9415152E4CED0090BD0D /* HikesListViewController.m */,
 				A64C9416152E4CED0090BD0D /* HikesListViewController.h */,
 				A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */,
