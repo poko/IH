@@ -19,9 +19,7 @@
 		A627BABE152E4BF20056A670 /* create_hike_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BABC152E4BF10056A670 /* create_hike_on_btn.png */; };
 		A64C9408152E4CCA0090BD0D /* ScenicVista.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9404152E4CCA0090BD0D /* ScenicVista.m */; };
 		A64C9409152E4CCA0090BD0D /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9406152E4CCA0090BD0D /* Hike.m */; };
-		A64C9419152E4CED0090BD0D /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940B152E4CED0090BD0D /* MapViewController.m */; };
 		A64C941A152E4CED0090BD0D /* HikeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */; };
-		A64C941B152E4CED0090BD0D /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940D152E4CED0090BD0D /* SearchViewController.m */; };
 		A64C941D152E4CED0090BD0D /* SearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9410152E4CED0090BD0D /* SearchResultsController.m */; };
 		A64C941E152E4CED0090BD0D /* HikesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9415152E4CED0090BD0D /* HikesListViewController.m */; };
 		A64C941F152E4CED0090BD0D /* ViewOrHikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */; };
@@ -37,6 +35,8 @@
 		A67D3D7D15139AD100391EE5 /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D7C15139AD100391EE5 /* CreditsViewController.m */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
 		A687B4871520C2E7004F08B0 /* GetDirectionsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */; };
+		A6984D9A152F6EF7005934C4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984D9B152F6EF7005934C4 /* MapViewController.m */; };
+		A6984DA0152F74EE005934C4 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984DA1152F74EE005934C4 /* SearchViewController.m */; };
 		A6AB117815265FB20002D9EE /* hike_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117415265FB10002D9EE /* hike_it_btn.png */; };
 		A6AB117915265FB20002D9EE /* titlebar_logo2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117515265FB10002D9EE /* titlebar_logo2x.png */; };
 		A6AB117A15265FB20002D9EE /* titlebar_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117615265FB20002D9EE /* titlebar_logo.png */; };
@@ -62,9 +62,7 @@
 		A64C9405152E4CCA0090BD0D /* ScenicVista.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScenicVista.h; path = Models/ScenicVista.h; sourceTree = "<group>"; };
 		A64C9406152E4CCA0090BD0D /* Hike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Hike.m; path = Models/Hike.m; sourceTree = "<group>"; };
 		A64C9407152E4CCA0090BD0D /* Hike.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hike.h; path = Models/Hike.h; sourceTree = "<group>"; };
-		A64C940B152E4CED0090BD0D /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = "View Controllers/MapViewController.m"; sourceTree = "<group>"; };
 		A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HikeDetailsViewController.m; path = "View Controllers/HikeDetailsViewController.m"; sourceTree = "<group>"; };
-		A64C940D152E4CED0090BD0D /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = "View Controllers/SearchViewController.m"; sourceTree = "<group>"; };
 		A64C940E152E4CED0090BD0D /* HikeDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HikeDetailsViewController.h; path = "View Controllers/HikeDetailsViewController.h"; sourceTree = "<group>"; };
 		A64C9410152E4CED0090BD0D /* SearchResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchResultsController.m; path = "View Controllers/SearchResultsController.m"; sourceTree = "<group>"; };
 		A64C9412152E4CED0090BD0D /* SearchResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultsController.h; path = "View Controllers/SearchResultsController.h"; sourceTree = "<group>"; };
@@ -94,6 +92,8 @@
 		A687B4851520C2E5004F08B0 /* GetDirectionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetDirectionsDelegate.h; sourceTree = "<group>"; };
 		A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetDirectionsDelegate.m; sourceTree = "<group>"; };
 		A687B48C1520D1D8004F08B0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		A6984D9B152F6EF7005934C4 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = "View Controllers/MapViewController.m"; sourceTree = "<group>"; };
+		A6984DA1152F74EE005934C4 /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = "View Controllers/SearchViewController.m"; sourceTree = "<group>"; };
 		A6AB117415265FB10002D9EE /* hike_it_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = hike_it_btn.png; path = Assets/hike_it_btn.png; sourceTree = "<group>"; };
 		A6AB117515265FB10002D9EE /* titlebar_logo2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar_logo2x.png; path = Assets/titlebar_logo2x.png; sourceTree = "<group>"; };
 		A6AB117615265FB20002D9EE /* titlebar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar_logo.png; path = Assets/titlebar_logo.png; sourceTree = "<group>"; };
@@ -191,13 +191,13 @@
 			isa = PBXGroup;
 			children = (
 				A64C9414152E4CED0090BD0D /* MapViewController.h */,
-				A64C940B152E4CED0090BD0D /* MapViewController.m */,
-				A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */,
-				A64C940D152E4CED0090BD0D /* SearchViewController.m */,
+				A6984D9B152F6EF7005934C4 /* MapViewController.m */,
 				A64C940E152E4CED0090BD0D /* HikeDetailsViewController.h */,
+				A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */,
+				A64C9413152E4CED0090BD0D /* SearchViewController.h */,
+				A6984DA1152F74EE005934C4 /* SearchViewController.m */,
 				A64C9410152E4CED0090BD0D /* SearchResultsController.m */,
 				A64C9412152E4CED0090BD0D /* SearchResultsController.h */,
-				A64C9413152E4CED0090BD0D /* SearchViewController.h */,
 				A64C9415152E4CED0090BD0D /* HikesListViewController.m */,
 				A64C9416152E4CED0090BD0D /* HikesListViewController.h */,
 				A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */,
@@ -325,9 +325,9 @@
 				A627BA86152DF6CA0056A670 /* VistaCellNote.m in Sources */,
 				A64C9408152E4CCA0090BD0D /* ScenicVista.m in Sources */,
 				A64C9409152E4CCA0090BD0D /* Hike.m in Sources */,
-				A64C9419152E4CED0090BD0D /* MapViewController.m in Sources */,
+				A6984D9A152F6EF7005934C4 /* MapViewController.m in Sources */,
 				A64C941A152E4CED0090BD0D /* HikeDetailsViewController.m in Sources */,
-				A64C941B152E4CED0090BD0D /* SearchViewController.m in Sources */,
+				A6984DA0152F74EE005934C4 /* SearchViewController.m in Sources */,
 				A64C941D152E4CED0090BD0D /* SearchResultsController.m in Sources */,
 				A64C941E152E4CED0090BD0D /* HikesListViewController.m in Sources */,
 				A64C941F152E4CED0090BD0D /* ViewOrHikeViewController.m in Sources */,

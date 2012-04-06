@@ -11,9 +11,11 @@
 #import "AppDelegate.h"
 #import "ScenicVista.h"
 
-#define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))//((__MIN__) + arc4random() % ((__MAX__+1) – (__MIN__)))
+#define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
 
 @implementation MapViewController
+
+NSMutableData *vistaActionsData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,15 +55,6 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
-
-    CLLocationCoordinate2D annotationCoord;
-    
-    annotationCoord.latitude = 47.640071;
-    annotationCoord.longitude = -122.129598;
-    
-    MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
-    annotationPoint.coordinate = annotationCoord;
-    [_mapView addAnnotation:annotationPoint];
 }
  
 
@@ -84,15 +77,14 @@
     {
         NSLog(@"trying to add route line");
         //if we have not yet created an overlay view for this overlay, create it now.
-    if (_routeLineView == nil){
-        _routeLineView = [[MKPolylineView alloc] initWithPolyline:_routeLine];
-        _routeLineView.fillColor = [UIColor blueColor];
-        _routeLineView.strokeColor = [UIColor blueColor];
-        _routeLineView.lineWidth = 3;
+        if (_routeLineView == nil){
+            _routeLineView = [[MKPolylineView alloc] initWithPolyline:_routeLine];
+            _routeLineView.fillColor = [UIColor blueColor];
+            _routeLineView.strokeColor = [UIColor blueColor];
+            _routeLineView.lineWidth = 3;
+        }
+        overlayView = _routeLineView;
     }
-    overlayView = _routeLineView;
-    }
-    NSLog(@"returning null overlay view? %@", overlay);
     return overlayView;
     
 }
@@ -116,7 +108,8 @@
     for (int i = 0; i < [[_hike vistas] count]; i++){
         ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
         MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
-        annotationPoint.coordinate = [[vista location] coordinate];
+        [annotationPoint setCoordinate:[[vista location] coordinate]];
+        [annotationPoint setTitle:[vista prompt]];
         [_mapView addAnnotation:annotationPoint];
     }
 }
@@ -192,7 +185,7 @@ int midpoint;
             NSLog(@"should be drawing now, %i", [_pathPoints count]);
             // Create the Hike object!
             _hike = [[Hike alloc] init];
-            [_loadingIndicator stopAnimating];
+            //[_loadingIndicator stopAnimating];
             // draw overlay
             CLLocationCoordinate2D *pointsLine = malloc([_pathPoints count] * sizeof(CLLocationCoordinate2D));
             for (int i = 0; i < [_pathPoints count]; i++){
@@ -226,7 +219,18 @@ int midpoint;
                 randIndex = RANDOM_INT(midpoint, ([_pathPoints count] - 1));
                 [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
             }
-           [self drawVistas];
+            // TODO - download vista actions
+            NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getVistaAction.php?amount=%i", [[_hike vistas] count]];
+            NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
+            NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
+            if (!connection) {
+                // Create the NSMutableData to hold the received data.
+                // receivedData is an instance variable declared elsewhere.
+                vistaActionsData = [NSMutableData data];
+            } else {
+                NSLog(@"connection failed");
+            }
+                
         }
         
     }];
@@ -336,6 +340,69 @@ int midpoint;
         [self hitTrail:textField];
     }
     return NO;
+}
+
+#pragma mark - Connection delgate (vista actions)
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    // This method is called when the server has determined that it
+    // has enough information to create the NSURLResponse.
+    
+    // It can be called multiple times, for example in the case of a
+    // redirect, so each time we reset the data.
+    
+    // receivedData is an instance variable declared elsewhere.
+    NSLog(@"didReceiveResponse");
+    vistaActionsData = [NSMutableData data];
+    [vistaActionsData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    // Append the new data to receivedData.
+    // receivedData is an instance variable declared elsewhere.
+    NSLog(@"didReceiveData");
+    [vistaActionsData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    // inform the user 
+    [_loadingIndicator stopAnimating];
+    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    [_loadingIndicator stopAnimating];
+    // parse response data
+    NSLog(@"Succeeded! Received %d bytes of data",[vistaActionsData length]);
+    //TODO - set actions for vistas.
+    NSError *error; 
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:vistaActionsData options:kNilOptions error:&error];
+    if (error != nil){
+        NSLog(@"Here is the error: %@", error); 
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was an error with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+    NSArray *actions = [json objectForKey:@"vista_actions"];
+    if ([actions count] != [[_hike vistas] count]){
+        NSLog(@"something went terribly wrong!");
+        return;
+    }
+    int i = 0;
+    for (ScenicVista *vista in [_hike vistas]){
+        NSDictionary *action = [actions objectAtIndex:i];
+        [vista setActionId:[action objectForKey:@"action_id"]];
+        [vista setActionType:[action objectForKey:@"action_type"]];
+        [vista setPrompt:[action objectForKey:@"verbiage"]];
+        i++;
+    }
+    [self drawVistas];
 }
 
 
