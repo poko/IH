@@ -2,4 +2,4 @@ bin
 gen
 .DS_Store
 android/gen/net/ecoarttech/ihplus/R.java
-ios/IHPlus/IHPlus.xcodeproj/project.xcworkspace/xcuserdata/pkoronke.xcuserdatad/UserInterfaceState.xcuserstate
+UserInterfaceState.xcuserstate

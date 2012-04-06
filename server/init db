@@ -38,7 +38,7 @@ CREATE TABLE ih_plus.vistas (
 CREATE TABLE ih_plus.vista_actions (
   `action_id` int NOT NULL auto_increment COMMENT 'pk',
   `verbiage` varchar(10000) collate utf8_unicode_ci NOT NULL,
-  `action_type` set('photo','note') collate utf8_unicode_ci NOT NULL,
+  `action_type` set('photo','note', 'text') collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`vista_id`)
 );
 
