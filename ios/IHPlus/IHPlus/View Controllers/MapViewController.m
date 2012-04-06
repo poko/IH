@@ -249,7 +249,18 @@ int midpoint;
 -(IBAction)hitTrail:(id)sender
 {
     NSLog(@"hit trail");
-    // TODO remove map overlay
+    [_startAddress resignFirstResponder];
+    [_endAddress resignFirstResponder];
+    // remove map overlay
+    [_mapView removeOverlays:[_mapView overlays]];
+    _routeLine = nil;
+    _routeLineView = nil;
+    // remove annotations
+    NSMutableArray *toRemove = [NSMutableArray array];
+    for (id annotation in _mapView.annotations)
+        if (annotation != _mapView.userLocation)
+            [toRemove addObject:annotation];
+    [_mapView removeAnnotations:toRemove];
     // clear out any previous data
     _callCount = 0;
     _pathPoints = [NSMutableArray array];
