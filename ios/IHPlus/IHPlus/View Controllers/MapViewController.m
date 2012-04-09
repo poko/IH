@@ -55,6 +55,14 @@ NSMutableData *vistaActionsData;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
+    // check for region monitoring
+    //CLLocationManager *locMgr = [[CLLocationManager realloc] init];
+    if ([CLLocationManager regionMonitoringAvailable] && [CLLocationManager regionMonitoringEnabled]){
+        NSLog(@"we are good to go!");
+    }
+    else{
+        NSLog(@"OH NOESRLKEJRWOI!! This app won't work!!!");
+    }
 }
  
 
@@ -79,9 +87,10 @@ NSMutableData *vistaActionsData;
         //if we have not yet created an overlay view for this overlay, create it now.
         if (_routeLineView == nil){
             _routeLineView = [[MKPolylineView alloc] initWithPolyline:_routeLine];
-            _routeLineView.fillColor = [UIColor blueColor];
-            _routeLineView.strokeColor = [UIColor blueColor];
-            _routeLineView.lineWidth = 3;
+            UIColor *lineColor = [UIColor colorWithRed:(33.0/255.0) green:(217.0/255.0) blue:(252.0/255.0) alpha:.66];
+            _routeLineView.fillColor = lineColor;
+            _routeLineView.strokeColor = lineColor;
+            _routeLineView.lineWidth = 4;
         }
         overlayView = _routeLineView;
     }
