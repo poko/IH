@@ -319,7 +319,6 @@ UIButton *dummy;
     NSLog(@"Inside keyboardWillShow");
     // setup dummy view to handle clicks for hiding keyboard
     dummy = [[UIButton alloc] initWithFrame:CGRectMake(0, 90, 320, 110)];
-    [dummy setBackgroundColor:[UIColor blueColor]];
     [self.view insertSubview:dummy aboveSubview:_mapView];
     [dummy addTarget:self action:@selector(dummyClicked:) forControlEvents:UIControlEventTouchUpInside];
 }
