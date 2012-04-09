@@ -63,6 +63,20 @@ NSMutableData *vistaActionsData;
     else{
         NSLog(@"OH NOESRLKEJRWOI!! This app won't work!!!");
     }
+    // keyboard handling
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
+                                                 name:UIKeyboardWillShowNotification object:self.view.window]; 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
+                                                 name:UIKeyboardWillHideNotification object:self.view.window]; 
+
+    CLLocationCoordinate2D annotationCoord;
+    
+    annotationCoord.latitude = 47.640071;
+    annotationCoord.longitude = -122.129598;
+    
+    MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
+    annotationPoint.coordinate = annotationCoord;
+    [_mapView addAnnotation:annotationPoint];
 }
  
 
@@ -414,5 +428,26 @@ int midpoint;
     [self drawVistas];
 }
 
+
+UIButton *dummy;
+- (void)keyboardWillShow:(NSNotification *)notif {
+    NSLog(@"Inside keyboardWillShow");
+    // setup dummy view to handle clicks for hiding keyboard
+    dummy = [[UIButton alloc] initWithFrame:CGRectMake(0, 90, 320, 110)];
+    [self.view insertSubview:dummy aboveSubview:_mapView];
+    [dummy addTarget:self action:@selector(dummyClicked:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void) dummyClicked:(id)sender
+{
+    NSLog(@"omg you touched me!");
+    [_startAddress resignFirstResponder];
+    [_endAddress resignFirstResponder];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notif {      
+    NSLog(@"Inside keyboardWillHide");
+    [dummy removeFromSuperview];
+}
 
 @end
