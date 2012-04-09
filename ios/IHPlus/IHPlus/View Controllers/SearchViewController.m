@@ -183,12 +183,16 @@ NSMutableData *receivedData;
         NSLog(@"Here is the error: %@", error);
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was an error with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
+        return;
     }
     NSLog(@"Here is the escaped response: %@", json);
     // parse json into hike objects and update table
     NSArray *hikes = [json objectForKey:@"hikes"];
     if ([hikes count] == 0){
         //TODO show no results.
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Hikes" message:
+                              [NSString stringWithFormat:@"No hikes found near %@.", [_searchBar text]] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
         return;
     }
     for (NSDictionary* hike in hikes) {

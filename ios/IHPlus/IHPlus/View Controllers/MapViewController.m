@@ -50,6 +50,11 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
+    // keyboard handling
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
+                                                 name:UIKeyboardWillShowNotification object:self.view.window]; 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
+                                                 name:UIKeyboardWillHideNotification object:self.view.window]; 
 
     CLLocationCoordinate2D annotationCoord;
     
@@ -309,5 +314,26 @@
     return NO;
 }
 
+UIButton *dummy;
+- (void)keyboardWillShow:(NSNotification *)notif {
+    NSLog(@"Inside keyboardWillShow");
+    // setup dummy view to handle clicks for hiding keyboard
+    dummy = [[UIButton alloc] initWithFrame:CGRectMake(0, 90, 320, 110)];
+    [dummy setBackgroundColor:[UIColor blueColor]];
+    [self.view insertSubview:dummy aboveSubview:_mapView];
+    [dummy addTarget:self action:@selector(dummyClicked:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void) dummyClicked:(id)sender
+{
+    NSLog(@"omg you touched me!");
+    [_startAddress resignFirstResponder];
+    [_endAddress resignFirstResponder];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notif {      
+    NSLog(@"Inside keyboardWillHide");
+    [dummy removeFromSuperview];
+}
 
 @end
