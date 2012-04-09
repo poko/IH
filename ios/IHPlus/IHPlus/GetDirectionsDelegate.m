@@ -56,13 +56,19 @@ NSMutableData *receivedData;
 {
     // parse response data
     NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
-    NSXMLParser *parser = [[NSXMLParser alloc] initWithData:receivedData];
-    [parser setDelegate:self];
-    [parser parse];
+    if ([receivedData length] > 0){
+        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:receivedData];
+        [parser setDelegate:self];
+        [parser parse];
+    }
+    else{
+        _handler(nil, @"Invalid Directions between locations");
+    }
 }
 
 # pragma mark XML delegate
 BOOL savingChars = NO;
+BOOL foundDirs = NO;
 NSMutableString *coordStr;
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
 {
@@ -78,7 +84,7 @@ NSMutableString *coordStr;
 {
     //NSLog(@"found chars");
     if (savingChars){
-        NSLog(@"now we save? %@", string);
+        NSLog(@"now we save");
         [coordStr appendString:string];
     }
 }
@@ -86,7 +92,7 @@ NSMutableString *coordStr;
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
     if ([elementName isEqualToString:@"LineString"]){
-        NSLog(@"ended line string: %@" , coordStr);
+        NSLog(@"ended line string element");
         savingChars = NO;
         // parse coords into points
         NSMutableArray *locCoords = [NSMutableArray array];
@@ -107,13 +113,15 @@ NSMutableString *coordStr;
             }
         }
         // pass points back to mapView.
+        foundDirs = YES;
         _handler(locCoords, nil);
     }
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-    if (coordStr == nil){
+    NSLog(@"finished parsing doc: %@", coordStr);
+    if (!foundDirs){
         // here's where there weren't valid directions returned, silly!
         _handler(nil, @"Invalid directions");
     }

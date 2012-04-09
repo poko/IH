@@ -30,7 +30,7 @@ NSMutableData *vistaActionsData;
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+    NSLog(@"MapViewController low mem");
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -56,11 +56,14 @@ NSMutableData *vistaActionsData;
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
     // check for region monitoring
-    //CLLocationManager *locMgr = [[CLLocationManager realloc] init];
     if ([CLLocationManager regionMonitoringAvailable] && [CLLocationManager regionMonitoringEnabled]){
         NSLog(@"we are good to go!");
+        _locMgr = [[CLLocationManager alloc] init];
+        [_locMgr setDelegate:self];
+        _monitoredRegions = [NSMutableArray array];
     }
     else{
+        //TODO
         NSLog(@"OH NOESRLKEJRWOI!! This app won't work!!!");
     }
     // keyboard handling
@@ -86,7 +89,9 @@ NSMutableData *vistaActionsData;
 
 - (void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     
-    NSLog(@"User location lat: %@", userLocation.location );
+    NSLog(@"User location : %@", userLocation.location );
+    NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
+    //[userLocation location] distanceFromLocation:<#(const CLLocation *)#>
     //MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 200, 200);
     //[mapView setRegion:region animated:YES];
 }
@@ -180,7 +185,7 @@ NSMutableData *vistaActionsData;
     return offset * i;
 }
 
-int midpoint;
+int midpoint = 1; //TODO!!
 -(void) getDirectionsFrom:(NSString *) from to:(NSString *) to
 {
     //NSLog(@"getting directions from : %@ to: %@", from, to);
@@ -201,10 +206,11 @@ int midpoint;
         [_pathPoints addObjectsFromArray:points];
         NSLog(@"compeltion handler!! %i", _callCount);
         NSLog(@"we have this many points: %i", [_pathPoints count]);
-        if (_callCount == 1){
-            midpoint = ([_pathPoints count] - 1);
-        }
-        if (_callCount == 2){
+//        if (_callCount == 1){
+//            midpoint = ([_pathPoints count] - 1);
+//            [self getDirectionsFrom:to to:[_endAddress text]];
+//        }
+//        if (_callCount == 2){
             NSLog(@"should be drawing now, %i", [_pathPoints count]);
             // Create the Hike object!
             _hike = [[Hike alloc] init];
@@ -230,17 +236,25 @@ int midpoint;
             // make end point and mid point SVs
             [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:midpoint]];
             [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:([_pathPoints count] - 1)]];
-            // 1-3 additional vista points per half
-            int vistaAmount = RANDOM_INT(1, 3);
-            int randIndex;
-            for (int i = 0; i < vistaAmount; i++){
-                randIndex = RANDOM_INT(0, midpoint);
-                [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+            // if we don't have enough points to select randomly, make all points vistas
+            if ([_pathPoints count] - 2 < 8){
+                for (int i = 1; i < [_pathPoints count]; i++){
+                    [_hike addVista:[_pathPoints objectAtIndex:i]];
+                }
             }
-            vistaAmount = RANDOM_INT(1, 3);
-            for (int i = 0; i < vistaAmount; i++){
-                randIndex = RANDOM_INT(midpoint, ([_pathPoints count] - 1));
-                [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+            else{
+                // 1-3 additional vista points per half
+                int vistaAmount = RANDOM_INT(1, 3);
+                int randIndex;
+                for (int i = 0; i < vistaAmount; i++){
+                    randIndex = RANDOM_INT(0, midpoint);
+                    [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+                }
+                vistaAmount = RANDOM_INT(1, 3);
+                for (int i = 0; i < vistaAmount; i++){
+                    randIndex = RANDOM_INT(midpoint, ([_pathPoints count] - 1));
+                    [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+                }
             }
             // TODO - download vista actions
             NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getVistaAction.php?amount=%i", [[_hike vistas] count]];
@@ -251,10 +265,10 @@ int midpoint;
                 // receivedData is an instance variable declared elsewhere.
                 vistaActionsData = [NSMutableData data];
             } else {
-                NSLog(@"connection failed");
+                NSLog(@"connection to get actions failed");
             }
                 
-        }
+//        }
         
     }];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:connDelegate];
@@ -291,6 +305,13 @@ int midpoint;
     // clear out any previous data
     _callCount = 0;
     _pathPoints = [NSMutableArray array];
+    // remove any pending proximity alerts
+    if (_monitoredRegions != nil){
+        for (CLRegion *region in _monitoredRegions){
+            [_locMgr stopMonitoringForRegion:region];
+        }
+    }
+    
     // check that both fields have values
     NSString *start = [_startAddress text];
     NSString *end = [_endAddress text];
@@ -320,8 +341,9 @@ int midpoint;
                  // reverse geocode the random point //TODO ??
                  //CLLocation *randLoc = [[CLLocation alloc] initWithLatitude:randLat longitude:randLng];
                  NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng];
-                 [self getDirectionsFrom:start to:randPoint];
-                 [self getDirectionsFrom:randPoint to:end];
+                 [self getDirectionsFrom:start to:end];
+                 //[self getDirectionsFrom:start to:randPoint];
+                 //[self getDirectionsFrom:randPoint to:end];
              }
              else{
                  NSLog(@"Nothing returned for placemarks search");
@@ -364,6 +386,49 @@ int midpoint;
     }
     return NO;
 }
+
+#pragma mark geofencing
+
+- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(NSString*)identifier
+{
+    // Do not create regions if support is unavailable or disabled.
+    if ( ![CLLocationManager regionMonitoringAvailable] ||
+        ![CLLocationManager regionMonitoringEnabled] )
+        return NO;
+    
+    // If the radius is too large, registration fails automatically,
+    // so clamp the radius to the max value.
+    CLLocationDegrees radius = 3;
+    if (radius > _locMgr.maximumRegionMonitoringDistance)
+        radius = _locMgr.maximumRegionMonitoringDistance;
+    
+    // Create the region and start monitoring it.
+    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
+                                                               radius:radius identifier:identifier];
+    [_monitoredRegions addObject:region];
+    [_locMgr startMonitoringForRegion:region
+                     desiredAccuracy:kCLLocationAccuracyBest];
+    
+    return YES;
+}
+
+- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
+{
+    NSLog(@"failed to monitor region!!, %@", error);
+}
+
+- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
+{
+    NSLog(@"entered region!");
+    // show action view
+    
+}
+
+- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
+{
+    NSLog(@"exited region!");
+}
+
 
 #pragma mark - Connection delgate (vista actions)
 
@@ -423,11 +488,15 @@ int midpoint;
         [vista setActionId:[action objectForKey:@"action_id"]];
         [vista setActionType:[action objectForKey:@"action_type"]];
         [vista setPrompt:[action objectForKey:@"verbiage"]];
+        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         i++;
     }
+    // enable geofences for vistas
     [self drawVistas];
 }
 
+
+#pragma mark keyboard handling
 
 UIButton *dummy;
 - (void)keyboardWillShow:(NSNotification *)notif {

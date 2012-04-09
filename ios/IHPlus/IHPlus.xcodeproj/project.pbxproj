@@ -98,6 +98,7 @@
 		A6AB117515265FB10002D9EE /* titlebar_logo2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar_logo2x.png; path = Assets/titlebar_logo2x.png; sourceTree = "<group>"; };
 		A6AB117615265FB20002D9EE /* titlebar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar_logo.png; path = Assets/titlebar_logo.png; sourceTree = "<group>"; };
 		A6AB117B1526603A0002D9EE /* view_it_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = view_it_btn.png; path = Assets/view_it_btn.png; sourceTree = "<group>"; };
+		A6D9662815335FFF00255CC3 /* sample_hike.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = sample_hike.gpx; path = IHPlus/sample_hike.gpx; sourceTree = "<group>"; };
 		A6EDACD61513D489000AFB60 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellPhoto.h; sourceTree = "<group>"; };
 		E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellPhoto.m; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				A6D9662815335FFF00255CC3 /* sample_hike.gpx */,
 				A687B48C1520D1D8004F08B0 /* libz.dylib */,
 				A6EDACD61513D489000AFB60 /* CoreLocation.framework */,
 				A67D3D781512998400391EE5 /* MapKit.framework */,

@@ -40,4 +40,20 @@
     return NOTE;
 }
 
+
+
+-(BOOL) isEqual:(id)object
+{
+    NSLog(@"Calling my vista is equal function: %@", ([location isEqual:[object location]] ? @"YES" : @"NO"));
+    if (![object isKindOfClass:[ScenicVista class]])
+        return NO;
+    return [location isEqual:[object location]];
+        
+}
+
+- (NSUInteger)hash
+{   NSLog(@"Calling my vista hash function, %f", (location.coordinate.latitude + location.coordinate.longitude));
+    return (location.coordinate.latitude + location.coordinate.longitude);
+}
+            
 @end

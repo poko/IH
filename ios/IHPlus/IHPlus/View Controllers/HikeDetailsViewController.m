@@ -41,6 +41,7 @@ NSMutableData *receivedData;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     // load ui
     [_header setText:[hike name]];
     [_desc setText:[hike description]];

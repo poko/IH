@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "Hike.h"
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate>{
+@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate>{
     IBOutlet MKMapView *_mapView;
     IBOutlet UITextField *_startAddress;
     IBOutlet UITextField *_endAddress;
@@ -23,6 +23,8 @@
     MKPolylineView *_routeLineView;
     MKPolyline *_routeLine;
     Hike *_hike;
+    CLLocationManager *_locMgr;
+    NSMutableArray *_monitoredRegions;
 }
 
 -(IBAction)currentLocation:(id)sender;
