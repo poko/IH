@@ -10,6 +10,7 @@
 #import "GetDirectionsDelegate.h"
 #import "AppDelegate.h"
 #import "ScenicVista.h"
+#import <MessageUI/MessageUI.h>
 
 #define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
 
@@ -391,12 +392,19 @@ int midpoint = 1; //TODO!!
             case NOTE: {
                 NSLog(@"NOTE!");
                 // popup modal for note taking
-                //[self presentModalViewController:modal animated:YES];
                 [self performSegueWithIdentifier:@"NoteModal" sender:self];
                 break;
             }
             case TEXT: {
                 NSLog(@"TEXT!");
+                if (![MFMessageComposeViewController canSendText]){
+                    //TODO - we have a problem! show the note modal instead.
+                    NSLog(@"can't send texts :(");
+                }
+                else{
+                    MFMessageComposeViewController *textMsg = [[MFMessageComposeViewController alloc] init];
+                    [self presentModalViewController:textMsg animated:YES];
+                }
                 break;
             }
             case PHOTO: {
@@ -557,7 +565,7 @@ int midpoint = 1; //TODO!!
         NSDictionary *action = [actions objectAtIndex:i];
         [vista setActionId:[action objectForKey:@"action_id"]];
         //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-        [vista setActionType:@"note"];
+        [vista setActionType:@"text"];
         [vista setPrompt:[action objectForKey:@"verbiage"]];
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         i++;
