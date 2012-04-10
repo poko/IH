@@ -50,8 +50,8 @@ NSMutableData *vistaActionsData;
     // set map
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
     _mapView.delegate = self;
-    [_endAddress setDelegate:self];
-    [_startAddress setDelegate:self];
+    [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];
+    [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison 78702"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
@@ -122,6 +122,13 @@ NSMutableData *vistaActionsData;
     [super viewDidUnload];
     // TODO Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    NSLog(@"view unloaded"); // TODO this may be removed when we stop debugging? (creating lots of monitoring regions)
+    // remove any pending proximity alerts
+    if (_monitoredRegions != nil){
+        for (CLRegion *region in _monitoredRegions){
+            [_locMgr stopMonitoringForRegion:region];
+        }
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -278,6 +285,16 @@ int midpoint = 1; //TODO!!
     }
 }
 
+-(void) completeCurrentVista
+{
+    [_currentVista setComplete:YES];
+    _currentVista = nil;
+    [_promptHolder setHidden:YES];
+    // check if we can enable upload button
+    if ([_hike eligibleForUpload])
+        [_uploadButton setEnabled:YES];
+}
+
 - (IBAction) clickedCreateButton:(id)sender{
     NSLog(@"clicked create!");
     //TODO check that user hasn't completed any vistas, if they have, warn.
@@ -361,6 +378,32 @@ int midpoint = 1; //TODO!!
     [_startAddress setText:@"Current Location"];
 }
 
+-(IBAction)continueClicked:(id)sender
+{
+    //start modal for inputing .. ? maybe have modal popup directly? 
+    if (_currentVista != nil){
+        switch ([_currentVista getActionType]){
+            case MEDITATE:{
+                NSLog(@"MEDITATE!");
+                [self completeCurrentVista];
+                break;
+            }
+            case NOTE: {
+                NSLog(@"NOTE!");
+                // popup modal for note taking
+                break;
+            }
+            case TEXT: {
+                NSLog(@"TEXT!");
+                break;
+            }
+            case PHOTO: {
+                NSLog(@"PHOTO!");
+                break;
+            }
+        }
+    }
+}
 
 #pragma mark TextField Delegate
 
@@ -419,14 +462,21 @@ int midpoint = 1; //TODO!!
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
-    NSLog(@"entered region!");
+    NSLog(@"entered region! %@", [region identifier]);
     // show action view
-    
+    [_promptHolder setHidden:NO];
+    _currentVista = [_hike getVistaById:[region identifier]];
+    [_prompt setText:[_currentVista prompt]];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
     NSLog(@"exited region!");
+}
+
+-(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
+{
+    NSLog(@"monitoring region: %@", [region identifier]);
 }
 
 
@@ -486,7 +536,8 @@ int midpoint = 1; //TODO!!
     for (ScenicVista *vista in [_hike vistas]){
         NSDictionary *action = [actions objectAtIndex:i];
         [vista setActionId:[action objectForKey:@"action_id"]];
-        [vista setActionType:[action objectForKey:@"action_type"]];
+        //TODO [vista setActionType:[action objectForKey:@"action_type"]];
+        [vista setActionType:@"meditate"];
         [vista setPrompt:[action objectForKey:@"verbiage"]];
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         i++;
@@ -500,7 +551,6 @@ int midpoint = 1; //TODO!!
 
 UIButton *dummy;
 - (void)keyboardWillShow:(NSNotification *)notif {
-    NSLog(@"Inside keyboardWillShow");
     // setup dummy view to handle clicks for hiding keyboard
     dummy = [[UIButton alloc] initWithFrame:CGRectMake(0, 90, 320, 110)];
     [self.view insertSubview:dummy aboveSubview:_mapView];
@@ -509,13 +559,11 @@ UIButton *dummy;
 
 - (void) dummyClicked:(id)sender
 {
-    NSLog(@"omg you touched me!");
     [_startAddress resignFirstResponder];
     [_endAddress resignFirstResponder];
 }
 
-- (void)keyboardWillHide:(NSNotification *)notif {      
-    NSLog(@"Inside keyboardWillHide");
+- (void)keyboardWillHide:(NSNotification *)notif {  
     [dummy removeFromSuperview];
 }
 

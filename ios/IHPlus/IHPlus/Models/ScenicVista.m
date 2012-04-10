@@ -11,7 +11,7 @@
 @implementation ScenicVista
 
 @synthesize actionId, actionType, prompt, date, lat, lng, note, photoUrl;
-@synthesize location;
+@synthesize location, complete;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *)dict
 {
@@ -37,7 +37,11 @@
 - (ActionType) getActionType{
     if ([actionType isEqualToString:@"photo"])
        return PHOTO;
-    return NOTE;
+    else if ([actionType isEqualToString:@"note"])
+        return NOTE;
+    else if ([actionType isEqualToString:@"meditate"])
+        return MEDITATE;
+    return TEXT;
 }
 
 

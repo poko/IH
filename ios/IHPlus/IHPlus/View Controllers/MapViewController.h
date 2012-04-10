@@ -16,6 +16,8 @@
     IBOutlet UITextField *_endAddress;
     IBOutlet UIView *_inputHolder;
     IBOutlet UIBarButtonItem *_uploadButton;
+    IBOutlet UIView *_promptHolder;
+    IBOutlet UILabel *_prompt;
     CLGeocoder *_geocoder;
     UIActivityIndicatorView *_loadingIndicator;
     NSInteger _callCount;
@@ -23,11 +25,13 @@
     MKPolylineView *_routeLineView;
     MKPolyline *_routeLine;
     Hike *_hike;
+    ScenicVista *_currentVista;
     CLLocationManager *_locMgr;
     NSMutableArray *_monitoredRegions;
 }
 
 -(IBAction)currentLocation:(id)sender;
 -(IBAction)hitTrail:(id)sender;
+-(IBAction)continueClicked:(id)sender;
 
 @end

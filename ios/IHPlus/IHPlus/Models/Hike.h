@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "ScenicVista.h"
 
 @interface Hike : NSObject
 
@@ -26,5 +27,7 @@
 + (Hike *) initWithDictionary:(NSDictionary *) dict;
 - (void) addPoint:(CLLocation *) point;
 - (void) addVista:(CLLocation *) point;
+- (ScenicVista *) getVistaById:(NSString *) actionId;
+- (BOOL) eligibleForUpload;
 
 @end

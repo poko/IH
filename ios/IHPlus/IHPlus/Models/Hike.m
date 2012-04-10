@@ -7,7 +7,6 @@
 //
 
 #import "Hike.h"
-#import "ScenicVista.h"
 
 @implementation Hike
 
@@ -55,6 +54,31 @@
     ScenicVista *vista = [ScenicVista initWithPoint:point];
     if (![vistas containsObject:vista])
         [vistas addObject:vista];
+}
+
+- (ScenicVista *) getVistaById:(NSString *)actionId
+{
+    for (ScenicVista *vista in vistas){
+        if ([[vista actionId] isEqualToString:actionId])
+            return vista;
+    }
+    return nil;
+}
+
+BOOL eligble = NO;
+- (BOOL) eligibleForUpload
+{
+    if (eligble)
+        return YES;
+    else{
+        int completedVistas = 0;
+        for (ScenicVista *v in vistas){
+            if ([v complete])
+                completedVistas++;
+        }
+        eligble = completedVistas > 2;
+    }
+    return eligble;
 }
 
 @end

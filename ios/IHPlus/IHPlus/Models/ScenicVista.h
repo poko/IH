@@ -28,6 +28,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *photoUrl;
 // TODO @property (nonatomic, strong) VistaAction *newAction;
 @property (nonatomic, strong) CLLocation *location;
+@property (nonatomic) BOOL complete;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *) dict;
 + (ScenicVista *) initWithPoint:(CLLocation *) point;
