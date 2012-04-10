@@ -8,6 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NoteModalController : UIViewController
+@class NoteModalController;
+
+@protocol NoteModalControllerDelegate <NSObject>
+- (void)noteModalController:(NoteModalController *)controller done:(NSString *) note;
+@end
+
+@interface NoteModalController: UIViewController<UITextViewDelegate> 
+
+@property (nonatomic, weak) id <NoteModalControllerDelegate> vcDelegate;
+@property (nonatomic, strong) IBOutlet UILabel *prompt;
+@property (nonatomic, strong) IBOutlet UITextView *input;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *doneButton;
+
+-(IBAction)doneClick:(id)sender;
 
 @end

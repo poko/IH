@@ -7,8 +7,12 @@
 //
 
 #import "NoteModalController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation NoteModalController
+
+@synthesize vcDelegate;
+@synthesize prompt, input, doneButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -36,13 +40,26 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [doneButton setEnabled:NO];
+    // make input look input-y
+    [input.layer setBackgroundColor: [[UIColor whiteColor] CGColor]];
+    [input.layer setBorderColor: [[UIColor grayColor] CGColor]];
+    [input.layer setBorderWidth: 1.0];
+    [input.layer setCornerRadius: 8.0f];
+    [input.layer setMasksToBounds:YES];
+    [input setDelegate:self];
+    
+    //TODO figure this out better self.view includes nav controller bar
+//    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self 
+//                                            action:@selector(resignResponder:)];
+//    [self.view addGestureRecognizer:singleFingerTap];
 }
-*/
+
 
 - (void)viewDidUnload
 {
@@ -55,6 +72,25 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+-(void)resignResponder:(id)sender
+{
+    NSLog(@"resigning!");
+    [input resignFirstResponder];
+}
+
+-(IBAction)doneClick:(id)sender
+{
+    NSLog(@"done clicked");
+    [vcDelegate noteModalController:self done:[input text]];
+}
+
+#pragma mark textView delegate
+- (void)textViewDidChange:(UITextView *)textView
+{
+    NSLog(@"editing!");
+    [doneButton setEnabled:[[textView text] length] > 0];
 }
 
 @end

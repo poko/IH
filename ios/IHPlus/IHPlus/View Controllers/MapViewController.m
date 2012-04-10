@@ -391,6 +391,8 @@ int midpoint = 1; //TODO!!
             case NOTE: {
                 NSLog(@"NOTE!");
                 // popup modal for note taking
+                //[self presentModalViewController:modal animated:YES];
+                [self performSegueWithIdentifier:@"NoteModal" sender:self];
                 break;
             }
             case TEXT: {
@@ -402,6 +404,24 @@ int midpoint = 1; //TODO!!
                 break;
             }
         }
+    }
+}
+
+# pragma  mark modal delegates
+- (void)noteModalController:(NoteModalController *)controller done:(NSString *) note
+{
+    [controller dismissViewControllerAnimated:YES completion:^{
+        [_currentVista setNote:note];
+        NSLog(@"and we set the note in the mapview: %@", note);
+        [self completeCurrentVista];
+    }];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"NoteModal"]){
+        NoteModalController *modal = [segue destinationViewController];
+        [modal setVcDelegate:self];
     }
 }
 
@@ -537,7 +557,7 @@ int midpoint = 1; //TODO!!
         NSDictionary *action = [actions objectAtIndex:i];
         [vista setActionId:[action objectForKey:@"action_id"]];
         //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-        [vista setActionType:@"meditate"];
+        [vista setActionType:@"note"];
         [vista setPrompt:[action objectForKey:@"verbiage"]];
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         i++;

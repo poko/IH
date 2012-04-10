@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "Hike.h"
+#import "NoteModalController.h"
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate>{
+@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate>{
     IBOutlet MKMapView *_mapView;
     IBOutlet UITextField *_startAddress;
     IBOutlet UITextField *_endAddress;
