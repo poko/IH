@@ -10,7 +10,6 @@
 #import "GetDirectionsDelegate.h"
 #import "AppDelegate.h"
 #import "ScenicVista.h"
-#import <MessageUI/MessageUI.h>
 
 #define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
 
@@ -52,7 +51,7 @@ NSMutableData *vistaActionsData;
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
     _mapView.delegate = self;
     [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];
-    [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison 78702"];
+    [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
@@ -294,6 +293,7 @@ int midpoint = 1; //TODO!!
     // check if we can enable upload button
     if ([_hike eligibleForUpload])
         [_uploadButton setEnabled:YES];
+    //TODO - remove region tracking!
 }
 
 - (IBAction) clickedCreateButton:(id)sender{
@@ -397,14 +397,8 @@ int midpoint = 1; //TODO!!
             }
             case TEXT: {
                 NSLog(@"TEXT!");
-                if (![MFMessageComposeViewController canSendText]){
-                    //TODO - we have a problem! show the note modal instead.
-                    NSLog(@"can't send texts :(");
-                }
-                else{
-                    MFMessageComposeViewController *textMsg = [[MFMessageComposeViewController alloc] init];
-                    [self presentModalViewController:textMsg animated:YES];
-                }
+                // popup modal for texting logic
+                [self performSegueWithIdentifier:@"TextModal" sender:self];
                 break;
             }
             case PHOTO: {
@@ -426,9 +420,15 @@ int midpoint = 1; //TODO!!
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
+{ //TODO cleanup logic
     if ([[segue identifier] isEqualToString:@"NoteModal"]){
         NoteModalController *modal = [segue destinationViewController];
+        [modal setPromptText:[_currentVista prompt]];
+        [modal setVcDelegate:self];
+    }
+    else if ([[segue identifier] isEqualToString:@"TextModal"]){
+        TextModalController *modal = [segue destinationViewController];
+        [modal setPromptText:[_currentVista prompt]];
         [modal setVcDelegate:self];
     }
 }

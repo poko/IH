@@ -11,7 +11,7 @@
 
 @implementation NoteModalController
 
-@synthesize vcDelegate;
+@synthesize vcDelegate, promptText;
 @synthesize prompt, input, doneButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -27,7 +27,6 @@
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -53,6 +52,7 @@
     [input.layer setCornerRadius: 8.0f];
     [input.layer setMasksToBounds:YES];
     [input setDelegate:self];
+    [prompt setText:promptText];
     
     //TODO figure this out better self.view includes nav controller bar
 //    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self 
@@ -91,6 +91,16 @@
 {
     NSLog(@"editing!");
     [doneButton setEnabled:[[textView text] length] > 0];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    return YES;
 }
 
 @end
