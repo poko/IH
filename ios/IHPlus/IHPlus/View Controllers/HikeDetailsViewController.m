@@ -11,6 +11,11 @@
 #import "VistaCellPhoto.h"
 #import "VistaCellNote.h"
 #import "ScenicVista.h"
+#import "ImageLoader.h"
+
+#define FONT_SIZE 14.0f
+#define CELL_CONTENT_WIDTH 320.0f
+#define CELL_CONTENT_MARGIN 10.0f
 
 @implementation HikeDetailsViewController
 @synthesize hike;
@@ -104,23 +109,16 @@ NSMutableData *receivedData;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ScenicVista *vista = [[hike vistas] objectAtIndex:indexPath.row];
-//    NSLog(@"vista date: %@", vista.date);
-//    NSLog(@"vista action type: %@", [vista getActionType]);
     VistaCell *cell;
     switch ([vista getActionType]){
         case PHOTO:{ 
             cell = (VistaCellPhoto *) [tableView dequeueReusableCellWithIdentifier:@"PhotoCell"];
-//            NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.ecoarttech.org/ih_plus/uploads/%@", [vista photoUrl]]];
-//            UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]]; 
-//            [[(VistaCellPhoto *)cell photo] setImage:img];
             break;}
         case MEDITATE:{
              cell = (VistaCell *) [tableView dequeueReusableCellWithIdentifier:@"MeditateCell"];
             break;}
         default:{
             cell = (VistaCell *) [tableView dequeueReusableCellWithIdentifier:@"NoteCell"];
-//            [[(VistaCellNote *) cell note] setText:[vista note]];
-//            [[(VistaCellNote *) cell note] sizeToFit];
             break;}
     }
     // Configure the cell...
@@ -129,13 +127,21 @@ NSMutableData *receivedData;
     [[cell prompt] sizeToFit];
     // adjust things
     if ([vista getActionType] == PHOTO){
-        //[cell insertSubview:[(VistaCellPhoto *) cell photo] belowSubview:[cell prompt]];
+        NSString *urlString = [NSString stringWithFormat:@"http://www.ecoarttech.org/ih_plus/uploads/%@", [vista photoUrl]]; 
+        UIImage *img = [ImageLoader getImageForUrl:urlString];
+        if (img != nil){
+            float imgHeight = (img.size.height * 300)/img.size.width;
+            CGRect frame = [[cell prompt] frame];
+            CGRect photoFrame = CGRectMake(frame.origin.x, (frame.origin.y + frame.size.height + 10), 300, imgHeight);
+            [[(VistaCellPhoto *)cell photo] setFrame:photoFrame];
+            [[(VistaCellPhoto *)cell photo] setImage:img];
+        }
     }
     else if ([vista getActionType] == TEXT || [vista getActionType] == NOTE){
         [[(VistaCellNote *) cell note] setText:[vista note]];
         [[(VistaCellNote *) cell note] setBackgroundColor:[UIColor redColor]];
-        CGRect frame= [[cell prompt] frame];
-        CGRect noteFrame = CGRectMake(frame.origin.x, (frame.origin.y + frame.size.height), 300, 50);
+        CGRect frame = [[cell prompt] frame];
+        CGRect noteFrame = CGRectMake(frame.origin.x, (frame.origin.y + frame.size.height + 10), 300, 50);
         [[(VistaCellNote *) cell note] setFrame:noteFrame];
         [[(VistaCellNote *) cell note] sizeToFit];
     }
@@ -153,10 +159,24 @@ NSMutableData *receivedData;
 {
     ScenicVista *vista = [[hike vistas] objectAtIndex:indexPath.row];
     NSLog(@"getting height %i", indexPath.row);
+    NSString *text = [NSString stringWithFormat:@"%@ \n %@", [vista prompt], [vista note]];
+    
+    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    
+    CGSize size = [text sizeWithFont:[UIFont systemFontOfSize:FONT_SIZE] constrainedToSize:constraint lineBreakMode:UILineBreakModeWordWrap];
+    
+    CGFloat height = MAX(size.height, 44.0f) + 20;
+    
     if ([vista getActionType] == PHOTO){
-        return 200;
+        NSString *urlString = [NSString stringWithFormat:@"http://www.ecoarttech.org/ih_plus/uploads/%@", [vista photoUrl]];
+        UIImage *img = [ImageLoader getImageForUrl:urlString];
+        float imgHeight = 0;
+        if (img != nil){
+            imgHeight = (img.size.height * 300)/img.size.width;
+        }
+        return height + (CELL_CONTENT_MARGIN * 2) + imgHeight;
     }
-    return 150;
+    return height + (CELL_CONTENT_MARGIN * 2);
 }
 
 #pragma mark - Connection delgate
