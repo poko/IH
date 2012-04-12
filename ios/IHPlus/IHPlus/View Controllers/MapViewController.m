@@ -403,6 +403,20 @@ int midpoint = 1; //TODO!!
             }
             case PHOTO: {
                 NSLog(@"PHOTO!");
+                // Create image picker controller
+                UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+                
+                // Set source to the camera
+                [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+                
+                // Delegate is self
+                [imagePicker setDelegate:self];
+                
+                // Allow editing of image ?
+                [imagePicker setAllowsEditing:NO];
+                
+                // Show image picker
+                [self presentModalViewController:imagePicker animated:YES];
                 break;
             }
         }
@@ -431,6 +445,18 @@ int midpoint = 1; //TODO!!
         [modal setPromptText:[_currentVista prompt]];
         [modal setVcDelegate:self];
     }
+}
+
+#pragma mark image picker delegate
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    // Access the uncropped image from info dictionary
+    UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
+    
+    // Save image
+    UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+    //TODO - mark vista as complete, save location of photo for uploadings
 }
 
 #pragma mark TextField Delegate
@@ -565,7 +591,7 @@ int midpoint = 1; //TODO!!
         NSDictionary *action = [actions objectAtIndex:i];
         [vista setActionId:[action objectForKey:@"action_id"]];
         //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-        [vista setActionType:@"text"];
+        [vista setActionType:@"photo"];
         [vista setPrompt:[action objectForKey:@"verbiage"]];
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         i++;
