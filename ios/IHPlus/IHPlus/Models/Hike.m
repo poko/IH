@@ -20,6 +20,9 @@
     [hike setName:[dict objectForKey:@"name"]];
     [hike setDescription:[dict objectForKey:@"description"]];
     [hike setUsername:[dict objectForKey:@"username"]];
+    // start lat/lng
+    [hike setStartLat:[dict objectForKey:@"start_lat"]];
+    [hike setStartLng:[dict objectForKey:@"start_lng"]];
     // set date
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat: @"yyy-MM-dd HH:mm:ss"];
@@ -28,6 +31,15 @@
     // set original flag & id
     [hike setOriginal:[dict objectForKey:@"orginal"]];
     [hike setOriginalHikeId:[dict objectForKey:@"orginal_hike_id"]];
+    // set points
+    hike.points = [NSMutableArray array];
+    NSArray *pointsJson = [dict objectForKey:@"points"];
+    for (NSDictionary *pointJson in pointsJson) {
+        float lat = ([[pointJson objectForKey:@"latitude"] floatValue]/1000000);
+        float lng = ([[pointJson objectForKey:@"longitude"] floatValue]/1000000);
+        CLLocation *point = [[CLLocation alloc] initWithLatitude:lat longitude:lng];
+        [hike.points addObject:point];
+    }
     // set vistas
     hike.vistas = [NSMutableArray array];
     NSArray *vistasJson = [dict objectForKey:@"vistas"];
@@ -110,7 +122,6 @@ bool eligble = false;
     // remove last comma
     [str deleteCharactersInRange:NSMakeRange([str length]-1, 1)];
     [str appendString:@"]"];
-    NSLog(@"points as json: %@", str);
     return str;
 }
 
@@ -125,17 +136,6 @@ bool eligble = false;
         [data appendFormat:@"&start_lng=%@", startLng];
         [data appendFormat:@"&points=%@", [self pointsAsJson]];
     }
-//    NSError *error;
-//    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-//    [dict setValue:name forKey:@"hike_name"];
-//    [dict setValue:description forKey:@"description"];
-//    [dict setValue:username forKey:@"username"];
-    
-    //convert object to data
-//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
-//    if (error != nil){
-//        NSLog(@"there was an error converting the dictionary?? %@", [error description]);
-//    }
     return [data dataUsingEncoding:NSUTF8StringEncoding];
 }
 

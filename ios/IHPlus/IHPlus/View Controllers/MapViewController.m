@@ -8,6 +8,7 @@
 
 #import "MapViewController.h"
 #import "GetDirectionsDelegate.h"
+#import "RewalkHikeDelegate.h"
 #import "AppDelegate.h"
 #import "ScenicVista.h"
 
@@ -565,6 +566,26 @@ int midpoint;// = 1; //TODO!!
 -(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
 {
     NSLog(@"monitoring region: %@", [region identifier]);
+}
+
+#pragma mark - rewalk hike
+- (void) rewalkHike:(NSString *)hikeId
+{
+    [self showLoadingDialog];
+    // make server call
+    NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getHike.php?hike_id=%@", hikeId];
+    NSLog(@"Sending to url %@", url);
+    RewalkHikeDelegate *rewalkDelegate = [[RewalkHikeDelegate alloc] initWithHandler:^(bool result, Hike *hike) {
+        NSLog(@"tralala back in the map view with a hike! %@", hike);
+        [self hideLoadingDialog:nil];
+    }];
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; 
+    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:rewalkDelegate];
+    if (!connection) {
+        NSLog(@"connection failed");
+        [self hideLoadingDialog:@"There was an error connecting to the server."];
+    }
+
 }
 
 

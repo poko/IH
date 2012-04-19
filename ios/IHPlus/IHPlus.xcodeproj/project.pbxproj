@@ -47,6 +47,7 @@
 		A6D9664B153766BD00255CC3 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9664A153766BC00255CC3 /* ImageLoader.m */; };
 		A6D9664E1538894A00255CC3 /* UploadHikeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */; };
 		A6D966511538C65400255CC3 /* UploadHikeController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D966501538C65400255CC3 /* UploadHikeController.m */; };
+		A6D9665F1540B27D00255CC3 /* RewalkHikeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9665E1540B27D00255CC3 /* RewalkHikeDelegate.m */; };
 		A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EDACD61513D489000AFB60 /* CoreLocation.framework */; };
 		E1C0D524152DC7C0009A1F8D /* VistaCellPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */; };
 		E1C0D527152DC970009A1F8D /* VistaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D526152DC970009A1F8D /* VistaCell.m */; };
@@ -116,6 +117,8 @@
 		A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadHikeDelegate.m; sourceTree = "<group>"; };
 		A6D9664F1538C65300255CC3 /* UploadHikeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadHikeController.h; path = "View Controllers/UploadHikeController.h"; sourceTree = "<group>"; };
 		A6D966501538C65400255CC3 /* UploadHikeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadHikeController.m; path = "View Controllers/UploadHikeController.m"; sourceTree = "<group>"; };
+		A6D9665D1540B27D00255CC3 /* RewalkHikeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RewalkHikeDelegate.h; sourceTree = "<group>"; };
+		A6D9665E1540B27D00255CC3 /* RewalkHikeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RewalkHikeDelegate.m; sourceTree = "<group>"; };
 		A6EDACD61513D489000AFB60 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellPhoto.h; sourceTree = "<group>"; };
 		E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellPhoto.m; sourceTree = "<group>"; };
@@ -175,6 +178,7 @@
 		A67D3D5615126D5C00391EE5 /* IHPlus */ = {
 			isa = PBXGroup;
 			children = (
+				A6D9665C1540B24C00255CC3 /* Delegates */,
 				A687B46D151A486A004F08B0 /* Resources */,
 				A6EDACDC1513E837000AFB60 /* Models */,
 				A67D3D7A1513984600391EE5 /* ViewControllers */,
@@ -185,8 +189,6 @@
 				A67D3D5715126D5C00391EE5 /* Supporting Files */,
 				A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */,
 				A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */,
-				A687B4851520C2E5004F08B0 /* GetDirectionsDelegate.h */,
-				A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */,
 				E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */,
 				E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */,
 				E1C0D525152DC970009A1F8D /* VistaCell.h */,
@@ -195,8 +197,6 @@
 				A627BA85152DF6CA0056A670 /* VistaCellNote.m */,
 				A6D96649153766BB00255CC3 /* ImageLoader.h */,
 				A6D9664A153766BC00255CC3 /* ImageLoader.m */,
-				A6D9664C1538894800255CC3 /* UploadHikeDelegate.h */,
-				A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */,
 			);
 			path = IHPlus;
 			sourceTree = "<group>";
@@ -221,8 +221,8 @@
 				A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */,
 				A64C9413152E4CED0090BD0D /* SearchViewController.h */,
 				A6984DA1152F74EE005934C4 /* SearchViewController.m */,
-				A64C9410152E4CED0090BD0D /* SearchResultsController.m */,
 				A64C9412152E4CED0090BD0D /* SearchResultsController.h */,
+				A64C9410152E4CED0090BD0D /* SearchResultsController.m */,
 				A64C9415152E4CED0090BD0D /* HikesListViewController.m */,
 				A64C9416152E4CED0090BD0D /* HikesListViewController.h */,
 				A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */,
@@ -257,6 +257,19 @@
 				A6AB117615265FB20002D9EE /* titlebar_logo.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		A6D9665C1540B24C00255CC3 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				A687B4851520C2E5004F08B0 /* GetDirectionsDelegate.h */,
+				A687B4861520C2E6004F08B0 /* GetDirectionsDelegate.m */,
+				A6D9664C1538894800255CC3 /* UploadHikeDelegate.h */,
+				A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */,
+				A6D9665D1540B27D00255CC3 /* RewalkHikeDelegate.h */,
+				A6D9665E1540B27D00255CC3 /* RewalkHikeDelegate.m */,
+			);
+			name = Delegates;
 			sourceTree = "<group>";
 		};
 		A6EDACDC1513E837000AFB60 /* Models */ = {
@@ -367,6 +380,7 @@
 				A6D9664B153766BD00255CC3 /* ImageLoader.m in Sources */,
 				A6D9664E1538894A00255CC3 /* UploadHikeDelegate.m in Sources */,
 				A6D966511538C65400255CC3 /* UploadHikeController.m in Sources */,
+				A6D9665F1540B27D00255CC3 /* RewalkHikeDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

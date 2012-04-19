@@ -37,5 +37,6 @@
 -(IBAction)hitTrail:(id)sender;
 -(IBAction)continueClicked:(id)sender;
 -(IBAction)uploadHike:(id)sender;
+-(void)rewalkHike:(NSString *) hikeId;
 
 @end

@@ -16,4 +16,6 @@
 @property (nonatomic, strong) NSString *searchTerm;
 @property (nonatomic, strong) NSMutableArray *hikes;
 
+-(IBAction)rewalkHike:(id)sender;
+
 @end
