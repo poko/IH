@@ -45,6 +45,8 @@
 		A6D9663D1534E54600255CC3 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D9663C1534E54500255CC3 /* MessageUI.framework */; };
 		A6D966401535EE5500255CC3 /* TextModalController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9663F1535EE5500255CC3 /* TextModalController.m */; };
 		A6D9664B153766BD00255CC3 /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9664A153766BC00255CC3 /* ImageLoader.m */; };
+		A6D9664E1538894A00255CC3 /* UploadHikeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */; };
+		A6D966511538C65400255CC3 /* UploadHikeController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D966501538C65400255CC3 /* UploadHikeController.m */; };
 		A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6EDACD61513D489000AFB60 /* CoreLocation.framework */; };
 		E1C0D524152DC7C0009A1F8D /* VistaCellPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */; };
 		E1C0D527152DC970009A1F8D /* VistaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D526152DC970009A1F8D /* VistaCell.m */; };
@@ -110,6 +112,10 @@
 		A6D9663F1535EE5500255CC3 /* TextModalController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TextModalController.m; path = "View Controllers/TextModalController.m"; sourceTree = "<group>"; };
 		A6D96649153766BB00255CC3 /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLoader.h; sourceTree = "<group>"; };
 		A6D9664A153766BC00255CC3 /* ImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLoader.m; sourceTree = "<group>"; };
+		A6D9664C1538894800255CC3 /* UploadHikeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadHikeDelegate.h; sourceTree = "<group>"; };
+		A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadHikeDelegate.m; sourceTree = "<group>"; };
+		A6D9664F1538C65300255CC3 /* UploadHikeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UploadHikeController.h; path = "View Controllers/UploadHikeController.h"; sourceTree = "<group>"; };
+		A6D966501538C65400255CC3 /* UploadHikeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UploadHikeController.m; path = "View Controllers/UploadHikeController.m"; sourceTree = "<group>"; };
 		A6EDACD61513D489000AFB60 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellPhoto.h; sourceTree = "<group>"; };
 		E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellPhoto.m; sourceTree = "<group>"; };
@@ -189,6 +195,8 @@
 				A627BA85152DF6CA0056A670 /* VistaCellNote.m */,
 				A6D96649153766BB00255CC3 /* ImageLoader.h */,
 				A6D9664A153766BC00255CC3 /* ImageLoader.m */,
+				A6D9664C1538894800255CC3 /* UploadHikeDelegate.h */,
+				A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */,
 			);
 			path = IHPlus;
 			sourceTree = "<group>";
@@ -225,6 +233,8 @@
 				A6D966321534D18F00255CC3 /* NoteModalController.m */,
 				A6D9663E1535EE5400255CC3 /* TextModalController.h */,
 				A6D9663F1535EE5500255CC3 /* TextModalController.m */,
+				A6D9664F1538C65300255CC3 /* UploadHikeController.h */,
+				A6D966501538C65400255CC3 /* UploadHikeController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -254,8 +264,8 @@
 			children = (
 				A64C9404152E4CCA0090BD0D /* ScenicVista.m */,
 				A64C9405152E4CCA0090BD0D /* ScenicVista.h */,
-				A64C9406152E4CCA0090BD0D /* Hike.m */,
 				A64C9407152E4CCA0090BD0D /* Hike.h */,
+				A64C9406152E4CCA0090BD0D /* Hike.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -355,6 +365,8 @@
 				A6D966331534D18F00255CC3 /* NoteModalController.m in Sources */,
 				A6D966401535EE5500255CC3 /* TextModalController.m in Sources */,
 				A6D9664B153766BD00255CC3 /* ImageLoader.m in Sources */,
+				A6D9664E1538894A00255CC3 /* UploadHikeDelegate.m in Sources */,
+				A6D966511538C65400255CC3 /* UploadHikeController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

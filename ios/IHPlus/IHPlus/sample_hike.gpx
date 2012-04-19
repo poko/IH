@@ -4,8 +4,23 @@
     <wpt lat="30.274040" lon="-97.728010">
          <name>1200 bob harrison st</name>
 	</wpt>
-    <wpt lat="30.274270" lon="-97.726550">
+    <wpt lat="30.27427000" lon="-97.72655000">
+        <name>vista 1</name>
+	</wpt>
+    <wpt lat="30.274040" lon="-97.728010">
         <name>1200 bob harrison st</name>
+	</wpt>
+    <wpt lat="30.27001000" lon="-97.72591000">
+        <name>vista 2</name>
+	</wpt>
+    <wpt lat="30.274040" lon="-97.728010">
+        <name>1200 bob harrison st</name>
+	</wpt>
+    <wpt lat="30.27423000" lon="-97.72681000">
+        <name>vista 3</name>
+	</wpt>
+    <wpt lat="30.274270" lon="-97.726550">
+        <name>1300 bob harrison st</name>
 	</wpt>
     
 </gpx>

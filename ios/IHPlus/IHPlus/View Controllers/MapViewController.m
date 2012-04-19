@@ -129,6 +129,8 @@ NSMutableData *vistaActionsData;
             [_locMgr stopMonitoringForRegion:region];
         }
     }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -146,6 +148,7 @@ NSMutableData *vistaActionsData;
         [annotationPoint setCoordinate:[[vista location] coordinate]];
         [annotationPoint setTitle:[vista prompt]];
         [_mapView addAnnotation:annotationPoint];
+        NSLog(@"Vista at coord: %@", [vista location]);
     }
 }
 
@@ -192,7 +195,7 @@ NSMutableData *vistaActionsData;
     return offset * i;
 }
 
-int midpoint = 1; //TODO!!
+int midpoint;// = 1; //TODO!!
 -(void) getDirectionsFrom:(NSString *) from to:(NSString *) to
 {
     //NSLog(@"getting directions from : %@ to: %@", from, to);
@@ -221,6 +224,7 @@ int midpoint = 1; //TODO!!
             NSLog(@"should be drawing now, %i", [_pathPoints count]);
             // Create the Hike object!
             _hike = [[Hike alloc] init];
+            [_hike setOriginal:@"true"];
             //[_loadingIndicator stopAnimating];
             // draw overlay
             CLLocationCoordinate2D *pointsLine = malloc([_pathPoints count] * sizeof(CLLocationCoordinate2D));
@@ -294,6 +298,10 @@ int midpoint = 1; //TODO!!
     if ([_hike eligibleForUpload])
         [_uploadButton setEnabled:YES];
     //TODO - remove region tracking!
+    // if all the vistas are complete, show the modal automagically. 
+    if ([_hike isComplete]){
+        [self performSegueWithIdentifier:@"UploadHike" sender:self];
+    }
 }
 
 - (IBAction) clickedCreateButton:(id)sender{
@@ -359,9 +367,10 @@ int midpoint = 1; //TODO!!
                  // reverse geocode the random point //TODO ??
                  //CLLocation *randLoc = [[CLLocation alloc] initWithLatitude:randLat longitude:randLng];
                  NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng];
+                 // TODO asdfasdfa 
                  [self getDirectionsFrom:start to:end];
-                 //[self getDirectionsFrom:start to:randPoint];
-                 //[self getDirectionsFrom:randPoint to:end];
+//                 [self getDirectionsFrom:start to:randPoint];
+//                 [self getDirectionsFrom:randPoint to:end];
              }
              else{
                  NSLog(@"Nothing returned for placemarks search");
@@ -423,6 +432,10 @@ int midpoint = 1; //TODO!!
     }
 }
 
+-(IBAction)uploadHike:(id) sender{
+    [self performSegueWithIdentifier:@"UploadHike" sender:self];
+}
+
 # pragma  mark modal delegates
 - (void)noteModalController:(NoteModalController *)controller done:(NSString *) note
 {
@@ -430,6 +443,22 @@ int midpoint = 1; //TODO!!
         [_currentVista setNote:note];
         NSLog(@"and we set the note in the mapview: %@", note);
         [self completeCurrentVista];
+    }];
+}
+
+- (void)uploadModalController:(UploadHikeController *)controller done:(NSString *) error
+{
+    NSLog(@"called uploadModalController done");
+    [controller dismissViewControllerAnimated:YES completion:^{
+        NSLog(@"and hike should have uploaded! %@", error);
+        if (error != nil){
+            // TODO boo!
+            NSLog(@" boooo error back in mapview");
+        }
+        else{
+            // TODO success!
+            NSLog(@" no error back in mapview");
+        }
     }];
 }
 
@@ -443,6 +472,11 @@ int midpoint = 1; //TODO!!
     else if ([[segue identifier] isEqualToString:@"TextModal"]){
         TextModalController *modal = [segue destinationViewController];
         [modal setPromptText:[_currentVista prompt]];
+        [modal setVcDelegate:self];
+    }
+    else if ([[segue identifier] isEqualToString:@"UploadHike"]){
+        UploadHikeController *modal = [segue destinationViewController];
+        [modal setHike:_hike];
         [modal setVcDelegate:self];
     }
 }
@@ -591,7 +625,7 @@ int midpoint = 1; //TODO!!
         NSDictionary *action = [actions objectAtIndex:i];
         [vista setActionId:[action objectForKey:@"action_id"]];
         //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-        [vista setActionType:@"photo"];
+        [vista setActionType:@"text"];
         [vista setPrompt:[action objectForKey:@"verbiage"]];
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         i++;

@@ -11,8 +11,9 @@
 #import "Hike.h"
 #import "NoteModalController.h"
 #import "TextModalController.h"
+#import "UploadHikeController.h"
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate, UIImagePickerControllerDelegate>{
+@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate, UIImagePickerControllerDelegate, UploadHikeControllerDelegate>{
     IBOutlet MKMapView *_mapView;
     IBOutlet UITextField *_startAddress;
     IBOutlet UITextField *_endAddress;
@@ -35,5 +36,6 @@
 -(IBAction)currentLocation:(id)sender;
 -(IBAction)hitTrail:(id)sender;
 -(IBAction)continueClicked:(id)sender;
+-(IBAction)uploadHike:(id)sender;
 
 @end

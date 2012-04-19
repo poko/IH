@@ -151,7 +151,6 @@ NSMutableData *receivedData;
     [UIColor colorWithRed:(203.0/255.0) green:(204.0/255.0) blue:(208.0/255.0) alpha:1];
     [[cell contentView] setBackgroundColor:color];
     [cell sizeToFit];
-    NSLog(@"returning cell: %i", indexPath.row);
     return cell;
 }
 
@@ -192,6 +191,8 @@ NSMutableData *receivedData;
     NSLog(@"didReceiveResponse");
     [receivedData setLength:0];
 }
+
+// TODO - move this into its own delegate 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {

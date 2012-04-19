@@ -65,11 +65,11 @@
     return nil;
 }
 
-BOOL eligble = NO;
-- (BOOL) eligibleForUpload
+bool eligble = false;
+- (bool) eligibleForUpload
 {
     if (eligble)
-        return YES;
+        return true;
     else{
         int completedVistas = 0;
         for (ScenicVista *v in vistas){
@@ -79,6 +79,64 @@ BOOL eligble = NO;
         eligble = completedVistas > 2;
     }
     return eligble;
+}
+
+- (bool) isComplete
+{
+//     TODO uncomment! for (ScenicVista *vista in vistas){
+//        if (![vista complete])
+//            return false;
+//    }
+    return true;
+}
+
+- (NSString *) vistasAsJson
+{
+    NSMutableString *str = [[NSMutableString alloc] init];
+    for (ScenicVista *vista in vistas){
+        [str appendFormat:@"%@,", [vista toJson]];
+    }
+    return str;
+}
+
+- (NSString *) pointsAsJson
+{
+    NSMutableString *str = [NSMutableString stringWithString:@"["];
+    for (int i = 0; i < [points count]; i++) {
+        CLLocation *point = [points objectAtIndex:i];
+        [str appendFormat:@"{\"index\": %i, \"latitude\": %f, \"longitude\": %f},",
+         i, (1000000 * point.coordinate.latitude), (1000000 * point.coordinate.longitude)];
+    }
+    // remove last comma
+    [str deleteCharactersInRange:NSMakeRange([str length]-1, 1)];
+    [str appendString:@"]"];
+    NSLog(@"points as json: %@", str);
+    return str;
+}
+
+- (NSData *) getUploadData
+{
+    NSMutableString *data = [NSMutableString stringWithFormat:@"hike_name=%@&description=%@&username=%@",
+                      name, description, username];
+    [data appendFormat:@"&original=%@", original];
+    [data appendFormat:@"&vistas=%@", [self vistasAsJson]];
+    if ([original isEqualToString:@"true"]){
+        [data appendFormat:@"&start_lat=%@", startLat];
+        [data appendFormat:@"&start_lng=%@", startLng];
+        [data appendFormat:@"&points=%@", [self pointsAsJson]];
+    }
+//    NSError *error;
+//    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+//    [dict setValue:name forKey:@"hike_name"];
+//    [dict setValue:description forKey:@"description"];
+//    [dict setValue:username forKey:@"username"];
+    
+    //convert object to data
+//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:&error];
+//    if (error != nil){
+//        NSLog(@"there was an error converting the dictionary?? %@", [error description]);
+//    }
+    return [data dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end

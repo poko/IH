@@ -44,19 +44,35 @@
     return TEXT;
 }
 
-
+- (NSString *) toJson
+{
+    NSMutableString *str = [[NSMutableString alloc] init];
+    [str appendFormat:@"latitude=%@", lat];
+	[str appendFormat:@"longitude=%@", lng];
+	[str appendFormat:@"action_id=%@", actionId];
+	[str appendFormat:@"note=%@", note];
+	[str appendFormat:@"photo=%@", photoUrl];
+	[str appendFormat:@"date=%@", date];
+    return str;
+}
 
 -(BOOL) isEqual:(id)object
 {
-    NSLog(@"Calling my vista is equal function: %@", ([location isEqual:[object location]] ? @"YES" : @"NO"));
     if (![object isKindOfClass:[ScenicVista class]])
         return NO;
-    return [location isEqual:[object location]];
+    if (location.coordinate.latitude != [(ScenicVista *) object location].coordinate.latitude)
+        return NO;
+    else{
+        if (location.coordinate.longitude != [(ScenicVista *) object location].coordinate.longitude)
+            return NO;
+        return YES;
+    }
+   // return [location isEqual:[object location]];
         
 }
 
 - (NSUInteger)hash
-{   NSLog(@"Calling my vista hash function, %f", (location.coordinate.latitude + location.coordinate.longitude));
+{
     return (location.coordinate.latitude + location.coordinate.longitude);
 }
             

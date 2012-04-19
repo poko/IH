@@ -33,5 +33,6 @@ typedef enum {
 + (ScenicVista *) initWithDictionary:(NSDictionary *) dict;
 + (ScenicVista *) initWithPoint:(CLLocation *) point;
 - (ActionType) getActionType;
+- (NSString *) toJson;
 
 @end

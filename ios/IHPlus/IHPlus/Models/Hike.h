@@ -17,10 +17,10 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *description;
 @property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSMutableArray *vistas;
+@property (nonatomic, strong) NSMutableArray *vistas; //holds ScenicVista objects
 @property (nonatomic, strong) NSString *original;
 @property (nonatomic, strong) NSString *originalHikeId;
-@property (nonatomic, strong) NSMutableArray *points;
+@property (nonatomic, strong) NSMutableArray *points; //holds CLLocation objects
 @property (nonatomic, strong) NSString *startLat;
 @property (nonatomic, strong) NSString *startLng;
 
@@ -28,6 +28,8 @@
 - (void) addPoint:(CLLocation *) point;
 - (void) addVista:(CLLocation *) point;
 - (ScenicVista *) getVistaById:(NSString *) actionId;
-- (BOOL) eligibleForUpload;
+- (bool) eligibleForUpload;
+- (bool) isComplete;
+- (NSData *) getUploadData;
 
 @end

@@ -95,7 +95,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4305" y="-565"/>
+            <point key="canvasLocation" x="4305" y="-1053"/>
         </scene>
         <scene sceneID="VDM-y1-THg">
             <objects>
@@ -167,7 +167,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4305" y="20"/>
+            <point key="canvasLocation" x="4305" y="-468"/>
         </scene>
         <scene sceneID="6xq-K3-Wpu">
             <objects>
@@ -268,8 +268,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="gfm-Z0-vay">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="action" id="h7y-qb-eon">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="h7y-qb-eon">
                             <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="uploadHike:" destination="n2f-5R-zC3" id="mVE-ld-wME"/>
+                                <segue destination="FNb-8Z-2Rr" kind="modal" identifier="UploadHike" id="DCq-sV-DOu"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -286,6 +290,86 @@
                 </viewController>
             </objects>
             <point key="canvasLocation" x="3766" y="86"/>
+        </scene>
+        <scene sceneID="UlB-2Q-skx">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C8Y-xY-e7z" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="FNb-8Z-2Rr" customClass="UploadHikeController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5pE-J7-Z2I">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" id="eKB-aU-nIv">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <navigationItem title="upload hike" id="rAb-Fg-dqg">
+                                        <barButtonItem key="rightBarButtonItem" title="upload" id="Lxa-YG-RD1">
+                                            <connections>
+                                                <action selector="uploadClick:" destination="FNb-8Z-2Rr" id="pEs-YL-Mqx"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="1Va-kq-lnd">
+                                <rect key="frame" x="0.0" y="44" width="320" height="272"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Hike Name" lineBreakMode="tailTruncation" minimumFontSize="10" id="vrV-OE-mKL">
+                                        <rect key="frame" x="20" y="20" width="280" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="agR-qI-IWV">
+                                        <rect key="frame" x="20" y="55" width="280" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="and-zo-RTy">
+                                        <rect key="frame" x="20" y="139" width="280" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                    </textField>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Hike Description" lineBreakMode="tailTruncation" minimumFontSize="10" id="zzf-Qe-AZR">
+                                        <rect key="frame" x="20" y="104" width="280" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="User Name" lineBreakMode="tailTruncation" minimumFontSize="10" id="TB9-96-AuP">
+                                        <rect key="frame" x="20" y="186" width="280" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="OTy-Z4-6Ez">
+                                        <rect key="frame" x="20" y="221" width="280" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    </textField>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="hikeDesc" destination="and-zo-RTy" id="zUo-Gp-thT"/>
+                        <outlet property="hikeName" destination="agR-qI-IWV" id="doR-ao-c8a"/>
+                        <outlet property="scroller" destination="1Va-kq-lnd" id="b4v-kP-Otl"/>
+                        <outlet property="userName" destination="OTy-Z4-6Ez" id="wHo-ca-TKm"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="4306" y="103"/>
         </scene>
         <scene sceneID="OkR-RD-d3N">
             <objects>
@@ -674,7 +758,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4305" y="-565"/>
+            <point key="canvasLocation" x="4305" y="-1053"/>
         </scene>
     </scenes>
     <resources>
@@ -683,6 +767,106 @@
         <image name="search_hike_on_btn.png" width="35" height="35"/>
         <image name="view_it_btn.png" width="55" height="25"/>
     </resources>
+    <classes>
+        <class className="CreditsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CreditsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="done:"/>
+            </relationships>
+        </class>
+        <class className="HikeDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HikeDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="_desc" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_details" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_table" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="MapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="continueClicked:"/>
+                <relationship kind="action" name="currentLocation:"/>
+                <relationship kind="action" name="hitTrail:"/>
+                <relationship kind="action" name="uploadHike:"/>
+                <relationship kind="outlet" name="_endAddress" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="_inputHolder" candidateClass="UIView"/>
+                <relationship kind="outlet" name="_mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="_prompt" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_promptHolder" candidateClass="UIView"/>
+                <relationship kind="outlet" name="_startAddress" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="_uploadButton" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="NoteModalController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NoteModalController.h"/>
+            <relationships>
+                <relationship kind="action" name="doneClick:"/>
+                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="input" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="prompt" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="SearchResultsController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchResultsController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="SearchTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="description" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="viewButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="SearchViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="_searchBar" candidateClass="UISearchBar"/>
+            </relationships>
+        </class>
+        <class className="TextModalController" superclassName="NoteModalController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextModalController.h"/>
+            <relationships>
+                <relationship kind="action" name="textClick:"/>
+                <relationship kind="outlet" name="disclaimer" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="textButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="UploadHikeController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UploadHikeController.h"/>
+            <relationships>
+                <relationship kind="action" name="uploadClick:"/>
+                <relationship kind="outlet" name="hikeDesc" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="hikeName" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="scroller" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="userName" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="VistaCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="prompt" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="vistaNum" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="VistaCellNote" superclassName="VistaCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCellNote.h"/>
+            <relationships>
+                <relationship kind="outlet" name="note" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="VistaCellPhoto" superclassName="VistaCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCellPhoto.h"/>
+            <relationships>
+                <relationship kind="outlet" name="photo" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
