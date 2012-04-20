@@ -24,7 +24,7 @@
     CLGeocoder *_geocoder;
     UIActivityIndicatorView *_loadingIndicator;
     NSInteger _callCount;
-    NSMutableArray *_pathPoints;
+    //NSMutableArray *_pathPoints;
     MKPolylineView *_routeLineView;
     MKPolyline *_routeLine;
     Hike *_hike;

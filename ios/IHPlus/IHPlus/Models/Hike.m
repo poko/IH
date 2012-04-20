@@ -43,6 +43,7 @@
     // set vistas
     hike.vistas = [NSMutableArray array];
     NSArray *vistasJson = [dict objectForKey:@"vistas"];
+    NSLog(@"VISTAS: %@", vistasJson);
     for (NSDictionary *vistaJson in vistasJson) {
         ScenicVista *vista = [ScenicVista initWithDictionary:vistaJson];
         [hike.vistas addObject:vista];

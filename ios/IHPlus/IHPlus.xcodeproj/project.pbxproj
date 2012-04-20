@@ -275,8 +275,8 @@
 		A6EDACDC1513E837000AFB60 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				A64C9404152E4CCA0090BD0D /* ScenicVista.m */,
 				A64C9405152E4CCA0090BD0D /* ScenicVista.h */,
+				A64C9404152E4CCA0090BD0D /* ScenicVista.m */,
 				A64C9407152E4CCA0090BD0D /* Hike.h */,
 				A64C9406152E4CCA0090BD0D /* Hike.m */,
 			);

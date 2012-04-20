@@ -140,6 +140,31 @@ NSMutableData *vistaActionsData;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+
+
+- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(NSString*)identifier
+{
+    // Do not create regions if support is unavailable or disabled.
+    if ( ![CLLocationManager regionMonitoringAvailable] ||
+        ![CLLocationManager regionMonitoringEnabled] )
+        return NO;
+    
+    // If the radius is too large, registration fails automatically,
+    // so clamp the radius to the max value.
+    CLLocationDegrees radius = 3;
+    if (radius > _locMgr.maximumRegionMonitoringDistance)
+        radius = _locMgr.maximumRegionMonitoringDistance;
+    
+    // Create the region and start monitoring it.
+    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
+                                                               radius:radius identifier:identifier];
+    [_monitoredRegions addObject:region];
+    [_locMgr startMonitoringForRegion:region
+                      desiredAccuracy:kCLLocationAccuracyBest];
+    
+    return YES;
+}
+
 -(void) drawVistas
 {
     NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
@@ -149,8 +174,24 @@ NSMutableData *vistaActionsData;
         [annotationPoint setCoordinate:[[vista location] coordinate]];
         [annotationPoint setTitle:[vista prompt]];
         [_mapView addAnnotation:annotationPoint];
+        // enable geofence
+        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         NSLog(@"Vista at coord: %@", [vista location]);
     }
+    
+    // draw path overlay
+    CLLocationCoordinate2D *pointsLine = malloc([[_hike points] count] * sizeof(CLLocationCoordinate2D));
+    for (int i = 0; i < [[_hike points] count]; i++){
+        pointsLine[i] = [(CLLocation *)[[_hike points] objectAtIndex:i ] coordinate];
+        //set point in Hike object for later uploadingz.
+        //[_hike addPoint:(CLLocation *)[_spathPoints objectAtIndex:i]];
+    }
+    MKPolyline *line = [MKPolyline polylineWithCoordinates:pointsLine count:[[_hike points] count]];
+    _routeLine = line;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[[_hike points] objectAtIndex:0 ] coordinate], 400, 400);
+    [_mapView setRegion:region animated:YES];
+    [_mapView addOverlay:line];
+    free(pointsLine);
 }
 
 
@@ -214,44 +255,32 @@ int midpoint;// = 1; //TODO!!
             return;
         }
         _callCount++;
-        [_pathPoints addObjectsFromArray:points];
+        //[_pathPoints addObjectsFromArray:points];
         NSLog(@"compeltion handler!! %i", _callCount);
-        NSLog(@"we have this many points: %i", [_pathPoints count]);
 //        if (_callCount == 1){
 //            midpoint = ([_pathPoints count] - 1);
 //            [self getDirectionsFrom:to to:[_endAddress text]];
 //        }
 //        if (_callCount == 2){
-            NSLog(@"should be drawing now, %i", [_pathPoints count]);
+            NSLog(@"should be drawing now, %i", [points count]);
             // Create the Hike object!
             _hike = [[Hike alloc] init];
             [_hike setOriginal:@"true"];
-            //[_loadingIndicator stopAnimating];
-            // draw overlay
-            CLLocationCoordinate2D *pointsLine = malloc([_pathPoints count] * sizeof(CLLocationCoordinate2D));
-            for (int i = 0; i < [_pathPoints count]; i++){
-                pointsLine[i] = [(CLLocation *)[_pathPoints objectAtIndex:i ] coordinate];
-                //set point in Hike object for later uploadingz.
-                [_hike addPoint:(CLLocation *)[_pathPoints objectAtIndex:i]];
-            }
-            MKPolyline *line = [MKPolyline polylineWithCoordinates:pointsLine count:[_pathPoints count]];
-            _routeLine = line;
-            MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[_pathPoints objectAtIndex:0 ] coordinate], 400, 400);
-            [_mapView setRegion:region animated:YES];
-            [_mapView addOverlay:line];
-            free(pointsLine);
+            // add points to it
+            [_hike setPoints:points];
+            
             // hide the input view
             [_inputHolder setHidden:YES];
             UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(clickedCreateButton:)];
             [[self navigationItem] setLeftBarButtonItem:createButton];
             // generate random scenic vistas
             // make end point and mid point SVs
-            [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:midpoint]];
-            [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:([_pathPoints count] - 1)]];
+            [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:midpoint]];
+            [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:([[_hike points] count] - 1)]];
             // if we don't have enough points to select randomly, make all points vistas
-            if ([_pathPoints count] - 2 < 8){
-                for (int i = 1; i < [_pathPoints count]; i++){
-                    [_hike addVista:[_pathPoints objectAtIndex:i]];
+            if ([[_hike points] count] - 2 < 8){
+                for (int i = 1; i < [[_hike points] count]; i++){
+                    [_hike addVista:[[_hike points] objectAtIndex:i]];
                 }
             }
             else{
@@ -260,12 +289,12 @@ int midpoint;// = 1; //TODO!!
                 int randIndex;
                 for (int i = 0; i < vistaAmount; i++){
                     randIndex = RANDOM_INT(0, midpoint);
-                    [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+                    [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:randIndex]];
                 }
                 vistaAmount = RANDOM_INT(1, 3);
                 for (int i = 0; i < vistaAmount; i++){
-                    randIndex = RANDOM_INT(midpoint, ([_pathPoints count] - 1));
-                    [_hike addVista:(CLLocation *)[_pathPoints objectAtIndex:randIndex]];
+                    randIndex = RANDOM_INT(midpoint, ([[_hike points] count] - 1));
+                    [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:randIndex]];
                 }
             }
             // TODO - download vista actions
@@ -309,7 +338,7 @@ int midpoint;// = 1; //TODO!!
     NSLog(@"clicked create!");
     //TODO check that user hasn't completed any vistas, if they have, warn.
     //TODO - clear hike
-    [_inputHolder setHidden:NO];
+    [_inputHolder setHidden:false];
     [[self navigationItem] setLeftBarButtonItem:nil];
 }
 
@@ -331,7 +360,6 @@ int midpoint;// = 1; //TODO!!
     [_mapView removeAnnotations:toRemove];
     // clear out any previous data
     _callCount = 0;
-    _pathPoints = [NSMutableArray array];
     // remove any pending proximity alerts
     if (_monitoredRegions != nil){
         for (CLRegion *region in _monitoredRegions){
@@ -423,7 +451,7 @@ int midpoint;// = 1; //TODO!!
                 [imagePicker setDelegate:self];
                 
                 // Allow editing of image ?
-                [imagePicker setAllowsEditing:NO];
+                [imagePicker setAllowsEditing:false];
                 
                 // Show image picker
                 [self presentModalViewController:imagePicker animated:YES];
@@ -516,33 +544,10 @@ int midpoint;// = 1; //TODO!!
         [textField resignFirstResponder];
         [self hitTrail:textField];
     }
-    return NO;
+    return false;
 }
 
 #pragma mark geofencing
-
-- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(NSString*)identifier
-{
-    // Do not create regions if support is unavailable or disabled.
-    if ( ![CLLocationManager regionMonitoringAvailable] ||
-        ![CLLocationManager regionMonitoringEnabled] )
-        return NO;
-    
-    // If the radius is too large, registration fails automatically,
-    // so clamp the radius to the max value.
-    CLLocationDegrees radius = 3;
-    if (radius > _locMgr.maximumRegionMonitoringDistance)
-        radius = _locMgr.maximumRegionMonitoringDistance;
-    
-    // Create the region and start monitoring it.
-    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
-                                                               radius:radius identifier:identifier];
-    [_monitoredRegions addObject:region];
-    [_locMgr startMonitoringForRegion:region
-                     desiredAccuracy:kCLLocationAccuracyBest];
-    
-    return YES;
-}
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
 {
@@ -553,7 +558,7 @@ int midpoint;// = 1; //TODO!!
 {
     NSLog(@"entered region! %@", [region identifier]);
     // show action view
-    [_promptHolder setHidden:NO];
+    [_promptHolder setHidden:false];
     _currentVista = [_hike getVistaById:[region identifier]];
     [_prompt setText:[_currentVista prompt]];
 }
@@ -577,7 +582,12 @@ int midpoint;// = 1; //TODO!!
     NSLog(@"Sending to url %@", url);
     RewalkHikeDelegate *rewalkDelegate = [[RewalkHikeDelegate alloc] initWithHandler:^(bool result, Hike *hike) {
         NSLog(@"tralala back in the map view with a hike! %@", hike);
+        // TODO clear any existing paths and vistas!
         [self hideLoadingDialog:nil];
+        [_inputHolder setHidden:true];
+        _hike = hike;
+        // draw path and vistas
+        [self drawVistas];
     }];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; 
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:rewalkDelegate];
@@ -648,7 +658,6 @@ int midpoint;// = 1; //TODO!!
         //TODO [vista setActionType:[action objectForKey:@"action_type"]];
         [vista setActionType:@"text"];
         [vista setPrompt:[action objectForKey:@"verbiage"]];
-        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
         i++;
     }
     // enable geofences for vistas

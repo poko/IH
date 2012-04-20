@@ -10,18 +10,27 @@
 
 @implementation ScenicVista
 
-@synthesize actionId, actionType, prompt, date, lat, lng, note, photoUrl;
+@synthesize actionId, actionType, prompt, date, note, photoUrl;
 @synthesize location, complete;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *)dict
 {
     ScenicVista *vista = [[ScenicVista alloc] init];
-    [vista setActionId:[dict objectForKey:@"action_id"]];
-    [vista setActionType:[dict objectForKey:@"action_type"]];
-    [vista setPrompt:[dict objectForKey:@"verbiage"]];
+    if ([dict objectForKey:@"new_vista_action"] != nil){
+        NSDictionary *newAction = [dict objectForKey:@"new_vista_action"];
+        [vista setActionId:[newAction objectForKey:@"action_id"]];
+        [vista setActionType:[newAction objectForKey:@"action_type"]];
+        [vista setPrompt:[newAction objectForKey:@"verbiage"]];
+    }
+    else{
+        [vista setActionId:[dict objectForKey:@"action_id"]];
+        [vista setActionType:[dict objectForKey:@"action_type"]];
+        [vista setPrompt:[dict objectForKey:@"verbiage"]];
+    }
     [vista setDate:[dict objectForKey:@"date"]];
-    [vista setLat:[dict objectForKey:@"latitude"]];
-    [vista setLng:[dict objectForKey:@"longitude"]];
+    //[vista setLat:[dict objectForKey:@"latitude"]];
+    //[vista setLng:[dict objectForKey:@"longitude"]];
+    [vista setLocation:[[CLLocation alloc] initWithLatitude:[[dict objectForKey:@"latitude"] doubleValue] longitude:[[dict objectForKey:@"longitude"] doubleValue]]];
     [vista setNote:[dict objectForKey:@"note"]];
     [vista setPhotoUrl:[dict objectForKey:@"photo"]];
     return vista;
@@ -47,8 +56,8 @@
 - (NSString *) toJson
 {
     NSMutableString *str = [[NSMutableString alloc] init];
-    [str appendFormat:@"latitude=%@", lat];
-	[str appendFormat:@"longitude=%@", lng];
+    [str appendFormat:@"latitude=%@", location.coordinate.latitude];
+	[str appendFormat:@"longitude=%@", location.coordinate.longitude];
 	[str appendFormat:@"action_id=%@", actionId];
 	[str appendFormat:@"note=%@", note];
 	[str appendFormat:@"photo=%@", photoUrl];

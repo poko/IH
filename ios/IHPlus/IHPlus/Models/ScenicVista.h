@@ -22,11 +22,8 @@ typedef enum {
 @property (nonatomic, strong) NSString *actionType;
 @property (nonatomic, strong) NSString *prompt;
 @property (nonatomic, strong) NSString *date;
-@property (nonatomic, strong) NSString *lat;
-@property (nonatomic, strong) NSString *lng;
 @property (nonatomic, strong) NSString *note;
 @property (nonatomic, strong) NSString *photoUrl;
-// TODO @property (nonatomic, strong) VistaAction *newAction;
 @property (nonatomic, strong) CLLocation *location;
 @property (nonatomic) BOOL complete;
 
