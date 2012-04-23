@@ -28,8 +28,6 @@
         [vista setPrompt:[dict objectForKey:@"verbiage"]];
     }
     [vista setDate:[dict objectForKey:@"date"]];
-    //[vista setLat:[dict objectForKey:@"latitude"]];
-    //[vista setLng:[dict objectForKey:@"longitude"]];
     [vista setLocation:[[CLLocation alloc] initWithLatitude:[[dict objectForKey:@"latitude"] doubleValue] longitude:[[dict objectForKey:@"longitude"] doubleValue]]];
     [vista setNote:[dict objectForKey:@"note"]];
     [vista setPhotoUrl:[dict objectForKey:@"photo"]];

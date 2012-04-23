@@ -3,7 +3,12 @@ include 'json_headers.php';
 include 'db_open.php';
 $amt = $_GET['amount'];
 $first=true;
-$result = mysql_query("SELECT action_id, action_type, verbiage FROM `vista_actions` order by rand() limit $amt");
+if (isset($_GET['companion']) && $_GET['companion'] == 'true'){
+	$result = mysql_query("SELECT action_id, action_type, verbiage FROM `companion_vista_actions` order by rand() limit $amt");
+}
+else{
+	$result = mysql_query("SELECT action_id, action_type, verbiage FROM `vista_actions` order by rand() limit $amt");
+}
 
 echo "{\"vista_actions\":[";
 while ($row = mysql_fetch_object($result)) {
