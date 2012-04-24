@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A60BBAA715421375005E8EF0 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A60BBAA315421375005E8EF0 /* libTestFlight.a */; };
-		A60BBAA815421375005E8EF0 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = A60BBAA415421375005E8EF0 /* README.txt */; };
-		A60BBAA915421375005E8EF0 /* release_notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = A60BBAA515421375005E8EF0 /* release_notes.txt */; };
 		A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A687B48C1520D1D8004F08B0 /* libz.dylib */; };
 		A60BBAAD1545FA3B005E8EF0 /* CompanionMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */; };
 		A627BA86152DF6CA0056A670 /* VistaCellNote.m in Sources */ = {isa = PBXBuildFile; fileRef = A627BA85152DF6CA0056A670 /* VistaCellNote.m */; };
@@ -59,10 +56,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A60BBAA315421375005E8EF0 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
-		A60BBAA415421375005E8EF0 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
-		A60BBAA515421375005E8EF0 /* release_notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
-		A60BBAA615421375005E8EF0 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		A60BBAAB1545FA3B005E8EF0 /* CompanionMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CompanionMapViewController.h; path = "View Controllers/CompanionMapViewController.h"; sourceTree = "<group>"; };
 		A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CompanionMapViewController.m; path = "View Controllers/CompanionMapViewController.m"; sourceTree = "<group>"; };
 		A627BA84152DF6CA0056A670 /* VistaCellNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellNote.h; sourceTree = "<group>"; };
@@ -149,28 +142,15 @@
 				A67D3D5115126D5C00391EE5 /* UIKit.framework in Frameworks */,
 				A67D3D5315126D5C00391EE5 /* Foundation.framework in Frameworks */,
 				A67D3D5515126D5C00391EE5 /* CoreGraphics.framework in Frameworks */,
-				A60BBAA715421375005E8EF0 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A60BBAA215421375005E8EF0 /* TestFlightSDK1.0 */ = {
-			isa = PBXGroup;
-			children = (
-				A60BBAA315421375005E8EF0 /* libTestFlight.a */,
-				A60BBAA415421375005E8EF0 /* README.txt */,
-				A60BBAA515421375005E8EF0 /* release_notes.txt */,
-				A60BBAA615421375005E8EF0 /* TestFlight.h */,
-			);
-			path = TestFlightSDK1.0;
-			sourceTree = "<group>";
-		};
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
-				A60BBAA215421375005E8EF0 /* TestFlightSDK1.0 */,
 				A6D9663C1534E54500255CC3 /* MessageUI.framework */,
 				A6D9662815335FFF00255CC3 /* sample_hike.gpx */,
 				A687B48C1520D1D8004F08B0 /* libz.dylib */,
@@ -376,8 +356,6 @@
 				A627BABA152E4BE90056A670 /* create_hike_btn.png in Resources */,
 				A627BABD152E4BF20056A670 /* search_hike_on_btn.png in Resources */,
 				A627BABE152E4BF20056A670 /* create_hike_on_btn.png in Resources */,
-				A60BBAA815421375005E8EF0 /* README.txt in Resources */,
-				A60BBAA915421375005E8EF0 /* release_notes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -501,6 +479,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
 				INFOPLIST_FILE = "IHPlus/IHPlus-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TestFlightSDK1.0\"",
@@ -521,6 +500,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
 				INFOPLIST_FILE = "IHPlus/IHPlus-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TestFlightSDK1.0\"",
