@@ -8,6 +8,9 @@
 
 #import "MapViewController.h"
 
-@interface CompanionMapViewController : MapViewController
+@interface CompanionMapViewController : MapViewController{
+}
+
+-(IBAction)addVistaHere:(id)sender;
 
 @end

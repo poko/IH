@@ -27,6 +27,7 @@
 + (Hike *) initWithDictionary:(NSDictionary *) dict;
 - (void) addPoint:(CLLocation *) point;
 - (void) addVista:(CLLocation *) point;
+- (void) addCompanionVista:(ScenicVista *) vista;
 - (ScenicVista *) getVistaById:(NSString *) actionId;
 - (bool) eligibleForUpload;
 - (bool) isComplete;

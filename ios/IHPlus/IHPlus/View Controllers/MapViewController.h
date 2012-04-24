@@ -31,6 +31,7 @@
     ScenicVista *_currentVista;
     CLLocationManager *_locMgr;
     NSMutableArray *_monitoredRegions;
+    MKUserLocation *_currentLocation;
 }
 
 -(IBAction)currentLocation:(id)sender;
@@ -38,5 +39,6 @@
 -(IBAction)continueClicked:(id)sender;
 -(IBAction)uploadHike:(id)sender;
 -(void)rewalkHike:(NSString *) hikeId;
+-(void)showActionView;
 
 @end

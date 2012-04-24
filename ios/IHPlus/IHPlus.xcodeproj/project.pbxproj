@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A687B48C1520D1D8004F08B0 /* libz.dylib */; };
 		A60BBAAD1545FA3B005E8EF0 /* CompanionMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */; };
+		A60BBAAF15473F83005E8EF0 /* point.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A60BBAAE15473F83005E8EF0 /* point.gpx */; };
 		A627BA86152DF6CA0056A670 /* VistaCellNote.m in Sources */ = {isa = PBXBuildFile; fileRef = A627BA85152DF6CA0056A670 /* VistaCellNote.m */; };
 		A627BAB0152E4BCB0056A670 /* black_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAD152E4BC80056A670 /* black_gradient.png */; };
 		A627BAB1152E4BCB0056A670 /* create_hike_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAE152E4BC80056A670 /* create_hike_btn2x.png */; };
@@ -58,6 +59,7 @@
 /* Begin PBXFileReference section */
 		A60BBAAB1545FA3B005E8EF0 /* CompanionMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CompanionMapViewController.h; path = "View Controllers/CompanionMapViewController.h"; sourceTree = "<group>"; };
 		A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CompanionMapViewController.m; path = "View Controllers/CompanionMapViewController.m"; sourceTree = "<group>"; };
+		A60BBAAE15473F83005E8EF0 /* point.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = point.gpx; sourceTree = "<group>"; };
 		A627BA84152DF6CA0056A670 /* VistaCellNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellNote.h; sourceTree = "<group>"; };
 		A627BA85152DF6CA0056A670 /* VistaCellNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellNote.m; sourceTree = "<group>"; };
 		A627BAAD152E4BC80056A670 /* black_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black_gradient.png; path = Assets/black_gradient.png; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				A60BBAAE15473F83005E8EF0 /* point.gpx */,
 				A6D9663C1534E54500255CC3 /* MessageUI.framework */,
 				A6D9662815335FFF00255CC3 /* sample_hike.gpx */,
 				A687B48C1520D1D8004F08B0 /* libz.dylib */,
@@ -356,6 +359,7 @@
 				A627BABA152E4BE90056A670 /* create_hike_btn.png in Resources */,
 				A627BABD152E4BF20056A670 /* search_hike_on_btn.png in Resources */,
 				A627BABE152E4BF20056A670 /* create_hike_on_btn.png in Resources */,
+				A60BBAAF15473F83005E8EF0 /* point.gpx in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

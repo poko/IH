@@ -36,13 +36,13 @@
 }
 */
 
-/*
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 }
-*/
+
 
 - (void)viewDidUnload
 {
@@ -55,6 +55,28 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - IBActions
+
+-(IBAction)addVistaHere:(id)sender
+{ 
+    // drop pin on map at current location
+    MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
+    annotationPoint.coordinate = _currentLocation.location.coordinate;
+    [_mapView addAnnotation:annotationPoint];
+    // add vista object to hike
+    ScenicVista *vista = [[ScenicVista alloc] init];
+    // TODO we will have a source of vista actions that we get from the server .. probably when we hit the trail
+    [vista setLocation:_currentLocation.location];
+    [vista setActionId:@""]; //TODO
+    [vista setActionType:@""]; //TODO
+    [vista setPrompt:@""]; //TODO
+    [_hike addCompanionVista:vista];
+    
+    //show vista input
+    _currentVista = vista;
+    [self showActionView];
 }
 
 @end

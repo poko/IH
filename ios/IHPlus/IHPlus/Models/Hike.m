@@ -69,6 +69,12 @@
         [vistas addObject:vista];
 }
 
+- (void) addCompanionVista:(ScenicVista *)vista
+{
+    if (![vistas containsObject:vista])
+        [vistas addObject:vista];
+}
+
 - (ScenicVista *) getVistaById:(NSString *)actionId
 {
     for (ScenicVista *vista in vistas){

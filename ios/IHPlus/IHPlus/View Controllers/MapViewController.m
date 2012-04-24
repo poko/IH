@@ -13,6 +13,7 @@
 #import "ScenicVista.h"
 
 #define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
+#define CURRENT_LOCATION @"Current Location"
 
 @implementation MapViewController
 
@@ -92,9 +93,7 @@ NSMutableData *vistaActionsData;
     
     NSLog(@"User location : %@", userLocation.location );
     NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
-    //[userLocation location] distanceFromLocation:<#(const CLLocation *)#>
-    //MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance (userLocation.location.coordinate, 200, 200);
-    //[mapView setRegion:region animated:YES];
+    _currentLocation = userLocation;
 }
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id )overlay
@@ -375,6 +374,18 @@ int midpoint;// = 1; //TODO!!
         // fwd geocode start location
         [self showLoadingDialog];
         //TODO - check if "current location"
+        if ([start isEqualToString:CURRENT_LOCATION]){
+            // get random offset from current location
+            float randLat = [self getRandomOffset]+_currentLocation.location.coordinate.latitude;
+            float randLng = [self getRandomOffset]+_currentLocation.location.coordinate.longitude;
+            NSString *startPoints = [NSString stringWithFormat:@"%f,%f",
+                                     _currentLocation.location.coordinate.latitude, 
+                                     _currentLocation.location.coordinate.longitude];
+            NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng];
+            [self getDirectionsFrom:startPoints to:randPoint];
+            [self getDirectionsFrom:randPoint to:end];
+        }
+        else{
         // geocode search
         if (!_geocoder){
             _geocoder = [[CLGeocoder alloc] init];
@@ -406,6 +417,7 @@ int midpoint;// = 1; //TODO!!
                  [self hideLoadingDialog:@"Not a valid starting location"];
              } 
          }];
+        }
 
     }
 }
@@ -414,7 +426,7 @@ int midpoint;// = 1; //TODO!!
 -(IBAction)currentLocation:(id)sender
 {
     NSLog(@"current loc");
-    [_startAddress setText:@"Current Location"];
+    [_startAddress setText:CURRENT_LOCATION];
 }
 
 -(IBAction)continueClicked:(id)sender
@@ -548,6 +560,11 @@ int midpoint;// = 1; //TODO!!
 }
 
 #pragma mark geofencing
+- (void)showActionView
+{   // show action view
+    [_promptHolder setHidden:false];
+    [_prompt setText:[_currentVista prompt]];
+}
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
 {
@@ -557,10 +574,8 @@ int midpoint;// = 1; //TODO!!
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
 {
     NSLog(@"entered region! %@", [region identifier]);
-    // show action view
-    [_promptHolder setHidden:false];
     _currentVista = [_hike getVistaById:[region identifier]];
-    [_prompt setText:[_currentVista prompt]];
+    [self showActionView];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
