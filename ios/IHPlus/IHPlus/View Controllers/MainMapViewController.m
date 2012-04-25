@@ -150,7 +150,7 @@
             NSDictionary *action = [actions objectAtIndex:i];
             [vista setActionId:[action objectForKey:@"action_id"]];
             //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-            [vista setActionType:@"text"];
+            [vista setActionType:@"note"];
             [vista setPrompt:[action objectForKey:@"verbiage"]];
             i++;
         }

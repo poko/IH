@@ -43,6 +43,7 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
+    NSLog(@"do we get here??");
     [super viewDidLoad];
     [doneButton setEnabled:NO];
     // make input look input-y

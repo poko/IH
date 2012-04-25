@@ -354,7 +354,6 @@ int midpoint;// = 1; //TODO!!
 
 -(IBAction)continueClicked:(id)sender
 {
-    //start modal for inputing .. ? maybe have modal popup directly? 
     if (_currentVista != nil){
         switch ([_currentVista getActionType]){
             case MEDITATE:{
@@ -431,10 +430,14 @@ int midpoint;// = 1; //TODO!!
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 { //TODO cleanup logic
+    NSLog(@"preparing for segue: %@", [segue identifier]);
     if ([[segue identifier] isEqualToString:@"NoteModal"]){
         NoteModalController *modal = [segue destinationViewController];
+        NSLog(@"I bet something's wrong here %@", modal);
         [modal setPromptText:[_currentVista prompt]];
+        NSLog(@"or here");
         [modal setVcDelegate:self];
+        NSLog(@"get here?");
     }
     else if ([[segue identifier] isEqualToString:@"TextModal"]){
         TextModalController *modal = [segue destinationViewController];
