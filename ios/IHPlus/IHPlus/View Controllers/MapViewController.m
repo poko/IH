@@ -9,6 +9,7 @@
 #import "MapViewController.h"
 #import "GetDirectionsDelegate.h"
 #import "ScenicVista.h"
+#import "Toast+UIView.h"
 
 #define CURRENT_LOCATION @"Current Location"
 
@@ -411,10 +412,13 @@ int midpoint;// = 1; //TODO!!
         if (error != nil){
             // TODO boo!
             NSLog(@" boooo error back in mapview");
+            // show error dialog
         }
         else{
             // TODO success!
             NSLog(@" no error back in mapview");
+            // show success "toast"
+            [self.view makeToast:@"Hike uploaded successfully."];
         }
     }];
 }

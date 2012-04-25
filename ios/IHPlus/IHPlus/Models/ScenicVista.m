@@ -54,8 +54,8 @@
 - (NSString *) toJson
 {
     NSMutableString *str = [[NSMutableString alloc] init];
-    [str appendFormat:@"latitude=%@", location.coordinate.latitude];
-	[str appendFormat:@"longitude=%@", location.coordinate.longitude];
+    [str appendFormat:@"latitude=%f", location.coordinate.latitude];
+	[str appendFormat:@"longitude=%f", location.coordinate.longitude];
 	[str appendFormat:@"action_id=%@", actionId];
 	[str appendFormat:@"note=%@", note];
 	[str appendFormat:@"photo=%@", photoUrl];

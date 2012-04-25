@@ -14,7 +14,6 @@
 
 @implementation MainMapViewController
 
-NSMutableData *vistaActionsData;
 
 - (void)didReceiveMemoryWarning
 {
@@ -49,6 +48,46 @@ NSMutableData *vistaActionsData;
             [_locMgr stopMonitoringForRegion:region];
         }
     }
+}
+
+#pragma mark - geofencing
+- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(NSString*)identifier
+{
+    // Do not create regions if support is unavailable or disabled.
+    if ( ![CLLocationManager regionMonitoringAvailable] ||
+        ![CLLocationManager regionMonitoringEnabled] )
+        return NO;
+    
+    // If the radius is too large, registration fails automatically,
+    // so clamp the radius to the max value.
+    CLLocationDegrees radius = 3;
+    if (radius > _locMgr.maximumRegionMonitoringDistance)
+        radius = _locMgr.maximumRegionMonitoringDistance;
+    
+    // Create the region and start monitoring it.
+    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
+                                                               radius:radius identifier:identifier];
+    [_monitoredRegions addObject:region];
+    [_locMgr startMonitoringForRegion:region
+                      desiredAccuracy:kCLLocationAccuracyBest];
+    
+    return YES;
+}
+
+-(void) drawVistas
+{
+    NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
+    for (int i = 0; i < [[_hike vistas] count]; i++){
+        ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
+        MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
+        [annotationPoint setCoordinate:[[vista location] coordinate]];
+        [annotationPoint setTitle:[vista prompt]];
+        [_mapView addAnnotation:annotationPoint];
+        // enable geofence
+        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
+        NSLog(@"Vista at coord: %@", [vista location]);
+    }
+    
 }
 
 #pragma mark - "protected" methods
@@ -92,60 +131,37 @@ NSMutableData *vistaActionsData;
     }
     
     //download vista actions
+    VistaActionsDelegate *getActions = [[VistaActionsDelegate alloc] initWithHandler:^(NSArray *actions, NSString *error){
+        [self hideLoadingDialog:error];
+        if (error != nil){ // something went wrong.
+            return;
+        }
+        if ([actions count] != [[_hike vistas] count]){
+            NSLog(@"something went terribly wrong!");
+            return;
+        }
+        int i = 0;
+        for (ScenicVista *vista in [_hike vistas]){
+            NSDictionary *action = [actions objectAtIndex:i];
+            [vista setActionId:[action objectForKey:@"action_id"]];
+            //TODO [vista setActionType:[action objectForKey:@"action_type"]];
+            [vista setActionType:@"text"];
+            [vista setPrompt:[action objectForKey:@"verbiage"]];
+            i++;
+        }
+        // draw & enable geofences for vistas
+        [self drawVistas];
+    }];
     NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getVistaAction.php?amount=%i", [[_hike vistas] count]];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
-    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
+    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
-        // Create the NSMutableData to hold the received data.
-        // receivedData is an instance variable declared elsewhere.
-        vistaActionsData = [NSMutableData data];
-    } else {
         NSLog(@"connection to get actions failed");
+        [self hideLoadingDialog:@"Unable to connect with server"];
     }
-
 }
 
 
-#pragma mark - geofencing
-- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(NSString*)identifier
-{
-    // Do not create regions if support is unavailable or disabled.
-    if ( ![CLLocationManager regionMonitoringAvailable] ||
-        ![CLLocationManager regionMonitoringEnabled] )
-        return NO;
-    
-    // If the radius is too large, registration fails automatically,
-    // so clamp the radius to the max value.
-    CLLocationDegrees radius = 3;
-    if (radius > _locMgr.maximumRegionMonitoringDistance)
-        radius = _locMgr.maximumRegionMonitoringDistance;
-    
-    // Create the region and start monitoring it.
-    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
-                                                               radius:radius identifier:identifier];
-    [_monitoredRegions addObject:region];
-    [_locMgr startMonitoringForRegion:region
-                      desiredAccuracy:kCLLocationAccuracyBest];
-    
-    return YES;
-}
-
-
--(void) drawVistas
-{
-    NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
-    for (int i = 0; i < [[_hike vistas] count]; i++){
-        ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
-        MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
-        [annotationPoint setCoordinate:[[vista location] coordinate]];
-        [annotationPoint setTitle:[vista prompt]];
-        [_mapView addAnnotation:annotationPoint];
-        // enable geofence
-        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
-        NSLog(@"Vista at coord: %@", [vista location]);
-    }
-    
-}
 
 #pragma mark - rewalk hike
 - (void) rewalkHike:(NSString *)hikeId
@@ -172,68 +188,4 @@ NSMutableData *vistaActionsData;
     
 }
 
-#pragma mark - Connection delgate (vista actions)
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    // This method is called when the server has determined that it
-    // has enough information to create the NSURLResponse.
-    
-    // It can be called multiple times, for example in the case of a
-    // redirect, so each time we reset the data.
-    
-    // receivedData is an instance variable declared elsewhere.
-    NSLog(@"didReceiveResponse");
-    vistaActionsData = [NSMutableData data];
-    [vistaActionsData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    // Append the new data to receivedData.
-    // receivedData is an instance variable declared elsewhere.
-    NSLog(@"didReceiveData");
-    [vistaActionsData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    // inform the user 
-    [_loadingIndicator stopAnimating];
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-}
-
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [_loadingIndicator stopAnimating];
-    // parse response data
-    NSLog(@"Succeeded! Received %d bytes of data",[vistaActionsData length]);
-    //TODO - set actions for vistas.
-    NSError *error; 
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:vistaActionsData options:kNilOptions error:&error];
-    if (error != nil){
-        NSLog(@"Here is the error: %@", error); 
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was an error with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
-    NSArray *actions = [json objectForKey:@"vista_actions"];
-    if ([actions count] != [[_hike vistas] count]){
-        NSLog(@"something went terribly wrong!");
-        return;
-    }
-    int i = 0;
-    for (ScenicVista *vista in [_hike vistas]){
-        NSDictionary *action = [actions objectAtIndex:i];
-        [vista setActionId:[action objectForKey:@"action_id"]];
-        //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-        [vista setActionType:@"text"];
-        [vista setPrompt:[action objectForKey:@"verbiage"]];
-        i++;
-    }
-    // enable geofences for vistas
-    [self drawVistas];
-}
 @end

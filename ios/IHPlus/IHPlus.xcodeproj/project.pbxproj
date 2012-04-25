@@ -11,6 +11,8 @@
 		A60BBAAD1545FA3B005E8EF0 /* CompanionMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */; };
 		A60BBAAF15473F83005E8EF0 /* point.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A60BBAAE15473F83005E8EF0 /* point.gpx */; };
 		A60BBAB215484793005E8EF0 /* MainMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAB115484793005E8EF0 /* MainMapViewController.m */; };
+		A60BBAB51548649E005E8EF0 /* VistaActionsDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAB41548649E005E8EF0 /* VistaActionsDelegate.m */; };
+		A60BBAB915487C09005E8EF0 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAB715487C09005E8EF0 /* Toast+UIView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A627BA86152DF6CA0056A670 /* VistaCellNote.m in Sources */ = {isa = PBXBuildFile; fileRef = A627BA85152DF6CA0056A670 /* VistaCellNote.m */; };
 		A627BAB0152E4BCB0056A670 /* black_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAD152E4BC80056A670 /* black_gradient.png */; };
 		A627BAB1152E4BCB0056A670 /* create_hike_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAE152E4BC80056A670 /* create_hike_btn2x.png */; };
@@ -63,6 +65,10 @@
 		A60BBAAE15473F83005E8EF0 /* point.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = point.gpx; sourceTree = "<group>"; };
 		A60BBAB015484793005E8EF0 /* MainMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMapViewController.h; path = "View Controllers/MainMapViewController.h"; sourceTree = "<group>"; };
 		A60BBAB115484793005E8EF0 /* MainMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMapViewController.m; path = "View Controllers/MainMapViewController.m"; sourceTree = "<group>"; };
+		A60BBAB31548649E005E8EF0 /* VistaActionsDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaActionsDelegate.h; sourceTree = "<group>"; };
+		A60BBAB41548649E005E8EF0 /* VistaActionsDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaActionsDelegate.m; sourceTree = "<group>"; };
+		A60BBAB715487C09005E8EF0 /* Toast+UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Toast+UIView.m"; sourceTree = "<group>"; };
+		A60BBAB815487C09005E8EF0 /* Toast+UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Toast+UIView.h"; sourceTree = "<group>"; };
 		A627BA84152DF6CA0056A670 /* VistaCellNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellNote.h; sourceTree = "<group>"; };
 		A627BA85152DF6CA0056A670 /* VistaCellNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellNote.m; sourceTree = "<group>"; };
 		A627BAAD152E4BC80056A670 /* black_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black_gradient.png; path = Assets/black_gradient.png; sourceTree = "<group>"; };
@@ -153,6 +159,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A60BBAB615487BE6005E8EF0 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				A60BBAB715487C09005E8EF0 /* Toast+UIView.m */,
+				A60BBAB815487C09005E8EF0 /* Toast+UIView.h */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +204,7 @@
 		A67D3D5615126D5C00391EE5 /* IHPlus */ = {
 			isa = PBXGroup;
 			children = (
+				A60BBAB615487BE6005E8EF0 /* Util */,
 				A6D9665C1540B24C00255CC3 /* Delegates */,
 				A687B46D151A486A004F08B0 /* Resources */,
 				A6EDACDC1513E837000AFB60 /* Models */,
@@ -283,6 +299,8 @@
 				A6D9664D1538894900255CC3 /* UploadHikeDelegate.m */,
 				A6D9665D1540B27D00255CC3 /* RewalkHikeDelegate.h */,
 				A6D9665E1540B27D00255CC3 /* RewalkHikeDelegate.m */,
+				A60BBAB31548649E005E8EF0 /* VistaActionsDelegate.h */,
+				A60BBAB41548649E005E8EF0 /* VistaActionsDelegate.m */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";
@@ -399,6 +417,8 @@
 				A6D9665F1540B27D00255CC3 /* RewalkHikeDelegate.m in Sources */,
 				A60BBAAD1545FA3B005E8EF0 /* CompanionMapViewController.m in Sources */,
 				A60BBAB215484793005E8EF0 /* MainMapViewController.m in Sources */,
+				A60BBAB51548649E005E8EF0 /* VistaActionsDelegate.m in Sources */,
+				A60BBAB915487C09005E8EF0 /* Toast+UIView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

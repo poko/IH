@@ -9,6 +9,8 @@
 #import "MapViewController.h"
 
 @interface CompanionMapViewController : MapViewController{
+    IBOutlet UIButton *_addVistaButton;
+    NSArray *_actions;
 }
 
 -(IBAction)addVistaHere:(id)sender;

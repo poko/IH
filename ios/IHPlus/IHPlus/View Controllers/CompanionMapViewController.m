@@ -45,12 +45,6 @@
     _mapView = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];
 }
 
-//-(void)viewDidAppear:(BOOL)animated
-//{
-//    _mapView = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];
-//    [self.view insertSubview:_mapView belowSubview:_inputHolder];
-//}
-
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -67,8 +61,24 @@
 -(void) pathGenerated:(int) midpoint
 {
     NSLog(@"path generated in compantion");
-    // now we get some vista actions to pool from
-    [self hideLoadingDialog:nil];
+    // TODO now we get some vista actions from the server to pool from
+    //download vista actions
+    VistaActionsDelegate *getActions = [[VistaActionsDelegate alloc] initWithHandler:^(NSArray *actions, NSString *error){
+        [self hideLoadingDialog:error];
+        if (error != nil){ // something went wrong.
+            return;
+        }
+        _actions = actions;
+        // show the add button
+        [_addVistaButton setHidden:false];
+    }];
+    NSString *url = @"http://localhost:8888/IHServer/getVistaAction.php?amount=10";
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
+    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
+    if (!connection) {
+        NSLog(@"connection to get actions failed");
+        [self hideLoadingDialog:@"Unable to connect with server"];
+    }
 }
 
 #pragma mark - IBActions
@@ -79,13 +89,16 @@
     MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
     annotationPoint.coordinate = _currentLocation.location.coordinate;
     [_mapView addAnnotation:annotationPoint];
-    // add vista object to hike
+    //next action (size of existing vistas) to get our action from.
+    NSDictionary *action = [_actions objectAtIndex:[[_hike vistas] count]];
+    // create vista
     ScenicVista *vista = [[ScenicVista alloc] init];
-    // TODO we will have a source of vista actions that we get from the server .. probably when we hit the trail
     [vista setLocation:_currentLocation.location];
-    [vista setActionId:@""]; //TODO
-    [vista setActionType:@""]; //TODO
-    [vista setPrompt:@""]; //TODO
+    [vista setActionId:[action objectForKey:@"action_id"]];
+    //TODO [vista setActionType:[action objectForKey:@"action_type"]];
+    [vista setActionType:@"text"];
+    [vista setPrompt:[action objectForKey:@"verbiage"]];
+    // add vista object to hike
     [_hike addCompanionVista:vista];
     
     //show vista input

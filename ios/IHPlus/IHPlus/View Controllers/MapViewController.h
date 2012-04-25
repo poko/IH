@@ -12,6 +12,7 @@
 #import "NoteModalController.h"
 #import "TextModalController.h"
 #import "UploadHikeController.h"
+#import "VistaActionsDelegate.h"
 
 @interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate, UIImagePickerControllerDelegate, UploadHikeControllerDelegate>{
     IBOutlet MKMapView *_mapView;

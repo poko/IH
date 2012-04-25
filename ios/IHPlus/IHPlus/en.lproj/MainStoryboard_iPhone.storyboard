@@ -95,7 +95,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4305" y="-1053"/>
+            <point key="canvasLocation" x="4322" y="-593"/>
         </scene>
         <scene sceneID="VDM-y1-THg">
             <objects>
@@ -167,7 +167,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4305" y="-468"/>
+            <point key="canvasLocation" x="4322" y="86"/>
         </scene>
         <scene sceneID="6xq-K3-Wpu">
             <objects>
@@ -369,7 +369,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4306" y="103"/>
+            <point key="canvasLocation" x="4322" y="736"/>
         </scene>
         <scene sceneID="OkR-RD-d3N">
             <objects>
@@ -477,7 +477,7 @@
                     </connections>
                 </tableViewController>
             </objects>
-            <point key="canvasLocation" x="4316" y="705"/>
+            <point key="canvasLocation" x="4316" y="1361"/>
         </scene>
         <scene sceneID="q8e-sx-V9K">
             <objects>
@@ -505,7 +505,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="3766" y="705"/>
+            <point key="canvasLocation" x="3766" y="1361"/>
         </scene>
         <scene sceneID="W3e-dL-Kch">
             <objects>
@@ -601,7 +601,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fNn-4Q-ni6">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fNn-4Q-ni6">
                                 <rect key="frame" x="214" y="321" width="99" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
@@ -627,15 +627,20 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="_addVistaButton" destination="fNn-4Q-ni6" id="fRC-Yb-aL6"/>
                         <outlet property="_endAddress" destination="NxY-Bf-7cS" id="ruj-U5-OKg"/>
                         <outlet property="_inputHolder" destination="GOZ-zU-jGW" id="22P-p8-IrB"/>
+                        <outlet property="_prompt" destination="uDH-gI-pR7" id="Hmy-tl-zPE"/>
                         <outlet property="_promptHolder" destination="268-qz-kU0" id="bQr-1d-L1X"/>
                         <outlet property="_startAddress" destination="iQC-13-sxb" id="nVy-KZ-J9H"/>
                         <outlet property="_uploadButton" destination="Y4C-vm-26N" id="N2d-4M-S9Y"/>
+                        <segue destination="2NU-L1-tak" kind="modal" identifier="TextModal" id="h6C-6V-0tW"/>
+                        <segue destination="FNb-8Z-2Rr" kind="modal" identifier="UploadHike" id="GBt-lJ-CIL"/>
+                        <segue destination="iRV-y2-isw" kind="modal" identifier="NoteModal" id="1GY-c2-5Rf"/>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="3766" y="1340"/>
+            <point key="canvasLocation" x="3766" y="736"/>
         </scene>
         <scene sceneID="Lgj-Kj-oN8">
             <objects>
@@ -789,7 +794,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4756" y="705"/>
+            <point key="canvasLocation" x="4756" y="1361"/>
         </scene>
         <scene sceneID="eEw-ng-wgV">
             <objects>
@@ -844,7 +849,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="3240" y="705"/>
+            <point key="canvasLocation" x="3240" y="1361"/>
         </scene>
         <scene sceneID="SfB-Fg-XW8">
             <objects>
@@ -892,7 +897,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="4305" y="-1053"/>
+            <point key="canvasLocation" x="3318" y="-603"/>
         </scene>
         <scene sceneID="F2c-tS-FIn">
             <objects>
@@ -910,7 +915,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="3240" y="1340"/>
+            <point key="canvasLocation" x="3240" y="736"/>
         </scene>
     </scenes>
     <resources>
@@ -924,6 +929,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CompanionMapViewController.h"/>
             <relationships>
                 <relationship kind="action" name="addVistaHere:"/>
+                <relationship kind="outlet" name="_addVistaButton" candidateClass="UIButton"/>
             </relationships>
         </class>
         <class className="CreditsViewController" superclassName="UIViewController">
@@ -1034,4 +1040,9 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="1GY-c2-5Rf"/>
+        <segue reference="h6C-6V-0tW"/>
+        <segue reference="GBt-lJ-CIL"/>
+    </inferredMetricsTieBreakers>
 </document>
