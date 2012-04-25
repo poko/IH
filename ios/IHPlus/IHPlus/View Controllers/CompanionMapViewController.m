@@ -5,7 +5,7 @@
 //  Created by Polina Koronkevich on 4/23/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-
+#import "AppDelegate.h"
 #import "CompanionMapViewController.h"
 
 @implementation CompanionMapViewController
@@ -40,9 +40,16 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
+    NSLog(@"Companion map did load");
     [super viewDidLoad];
+    _mapView = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];
 }
 
+//-(void)viewDidAppear:(BOOL)animated
+//{
+//    _mapView = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];
+//    [self.view insertSubview:_mapView belowSubview:_inputHolder];
+//}
 
 - (void)viewDidUnload
 {
@@ -51,10 +58,17 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+#pragma mark - "protected" methods
+-(void) prepareNewHike
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    NSLog(@"prepare hike in compantion");
+}
+
+-(void) pathGenerated:(int) midpoint
+{
+    NSLog(@"path generated in compantion");
+    // now we get some vista actions to pool from
+    [self hideLoadingDialog:nil];
 }
 
 #pragma mark - IBActions

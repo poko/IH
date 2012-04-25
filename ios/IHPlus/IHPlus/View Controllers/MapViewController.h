@@ -24,13 +24,11 @@
     CLGeocoder *_geocoder;
     UIActivityIndicatorView *_loadingIndicator;
     NSInteger _callCount;
-    //NSMutableArray *_pathPoints;
     MKPolylineView *_routeLineView;
     MKPolyline *_routeLine;
     Hike *_hike;
     ScenicVista *_currentVista;
     CLLocationManager *_locMgr;
-    NSMutableArray *_monitoredRegions;
     MKUserLocation *_currentLocation;
 }
 
@@ -38,7 +36,10 @@
 -(IBAction)hitTrail:(id)sender;
 -(IBAction)continueClicked:(id)sender;
 -(IBAction)uploadHike:(id)sender;
--(void)rewalkHike:(NSString *) hikeId;
 -(void)showActionView;
+-(void)showLoadingDialog;
+-(void)hideLoadingDialog:(NSString *) msg;
+-(void)prepareNewHike;
+-(void)pathGenerated:(int) midpoint;
 
 @end

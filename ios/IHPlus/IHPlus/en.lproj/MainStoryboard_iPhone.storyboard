@@ -172,7 +172,7 @@
         <scene sceneID="6xq-K3-Wpu">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vH-nr-Oej" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="n2f-5R-zC3" customClass="MapViewController" sceneMemberID="viewController">
+                <viewController id="n2f-5R-zC3" customClass="MainMapViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6lp-1y-Qe8">
                         <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -229,7 +229,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="currentLocation:" destination="n2f-5R-zC3" eventType="touchUpInside" id="aIM-et-Bc3"/>
+                                            <action selector="currentLocation:" destination="n2f-5R-zC3" eventType="touchUpInside" id="7ga-ED-T2B"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -282,7 +282,7 @@
                         <outlet property="_mapView" destination="kiD-Dg-fAa" id="YbG-Mi-IR9"/>
                         <outlet property="_prompt" destination="myi-G4-24v" id="Yof-rH-u3m"/>
                         <outlet property="_promptHolder" destination="YDe-II-MeM" id="7D1-hZ-sLr"/>
-                        <outlet property="_startAddress" destination="MTV-cx-euP" id="YIb-9s-hCd"/>
+                        <outlet property="_startAddress" destination="MTV-cx-euP" id="Za0-nK-Xgw"/>
                         <outlet property="_uploadButton" destination="h7y-qb-eon" id="xMw-aU-0iT"/>
                         <segue destination="iRV-y2-isw" kind="modal" identifier="NoteModal" id="VqM-dB-oCc"/>
                         <segue destination="2NU-L1-tak" kind="modal" identifier="TextModal" id="dU7-5y-fdI"/>
@@ -520,10 +520,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" id="rJB-78-qKf">
-                                <rect key="frame" x="0.0" y="-49" width="320" height="416"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            </mapView>
                             <view contentMode="scaleToFill" id="GOZ-zU-jGW">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -568,7 +564,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="currentLocation:" destination="D5Q-KB-GYa" eventType="touchUpInside" id="RCj-aC-thC"/>
+                                            <action selector="currentLocation:" destination="D5Q-KB-GYa" eventType="touchUpInside" id="MLP-pf-krm"/>
                                             <action selector="currentLocation:" destination="n2f-5R-zC3" eventType="touchUpInside" id="t98-d3-aRd"/>
                                         </connections>
                                     </button>
@@ -631,9 +627,10 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="_endAddress" destination="NxY-Bf-7cS" id="ruj-U5-OKg"/>
                         <outlet property="_inputHolder" destination="GOZ-zU-jGW" id="22P-p8-IrB"/>
-                        <outlet property="_mapView" destination="rJB-78-qKf" id="Fdh-30-26f"/>
                         <outlet property="_promptHolder" destination="268-qz-kU0" id="bQr-1d-L1X"/>
+                        <outlet property="_startAddress" destination="iQC-13-sxb" id="nVy-KZ-J9H"/>
                         <outlet property="_uploadButton" destination="Y4C-vm-26N" id="N2d-4M-S9Y"/>
                     </connections>
                 </viewController>
@@ -943,6 +940,9 @@
                 <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="_table" candidateClass="UITableView"/>
             </relationships>
+        </class>
+        <class className="MainMapViewController" superclassName="MapViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainMapViewController.h"/>
         </class>
         <class className="MapViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>

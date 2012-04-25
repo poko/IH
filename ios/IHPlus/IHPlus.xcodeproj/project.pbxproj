@@ -10,6 +10,7 @@
 		A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A687B48C1520D1D8004F08B0 /* libz.dylib */; };
 		A60BBAAD1545FA3B005E8EF0 /* CompanionMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */; };
 		A60BBAAF15473F83005E8EF0 /* point.gpx in Resources */ = {isa = PBXBuildFile; fileRef = A60BBAAE15473F83005E8EF0 /* point.gpx */; };
+		A60BBAB215484793005E8EF0 /* MainMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A60BBAB115484793005E8EF0 /* MainMapViewController.m */; };
 		A627BA86152DF6CA0056A670 /* VistaCellNote.m in Sources */ = {isa = PBXBuildFile; fileRef = A627BA85152DF6CA0056A670 /* VistaCellNote.m */; };
 		A627BAB0152E4BCB0056A670 /* black_gradient.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAD152E4BC80056A670 /* black_gradient.png */; };
 		A627BAB1152E4BCB0056A670 /* create_hike_btn2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAAE152E4BC80056A670 /* create_hike_btn2x.png */; };
@@ -60,6 +61,8 @@
 		A60BBAAB1545FA3B005E8EF0 /* CompanionMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CompanionMapViewController.h; path = "View Controllers/CompanionMapViewController.h"; sourceTree = "<group>"; };
 		A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CompanionMapViewController.m; path = "View Controllers/CompanionMapViewController.m"; sourceTree = "<group>"; };
 		A60BBAAE15473F83005E8EF0 /* point.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = point.gpx; sourceTree = "<group>"; };
+		A60BBAB015484793005E8EF0 /* MainMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainMapViewController.h; path = "View Controllers/MainMapViewController.h"; sourceTree = "<group>"; };
+		A60BBAB115484793005E8EF0 /* MainMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainMapViewController.m; path = "View Controllers/MainMapViewController.m"; sourceTree = "<group>"; };
 		A627BA84152DF6CA0056A670 /* VistaCellNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellNote.h; sourceTree = "<group>"; };
 		A627BA85152DF6CA0056A670 /* VistaCellNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellNote.m; sourceTree = "<group>"; };
 		A627BAAD152E4BC80056A670 /* black_gradient.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = black_gradient.png; path = Assets/black_gradient.png; sourceTree = "<group>"; };
@@ -223,8 +226,12 @@
 		A67D3D7A1513984600391EE5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A60BBAB015484793005E8EF0 /* MainMapViewController.h */,
+				A60BBAB115484793005E8EF0 /* MainMapViewController.m */,
 				A64C9414152E4CED0090BD0D /* MapViewController.h */,
 				A6984D9B152F6EF7005934C4 /* MapViewController.m */,
+				A60BBAAB1545FA3B005E8EF0 /* CompanionMapViewController.h */,
+				A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */,
 				A64C940E152E4CED0090BD0D /* HikeDetailsViewController.h */,
 				A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */,
 				A64C9413152E4CED0090BD0D /* SearchViewController.h */,
@@ -243,8 +250,6 @@
 				A6D9663F1535EE5500255CC3 /* TextModalController.m */,
 				A6D9664F1538C65300255CC3 /* UploadHikeController.h */,
 				A6D966501538C65400255CC3 /* UploadHikeController.m */,
-				A60BBAAB1545FA3B005E8EF0 /* CompanionMapViewController.h */,
-				A60BBAAC1545FA3B005E8EF0 /* CompanionMapViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -393,6 +398,7 @@
 				A6D966511538C65400255CC3 /* UploadHikeController.m in Sources */,
 				A6D9665F1540B27D00255CC3 /* RewalkHikeDelegate.m in Sources */,
 				A60BBAAD1545FA3B005E8EF0 /* CompanionMapViewController.m in Sources */,
+				A60BBAB215484793005E8EF0 /* MainMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -484,10 +490,7 @@
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
 				INFOPLIST_FILE = "IHPlus/IHPlus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/TestFlightSDK1.0\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -505,10 +508,7 @@
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
 				INFOPLIST_FILE = "IHPlus/IHPlus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/TestFlightSDK1.0\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

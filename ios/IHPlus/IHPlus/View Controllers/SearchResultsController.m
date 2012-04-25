@@ -11,7 +11,7 @@
 #import <MapKit/MapKit.h>
 #import "Hike.h"
 #import "ViewOrHikeViewController.h"
-#import "MapViewController.h"
+#import "MainMapViewController.h"
 
 
 @implementation SearchResultsController
@@ -108,8 +108,8 @@
 {
     // clicked hike: 
     Hike *hike = [hikes objectAtIndex:[sender tag]];
-    // MapViewController:
-    MapViewController *mapView = [[(UINavigationController *) [[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
+    // MainMapViewController:
+    MainMapViewController *mapView = [[(UINavigationController *) [[self.tabBarController viewControllers] objectAtIndex:0] viewControllers] objectAtIndex:0];
     NSLog(@"sending hike id: %@", [hike hikeId]);
     NSLog(@"view controller type is? %@", mapView);
     [mapView rewalkHike:[hike hikeId]];

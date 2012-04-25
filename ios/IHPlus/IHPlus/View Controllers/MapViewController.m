@@ -8,16 +8,11 @@
 
 #import "MapViewController.h"
 #import "GetDirectionsDelegate.h"
-#import "RewalkHikeDelegate.h"
-#import "AppDelegate.h"
 #import "ScenicVista.h"
 
-#define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
 #define CURRENT_LOCATION @"Current Location"
 
 @implementation MapViewController
-
-NSMutableData *vistaActionsData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,8 +35,10 @@ NSMutableData *vistaActionsData;
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    NSLog(@"map did appear: %@", [self class]);
     if (_mapView != nil){
         [self.view insertSubview:_mapView belowSubview:_inputHolder];
+        [_mapView setDelegate:self];
     }
 }
 
@@ -49,9 +46,6 @@ NSMutableData *vistaActionsData;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // set map
-    [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
-    _mapView.delegate = self;
     [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];
     [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
@@ -62,7 +56,6 @@ NSMutableData *vistaActionsData;
         NSLog(@"we are good to go!");
         _locMgr = [[CLLocationManager alloc] init];
         [_locMgr setDelegate:self];
-        _monitoredRegions = [NSMutableArray array];
     }
     else{
         //TODO
@@ -73,15 +66,6 @@ NSMutableData *vistaActionsData;
                                                  name:UIKeyboardWillShowNotification object:self.view.window]; 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
                                                  name:UIKeyboardWillHideNotification object:self.view.window]; 
-
-    CLLocationCoordinate2D annotationCoord;
-    
-    annotationCoord.latitude = 47.640071;
-    annotationCoord.longitude = -122.129598;
-    
-    MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
-    annotationPoint.coordinate = annotationCoord;
-    [_mapView addAnnotation:annotationPoint];
 }
  
 
@@ -122,13 +106,7 @@ NSMutableData *vistaActionsData;
     [super viewDidUnload];
     // TODO Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    NSLog(@"view unloaded"); // TODO this may be removed when we stop debugging? (creating lots of monitoring regions)
-    // remove any pending proximity alerts
-    if (_monitoredRegions != nil){
-        for (CLRegion *region in _monitoredRegions){
-            [_locMgr stopMonitoringForRegion:region];
-        }
-    }
+    NSLog(@" map view unloaded"); // TODO this may be removed when we stop debugging? (creating lots of monitoring regions)
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -138,61 +116,6 @@ NSMutableData *vistaActionsData;
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
-
-
-- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(NSString*)identifier
-{
-    // Do not create regions if support is unavailable or disabled.
-    if ( ![CLLocationManager regionMonitoringAvailable] ||
-        ![CLLocationManager regionMonitoringEnabled] )
-        return NO;
-    
-    // If the radius is too large, registration fails automatically,
-    // so clamp the radius to the max value.
-    CLLocationDegrees radius = 3;
-    if (radius > _locMgr.maximumRegionMonitoringDistance)
-        radius = _locMgr.maximumRegionMonitoringDistance;
-    
-    // Create the region and start monitoring it.
-    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
-                                                               radius:radius identifier:identifier];
-    [_monitoredRegions addObject:region];
-    [_locMgr startMonitoringForRegion:region
-                      desiredAccuracy:kCLLocationAccuracyBest];
-    
-    return YES;
-}
-
--(void) drawVistas
-{
-    NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
-    for (int i = 0; i < [[_hike vistas] count]; i++){
-        ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
-        MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
-        [annotationPoint setCoordinate:[[vista location] coordinate]];
-        [annotationPoint setTitle:[vista prompt]];
-        [_mapView addAnnotation:annotationPoint];
-        // enable geofence
-        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
-        NSLog(@"Vista at coord: %@", [vista location]);
-    }
-    
-    // draw path overlay
-    CLLocationCoordinate2D *pointsLine = malloc([[_hike points] count] * sizeof(CLLocationCoordinate2D));
-    for (int i = 0; i < [[_hike points] count]; i++){
-        pointsLine[i] = [(CLLocation *)[[_hike points] objectAtIndex:i ] coordinate];
-        //set point in Hike object for later uploadingz.
-        //[_hike addPoint:(CLLocation *)[_spathPoints objectAtIndex:i]];
-    }
-    MKPolyline *line = [MKPolyline polylineWithCoordinates:pointsLine count:[[_hike points] count]];
-    _routeLine = line;
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[[_hike points] objectAtIndex:0 ] coordinate], 400, 400);
-    [_mapView setRegion:region animated:YES];
-    [_mapView addOverlay:line];
-    free(pointsLine);
-}
-
 
 
 -(void)showLoadingDialog
@@ -209,14 +132,33 @@ NSMutableData *vistaActionsData;
     [_loadingIndicator startAnimating];
 }
 
+bool alertShowing = false;
 -(void)hideLoadingDialog:(NSString *) error
 {
     [_loadingIndicator stopAnimating];
-    if (error != nil){
+    if (error != nil && !alertShowing){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Creating Hike" message:[NSString stringWithFormat:@"There was an error creating the hike: %@", error]
              delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
+        alertShowing = true;
     }
+}
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"dismissed with index: %i", buttonIndex);
+    alertShowing = false;
+}
+
+-(void) prepareNewHike
+{
+    NSLog(@"wrong prepareNewHike method");
+    assert(false);
+}
+
+-(void) pathGenerated: (int) midpoint
+{
+    NSLog(@"wrong pathGenerated method");
+    assert(false);
 }
 
 -(float) getRandomOffset
@@ -226,13 +168,11 @@ NSMutableData *vistaActionsData;
     //double num = Math.random() * (max - min);
     float diff = max - min;
     float offset =  (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * diff) + min;
-    NSLog(@"offset: %f", offset);
     //int i = (offset / .0001) % 2 == 0 ? 1 : -1;
     int i = 1;
     int temp = offset / .0001;
     if (temp % 2 != 0)
         i = -1;
-    NSLog(@"i: %i", i);
     return offset * i;
 }
 
@@ -262,6 +202,7 @@ int midpoint;// = 1; //TODO!!
 //        }
 //        if (_callCount == 2){
             NSLog(@"should be drawing now, %i", [points count]);
+        NSLog(@"who am I: %@, and who is my delegate? %@", [self class], [_mapView delegate]);
             // Create the Hike object!
             _hike = [[Hike alloc] init];
             [_hike setOriginal:@"true"];
@@ -272,42 +213,21 @@ int midpoint;// = 1; //TODO!!
             [_inputHolder setHidden:YES];
             UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(clickedCreateButton:)];
             [[self navigationItem] setLeftBarButtonItem:createButton];
-            // generate random scenic vistas
-            // make end point and mid point SVs
-            [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:midpoint]];
-            [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:([[_hike points] count] - 1)]];
-            // if we don't have enough points to select randomly, make all points vistas
-            if ([[_hike points] count] - 2 < 8){
-                for (int i = 1; i < [[_hike points] count]; i++){
-                    [_hike addVista:[[_hike points] objectAtIndex:i]];
-                }
-            }
-            else{
-                // 1-3 additional vista points per half
-                int vistaAmount = RANDOM_INT(1, 3);
-                int randIndex;
-                for (int i = 0; i < vistaAmount; i++){
-                    randIndex = RANDOM_INT(0, midpoint);
-                    [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:randIndex]];
-                }
-                vistaAmount = RANDOM_INT(1, 3);
-                for (int i = 0; i < vistaAmount; i++){
-                    randIndex = RANDOM_INT(midpoint, ([[_hike points] count] - 1));
-                    [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:randIndex]];
-                }
-            }
-            // TODO - download vista actions
-            NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getVistaAction.php?amount=%i", [[_hike vistas] count]];
-            NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
-            NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
-            if (!connection) {
-                // Create the NSMutableData to hold the received data.
-                // receivedData is an instance variable declared elsewhere.
-                vistaActionsData = [NSMutableData data];
-            } else {
-                NSLog(@"connection to get actions failed");
-            }
-                
+        
+        // draw path overlay
+        CLLocationCoordinate2D *pointsLine = malloc([[_hike points] count] * sizeof(CLLocationCoordinate2D));
+        for (int i = 0; i < [[_hike points] count]; i++){
+            pointsLine[i] = [(CLLocation *)[[_hike points] objectAtIndex:i ] coordinate];
+        }
+        MKPolyline *line = [MKPolyline polylineWithCoordinates:pointsLine count:[[_hike points] count]];
+        _routeLine = line;
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[[_hike points] objectAtIndex:0 ] coordinate], 400, 400);
+        [_mapView setRegion:region animated:YES];
+        [_mapView addOverlay:line];
+        free(pointsLine);
+        // Have subclasses do whatever work they need .. 
+        [self pathGenerated:midpoint];
+                            
 //        }
         
     }];
@@ -344,7 +264,6 @@ int midpoint;// = 1; //TODO!!
 #pragma mark IBActions
 -(IBAction)hitTrail:(id)sender
 {
-    NSLog(@"hit trail");
     [_startAddress resignFirstResponder];
     [_endAddress resignFirstResponder];
     // remove map overlay
@@ -359,12 +278,8 @@ int midpoint;// = 1; //TODO!!
     [_mapView removeAnnotations:toRemove];
     // clear out any previous data
     _callCount = 0;
-    // remove any pending proximity alerts
-    if (_monitoredRegions != nil){
-        for (CLRegion *region in _monitoredRegions){
-            [_locMgr stopMonitoringForRegion:region];
-        }
-    }
+    // have subclasses do their prep (remove any pending proximity alerts, etc)
+    [self prepareNewHike];
     
     // check that both fields have values
     NSString *start = [_startAddress text];
@@ -373,8 +288,9 @@ int midpoint;// = 1; //TODO!!
         // start making calls!
         // fwd geocode start location
         [self showLoadingDialog];
-        //TODO - check if "current location"
+        //check if "current location"
         if ([start isEqualToString:CURRENT_LOCATION]){
+            //TODO - if currentLocation is empty .. ? 
             // get random offset from current location
             float randLat = [self getRandomOffset]+_currentLocation.location.coordinate.latitude;
             float randLng = [self getRandomOffset]+_currentLocation.location.coordinate.longitude;
@@ -587,98 +503,6 @@ int midpoint;// = 1; //TODO!!
 {
     NSLog(@"monitoring region: %@", [region identifier]);
 }
-
-#pragma mark - rewalk hike
-- (void) rewalkHike:(NSString *)hikeId
-{
-    [self showLoadingDialog];
-    // make server call
-    NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getHike.php?hike_id=%@", hikeId];
-    NSLog(@"Sending to url %@", url);
-    RewalkHikeDelegate *rewalkDelegate = [[RewalkHikeDelegate alloc] initWithHandler:^(bool result, Hike *hike) {
-        NSLog(@"tralala back in the map view with a hike! %@", hike);
-        // TODO clear any existing paths and vistas!
-        [self hideLoadingDialog:nil];
-        [_inputHolder setHidden:true];
-        _hike = hike;
-        // draw path and vistas
-        [self drawVistas];
-    }];
-    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; 
-    NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:rewalkDelegate];
-    if (!connection) {
-        NSLog(@"connection failed");
-        [self hideLoadingDialog:@"There was an error connecting to the server."];
-    }
-
-}
-
-
-#pragma mark - Connection delgate (vista actions)
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    // This method is called when the server has determined that it
-    // has enough information to create the NSURLResponse.
-    
-    // It can be called multiple times, for example in the case of a
-    // redirect, so each time we reset the data.
-    
-    // receivedData is an instance variable declared elsewhere.
-    NSLog(@"didReceiveResponse");
-    vistaActionsData = [NSMutableData data];
-    [vistaActionsData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    // Append the new data to receivedData.
-    // receivedData is an instance variable declared elsewhere.
-    NSLog(@"didReceiveData");
-    [vistaActionsData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    // inform the user 
-    [_loadingIndicator stopAnimating];
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-}
-
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [_loadingIndicator stopAnimating];
-    // parse response data
-    NSLog(@"Succeeded! Received %d bytes of data",[vistaActionsData length]);
-    //TODO - set actions for vistas.
-    NSError *error; 
-    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:vistaActionsData options:kNilOptions error:&error];
-    if (error != nil){
-        NSLog(@"Here is the error: %@", error); 
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server Error" message:@"There was an error with the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
-    NSArray *actions = [json objectForKey:@"vista_actions"];
-    if ([actions count] != [[_hike vistas] count]){
-        NSLog(@"something went terribly wrong!");
-        return;
-    }
-    int i = 0;
-    for (ScenicVista *vista in [_hike vistas]){
-        NSDictionary *action = [actions objectAtIndex:i];
-        [vista setActionId:[action objectForKey:@"action_id"]];
-        //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-        [vista setActionType:@"text"];
-        [vista setPrompt:[action objectForKey:@"verbiage"]];
-        i++;
-    }
-    // enable geofences for vistas
-    [self drawVistas];
-}
-
 
 #pragma mark keyboard handling
 
