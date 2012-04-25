@@ -17,6 +17,7 @@
 @interface NoteModalController: UIViewController<UITextViewDelegate> 
 
 @property (nonatomic, weak) id <NoteModalControllerDelegate> vcDelegate;
+@property (nonatomic, strong) IBOutlet UIView *holder;
 @property (nonatomic, strong) IBOutlet UILabel *prompt;
 @property (nonatomic, strong) IBOutlet UITextView *input;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *doneButton;

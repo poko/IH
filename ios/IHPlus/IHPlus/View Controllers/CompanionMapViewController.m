@@ -95,8 +95,7 @@
     ScenicVista *vista = [[ScenicVista alloc] init];
     [vista setLocation:_currentLocation.location];
     [vista setActionId:[action objectForKey:@"action_id"]];
-//    [vista setActionType:[action objectForKey:@"action_type"]]; //TODO
-    [vista setActionType:@"note"]; 
+//    [vista setActionType:[action objectForKey:@"action_type"]]; //TODOx    [vista setActionType:@"note"]; 
     [vista setPrompt:[action objectForKey:@"verbiage"]];
     // add vista object to hike
     [_hike addCompanionVista:vista];

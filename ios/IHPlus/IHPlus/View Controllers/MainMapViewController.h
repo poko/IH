@@ -9,7 +9,7 @@
 #import "MapViewController.h"
 
 @interface MainMapViewController : MapViewController{
-    NSMutableArray *_monitoredRegions;
+//    NSMutableArray *_monitoredRegions;
 }
 
 -(void)rewalkHike:(NSString *) hikeId;

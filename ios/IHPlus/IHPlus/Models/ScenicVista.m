@@ -11,7 +11,7 @@
 @implementation ScenicVista
 
 @synthesize actionId, actionType, prompt, date, note, photoUrl;
-@synthesize location, complete;
+@synthesize location, complete, region;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *)dict
 {

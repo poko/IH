@@ -12,7 +12,7 @@
 @implementation NoteModalController
 
 @synthesize vcDelegate, promptText;
-@synthesize prompt, input, doneButton;
+@synthesize holder, prompt, input, doneButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -55,10 +55,10 @@
     [input setDelegate:self];
     [prompt setText:promptText];
     
-    //TODO figure this out better self.view includes nav controller bar
-//    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self 
-//                                            action:@selector(resignResponder:)];
-//    [self.view addGestureRecognizer:singleFingerTap];
+    //allows user to hide keyboard.
+    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self 
+                                            action:@selector(resignResponder:)];
+    [holder addGestureRecognizer:singleFingerTap];
 }
 
 

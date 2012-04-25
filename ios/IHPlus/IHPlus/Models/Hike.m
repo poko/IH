@@ -102,7 +102,7 @@ bool eligble = false;
 
 - (bool) isComplete
 {
-//     TODO uncomment! for (ScenicVista *vista in vistas){
+//     TODOx uncomment! for (ScenicVista *vista in vistas){
 //        if (![vista complete])
 //            return false;
 //    }

@@ -32,10 +32,10 @@
     [super viewDidLoad];
     // set map
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
-    _monitoredRegions = [NSMutableArray array];
+    //_monitoredRegions = [NSMutableArray array];
     NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
     NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) { // loop through array of regions turning them off
+    for (int i = 0; i < [regionArray count]; i++) { 
         [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
 }
@@ -46,17 +46,16 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    NSLog(@"main map view unloaded"); // TODO this may be removed when we stop debugging? (creating lots of monitoring regions)
     // remove any pending proximity alerts
-    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; // the all objects is the key
+    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
     NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) { // loop through array of regions turning them off
+    for (int i = 0; i < [regionArray count]; i++) {
         [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
 }
 
 #pragma mark - geofencing
-- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(NSString*)identifier
+- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(ScenicVista*)vista
 {
     // Do not create regions if support is unavailable or disabled.
     if ( ![CLLocationManager regionMonitoringAvailable] ||
@@ -65,17 +64,17 @@
     
     // If the radius is too large, registration fails automatically,
     // so clamp the radius to the max value.
-    CLLocationDegrees radius = 3;
+    CLLocationDegrees radius = 2;
     if (radius > _locMgr.maximumRegionMonitoringDistance)
         radius = _locMgr.maximumRegionMonitoringDistance;
     
     // Create the region and start monitoring it.
     CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
-                                                               radius:radius identifier:identifier];
-    [_monitoredRegions addObject:region];
+                                                               radius:radius identifier:[vista actionId]];
+    //[_monitoredRegions addObject:region];
     [_locMgr startMonitoringForRegion:region
                       desiredAccuracy:kCLLocationAccuracyBest];
-    
+    [vista setRegion:region];
     return YES;
 }
 
@@ -89,7 +88,7 @@
         [annotationPoint setTitle:[vista prompt]];
         [_mapView addAnnotation:annotationPoint];
         // enable geofence
-        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:[vista actionId]];
+        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
         NSLog(@"Vista at coord: %@", [vista location]);
     }
     
@@ -99,10 +98,15 @@
 -(void) prepareNewHike
 {
     NSLog(@"prepare test in Main map");
-    if (_monitoredRegions != nil){
-        for (CLRegion *region in _monitoredRegions){
-            [_locMgr stopMonitoringForRegion:region];
-        }
+//    if (_monitoredRegions != nil){
+//        for (CLRegion *region in _monitoredRegions){
+//            [_locMgr stopMonitoringForRegion:region];
+//        }
+    //    }
+    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
+    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+    for (int i = 0; i < [regionArray count]; i++) { 
+        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
 
 }
@@ -149,7 +153,7 @@
         for (ScenicVista *vista in [_hike vistas]){
             NSDictionary *action = [actions objectAtIndex:i];
             [vista setActionId:[action objectForKey:@"action_id"]];
-            //TODO [vista setActionType:[action objectForKey:@"action_type"]];
+            //TODOx [vista setActionType:[action objectForKey:@"action_type"]];
             [vista setActionType:@"note"];
             [vista setPrompt:[action objectForKey:@"verbiage"]];
             i++;

@@ -59,8 +59,10 @@
         [_locMgr setDelegate:self];
     }
     else{
-        //TODO
-        NSLog(@"OH NOESRLKEJRWOI!! This app won't work!!!");
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location Services Unavailable" 
+                                                        message:@"This app won't work without location services." 
+                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
     }
     // keyboard handling
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
@@ -107,8 +109,6 @@
     [super viewDidUnload];
     // TODO Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    NSLog(@" map view unloaded"); // TODO this may be removed when we stop debugging? (creating lots of monitoring regions)
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -177,7 +177,7 @@ bool alertShowing = false;
     return offset * i;
 }
 
-int midpoint;// = 1; //TODO!!
+int midpoint;
 -(void) getDirectionsFrom:(NSString *) from to:(NSString *) to
 {
     //NSLog(@"getting directions from : %@ to: %@", from, to);
@@ -203,7 +203,6 @@ int midpoint;// = 1; //TODO!!
 //        }
 //        if (_callCount == 2){
             NSLog(@"should be drawing now, %i", [points count]);
-        NSLog(@"who am I: %@, and who is my delegate? %@", [self class], [_mapView delegate]);
             // Create the Hike object!
             _hike = [[Hike alloc] init];
             [_hike setOriginal:@"true"];
@@ -242,12 +241,14 @@ int midpoint;// = 1; //TODO!!
 -(void) completeCurrentVista
 {
     [_currentVista setComplete:YES];
+    //remove region tracking!
+    [_locMgr stopMonitoringForRegion:[_currentVista region]];
+    NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
     _currentVista = nil;
     [_promptHolder setHidden:YES];
     // check if we can enable upload button
     if ([_hike eligibleForUpload])
         [_uploadButton setEnabled:YES];
-    //TODO - remove region tracking!
     // if all the vistas are complete, show the modal automagically. 
     if ([_hike isComplete]){
         [self performSegueWithIdentifier:@"UploadHike" sender:self];
@@ -430,14 +431,10 @@ int midpoint;// = 1; //TODO!!
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 { //TODO cleanup logic
-    NSLog(@"preparing for segue: %@", [segue identifier]);
     if ([[segue identifier] isEqualToString:@"NoteModal"]){
         NoteModalController *modal = [segue destinationViewController];
-        NSLog(@"I bet something's wrong here %@", modal);
         [modal setPromptText:[_currentVista prompt]];
-        NSLog(@"or here");
         [modal setVcDelegate:self];
-        NSLog(@"get here?");
     }
     else if ([[segue identifier] isEqualToString:@"TextModal"]){
         TextModalController *modal = [segue destinationViewController];
