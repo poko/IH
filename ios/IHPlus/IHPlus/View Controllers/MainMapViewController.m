@@ -33,6 +33,11 @@
     // set map
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
     _monitoredRegions = [NSMutableArray array];
+    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
+    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+    for (int i = 0; i < [regionArray count]; i++) { // loop through array of regions turning them off
+        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
+    }
 }
 
 
@@ -43,10 +48,10 @@
     // e.g. self.myOutlet = nil;
     NSLog(@"main map view unloaded"); // TODO this may be removed when we stop debugging? (creating lots of monitoring regions)
     // remove any pending proximity alerts
-    if (_monitoredRegions != nil){
-        for (CLRegion *region in _monitoredRegions){
-            [_locMgr stopMonitoringForRegion:region];
-        }
+    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; // the all objects is the key
+    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+    for (int i = 0; i < [regionArray count]; i++) { // loop through array of regions turning them off
+        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
 }
 
@@ -172,10 +177,14 @@
     NSLog(@"Sending to url %@", url);
     RewalkHikeDelegate *rewalkDelegate = [[RewalkHikeDelegate alloc] initWithHandler:^(bool result, Hike *hike) {
         NSLog(@"tralala back in the map view with a hike! %@", hike);
-        // TODO clear any existing paths and vistas!
+        //clear any existing paths and vistas!
+        [self removeOverlaysAndAnnotations];
         [self hideLoadingDialog:nil];
         [_inputHolder setHidden:true];
         _hike = hike;
+        // center map at begining of hike
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[[_hike points] objectAtIndex:0 ] coordinate], 400, 400);
+        [_mapView setRegion:region animated:YES];
         // draw path and vistas
         [self drawVistas];
     }];

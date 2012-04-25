@@ -42,5 +42,6 @@
 -(void)hideLoadingDialog:(NSString *) msg;
 -(void)prepareNewHike;
 -(void)pathGenerated:(int) midpoint;
+-(void) removeOverlaysAndAnnotations;
 
 @end

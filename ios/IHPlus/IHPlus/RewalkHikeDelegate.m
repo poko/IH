@@ -45,10 +45,7 @@ NSMutableData *receivedData;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     // inform the user 
-    // TODO Send back to handler?
-    NSLog(@"Rewalk Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
+    _handler(false, nil);
 }
 
 
@@ -57,7 +54,6 @@ NSMutableData *receivedData;
     // parse response data
     NSLog(@"Rewalk Succeeded! Received %d bytes of data",[receivedData length]);
     if ([receivedData length] > 0){
-        //TODO parse out success
         NSError *error;
         NSString *receivedStr = [[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding];
         NSString *escaped = [receivedStr stringByReplacingOccurrencesOfString:@"\n" withString:@""];

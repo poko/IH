@@ -45,10 +45,7 @@ NSMutableData *receivedData;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     // inform the user 
-    // TODO [_loadingIndicator stopAnimating];
-    NSLog(@"Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
+    _handler(nil, @"Failed to connect to server");
 }
 
 

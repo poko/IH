@@ -235,7 +235,7 @@ NSMutableData *receivedData;
     else{
         //TODO - what happens?!
     }
-    // TODO update table view 
+    //update table view 
     [_table reloadData];
 }
 

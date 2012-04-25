@@ -189,7 +189,7 @@ NSMutableData *receivedData;
     // parse json into hike objects and update table
     NSArray *hikes = [json objectForKey:@"hikes"];
     if ([hikes count] == 0){
-        //TODO show no results.
+        //no results.
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Hikes" message:
                               [NSString stringWithFormat:@"No hikes found near %@.", [_searchBar text]] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
@@ -199,10 +199,6 @@ NSMutableData *receivedData;
         Hike *hikeObj = [Hike initWithDictionary:hike];
         [_hikes addObject:hikeObj];
     }
-    // update table view -- TODO pass on to results view
-    //[_tableView reloadData];
-    //SearchResultsController *resultsVC = [[SearchResultsController alloc] init];
-    //[resultsVC setHikes:results];
     
     [self performSegueWithIdentifier:@"SearchResults" sender:self];
 }

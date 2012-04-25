@@ -54,7 +54,6 @@ NSMutableData *vistaActionsData;
 {
     // parse response data
     NSLog(@"Succeeded! Received %d bytes of data",[vistaActionsData length]);
-    //TODO - set actions for vistas.
     NSError *error; 
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:vistaActionsData options:kNilOptions error:&error];
     if (error != nil){

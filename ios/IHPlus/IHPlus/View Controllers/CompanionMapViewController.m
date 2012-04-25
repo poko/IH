@@ -61,7 +61,7 @@
 -(void) pathGenerated:(int) midpoint
 {
     NSLog(@"path generated in compantion");
-    // TODO now we get some vista actions from the server to pool from
+    // now we get some vista actions from the server to pull from
     //download vista actions
     VistaActionsDelegate *getActions = [[VistaActionsDelegate alloc] initWithHandler:^(NSArray *actions, NSString *error){
         [self hideLoadingDialog:error];
@@ -95,8 +95,7 @@
     ScenicVista *vista = [[ScenicVista alloc] init];
     [vista setLocation:_currentLocation.location];
     [vista setActionId:[action objectForKey:@"action_id"]];
-    //TODO [vista setActionType:[action objectForKey:@"action_type"]];
-    [vista setActionType:@"text"];
+    [vista setActionType:[action objectForKey:@"action_type"]];
     [vista setPrompt:[action objectForKey:@"verbiage"]];
     // add vista object to hike
     [_hike addCompanionVista:vista];

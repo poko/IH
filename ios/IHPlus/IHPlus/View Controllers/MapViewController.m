@@ -262,11 +262,8 @@ int midpoint;// = 1; //TODO!!
     [[self navigationItem] setLeftBarButtonItem:nil];
 }
 
-#pragma mark IBActions
--(IBAction)hitTrail:(id)sender
+-(void) removeOverlaysAndAnnotations
 {
-    [_startAddress resignFirstResponder];
-    [_endAddress resignFirstResponder];
     // remove map overlay
     [_mapView removeOverlays:[_mapView overlays]];
     _routeLine = nil;
@@ -277,6 +274,15 @@ int midpoint;// = 1; //TODO!!
         if (annotation != _mapView.userLocation)
             [toRemove addObject:annotation];
     [_mapView removeAnnotations:toRemove];
+
+}
+
+#pragma mark IBActions
+-(IBAction)hitTrail:(id)sender
+{
+    [_startAddress resignFirstResponder];
+    [_endAddress resignFirstResponder];
+    [self removeOverlaysAndAnnotations];
     // clear out any previous data
     _callCount = 0;
     // have subclasses do their prep (remove any pending proximity alerts, etc)

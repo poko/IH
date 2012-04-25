@@ -903,7 +903,7 @@
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm2-Fk-hhy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="ERb-48-zpl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="zfI-Md-f6p"/>
+                    <tabBarItem key="tabBarItem" title="" image="x-species_btn.png" id="zfI-Md-f6p"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="wz0-bO-i2v">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -923,6 +923,7 @@
         <image name="hike_it_btn.png" width="55" height="25"/>
         <image name="search_hike_on_btn.png" width="35" height="35"/>
         <image name="view_it_btn.png" width="55" height="25"/>
+        <image name="x-species_btn.png" width="35" height="35"/>
     </resources>
     <classes>
         <class className="CompanionMapViewController" superclassName="MapViewController">

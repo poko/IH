@@ -49,7 +49,7 @@
 -(IBAction)textClick:(id)sender
 {
     if (![MFMessageComposeViewController canSendText]){
-        //TODO - we have a problem! 
+        //we have a problem! 
         NSLog(@"can't send texts :(");
         [disclaimer setText:@"your device can't send text messages. hit 'done' to record the field note."];
     }

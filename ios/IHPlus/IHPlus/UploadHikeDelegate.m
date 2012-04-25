@@ -45,10 +45,7 @@ NSMutableData *receivedData;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     // inform the user 
-    // TODO Send back to handler?
-    NSLog(@"Upload Connection failed! Error - %@ %@", [error localizedDescription], [[error userInfo] objectForKey:NSURLErrorFailingURLStringErrorKey]);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Network Error" message:@"There was an error connecting to the server." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
+    _handler(false, @"Failed to connect to server");
 }
 
 
@@ -57,7 +54,7 @@ NSMutableData *receivedData;
     // parse response data
     NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
     if ([receivedData length] > 0){
-       //TODO parse out success
+       //parse out success
         NSError *error;
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:receivedData options:kNilOptions error:&error];
         if (error == nil){
