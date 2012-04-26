@@ -11,7 +11,6 @@
 
 //TODO - all memory mgmt
 //TODO - 2x UI elements
-//TODO - Constants for URLs and Strings
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

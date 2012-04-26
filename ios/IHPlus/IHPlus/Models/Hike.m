@@ -109,6 +109,15 @@ bool eligble = false;
     return true;
 }
 
+- (bool) hasCompletedVista
+{
+    for (ScenicVista *vista in vistas){
+        if ([vista complete])
+            return true;
+    }
+    return false;
+}
+
 - (NSString *) vistasAsJson
 {
     NSMutableString *str = [[NSMutableString alloc] init];

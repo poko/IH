@@ -18,6 +18,7 @@
 
 @interface UploadHikeController : UIViewController<UITextFieldDelegate>{
     UITextField *activeTextField;
+    UIActivityIndicatorView *_loadingIndicator;
 }
 
 @property (nonatomic, weak) id <UploadHikeControllerDelegate> vcDelegate;

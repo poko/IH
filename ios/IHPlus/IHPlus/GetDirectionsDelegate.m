@@ -7,6 +7,7 @@
 //
 
 #import "GetDirectionsDelegate.h"
+#define LINE_STRING @"LineString"
 
 @implementation GetDirectionsDelegate
 
@@ -70,7 +71,7 @@ NSMutableString *coordStr;
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
 {
     //NSLog(@"starting element: %@", elementName);
-    if ([elementName isEqualToString:@"LineString"]){
+    if ([elementName isEqualToString:LINE_STRING]){
         NSLog(@"found line string:");
         savingChars = YES;
         coordStr = [NSMutableString string];
@@ -88,7 +89,7 @@ NSMutableString *coordStr;
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
-    if ([elementName isEqualToString:@"LineString"]){
+    if ([elementName isEqualToString:LINE_STRING]){
         NSLog(@"ended line string element");
         savingChars = NO;
         // parse coords into points

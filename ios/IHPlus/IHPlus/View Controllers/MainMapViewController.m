@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "MainMapViewController.h"
 #import "RewalkHikeDelegate.h"
+#import "Constants.h"
 
 #define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
 
@@ -152,16 +153,16 @@
         int i = 0;
         for (ScenicVista *vista in [_hike vistas]){
             NSDictionary *action = [actions objectAtIndex:i];
-            [vista setActionId:[action objectForKey:@"action_id"]];
-            //TODOx [vista setActionType:[action objectForKey:@"action_type"]];
+            [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
+            //TODOx [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];
             [vista setActionType:@"note"];
-            [vista setPrompt:[action objectForKey:@"verbiage"]];
+            [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
             i++;
         }
         // draw & enable geofences for vistas
         [self drawVistas];
     }];
-    NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getVistaAction.php?amount=%i", [[_hike vistas] count]];
+    NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=%i", BASE_URL, [[_hike vistas] count]];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
@@ -177,7 +178,7 @@
 {
     [self showLoadingDialog];
     // make server call
-    NSString *url = [NSString stringWithFormat:@"http://localhost:8888/IHServer/getHike.php?hike_id=%@", hikeId];
+    NSString *url = [NSString stringWithFormat:@"%@getHike.php?hike_id=%@", BASE_URL, hikeId];
     NSLog(@"Sending to url %@", url);
     RewalkHikeDelegate *rewalkDelegate = [[RewalkHikeDelegate alloc] initWithHandler:^(bool result, Hike *hike) {
         NSLog(@"tralala back in the map view with a hike! %@", hike);

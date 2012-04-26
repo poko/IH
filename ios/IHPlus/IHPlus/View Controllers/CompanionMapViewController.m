@@ -7,6 +7,7 @@
 //
 #import "AppDelegate.h"
 #import "CompanionMapViewController.h"
+#import "Constants.h"
 
 @implementation CompanionMapViewController
 
@@ -72,7 +73,7 @@
         // show the add button
         [_addVistaButton setHidden:false];
     }];
-    NSString *url = @"http://localhost:8888/IHServer/getVistaAction.php?amount=10";
+    NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=10&companion=true", BASE_URL];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
@@ -94,9 +95,10 @@
     // create vista
     ScenicVista *vista = [[ScenicVista alloc] init];
     [vista setLocation:_currentLocation.location];
-    [vista setActionId:[action objectForKey:@"action_id"]];
-//    [vista setActionType:[action objectForKey:@"action_type"]]; //TODOx    [vista setActionType:@"note"]; 
-    [vista setPrompt:[action objectForKey:@"verbiage"]];
+    [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
+//    [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]]; //TODOx    
+    [vista setActionType:@"note"]; 
+    [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
     // add vista object to hike
     [_hike addCompanionVista:vista];
     

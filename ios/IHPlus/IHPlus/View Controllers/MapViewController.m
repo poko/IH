@@ -12,6 +12,8 @@
 #import "Toast+UIView.h"
 
 #define CURRENT_LOCATION @"Current Location"
+#define CREATE_ERROR_ALERT 10
+#define NEW_HIKE_ALERT 20
 
 @implementation MapViewController
 
@@ -61,7 +63,7 @@
     else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location Services Unavailable" 
                                                         message:@"This app won't work without location services." 
-                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
     // keyboard handling
@@ -144,10 +146,31 @@ bool alertShowing = false;
         alertShowing = true;
     }
 }
+
+- (void) newHike
+{
+    //clear hike
+    _hike = nil;
+    [self removeOverlaysAndAnnotations];
+    [self prepareNewHike];
+    [_promptHolder setHidden:true];
+    [_inputHolder setHidden:false];
+    [[self navigationItem] setLeftBarButtonItem:nil];
+}
+
+#pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     NSLog(@"dismissed with index: %i", buttonIndex);
-    alertShowing = false;
+    if ([alertView tag] == CREATE_ERROR_ALERT){
+        alertShowing = false;
+    }
+    else if ([alertView tag] == NEW_HIKE_ALERT){
+        // check if user canceled or clicked 'yes'
+        if (buttonIndex == 1){ //clicked 'yes'
+            [self newHike];
+        }
+    }
 }
 
 -(void) prepareNewHike
@@ -166,10 +189,8 @@ bool alertShowing = false;
 {
     float min = .0005f;
     float max = .005f;
-    //double num = Math.random() * (max - min);
     float diff = max - min;
     float offset =  (((float) (arc4random() % ((unsigned)RAND_MAX + 1)) / RAND_MAX) * diff) + min;
-    //int i = (offset / .0001) % 2 == 0 ? 1 : -1;
     int i = 1;
     int temp = offset / .0001;
     if (temp % 2 != 0)
@@ -255,12 +276,21 @@ int midpoint;
     }
 }
 
+// called when user hits the 'back/create/edit' hike button after generating a hike
 - (IBAction) clickedCreateButton:(id)sender{
     NSLog(@"clicked create!");
-    //TODO check that user hasn't completed any vistas, if they have, warn.
-    //TODO - clear hike
-    [_inputHolder setHidden:false];
-    [[self navigationItem] setLeftBarButtonItem:nil];
+    //check that user hasn't completed any vistas, if they have, warn.
+    if ([_hike hasCompletedVista]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Hike" 
+                                                        message:@"You've already completed a vista!\nAre you sure you want to create a new hike? This hike will be lost." 
+                                                       delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+        [alert setTag:NEW_HIKE_ALERT];
+        [alert show];
+        return;
+    }
+    else{ // just show the input fields
+        [self newHike];
+    }
 }
 
 -(void) removeOverlaysAndAnnotations
@@ -298,7 +328,12 @@ int midpoint;
         [self showLoadingDialog];
         //check if "current location"
         if ([start isEqualToString:CURRENT_LOCATION]){
-            //TODO - if currentLocation is empty .. ? 
+            // warn if we haven't gotten a current location
+            if (_currentLocation == nil){
+                [self.view makeToast:@"Unable to determine your current location."];
+                [self hideLoadingDialog:nil];
+                return;
+            }
             // get random offset from current location
             float randLat = [self getRandomOffset]+_currentLocation.location.coordinate.latitude;
             float randLng = [self getRandomOffset]+_currentLocation.location.coordinate.longitude;
@@ -331,7 +366,7 @@ int midpoint;
                  // reverse geocode the random point //TODO ??
                  //CLLocation *randLoc = [[CLLocation alloc] initWithLatitude:randLat longitude:randLng];
                  NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng];
-                 // TODO asdfasdfa 
+                 // TODOx 
                  [self getDirectionsFrom:start to:end];
 //                 [self getDirectionsFrom:start to:randPoint];
 //                 [self getDirectionsFrom:randPoint to:end];
@@ -416,21 +451,27 @@ int midpoint;
     [controller dismissViewControllerAnimated:YES completion:^{
         NSLog(@"and hike should have uploaded! %@", error);
         if (error != nil){
-            // TODO boo!
+            // boo!
             NSLog(@" boooo error back in mapview");
-            // show error dialog
+            // show error toast (maybe user canceled, if we allow that option?)
+            [self.view makeToast:@"Hike was not uploaded to server."];
         }
         else{
-            // TODO success!
+            // success!
             NSLog(@" no error back in mapview");
             // show success "toast"
             [self.view makeToast:@"Hike uploaded successfully."];
+            // clean up current Hike object, clear overlays, show input fields again 
+            [self removeOverlaysAndAnnotations];
+            _hike = nil;
+            [_promptHolder setHidden:true];
+            [_inputHolder setHidden:false];
         }
     }];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{ //TODO cleanup logic
+{ 
     if ([[segue identifier] isEqualToString:@"NoteModal"]){
         NoteModalController *modal = [segue destinationViewController];
         [modal setPromptText:[_currentVista prompt]];

@@ -12,6 +12,7 @@
 #import "VistaCellNote.h"
 #import "ScenicVista.h"
 #import "ImageLoader.h"
+#import "Constants.h"
 
 #define FONT_SIZE 14.0f
 #define CELL_CONTENT_WIDTH 320.0f
@@ -65,7 +66,7 @@ NSMutableData *receivedData;
     [self.view addSubview: _loadingIndicator];
     [_loadingIndicator startAnimating];
     // make server call
-    NSString *url = [NSString stringWithFormat:@"http://ecoarttech.net/ih_plus/scripts/getHikes.php?hike_id=%@", [hike hikeId]];
+    NSString *url = [NSString stringWithFormat:@"%@getHikes.php?hike_id=%@", BASE_URL, [hike hikeId]];
     NSLog(@"Sending to url %@", url);
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];    
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:self];
@@ -127,7 +128,7 @@ NSMutableData *receivedData;
     [[cell prompt] sizeToFit];
     // adjust things
     if ([vista getActionType] == PHOTO){
-        NSString *urlString = [NSString stringWithFormat:@"http://www.ecoarttech.org/ih_plus/uploads/%@", [vista photoUrl]]; 
+        NSString *urlString = [NSString stringWithFormat:@"%@%@", BASE_PHOTO_URL, [vista photoUrl]]; 
         UIImage *img = [ImageLoader getImageForUrl:urlString];
         if (img != nil){
             float imgHeight = (img.size.height * 300)/img.size.width;
@@ -167,7 +168,7 @@ NSMutableData *receivedData;
     CGFloat height = MAX(size.height, 44.0f) + 20;
     
     if ([vista getActionType] == PHOTO){
-        NSString *urlString = [NSString stringWithFormat:@"http://www.ecoarttech.org/ih_plus/uploads/%@", [vista photoUrl]];
+        NSString *urlString = [NSString stringWithFormat:@"%@%@", BASE_PHOTO_URL, [vista photoUrl]];
         UIImage *img = [ImageLoader getImageForUrl:urlString];
         float imgHeight = 0;
         if (img != nil){
@@ -191,8 +192,6 @@ NSMutableData *receivedData;
     NSLog(@"didReceiveResponse");
     [receivedData setLength:0];
 }
-
-// TODO - move this into its own delegate 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {

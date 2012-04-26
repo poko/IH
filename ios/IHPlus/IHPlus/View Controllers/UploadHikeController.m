@@ -8,6 +8,7 @@
 
 #import "UploadHikeController.h"
 #import "UploadHikeDelegate.h"
+#import "Constants.h"
 
 @implementation UploadHikeController
 
@@ -85,39 +86,66 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+-(void)showLoadingDialog
+{
+    //loading dialog
+    if (_loadingIndicator == nil){
+        _loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [_loadingIndicator setHidesWhenStopped:YES];
+        [_loadingIndicator setBackgroundColor:[UIColor colorWithWhite:0 alpha:.5]];
+        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
+        _loadingIndicator.center = self.view.center;
+    }
+    [self.view addSubview: _loadingIndicator];
+    [_loadingIndicator startAnimating];
+}
+
+-(void)hideLoadingDialog:(NSString *) error
+{
+    [_loadingIndicator stopAnimating];
+    if (error != nil){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Uploading Hike" message:[NSString stringWithFormat:@"There was an error uploading the hike: %@", error]
+                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
 #pragma mark - IBActions
 
 -(IBAction)uploadClick:(id)sender
 {
+    //start dialog
+    [self showLoadingDialog];
     // set hike values
     [hike setName:[hikeName text]];
     [hike setDescription:[hikeDesc text]];
     [hike setUsername:[userName text]];
-    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:8888/IHServer/createHike.php"]];
+    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@createHike.php", BASE_URL]]];
     NSLog(@"url: %@", req.URL);
     // set POST parameters
     [req setHTTPMethod:@"POST"];
     NSLog(@"trying to log upload data: %@", [hike getUploadData]);
     [req setHTTPBody:[hike getUploadData]];
     UploadHikeDelegate *connDelegate = [[UploadHikeDelegate alloc] initWithHandler:^(bool success, NSString *error) {
-    NSLog(@"upload handler gets: %i", success);
-    if (success){
-        NSLog(@"success! delegate? %@", vcDelegate);
-        //TODO - dismiss loading dialog and modal
-        [vcDelegate uploadModalController:self done:nil];
-        return;
-    }
-    else{
-        NSLog(@"error! %@", error);
-        //TODO - display error, allow user to re-try uploading
-    }
+        NSLog(@"upload handler gets: %i", success);
+        if (success){
+            NSLog(@"success! delegate? %@", vcDelegate);
+            //dismiss loading dialog and modal
+            [self hideLoadingDialog:nil];
+            [vcDelegate uploadModalController:self done:nil];
+            return;
+        }
+        else{
+            NSLog(@"error! %@", error);
+            //display error, allow user to re-try uploading
+            [self hideLoadingDialog:@"Server was unable to save hike."];
+        }
     }];
     
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:connDelegate];
     if (!connection) {
         NSLog(@"connection failed");
-        //TODO
-        //[self hideLoadingDialog:@"Could not connect to server"];
+        [self hideLoadingDialog:@"Could not connect to server"];
     }
 }
 

@@ -32,5 +32,6 @@
 - (bool) eligibleForUpload;
 - (bool) isComplete;
 - (NSData *) getUploadData;
+- (bool) hasCompletedVista;
 
 @end

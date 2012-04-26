@@ -51,6 +51,7 @@
 		A6AB117915265FB20002D9EE /* titlebar_logo2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117515265FB10002D9EE /* titlebar_logo2x.png */; };
 		A6AB117A15265FB20002D9EE /* titlebar_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117615265FB20002D9EE /* titlebar_logo.png */; };
 		A6AB117C1526603A0002D9EE /* view_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117B1526603A0002D9EE /* view_it_btn.png */; };
+		A6C7A6251549BB4F00EBB216 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A6C7A6241549BB4F00EBB216 /* Constants.m */; };
 		A6D966331534D18F00255CC3 /* NoteModalController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D966321534D18F00255CC3 /* NoteModalController.m */; };
 		A6D9663D1534E54600255CC3 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D9663C1534E54500255CC3 /* MessageUI.framework */; };
 		A6D966401535EE5500255CC3 /* TextModalController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D9663F1535EE5500255CC3 /* TextModalController.m */; };
@@ -128,6 +129,8 @@
 		A6AB117515265FB10002D9EE /* titlebar_logo2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar_logo2x.png; path = Assets/titlebar_logo2x.png; sourceTree = "<group>"; };
 		A6AB117615265FB20002D9EE /* titlebar_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = titlebar_logo.png; path = Assets/titlebar_logo.png; sourceTree = "<group>"; };
 		A6AB117B1526603A0002D9EE /* view_it_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = view_it_btn.png; path = Assets/view_it_btn.png; sourceTree = "<group>"; };
+		A6C7A6231549BB4F00EBB216 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		A6C7A6241549BB4F00EBB216 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		A6D9662815335FFF00255CC3 /* sample_hike.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = sample_hike.gpx; path = IHPlus/sample_hike.gpx; sourceTree = "<group>"; };
 		A6D966311534D18F00255CC3 /* NoteModalController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoteModalController.h; path = "View Controllers/NoteModalController.h"; sourceTree = "<group>"; };
 		A6D966321534D18F00255CC3 /* NoteModalController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoteModalController.m; path = "View Controllers/NoteModalController.m"; sourceTree = "<group>"; };
@@ -172,6 +175,8 @@
 			children = (
 				A60BBAB715487C09005E8EF0 /* Toast+UIView.m */,
 				A60BBAB815487C09005E8EF0 /* Toast+UIView.h */,
+				A6C7A6231549BB4F00EBB216 /* Constants.h */,
+				A6C7A6241549BB4F00EBB216 /* Constants.m */,
 			);
 			name = Util;
 			sourceTree = "<group>";
@@ -435,6 +440,7 @@
 				A60BBAB215484793005E8EF0 /* MainMapViewController.m in Sources */,
 				A60BBAB51548649E005E8EF0 /* VistaActionsDelegate.m in Sources */,
 				A60BBAB915487C09005E8EF0 /* Toast+UIView.m in Sources */,
+				A6C7A6251549BB4F00EBB216 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
