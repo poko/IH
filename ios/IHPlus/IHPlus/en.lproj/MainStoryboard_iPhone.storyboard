@@ -305,7 +305,7 @@
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
                                     <navigationItem title="upload hike" id="rAb-Fg-dqg">
-                                        <barButtonItem key="rightBarButtonItem" title="upload" id="Lxa-YG-RD1">
+                                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="upload" id="Lxa-YG-RD1">
                                             <connections>
                                                 <action selector="uploadClick:" destination="FNb-8Z-2Rr" id="pEs-YL-Mqx"/>
                                             </connections>
@@ -365,6 +365,7 @@
                         <outlet property="hikeDesc" destination="and-zo-RTy" id="zUo-Gp-thT"/>
                         <outlet property="hikeName" destination="agR-qI-IWV" id="doR-ao-c8a"/>
                         <outlet property="scroller" destination="1Va-kq-lnd" id="b4v-kP-Otl"/>
+                        <outlet property="uploadButton" destination="Lxa-YG-RD1" id="HlT-xo-gku"/>
                         <outlet property="userName" destination="OTy-Z4-6Ez" id="wHo-ca-TKm"/>
                     </connections>
                 </viewController>
@@ -966,6 +967,7 @@
                 <relationship kind="outlet" name="hikeDesc" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="hikeName" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="scroller" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="uploadButton" candidateClass="UIBarButtonItem"/>
                 <relationship kind="outlet" name="userName" candidateClass="UITextField"/>
             </relationships>
         </class>

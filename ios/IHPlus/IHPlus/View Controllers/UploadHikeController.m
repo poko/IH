@@ -12,7 +12,7 @@
 @implementation UploadHikeController
 
 @synthesize vcDelegate, hike;
-@synthesize hikeName, hikeDesc, userName, scroller;
+@synthesize hikeName, hikeDesc, userName, scroller, uploadButton;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -50,6 +50,24 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(validateFields:) 
+                                                 name:UITextFieldTextDidChangeNotification 
+                                               object:hikeName];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(validateFields:) 
+                                                 name:UITextFieldTextDidChangeNotification 
+                                               object:hikeDesc];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(validateFields:) 
+                                                 name:UITextFieldTextDidChangeNotification 
+                                               object:userName];
+    
+    //allows user to hide keyboard.
+    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] 
+                                               initWithTarget:self 
+                                               action:@selector(dismissKeyboard:)];
+    [scroller addGestureRecognizer:singleFingerTap];
 }
 
 
@@ -71,7 +89,6 @@
 
 -(IBAction)uploadClick:(id)sender
 {
-    //TODO - check that all fields were completed?
     // set hike values
     [hike setName:[hikeName text]];
     [hike setDescription:[hikeDesc text]];
@@ -82,9 +99,6 @@
     [req setHTTPMethod:@"POST"];
     NSLog(@"trying to log upload data: %@", [hike getUploadData]);
     [req setHTTPBody:[hike getUploadData]];
-    //(void)setHTTPMethod:(NSString *)method
-    //(void)setHTTPBody:(NSData *)data
-    //(void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field
     UploadHikeDelegate *connDelegate = [[UploadHikeDelegate alloc] initWithHandler:^(bool success, NSString *error) {
     NSLog(@"upload handler gets: %i", success);
     if (success){
@@ -96,7 +110,6 @@
     else{
         NSLog(@"error! %@", error);
         //TODO - display error, allow user to re-try uploading
-        //[vcDelegate uploadModalController:self  done:error];
     }
     }];
     
@@ -104,13 +117,12 @@
     if (!connection) {
         NSLog(@"connection failed");
         //TODO
-        
         //[self hideLoadingDialog:@"Could not connect to server"];
     }
 }
 
 #pragma mark TextField Delegate
-
+CGSize keyboardSize;
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == hikeName || textField == hikeDesc){
@@ -121,6 +133,13 @@
         if (nextResponder) {
             // Found next responder, so set it.
             [nextResponder becomeFirstResponder];
+            // Step 3: Scroll the target text field into view.
+            CGRect aRect = self.view.frame;
+            aRect.size.height -= (keyboardSize.height + 44);
+            if (!CGRectContainsPoint(aRect, activeTextField.frame.origin) ) {
+                CGPoint scrollPoint = CGPointMake(0.0, activeTextField.frame.origin.y - (keyboardSize.height-15-44));
+                [scroller setContentOffset:scrollPoint animated:YES];
+            }
         } else {
             // Not found, so remove keyboard.
             [textField resignFirstResponder];
@@ -133,12 +152,30 @@
     return NO;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    activeTextField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    activeTextField = nil;
+}
+
+- (void)validateFields:(NSNotification *)notification
+{
+    NSLog(@"validating");
+    [uploadButton setEnabled:([[userName text] length] > 0 
+                              && [[hikeDesc text] length] > 0 
+                              && [[hikeName text] length] > 0)];
+}
+
 # pragma mark - keyboard handling
 - (void)keyboardWasShown:(NSNotification *)notification
 {
     
     // Step 1: Get the size of the keyboard.
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
     NSLog(@"keyboard shown: %f", keyboardSize.height);
     // Step 2: Adjust the bottom content inset of your scroll view by the keyboard height.
@@ -161,19 +198,8 @@
     scroller.scrollIndicatorInsets = contentInsets;
 }
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    activeTextField = textField;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    activeTextField = nil;
-}
-
 - (IBAction)dismissKeyboard:(id)sender
 {
-    NSLog(@"Dismiss");
     [activeTextField resignFirstResponder];
 }
 

@@ -25,6 +25,7 @@
 @property (nonatomic, strong) IBOutlet UITextField *hikeName;
 @property (nonatomic, strong) IBOutlet UITextField *hikeDesc;
 @property (nonatomic, strong) IBOutlet UITextField *userName;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *uploadButton;
 @property (nonatomic, strong) IBOutlet UIScrollView *scroller;
 
 -(IBAction)uploadClick:(id)sender;
