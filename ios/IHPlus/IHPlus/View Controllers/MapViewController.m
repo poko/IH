@@ -73,16 +73,17 @@
                                                  name:UIKeyboardWillHideNotification object:self.view.window]; 
 }
  
-
--(void) mapView:(MKMapView *)mapView didAddOverlayViews:(NSArray *)overlayViews{
-    NSLog(@"overlays added");
-}
+#pragma mark - MapView Delegate
 
 - (void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     
     NSLog(@"User location : %@", userLocation.location );
     NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
     _currentLocation = userLocation;
+    
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 400, 400);
+    [_mapView setRegion:region animated:YES];
+    
 }
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id )overlay
@@ -232,8 +233,12 @@ int midpoint;
             
             // hide the input view
             [_inputHolder setHidden:YES];
-            UIBarButtonItem *createButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(clickedCreateButton:)];
-            [[self navigationItem] setLeftBarButtonItem:createButton];
+            // create a 'back' button to get input view back
+            UIBarButtonItem *backButton = [[UIBarButtonItem alloc] 
+                                       initWithTitle:@"Edit" 
+                                       style:UIBarButtonItemStyleBordered
+                                       target:self action: @selector(clickedCreateButton:)];
+            [[self navigationItem] setLeftBarButtonItem:backButton];
         
         // draw path overlay
         CLLocationCoordinate2D *pointsLine = malloc([[_hike points] count] * sizeof(CLLocationCoordinate2D));

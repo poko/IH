@@ -191,19 +191,19 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="start address" minimumFontSize="17" clearButtonMode="whileEditing" id="MTV-cx-euP">
-                                        <rect key="frame" x="11" y="7" width="267" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <rect key="frame" x="11" y="7" width="255" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="end address" minimumFontSize="17" clearButtonMode="whileEditing" id="npn-ip-9Hr">
-                                        <rect key="frame" x="11" y="48" width="267" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <rect key="frame" x="11" y="48" width="255" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="go" enablesReturnKeyAutomatically="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="x0H-nQ-KMz">
-                                        <rect key="frame" x="284" y="48" width="31" height="31"/>
+                                        <rect key="frame" x="270" y="48" width="45" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title=">>">
@@ -218,10 +218,10 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aOZ-aZ-OhN">
-                                        <rect key="frame" x="284" y="7" width="31" height="31"/>
+                                        <rect key="frame" x="270" y="8" width="45" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal">
+                                        <state key="normal" backgroundImage="your_location_btn.png">
                                             <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -856,7 +856,7 @@
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm2-Fk-hhy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="ERb-48-zpl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="x-species_btn.png" id="zfI-Md-f6p"/>
+                    <tabBarItem key="tabBarItem" title="companion" image="x-species_btn.png" id="zfI-Md-f6p"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="wz0-bO-i2v">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -877,120 +877,8 @@
         <image name="search_hike_on_btn.png" width="35" height="35"/>
         <image name="view_it_btn.png" width="55" height="25"/>
         <image name="x-species_btn.png" width="35" height="35"/>
+        <image name="your_location_btn.png" width="45" height="30"/>
     </resources>
-    <classes>
-        <class className="CompanionMapViewController" superclassName="MapViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CompanionMapViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="addVistaHere:"/>
-                <relationship kind="outlet" name="_addVistaButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="CreditsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CreditsViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="done:"/>
-            </relationships>
-        </class>
-        <class className="HikeDetailsViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/HikeDetailsViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="_desc" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="_details" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="_table" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="MainMapViewController" superclassName="MapViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainMapViewController.h"/>
-        </class>
-        <class className="MapViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
-            <relationships>
-                <relationship kind="action" name="continueClicked:"/>
-                <relationship kind="action" name="currentLocation:"/>
-                <relationship kind="action" name="hitTrail:"/>
-                <relationship kind="action" name="uploadHike:"/>
-                <relationship kind="outlet" name="_endAddress" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="_inputHolder" candidateClass="UIView"/>
-                <relationship kind="outlet" name="_mapView" candidateClass="MKMapView"/>
-                <relationship kind="outlet" name="_prompt" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="_promptHolder" candidateClass="UIView"/>
-                <relationship kind="outlet" name="_startAddress" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="_uploadButton" candidateClass="UIBarButtonItem"/>
-            </relationships>
-        </class>
-        <class className="NoteModalController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NoteModalController.h"/>
-            <relationships>
-                <relationship kind="action" name="doneClick:"/>
-                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="holder" candidateClass="UIView"/>
-                <relationship kind="outlet" name="input" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="prompt" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="SearchResultsController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchResultsController.h"/>
-            <relationships>
-                <relationship kind="action" name="rewalkHike:"/>
-                <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="_tableView" candidateClass="UITableView"/>
-            </relationships>
-        </class>
-        <class className="SearchTableViewCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchTableViewCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="description" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="viewButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="SearchViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="_searchBar" candidateClass="UISearchBar"/>
-            </relationships>
-        </class>
-        <class className="TextModalController" superclassName="NoteModalController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextModalController.h"/>
-            <relationships>
-                <relationship kind="action" name="textClick:"/>
-                <relationship kind="outlet" name="disclaimer" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="textButton" candidateClass="UIButton"/>
-            </relationships>
-        </class>
-        <class className="UploadHikeController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/UploadHikeController.h"/>
-            <relationships>
-                <relationship kind="action" name="uploadClick:"/>
-                <relationship kind="outlet" name="hikeDesc" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="hikeName" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="scroller" candidateClass="UIScrollView"/>
-                <relationship kind="outlet" name="uploadButton" candidateClass="UIBarButtonItem"/>
-                <relationship kind="outlet" name="userName" candidateClass="UITextField"/>
-            </relationships>
-        </class>
-        <class className="VistaCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="prompt" candidateClass="UILabel"/>
-                <relationship kind="outlet" name="vistaNum" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="VistaCellNote" superclassName="VistaCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCellNote.h"/>
-            <relationships>
-                <relationship kind="outlet" name="note" candidateClass="UILabel"/>
-            </relationships>
-        </class>
-        <class className="VistaCellPhoto" superclassName="VistaCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCellPhoto.h"/>
-            <relationships>
-                <relationship kind="outlet" name="photo" candidateClass="UIImageView"/>
-            </relationships>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

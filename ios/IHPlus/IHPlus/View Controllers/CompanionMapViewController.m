@@ -73,7 +73,7 @@
         // show the add button
         [_addVistaButton setHidden:false];
     }];
-    NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=10&companion=true", BASE_URL];
+    NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=10", BASE_URL];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {

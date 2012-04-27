@@ -63,19 +63,6 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
-	switch (result) {
-		case MessageComposeResultCancelled:
-			NSLog(@"Cancelled");
-			break;
-		case MessageComposeResultFailed:
-			NSLog(@"Failed");
-			break;
-		case MessageComposeResultSent:
-			break;
-		default:
-			break;
-	}
-    //TODO ?? do we care how the texting even went? just that we finished, right?
     [[self vcDelegate] noteModalController:self done:[[self input] text]];
 }
 
