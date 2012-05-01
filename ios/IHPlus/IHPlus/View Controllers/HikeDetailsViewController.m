@@ -228,11 +228,10 @@ NSMutableData *receivedData;
     NSLog(@"Here is the escaped response: %@", json);
     NSArray *allHikes = [json objectForKey:@"hikes"];
     NSLog(@"all hikes count: %i", [allHikes count]);
-    if ([allHikes count] == 1){ //only one person walked this hike before
-        hike = [Hike initWithDictionary:[allHikes objectAtIndex:0]];
-    }
-    else{
-        //TODO - what happens?!
+    hike = [Hike initWithDictionary:[allHikes objectAtIndex:0]];
+    if ([allHikes count] > 1){ //multiple people walked this hike before
+        // show page controller
+        
     }
     //update table view 
     [_table reloadData];

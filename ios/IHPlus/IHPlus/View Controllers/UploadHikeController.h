@@ -13,6 +13,7 @@
 
 @protocol UploadHikeControllerDelegate <NSObject>
 - (void)uploadModalController:(UploadHikeController *)controller done:(NSString *) error;
+- (void)cancelUploadModalController:(UploadHikeController *)controller;
 @end
 
 
@@ -30,5 +31,6 @@
 @property (nonatomic, strong) IBOutlet UIScrollView *scroller;
 
 -(IBAction)uploadClick:(id)sender;
+-(IBAction)cancelClick:(id)sender;
 
 @end

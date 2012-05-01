@@ -157,6 +157,7 @@ bool alertShowing = false;
     [_promptHolder setHidden:true];
     [_inputHolder setHidden:false];
     [[self navigationItem] setLeftBarButtonItem:nil];
+    [[self navigationItem] setRightBarButtonItem:_infoButton];
 }
 
 #pragma mark - Alert View Delegate
@@ -273,8 +274,11 @@ int midpoint;
     _currentVista = nil;
     [_promptHolder setHidden:YES];
     // check if we can enable upload button
-    if ([_hike eligibleForUpload])
-        [_uploadButton setEnabled:YES];
+    if ([_hike eligibleForUpload]){
+        _uploadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadHike:)];
+        //[_uploadButton setEnabled:YES];
+        [[self navigationItem] setRightBarButtonItem:_uploadButton];
+    }
     // if all the vistas are complete, show the modal automagically. 
     if ([_hike isComplete]){
         [self performSegueWithIdentifier:@"UploadHike" sender:self];
@@ -475,6 +479,11 @@ int midpoint;
     }];
 }
 
+-(void) cancelUploadModalController:(UploadHikeController *)controller
+{
+    [controller dismissModalViewControllerAnimated:true];
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 { 
     if ([[segue identifier] isEqualToString:@"NoteModal"]){
@@ -492,6 +501,7 @@ int midpoint;
         [modal setHike:_hike];
         [modal setVcDelegate:self];
     }
+    NSLog(@"preparing for segue: %@", segue.identifier);
 }
 
 #pragma mark image picker delegate

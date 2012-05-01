@@ -149,6 +149,11 @@
     }
 }
 
+-(IBAction)cancelClick:(id)sender
+{
+    [vcDelegate cancelUploadModalController:self];
+}
+
 #pragma mark TextField Delegate
 CGSize keyboardSize;
 -(BOOL)textFieldShouldReturn:(UITextField *)textField

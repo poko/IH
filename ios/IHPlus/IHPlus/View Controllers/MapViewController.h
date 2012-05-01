@@ -19,6 +19,7 @@
     IBOutlet UITextField *_startAddress;
     IBOutlet UITextField *_endAddress;
     IBOutlet UIView *_inputHolder;
+    IBOutlet UIButton *_infoButton;
     IBOutlet UIBarButtonItem *_uploadButton;
     IBOutlet UIView *_promptHolder;
     IBOutlet UILabel *_prompt;

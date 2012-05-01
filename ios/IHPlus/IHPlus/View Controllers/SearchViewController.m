@@ -36,9 +36,14 @@
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSLog(@"preparing for segue: %@", segue.identifier);
-    SearchResultsController *resultsVC = [segue destinationViewController];
-    [resultsVC setHikes:_hikes];
-    [resultsVC setSearchTerm:[_searchBar text]];
+    if ([segue.identifier isEqualToString:@"SearchResults"]){
+        SearchResultsController *resultsVC = [segue destinationViewController];
+        [resultsVC setHikes:_hikes];
+        [resultsVC setSearchTerm:[_searchBar text]];
+    }
+    else{
+        // credits
+    }
 }
 
 #pragma mark - View lifecycle
