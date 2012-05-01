@@ -16,6 +16,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    NSDictionary *myStuff = [NSDictionary dictionaryWithObjectsAndKeys:@"Version", @"Alpha", nil];
+    [BugSenseCrashController sharedInstanceWithBugSenseAPIKey:@"94731597" userDictionary:myStuff sendImmediately:YES];
+     
     return YES;
 }
 							

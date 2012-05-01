@@ -157,7 +157,10 @@ bool alertShowing = false;
     [_promptHolder setHidden:true];
     [_inputHolder setHidden:false];
     [[self navigationItem] setLeftBarButtonItem:nil];
-    [[self navigationItem] setRightBarButtonItem:_infoButton];
+//    if ([[[self navigationItem] rightBarButtonItem] isEqual:_uploadButton]){
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:_infoButton];    
+    [[self navigationItem] setRightBarButtonItem:button];
+//    }
 }
 
 #pragma mark - Alert View Delegate
@@ -187,6 +190,22 @@ bool alertShowing = false;
     assert(false);
 }
 
+
+- (void)drawPath
+{
+    // draw path overlay
+    CLLocationCoordinate2D *pointsLine = malloc([[_hike points] count] * sizeof(CLLocationCoordinate2D));
+    for (int i = 0; i < [[_hike points] count]; i++){
+        pointsLine[i] = [(CLLocation *)[[_hike points] objectAtIndex:i ] coordinate];
+    }
+    MKPolyline *line = [MKPolyline polylineWithCoordinates:pointsLine count:[[_hike points] count]];
+    _routeLine = line;
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[[_hike points] objectAtIndex:0 ] coordinate], 400, 400);
+    [_mapView setRegion:region animated:YES];
+    [_mapView addOverlay:line];
+    free(pointsLine);
+}
+
 -(float) getRandomOffset
 {
     float min = .0005f;
@@ -201,6 +220,7 @@ bool alertShowing = false;
 }
 
 int midpoint;
+
 -(void) getDirectionsFrom:(NSString *) from to:(NSString *) to
 {
     //NSLog(@"getting directions from : %@ to: %@", from, to);
@@ -241,17 +261,7 @@ int midpoint;
                                        target:self action: @selector(clickedCreateButton:)];
             [[self navigationItem] setLeftBarButtonItem:backButton];
         
-        // draw path overlay
-        CLLocationCoordinate2D *pointsLine = malloc([[_hike points] count] * sizeof(CLLocationCoordinate2D));
-        for (int i = 0; i < [[_hike points] count]; i++){
-            pointsLine[i] = [(CLLocation *)[[_hike points] objectAtIndex:i ] coordinate];
-        }
-        MKPolyline *line = [MKPolyline polylineWithCoordinates:pointsLine count:[[_hike points] count]];
-        _routeLine = line;
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[[_hike points] objectAtIndex:0 ] coordinate], 400, 400);
-        [_mapView setRegion:region animated:YES];
-        [_mapView addOverlay:line];
-        free(pointsLine);
+        [self drawPath];
         // Have subclasses do whatever work they need .. 
         [self pathGenerated:midpoint];
                             
@@ -262,6 +272,7 @@ int midpoint;
     if (!connection) {
         NSLog(@"connection failed");
         [self hideLoadingDialog:@"Could not connect to server"];
+        //TODO - have some included vistas, don't show error?
     }
 }
 

@@ -21,8 +21,6 @@
 		A64C9409152E4CCA0090BD0D /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9406152E4CCA0090BD0D /* Hike.m */; };
 		A64C941A152E4CED0090BD0D /* HikeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */; };
 		A64C941D152E4CED0090BD0D /* SearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9410152E4CED0090BD0D /* SearchResultsController.m */; };
-		A64C941E152E4CED0090BD0D /* HikesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9415152E4CED0090BD0D /* HikesListViewController.m */; };
-		A64C941F152E4CED0090BD0D /* ViewOrHikeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */; };
 		A67D3D5115126D5C00391EE5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5015126D5C00391EE5 /* UIKit.framework */; };
 		A67D3D5315126D5C00391EE5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5215126D5C00391EE5 /* Foundation.framework */; };
 		A67D3D5515126D5C00391EE5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D5415126D5C00391EE5 /* CoreGraphics.framework */; };
@@ -33,6 +31,8 @@
 		A67D3D6715126D5C00391EE5 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A67D3D6515126D5C00391EE5 /* MainStoryboard_iPad.storyboard */; };
 		A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D781512998400391EE5 /* MapKit.framework */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
+		A6820D4F155077050039C656 /* BugSense-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D4E155077050039C656 /* BugSense-iOS.framework */; };
+		A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D50155077200039C656 /* SystemConfiguration.framework */; };
 		A6984D9A152F6EF7005934C4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984D9B152F6EF7005934C4 /* MapViewController.m */; };
 		A6984DA0152F74EE005934C4 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984DA1152F74EE005934C4 /* SearchViewController.m */; };
 		A6AB117815265FB20002D9EE /* hike_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117415265FB10002D9EE /* hike_it_btn.png */; };
@@ -97,10 +97,6 @@
 		A64C9412152E4CED0090BD0D /* SearchResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultsController.h; path = "View Controllers/SearchResultsController.h"; sourceTree = "<group>"; };
 		A64C9413152E4CED0090BD0D /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = "View Controllers/SearchViewController.h"; sourceTree = "<group>"; };
 		A64C9414152E4CED0090BD0D /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapViewController.h; path = "View Controllers/MapViewController.h"; sourceTree = "<group>"; };
-		A64C9415152E4CED0090BD0D /* HikesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HikesListViewController.m; path = "View Controllers/HikesListViewController.m"; sourceTree = "<group>"; };
-		A64C9416152E4CED0090BD0D /* HikesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HikesListViewController.h; path = "View Controllers/HikesListViewController.h"; sourceTree = "<group>"; };
-		A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewOrHikeViewController.m; path = "View Controllers/ViewOrHikeViewController.m"; sourceTree = "<group>"; };
-		A64C9418152E4CED0090BD0D /* ViewOrHikeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewOrHikeViewController.h; path = "View Controllers/ViewOrHikeViewController.h"; sourceTree = "<group>"; };
 		A67D3D4C15126D5C00391EE5 /* IHPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IHPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A67D3D5015126D5C00391EE5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A67D3D5215126D5C00391EE5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -116,6 +112,8 @@
 		A67D3D781512998400391EE5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
 		A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
+		A6820D4E155077050039C656 /* BugSense-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BugSense-iOS.framework"; path = "../../../../Downloads/BugSense-iOS.framework"; sourceTree = "<group>"; };
+		A6820D50155077200039C656 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A687B48C1520D1D8004F08B0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A6984D9B152F6EF7005934C4 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = "View Controllers/MapViewController.m"; sourceTree = "<group>"; };
 		A6984DA1152F74EE005934C4 /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = "View Controllers/SearchViewController.m"; sourceTree = "<group>"; };
@@ -177,6 +175,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */,
+				A6820D4F155077050039C656 /* BugSense-iOS.framework in Frameworks */,
 				A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */,
 				A6D9663D1534E54600255CC3 /* MessageUI.framework in Frameworks */,
 				A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */,
@@ -206,6 +206,8 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				A6820D50155077200039C656 /* SystemConfiguration.framework */,
+				A6820D4E155077050039C656 /* BugSense-iOS.framework */,
 				A60BBAAE15473F83005E8EF0 /* point.gpx */,
 				A6D9663C1534E54500255CC3 /* MessageUI.framework */,
 				A6D9662815335FFF00255CC3 /* sample_hike.gpx */,
@@ -289,10 +291,6 @@
 				A6984DA1152F74EE005934C4 /* SearchViewController.m */,
 				A64C9412152E4CED0090BD0D /* SearchResultsController.h */,
 				A64C9410152E4CED0090BD0D /* SearchResultsController.m */,
-				A64C9415152E4CED0090BD0D /* HikesListViewController.m */,
-				A64C9416152E4CED0090BD0D /* HikesListViewController.h */,
-				A64C9417152E4CED0090BD0D /* ViewOrHikeViewController.m */,
-				A64C9418152E4CED0090BD0D /* ViewOrHikeViewController.h */,
 				A6D966311534D18F00255CC3 /* NoteModalController.h */,
 				A6D966321534D18F00255CC3 /* NoteModalController.m */,
 				A6D9663E1535EE5400255CC3 /* TextModalController.h */,
@@ -466,8 +464,6 @@
 				A64C941A152E4CED0090BD0D /* HikeDetailsViewController.m in Sources */,
 				A6984DA0152F74EE005934C4 /* SearchViewController.m in Sources */,
 				A64C941D152E4CED0090BD0D /* SearchResultsController.m in Sources */,
-				A64C941E152E4CED0090BD0D /* HikesListViewController.m in Sources */,
-				A64C941F152E4CED0090BD0D /* ViewOrHikeViewController.m in Sources */,
 				A6D966331534D18F00255CC3 /* NoteModalController.m in Sources */,
 				A6D966401535EE5500255CC3 /* TextModalController.m in Sources */,
 				A6D966511538C65400255CC3 /* UploadHikeController.m in Sources */,
@@ -567,6 +563,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../../../Downloads\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
@@ -582,9 +579,11 @@
 		A67D3D6F15126D5C00391EE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../../../Downloads\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";

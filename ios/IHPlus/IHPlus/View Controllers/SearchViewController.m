@@ -40,6 +40,7 @@
         SearchResultsController *resultsVC = [segue destinationViewController];
         [resultsVC setHikes:_hikes];
         [resultsVC setSearchTerm:[_searchBar text]];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"search" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
     else{
         // credits

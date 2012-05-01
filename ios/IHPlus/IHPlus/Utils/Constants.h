@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define BASE_URL @"http://localhost:8888/IHServer/"
+//#define BASE_URL @"http://localhost:8888/IHServer/"
+#define BASE_URL @"http://www.po-ko.com/IHStaging/"
 #define BASE_PHOTO_URL @"http://www.ecoarttech.org/ih_plus/uploads/"
 #define KEY_ACTION_ID @"action_id"
 #define KEY_ACTION_TYPE @"action_type"

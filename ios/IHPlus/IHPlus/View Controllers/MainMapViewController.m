@@ -191,6 +191,7 @@
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([[[_hike points] objectAtIndex:0 ] coordinate], 400, 400);
         [_mapView setRegion:region animated:YES];
         // draw path and vistas
+        [self drawPath];
         [self drawVistas];
     }];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; 

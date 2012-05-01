@@ -100,6 +100,7 @@
 //        NSLog(@"Setting hike: %@", [hikes objectAtIndex:selected.row]);
         
         [nextVC setHike:[hikes objectAtIndex:[sender tag]]];
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"hike list" style:UIBarButtonItemStylePlain target:nil action:nil];
     }
 }
 
