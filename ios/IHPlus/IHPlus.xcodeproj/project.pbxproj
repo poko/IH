@@ -112,7 +112,6 @@
 		A67D3D781512998400391EE5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		A67D3D891513AD8E00391EE5 /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
 		A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
-		A6820D4E155077050039C656 /* BugSense-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BugSense-iOS.framework"; path = "../../../../Downloads/BugSense-iOS.framework"; sourceTree = "<group>"; };
 		A6820D50155077200039C656 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A6820D521551861B0039C656 /* BugSense-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BugSense-iOS.framework"; path = "IHPlus/BugSense-iOS.framework"; sourceTree = "<group>"; };
 		A687B48C1520D1D8004F08B0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -209,7 +208,6 @@
 			children = (
 				A6820D521551861B0039C656 /* BugSense-iOS.framework */,
 				A6820D50155077200039C656 /* SystemConfiguration.framework */,
-				A6820D4E155077050039C656 /* BugSense-iOS.framework */,
 				A60BBAAE15473F83005E8EF0 /* point.gpx */,
 				A6D9663C1534E54500255CC3 /* MessageUI.framework */,
 				A6D9662815335FFF00255CC3 /* sample_hike.gpx */,
@@ -340,6 +338,7 @@
 		A6D9665C1540B24C00255CC3 /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
+				A6EEC00C15503C500060641E /* GetDirectionsDelegate.h */,
 				A6EEC00515503C500060641E /* GetDirectionsDelegate.m */,
 				A6EEC00615503C500060641E /* RewalkHikeDelegate.m */,
 				A6EEC00715503C500060641E /* UploadHikeDelegate.m */,
@@ -347,7 +346,6 @@
 				A6EEC00915503C500060641E /* VistaActionsDelegate.h */,
 				A6EEC00A15503C500060641E /* RewalkHikeDelegate.h */,
 				A6EEC00B15503C500060641E /* UploadHikeDelegate.h */,
-				A6EEC00C15503C500060641E /* GetDirectionsDelegate.h */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";
@@ -389,7 +387,7 @@
 		A67D3D4315126D5C00391EE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = A67D3D4615126D5C00391EE5 /* Build configuration list for PBXProject "IHPlus" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -596,6 +594,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
