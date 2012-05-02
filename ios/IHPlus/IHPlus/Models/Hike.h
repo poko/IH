@@ -23,6 +23,7 @@
 @property (nonatomic, strong) NSMutableArray *points; //holds CLLocation objects
 @property (nonatomic, strong) NSString *startLat;
 @property (nonatomic, strong) NSString *startLng;
+@property (nonatomic, assign) BOOL companion;
 
 + (Hike *) initWithDictionary:(NSDictionary *) dict;
 - (void) addPoint:(CLLocation *) point;

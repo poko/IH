@@ -30,7 +30,6 @@ NSMutableData *receivedData;
     // redirect, so each time we reset the data.
     
     // receivedData is an instance variable declared elsewhere.
-    NSLog(@"didReceiveResponse");
     receivedData = [NSMutableData data];
     [receivedData setLength:0];
 }
@@ -39,7 +38,6 @@ NSMutableData *receivedData;
 {
     // Append the new data to receivedData.
     // receivedData is an instance variable declared elsewhere.
-    NSLog(@"didReceiveData");
     [receivedData appendData:data];
 }
 
@@ -53,7 +51,7 @@ NSMutableData *receivedData;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     // parse response data
-    NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
+    NSLog(@"Directions Succeeded! Received %d bytes of data",[receivedData length]);
     if ([receivedData length] > 0){
         NSXMLParser *parser = [[NSXMLParser alloc] initWithData:receivedData];
         [parser setDelegate:self];

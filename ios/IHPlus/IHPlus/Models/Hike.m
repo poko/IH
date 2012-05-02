@@ -10,7 +10,7 @@
 
 @implementation Hike
 
-@synthesize hikeId, date, name, description, username;
+@synthesize hikeId, date, name, description, username, companion;
 @synthesize vistas, original, originalHikeId, points, startLat, startLng;
 
 + (Hike *) initWithDictionary:(NSDictionary *)dict
@@ -102,10 +102,12 @@ bool eligble = false;
 
 - (bool) isComplete
 {
-//     TODOx uncomment! for (ScenicVista *vista in vistas){
-//        if (![vista complete])
-//            return false;
-//    }
+    if (companion)
+        return false; // companion hikes are never 'complete', just eligible for upload.
+    for (ScenicVista *vista in vistas){
+        if (![vista complete])
+            return false;
+    }
     return true;
 }
 

@@ -42,6 +42,8 @@
     if (_mapView != nil){
         [self.view insertSubview:_mapView belowSubview:_inputHolder];
         [_mapView setDelegate:self];
+        [_locMgr setDelegate:self];
+        NSLog(@"location manager? %@", _locMgr);
     }
 }
 
@@ -71,6 +73,14 @@
                                                  name:UIKeyboardWillShowNotification object:self.view.window]; 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
                                                  name:UIKeyboardWillHideNotification object:self.view.window]; 
+}
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // TODO Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
  
 #pragma mark - MapView Delegate
@@ -107,23 +117,29 @@
     
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // TODO Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
+NSTimer *_timer;
 -(void)showLoadingDialog
 {
+    //TODO start failure timer to remove dialog incase something goes awry
+    SEL selector = @selector(hideLoadingDialog:);
+    
+    NSMethodSignature *signature = [MapViewController instanceMethodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    [invocation setSelector:selector];
+    
+    NSString *str1 = @"Timeout";
+    
+    //Set the arguments
+    [invocation setTarget:self];
+    [invocation setArgument:&str1 atIndex:2];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:10 invocation:invocation repeats:NO];
     //loading dialog
     if (_loadingIndicator == nil){
         _loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
@@ -140,12 +156,15 @@ bool alertShowing = false;
 -(void)hideLoadingDialog:(NSString *) error
 {
     [_loadingIndicator stopAnimating];
+    // stop timer
+    [_timer invalidate];
     if (error != nil && !alertShowing){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error Creating Hike" message:[NSString stringWithFormat:@"There was an error creating the hike: %@", error]
              delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
         alertShowing = true;
     }
+    
 }
 
 - (void) newHike
@@ -157,11 +176,13 @@ bool alertShowing = false;
     [_promptHolder setHidden:true];
     [_inputHolder setHidden:false];
     [[self navigationItem] setLeftBarButtonItem:nil];
-//    if ([[[self navigationItem] rightBarButtonItem] isEqual:_uploadButton]){
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:_infoButton];    
-    [[self navigationItem] setRightBarButtonItem:button];
-//    }
+    if ([[[self navigationItem] rightBarButtonItem] isEqual:_uploadButton]){
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:_infoButton];    
+        [[self navigationItem] setRightBarButtonItem:button];
+    }
 }
+
+
 
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -238,19 +259,20 @@ int midpoint;
             return;
         }
         _callCount++;
-        //[_pathPoints addObjectsFromArray:points];
+        [_pathPoints addObjectsFromArray:points];
         NSLog(@"compeltion handler!! %i", _callCount);
-//        if (_callCount == 1){
-//            midpoint = ([_pathPoints count] - 1);
-//            [self getDirectionsFrom:to to:[_endAddress text]];
-//        }
-//        if (_callCount == 2){
+        if (_callCount == 1){
+            midpoint = ([_pathPoints count] - 1);//set midpoint as last index from first call
+            [self getDirectionsFrom:to to:[_endAddress text]];
+        }
+        if (_callCount == 2){
             NSLog(@"should be drawing now, %i", [points count]);
             // Create the Hike object!
             _hike = [[Hike alloc] init];
             [_hike setOriginal:@"true"];
-            // add points to it
-            [_hike setPoints:points];
+            // add all points to it
+            [_hike setPoints:_pathPoints];
+            _pathPoints = nil;
             
             // hide the input view
             [_inputHolder setHidden:YES];
@@ -263,9 +285,10 @@ int midpoint;
         
         [self drawPath];
         // Have subclasses do whatever work they need .. 
+        NSLog(@"about to call path generated: %i", midpoint);
         [self pathGenerated:midpoint];
-                            
-//        }
+        NSLog(@"done call path generated");
+       }
         
     }];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:connDelegate];
@@ -336,6 +359,7 @@ int midpoint;
     [self removeOverlaysAndAnnotations];
     // clear out any previous data
     _callCount = 0;
+    _pathPoints = [[NSMutableArray alloc] init];
     // have subclasses do their prep (remove any pending proximity alerts, etc)
     [self prepareNewHike];
     
@@ -385,11 +409,10 @@ int midpoint;
                  NSLog(@"Rand lng: %f", randLng);
                  // reverse geocode the random point //TODO ??
                  //CLLocation *randLoc = [[CLLocation alloc] initWithLatitude:randLat longitude:randLng];
-                 NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng];
-                 // TODOx 
-                 [self getDirectionsFrom:start to:end];
-//                 [self getDirectionsFrom:start to:randPoint];
-//                 [self getDirectionsFrom:randPoint to:end];
+                 NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng]; 
+//                 [self getDirectionsFrom:start to:end];
+                 [self getDirectionsFrom:start to:randPoint];
+                 [self getDirectionsFrom:randPoint to:end];
              }
              else{
                  NSLog(@"Nothing returned for placemarks search");

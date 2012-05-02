@@ -32,6 +32,7 @@
     ScenicVista *_currentVista;
     CLLocationManager *_locMgr;
     MKUserLocation *_currentLocation;
+    NSMutableArray *_pathPoints;
 }
 
 -(IBAction)currentLocation:(id)sender;

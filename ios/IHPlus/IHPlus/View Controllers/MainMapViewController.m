@@ -86,24 +86,18 @@
         ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
         MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
         [annotationPoint setCoordinate:[[vista location] coordinate]];
-        [annotationPoint setTitle:[vista prompt]];
+        [annotationPoint setTitle:[vista prompt]]; //TODOx
         [_mapView addAnnotation:annotationPoint];
         // enable geofence
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
-        NSLog(@"Vista at coord: %@", [vista location]);
+        NSLog(@"Vista fence at coord: %@", [vista location]);
     }
-    
 }
 
 #pragma mark - "protected" methods
 -(void) prepareNewHike
 {
     NSLog(@"prepare test in Main map");
-//    if (_monitoredRegions != nil){
-//        for (CLRegion *region in _monitoredRegions){
-//            [_locMgr stopMonitoringForRegion:region];
-//        }
-    //    }
     NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
     NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
     for (int i = 0; i < [regionArray count]; i++) { 

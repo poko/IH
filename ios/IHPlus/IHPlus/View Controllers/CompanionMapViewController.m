@@ -73,22 +73,28 @@
         // show the add button
         [_addVistaButton setHidden:false];
     }];
-    NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=10", BASE_URL];
+    NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=10&companion=true", BASE_URL];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
         NSLog(@"connection to get actions failed");
         [self hideLoadingDialog:@"Unable to connect with server"];
     }
+    // make hike a companion hike
+    [_hike setCompanion:true];
 }
 
 #pragma mark - IBActions
 
 -(IBAction)addVistaHere:(id)sender
 { 
+    NSLog(@"adding vista now. total vistas: %i", [[_hike vistas] count]);
     // drop pin on map at current location
+    //TODO - vista image
     MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
     annotationPoint.coordinate = _currentLocation.location.coordinate;
+    NSLog(@"vista point lat: %f",   _currentLocation.location.coordinate.latitude );
+    NSLog(@"vista point lng: %f",   _currentLocation.location.coordinate.longitude );
     [_mapView addAnnotation:annotationPoint];
     //next action (size of existing vistas) to get our action from.
     NSDictionary *action = [_actions objectAtIndex:[[_hike vistas] count]];
@@ -97,11 +103,10 @@
     [vista setLocation:_currentLocation.location];
     [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
 //    [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]]; //TODOx    
-    [vista setActionType:@"note"]; 
+    [vista setActionType:@"text"]; 
     [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
     // add vista object to hike
     [_hike addCompanionVista:vista];
-    
     //show vista input
     _currentVista = vista;
     [self showActionView];
