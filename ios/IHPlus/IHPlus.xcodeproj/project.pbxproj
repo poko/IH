@@ -31,8 +31,8 @@
 		A67D3D6715126D5C00391EE5 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A67D3D6515126D5C00391EE5 /* MainStoryboard_iPad.storyboard */; };
 		A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D781512998400391EE5 /* MapKit.framework */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
-		A6820D4F155077050039C656 /* BugSense-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D4E155077050039C656 /* BugSense-iOS.framework */; };
 		A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D50155077200039C656 /* SystemConfiguration.framework */; };
+		A6820D531551861C0039C656 /* BugSense-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D521551861B0039C656 /* BugSense-iOS.framework */; };
 		A6984D9A152F6EF7005934C4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984D9B152F6EF7005934C4 /* MapViewController.m */; };
 		A6984DA0152F74EE005934C4 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984DA1152F74EE005934C4 /* SearchViewController.m */; };
 		A6AB117815265FB20002D9EE /* hike_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117415265FB10002D9EE /* hike_it_btn.png */; };
@@ -114,6 +114,7 @@
 		A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
 		A6820D4E155077050039C656 /* BugSense-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BugSense-iOS.framework"; path = "../../../../Downloads/BugSense-iOS.framework"; sourceTree = "<group>"; };
 		A6820D50155077200039C656 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A6820D521551861B0039C656 /* BugSense-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BugSense-iOS.framework"; path = "IHPlus/BugSense-iOS.framework"; sourceTree = "<group>"; };
 		A687B48C1520D1D8004F08B0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A6984D9B152F6EF7005934C4 /* MapViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MapViewController.m; path = "View Controllers/MapViewController.m"; sourceTree = "<group>"; };
 		A6984DA1152F74EE005934C4 /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = "View Controllers/SearchViewController.m"; sourceTree = "<group>"; };
@@ -175,8 +176,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A6820D531551861C0039C656 /* BugSense-iOS.framework in Frameworks */,
 				A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */,
-				A6820D4F155077050039C656 /* BugSense-iOS.framework in Frameworks */,
 				A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */,
 				A6D9663D1534E54600255CC3 /* MessageUI.framework in Frameworks */,
 				A6EDACD71513D489000AFB60 /* CoreLocation.framework in Frameworks */,
@@ -206,6 +207,7 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				A6820D521551861B0039C656 /* BugSense-iOS.framework */,
 				A6820D50155077200039C656 /* SystemConfiguration.framework */,
 				A6820D4E155077050039C656 /* BugSense-iOS.framework */,
 				A60BBAAE15473F83005E8EF0 /* point.gpx */,
@@ -564,6 +566,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/../../../../Downloads\"",
+					"\"$(SRCROOT)/IHPlus\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";
@@ -584,6 +587,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/../../../../Downloads\"",
+					"\"$(SRCROOT)/IHPlus\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "IHPlus/IHPlus-Prefix.pch";

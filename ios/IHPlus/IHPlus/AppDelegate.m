@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <BugSense-iOS/BugSenseCrashController.h>
 
 @implementation AppDelegate
 
