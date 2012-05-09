@@ -14,7 +14,7 @@
 #import "UploadHikeController.h"
 #import "VistaActionsDelegate.h"
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate, UIImagePickerControllerDelegate, UploadHikeControllerDelegate>{
+@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UploadHikeControllerDelegate>{
     IBOutlet MKMapView *_mapView;
     IBOutlet UITextField *_startAddress;
     IBOutlet UITextField *_endAddress;

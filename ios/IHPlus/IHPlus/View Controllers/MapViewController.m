@@ -547,8 +547,26 @@ int midpoint;
     
     // Save image
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
-    //TODO - mark vista as complete, save location of photo for uploadings
 }
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+{
+    UIAlertView *alert;
+    
+    // Unable to save the image  
+    if (error){
+        alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+                                           message:@"Unable to save image to Photo Album." 
+                                          delegate:self cancelButtonTitle:@"Ok" 
+                                 otherButtonTitles:nil];
+    }
+    else{ // All is well
+        //TODO - mark vista as complete, save location of photo for uploadings
+        //[_currentVista setImage:[imageUrl!];
+        [self completeCurrentVista];
+    }
+} 
+
 
 #pragma mark TextField Delegate
 

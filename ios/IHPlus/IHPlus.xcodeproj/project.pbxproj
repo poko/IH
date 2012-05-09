@@ -17,6 +17,8 @@
 		A627BABA152E4BE90056A670 /* create_hike_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BAB6152E4BE80056A670 /* create_hike_btn.png */; };
 		A627BABD152E4BF20056A670 /* search_hike_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BABB152E4BF00056A670 /* search_hike_on_btn.png */; };
 		A627BABE152E4BF20056A670 /* create_hike_on_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A627BABC152E4BF10056A670 /* create_hike_on_btn.png */; };
+		A63CAB691559C9AE00B40F30 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A63CAB681559C9AE00B40F30 /* icon.png */; };
+		A63CAB6C1559C9E100B40F30 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63CAB6B1559C9E100B40F30 /* icon@2x.png */; };
 		A64C9408152E4CCA0090BD0D /* ScenicVista.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9404152E4CCA0090BD0D /* ScenicVista.m */; };
 		A64C9409152E4CCA0090BD0D /* Hike.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C9406152E4CCA0090BD0D /* Hike.m */; };
 		A64C941A152E4CED0090BD0D /* HikeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A64C940C152E4CED0090BD0D /* HikeDetailsViewController.m */; };
@@ -87,6 +89,8 @@
 		A627BAB6152E4BE80056A670 /* create_hike_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_hike_btn.png; path = Assets/create_hike_btn.png; sourceTree = "<group>"; };
 		A627BABB152E4BF00056A670 /* search_hike_on_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = search_hike_on_btn.png; path = Assets/search_hike_on_btn.png; sourceTree = "<group>"; };
 		A627BABC152E4BF10056A670 /* create_hike_on_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = create_hike_on_btn.png; path = Assets/create_hike_on_btn.png; sourceTree = "<group>"; };
+		A63CAB681559C9AE00B40F30 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
+		A63CAB6B1559C9E100B40F30 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "../icon@2x.png"; sourceTree = "<group>"; };
 		A64C9404152E4CCA0090BD0D /* ScenicVista.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScenicVista.m; path = Models/ScenicVista.m; sourceTree = "<group>"; };
 		A64C9405152E4CCA0090BD0D /* ScenicVista.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScenicVista.h; path = Models/ScenicVista.h; sourceTree = "<group>"; };
 		A64C9406152E4CCA0090BD0D /* Hike.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Hike.m; path = Models/Hike.m; sourceTree = "<group>"; };
@@ -304,6 +308,8 @@
 		A687B46D151A486A004F08B0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A63CAB6B1559C9E100B40F30 /* icon@2x.png */,
+				A63CAB681559C9AE00B40F30 /* icon.png */,
 				A6EEC00115503C3E0060641E /* x-species_btn2x.png */,
 				A6EEC00215503C3E0060641E /* x-species_on_btn2x.png */,
 				A6EEBFF115503C340060641E /* Default@2x.png */,
@@ -442,6 +448,8 @@
 				A6EEC00015503C340060641E /* your_location_btn.png in Resources */,
 				A6EEC00315503C3E0060641E /* x-species_btn2x.png in Resources */,
 				A6EEC00415503C3E0060641E /* x-species_on_btn2x.png in Resources */,
+				A63CAB691559C9AE00B40F30 /* icon.png in Resources */,
+				A63CAB6C1559C9E100B40F30 /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
