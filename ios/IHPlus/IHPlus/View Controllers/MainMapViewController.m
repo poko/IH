@@ -86,7 +86,7 @@
         ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
         MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
         [annotationPoint setCoordinate:[[vista location] coordinate]];
-        [annotationPoint setTitle:[vista prompt]]; //TODOx
+        //[annotationPoint setTitle:[vista prompt]]; //TODOx
         [_mapView addAnnotation:annotationPoint];
         // enable geofence
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];

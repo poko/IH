@@ -90,7 +90,7 @@
     NSLog(@"User location : %@", userLocation.location );
     NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
     _currentLocation = userLocation;
-    
+    //TODO - ask about best practices here? center after some amt of time has elapsed? just once?
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 400, 400);
     [_mapView setRegion:region animated:YES];
     
@@ -126,7 +126,6 @@
 NSTimer *_timer;
 -(void)showLoadingDialog
 {
-    //TODO start failure timer to remove dialog incase something goes awry
     SEL selector = @selector(hideLoadingDialog:);
     
     NSMethodSignature *signature = [MapViewController instanceMethodSignatureForSelector:selector];
@@ -139,6 +138,7 @@ NSTimer *_timer;
     [invocation setTarget:self];
     [invocation setArgument:&str1 atIndex:2];
     
+    // start failure timer to remove dialog incase something goes awry
     _timer = [NSTimer scheduledTimerWithTimeInterval:10 invocation:invocation repeats:NO];
     //loading dialog
     if (_loadingIndicator == nil){
