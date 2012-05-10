@@ -51,6 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"map view didloaded");
     [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];//TODOx
     [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
@@ -81,6 +82,7 @@
     [super viewDidUnload];
     // TODO Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    NSLog(@"map view unloaded");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
  
@@ -305,6 +307,7 @@ int midpoint;
 
 -(void) completeCurrentVista
 {
+    NSLog(@"completing current vista. Total vistas: %i", [[_hike vistas] count]);
     [_currentVista setComplete:YES];
     //remove region tracking!
     [_locMgr stopMonitoringForRegion:[_currentVista region]];
@@ -546,6 +549,9 @@ int midpoint;
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    NSLog(@"finished taking photo");
+    //dismiss picker
+    [picker dismissModalViewControllerAnimated:true];
     // Access the uncropped image from info dictionary
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
     NSURL *photoUrl = [info objectForKey:UIImagePickerControllerReferenceURL];
@@ -557,7 +563,7 @@ int midpoint;
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     UIAlertView *alert;
-    
+    NSLog(@"did finish saving photo error? %@", error);
     // Unable to save the image  
     if (error){
         alert = [[UIAlertView alloc] initWithTitle:@"Error" 

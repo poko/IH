@@ -125,6 +125,8 @@
     NSLog(@"url: %@", req.URL);
     // set POST parameters
     [req setHTTPMethod:@"POST"];
+    [req addValue:[NSString stringWithFormat:@"multipart/form-data; charset=UTF-8; boundary=%@", @"####"]
+                               forHTTPHeaderField:@"Content-Type"];
     NSLog(@"trying to log upload data: %@", [hike getUploadData]);
     [req setHTTPBody:[hike getUploadData]];
     UploadHikeDelegate *connDelegate = [[UploadHikeDelegate alloc] initWithHandler:^(bool success, NSString *error) {

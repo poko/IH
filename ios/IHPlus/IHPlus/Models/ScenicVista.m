@@ -53,16 +53,25 @@
 
 - (NSString *) toJson
 {
-    NSMutableString *str = [[NSMutableString alloc] init];
-    [str appendFormat:@"latitude=%f", location.coordinate.latitude];
-	[str appendFormat:@"longitude=%f", location.coordinate.longitude];
-	[str appendFormat:@"action_id=%@", actionId];
-	[str appendFormat:@"note=%@", note];
-    if ([self getActionType] == PHOTO){
-        photoUrl = [NSString stringWithFormat:@"IH_%i,%i", location.coordinate.latitude*1000000, location.coordinate.longitude *1000000];
-        [str appendFormat:@"photo=%@", photoUrl];
-    }
-	[str appendFormat:@"date=%@", date];
+//    NSMutableString *str = [[NSMutableString alloc] init];
+//    [str appendFormat:@"latitude=%f", location.coordinate.latitude];
+//	[str appendFormat:@"longitude=%f", location.coordinate.longitude];
+//	[str appendFormat:@"action_id=%@", actionId];
+//	[str appendFormat:@"note=%@", note];
+//    if ([self getActionType] == PHOTO){
+//        photoUrl = [self getUploadFileName];
+//        [str appendFormat:@"photo=%@", photoUrl];
+//    }
+//	[str appendFormat:@"date=%@", date];
+//    return str;
+     NSMutableString *str = [NSMutableString stringWithFormat:@"{\"latitude\": %f, \"longitude\": %f, \"action_id\": %i, \"note\": \"%@\",\"photo\":\"%@\", \"date\":\"%@\"}", 
+                              location.coordinate.latitude,
+                              location.coordinate.longitude,
+                              actionId,
+                              note,
+                              [self getUploadFileName],
+                              date];
+    NSLog(@"vista json: %@", str);
     return str;
 }
 
@@ -72,6 +81,11 @@
         return [NSData dataWithContentsOfURL:photoLocalUrl];
     }
     return nil;
+}
+
+-(NSString *) getUploadFileName
+{
+      return [NSString stringWithFormat:@"IH_%i,%i", location.coordinate.latitude*1000000, location.coordinate.longitude *1000000];
 }
 
 -(BOOL) isEqual:(id)object

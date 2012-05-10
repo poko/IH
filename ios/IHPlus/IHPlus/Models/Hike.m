@@ -102,12 +102,12 @@ bool eligble = false;
 
 - (bool) isComplete
 {
-    if (companion)
-        return false; // companion hikes are never 'complete', just eligible for upload.
-    for (ScenicVista *vista in vistas){
-        if (![vista complete])
-            return false;
-    }
+//   TODOx if (companion)
+//        return false; // companion hikes are never 'complete', just eligible for upload.
+//    for (ScenicVista *vista in vistas){
+//        if (![vista complete])
+//            return false;
+//    }
     return true;
 }
 
@@ -122,10 +122,14 @@ bool eligble = false;
 
 - (NSString *) vistasAsJson
 {
-    NSMutableString *str = [[NSMutableString alloc] init];
+    NSMutableString *str = [NSMutableString stringWithString:@"["];
     for (ScenicVista *vista in vistas){
         [str appendFormat:@"%@,", [vista toJson]];
     }
+    // remove last comma
+    [str deleteCharactersInRange:NSMakeRange([str length]-1, 1)];
+    [str appendString:@"]"];
+    NSLog(@"vistas as json: %@", str);
     return str;
 }
 
@@ -143,25 +147,58 @@ bool eligble = false;
     return str;
 }
 
+-(void) appendToData:(NSMutableData *) data key:(NSString *) key value:(NSString *) value
+{
+    NSString*   entry = [NSString stringWithFormat:
+                         @"--%@\r\nContent-Disposition: form-data; name=\"%@\"\r\n\r\n%@\r\n",
+                         @"####", key, value];
+    [data appendData:[entry dataUsingEncoding:NSUTF8StringEncoding]];
+}
+
 - (NSData *) getUploadData
 {
-    NSMutableString *data = [NSMutableString stringWithFormat:@"hike_name=%@&description=%@&username=%@",
-                      name, description, username];
-    [data appendFormat:@"&original=%@", original];
-    [data appendFormat:@"&vistas=%@", [self vistasAsJson]];
+//    NSMutableString *data = [NSMutableString stringWithFormat:@"hike_name=%@&description=%@&username=%@",
+//                      name, description, username];
+//    [data appendFormat:@"&original=%@", original];
+//    [data appendFormat:@"&vistas=%@", [self vistasAsJson]];
+//    if ([original isEqualToString:@"true"]){
+//        [data appendFormat:@"&start_lat=%@", startLat];
+//        [data appendFormat:@"&start_lng=%@", startLng];
+//        [data appendFormat:@"&points=%@", [self pointsAsJson]];
+//    }
+    
+    NSMutableData*      data = [[NSMutableData alloc] init];
+    [self appendToData:data key:@"hike_name" value: name];
+    [self appendToData:data key:@"description" value: description];
+    [self appendToData:data key:@"username" value: username];
+    [self appendToData:data key:@"original" value: original];
+    [self appendToData:data key:@"vistas" value: [self vistasAsJson]];
     if ([original isEqualToString:@"true"]){
-        [data appendFormat:@"&start_lat=%@", startLat];
-        [data appendFormat:@"&start_lng=%@", startLng];
-        [data appendFormat:@"&points=%@", [self pointsAsJson]];
+        [self appendToData:data key:@"start_lat" value: startLat];
+        [self appendToData:data key:@"start_lng" value: startLng];
+        [self appendToData:data key:@"points" value: [self pointsAsJson]];
     }
+
+    
     // TODO upload photos
     for (int i = 0; i < [vistas count]; i++){
         ScenicVista *vista = [vistas objectAtIndex:i];
         if ([vista getActionType] == PHOTO) {
-            [data appendFormat:@"&photos_@i=%@",i, [vista getUploadPhoto]];
+            NSString*       head = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"photos_@i\"",
+                                    @"####", i];
+            
+            if([vista getUploadFileName])
+                head = [head stringByAppendingFormat:@"; filename=\"%@\"", [vista getUploadFileName]];
+            
+            head = [head stringByAppendingFormat:@"\r\nContent-Length: %d\r\n\r\n", [[vista getUploadPhoto] length]];
+            
+            [data appendData:[head dataUsingEncoding:NSUTF8StringEncoding]];
+            [data appendData:[vista getUploadPhoto]];
         }
-}
-    return [data dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    [data appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", @"####"] dataUsingEncoding:NSUTF8StringEncoding]];
+
+    return data;//[data dataUsingEncoding:NSUTF8StringEncoding];
 }
 
 @end

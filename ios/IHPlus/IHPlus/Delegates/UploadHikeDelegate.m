@@ -53,6 +53,7 @@ NSMutableData *receivedData;
 {
     // parse response data
     NSLog(@"Succeeded! Received %d bytes of data",[receivedData length]);
+    NSLog(@"Succeeded! data: %@",[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     if ([receivedData length] > 0){
        //parse out success
         NSError *error;

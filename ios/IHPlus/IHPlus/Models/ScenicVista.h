@@ -34,5 +34,6 @@ typedef enum {
 - (ActionType) getActionType;
 - (NSString *) toJson;
 - (NSData *) getUploadPhoto;
+- (NSString *) getUploadFileName;
 
 @end
