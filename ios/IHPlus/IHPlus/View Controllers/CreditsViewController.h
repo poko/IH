@@ -11,6 +11,7 @@
 
 @interface CreditsViewController : UIViewController
 
+@property (nonatomic, strong) IBOutlet UITextView *textview;
 - (IBAction)done:(id)sender;
 
 @end

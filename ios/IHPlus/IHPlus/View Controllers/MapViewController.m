@@ -52,8 +52,8 @@
 {
     [super viewDidLoad];
     NSLog(@"map view didloaded");
-    [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];//TODOx
-    [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
+    [_endAddress setDelegate:self]; //[_endAddress setText:@"1300 bob harrison 78702"];//TODOx
+    [_startAddress setDelegate:self]; //[_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
