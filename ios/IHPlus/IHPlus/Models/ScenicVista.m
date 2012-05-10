@@ -10,7 +10,7 @@
 
 @implementation ScenicVista
 
-@synthesize actionId, actionType, prompt, date, note, photoUrl;
+@synthesize actionId, actionType, prompt, date, note, photoUrl, photoLocalUrl;
 @synthesize location, complete, region;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *)dict
@@ -58,9 +58,20 @@
 	[str appendFormat:@"longitude=%f", location.coordinate.longitude];
 	[str appendFormat:@"action_id=%@", actionId];
 	[str appendFormat:@"note=%@", note];
-	[str appendFormat:@"photo=%@", photoUrl];
+    if ([self getActionType] == PHOTO){
+        photoUrl = [NSString stringWithFormat:@"IH_%i,%i", location.coordinate.latitude*1000000, location.coordinate.longitude *1000000];
+        [str appendFormat:@"photo=%@", photoUrl];
+    }
 	[str appendFormat:@"date=%@", date];
     return str;
+}
+
+- (NSData *) getUploadPhoto
+{
+    if (photoLocalUrl != nil){
+        return [NSData dataWithContentsOfURL:photoLocalUrl];
+    }
+    return nil;
 }
 
 -(BOOL) isEqual:(id)object

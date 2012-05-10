@@ -154,6 +154,13 @@ bool eligble = false;
         [data appendFormat:@"&start_lng=%@", startLng];
         [data appendFormat:@"&points=%@", [self pointsAsJson]];
     }
+    // TODO upload photos
+    for (int i = 0; i < [vistas count]; i++){
+        ScenicVista *vista = [vistas objectAtIndex:i];
+        if ([vista getActionType] == PHOTO) {
+            [data appendFormat:@"&photos_@i=%@",i, [vista getUploadPhoto]];
+        }
+}
     return [data dataUsingEncoding:NSUTF8StringEncoding];
 }
 

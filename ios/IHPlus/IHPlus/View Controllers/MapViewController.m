@@ -548,7 +548,8 @@ int midpoint;
 {
     // Access the uncropped image from info dictionary
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    
+    NSURL *photoUrl = [info objectForKey:UIImagePickerControllerReferenceURL];
+    [_currentVista setPhotoLocalUrl:photoUrl];
     // Save image
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
