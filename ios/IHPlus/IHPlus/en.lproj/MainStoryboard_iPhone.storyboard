@@ -235,18 +235,18 @@
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view hidden="YES" alpha="0.80000000000000004" contentMode="scaleToFill" id="YDe-II-MeM">
-                                <rect key="frame" x="0.0" y="0.0" width="330" height="95"/>
+                                <rect key="frame" x="0.0" y="0.0" width="330" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" minimumFontSize="10" id="myi-G4-24v">
-                                        <rect key="frame" x="10" y="0.0" width="300" height="80"/>
+                                        <rect key="frame" x="10" y="5" width="300" height="90"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9pl-tr-inP">
-                                        <rect key="frame" x="213" y="69" width="103" height="22"/>
+                                        <rect key="frame" x="213" y="95" width="103" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Continue >>">
@@ -608,18 +608,18 @@
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view hidden="YES" alpha="0.80000001192092896" contentMode="scaleToFill" id="268-qz-kU0">
-                                <rect key="frame" x="0.0" y="0.0" width="330" height="95"/>
+                                <rect key="frame" x="0.0" y="0.0" width="330" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" minimumFontSize="10" id="uDH-gI-pR7">
-                                        <rect key="frame" x="10" y="0.0" width="300" height="80"/>
+                                        <rect key="frame" x="10" y="5" width="300" height="90"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="pq3-sS-0CZ">
-                                        <rect key="frame" x="213" y="69" width="103" height="22"/>
+                                        <rect key="frame" x="213" y="95" width="103" height="22"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Continue >>">
@@ -1049,9 +1049,9 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="h6C-6V-0tW"/>
-        <segue reference="lMW-ll-iJ0"/>
         <segue reference="Y6k-v3-2Nt"/>
-        <segue reference="TDM-7N-Kau"/>
+        <segue reference="lMW-ll-iJ0"/>
+        <segue reference="xAG-cC-qK2"/>
+        <segue reference="h6C-6V-0tW"/>
     </inferredMetricsTieBreakers>
 </document>
