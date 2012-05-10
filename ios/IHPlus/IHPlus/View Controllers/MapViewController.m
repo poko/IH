@@ -309,7 +309,9 @@ int midpoint;
 {
     NSLog(@"completing current vista. Total vistas: %i", [[_hike vistas] count]);
     [_currentVista setComplete:YES];
-    [_currentVista setDate:];
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    [_currentVista setDate:[dateFormatter stringFromDate:[NSDate date]]];
     //remove region tracking!
     [_locMgr stopMonitoringForRegion:[_currentVista region]];
     NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
