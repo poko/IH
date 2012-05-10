@@ -78,6 +78,7 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.vcDelegate = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

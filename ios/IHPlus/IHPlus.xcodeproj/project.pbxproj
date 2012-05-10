@@ -281,8 +281,8 @@
 		A67D3D7A1513984600391EE5 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				A6EEC01A15503C7F0060641E /* CreditsViewController.m */,
 				A6EEC01B15503C7F0060641E /* CreditsViewController.h */,
+				A6EEC01A15503C7F0060641E /* CreditsViewController.m */,
 				A60BBAB015484793005E8EF0 /* MainMapViewController.h */,
 				A60BBAB115484793005E8EF0 /* MainMapViewController.m */,
 				A64C9414152E4CED0090BD0D /* MapViewController.h */,
@@ -346,12 +346,12 @@
 			children = (
 				A6EEC00C15503C500060641E /* GetDirectionsDelegate.h */,
 				A6EEC00515503C500060641E /* GetDirectionsDelegate.m */,
-				A6EEC00615503C500060641E /* RewalkHikeDelegate.m */,
-				A6EEC00715503C500060641E /* UploadHikeDelegate.m */,
-				A6EEC00815503C500060641E /* VistaActionsDelegate.m */,
-				A6EEC00915503C500060641E /* VistaActionsDelegate.h */,
 				A6EEC00A15503C500060641E /* RewalkHikeDelegate.h */,
+				A6EEC00615503C500060641E /* RewalkHikeDelegate.m */,
 				A6EEC00B15503C500060641E /* UploadHikeDelegate.h */,
+				A6EEC00715503C500060641E /* UploadHikeDelegate.m */,
+				A6EEC00915503C500060641E /* VistaActionsDelegate.h */,
+				A6EEC00815503C500060641E /* VistaActionsDelegate.m */,
 			);
 			name = Delegates;
 			sourceTree = "<group>";
