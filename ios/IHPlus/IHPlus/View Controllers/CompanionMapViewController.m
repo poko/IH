@@ -88,7 +88,7 @@
 
 -(IBAction)addVistaHere:(id)sender
 { 
-    NSLog(@"adding vista now. total vistas: %i", [[_hike vistas] count]);
+    NSLog(@"adding new vista now. prev amt of vistas: %i", [[_hike vistas] count]);
     // drop pin on map at current location
     //TODO - vista image
     MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
@@ -107,6 +107,7 @@
     [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
     // add vista object to hike
     [_hike addCompanionVista:vista];
+    NSLog(@"added vista now. total vistas: %i", [[_hike vistas] count]);
     //show vista input
     _currentVista = vista;
     [self showActionView];

@@ -64,7 +64,7 @@
 //    }
 //	[str appendFormat:@"date=%@", date];
 //    return str;
-     NSMutableString *str = [NSMutableString stringWithFormat:@"{\"latitude\": %f, \"longitude\": %f, \"action_id\": %i, \"note\": \"%@\",\"photo\":\"%@\", \"date\":\"%@\"}", 
+     NSMutableString *str = [NSMutableString stringWithFormat:@"{\"latitude\": %f, \"longitude\": %f, \"action_id\": %@, \"note\": \"%@\",\"photo\":\"%@\", \"date\":\"%@\"}", 
                               location.coordinate.latitude,
                               location.coordinate.longitude,
                               actionId,

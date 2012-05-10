@@ -71,6 +71,8 @@
 
 - (void) addCompanionVista:(ScenicVista *)vista
 {
+    if (vistas == nil)
+        vistas = [NSMutableArray array];
     if (![vistas containsObject:vista])
         [vistas addObject:vista];
 }
