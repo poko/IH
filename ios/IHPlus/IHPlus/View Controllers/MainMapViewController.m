@@ -53,6 +53,7 @@
     for (int i = 0; i < [regionArray count]; i++) {
         [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
+    
 }
 
 #pragma mark - geofencing

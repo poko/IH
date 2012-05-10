@@ -33,6 +33,7 @@
     CLLocationManager *_locMgr;
     MKUserLocation *_currentLocation;
     NSMutableArray *_pathPoints;
+    bool _zoomed;
 }
 
 -(IBAction)currentLocation:(id)sender;

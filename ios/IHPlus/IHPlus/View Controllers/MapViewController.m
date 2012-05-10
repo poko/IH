@@ -51,7 +51,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];
+    [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];//TODOx
     [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
@@ -68,6 +68,7 @@
                                                        delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
     }
+    _zoomed = false;
     // keyboard handling
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
                                                  name:UIKeyboardWillShowNotification object:self.view.window]; 
@@ -89,10 +90,13 @@
     
     NSLog(@"User location : %@", userLocation.location );
     NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
-    _currentLocation = userLocation;
-    //TODO - ask about best practices here? center after some amt of time has elapsed? just once?
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 400, 400);
-    [_mapView setRegion:region animated:YES];
+    if (userLocation != nil)
+        _currentLocation = userLocation;
+    if (!_zoomed){
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 400, 400);
+        [_mapView setRegion:region animated:YES];
+        _zoomed = true;
+    }
     
 }
 
