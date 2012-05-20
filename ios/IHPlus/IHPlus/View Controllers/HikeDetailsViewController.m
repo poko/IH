@@ -44,7 +44,8 @@ NSMutableData *receivedData;
 
 - (void) loadUI
 {
-    
+    NSLog(@"hike: %@", hike);
+    NSLog(@"hike name? %@ ", hike.name);
     [_header setText:[hike name]];
     [_desc setText:[hike description]];
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
@@ -58,6 +59,7 @@ NSMutableData *receivedData;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [pageControl setHidden:true];
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     // load ui
     [self loadUI];
@@ -105,10 +107,7 @@ NSMutableData *receivedData;
 #pragma mark - page control
 - (IBAction)changePage:(id)sender {
     int page = pageControl.currentPage;
-    // TODO
-    
-    NSLog(@"changed to page: %i", page);
-    hike = [_hikes objectAtIndex:page];
+    hike = [Hike initWithDictionary:[_hikes objectAtIndex:page]];
     [self loadUI];
     [_table reloadData];
 }
@@ -157,7 +156,6 @@ NSMutableData *receivedData;
     }
     else if ([vista getActionType] == TEXT || [vista getActionType] == NOTE){
         [[(VistaCellNote *) cell note] setText:[vista note]];
-        [[(VistaCellNote *) cell note] setBackgroundColor:[UIColor redColor]];
         CGRect frame = [[cell prompt] frame];
         CGRect noteFrame = CGRectMake(frame.origin.x, (frame.origin.y + frame.size.height + 10), 300, 50);
         [[(VistaCellNote *) cell note] setFrame:noteFrame];
@@ -250,11 +248,11 @@ NSMutableData *receivedData;
         // TODO show page controller
         [pageControl setHidden:false];
         [pageControl setNumberOfPages:[_hikes count]];
-        [_table setFrame:CGRectMake(0, 75, 320, 256)];
+        [_table setFrame:CGRectMake(0, 111, 320, 256)]; // move table below page controller
     }
     else{
         [pageControl setHidden:true];
-        [_table setFrame:CGRectMake(0, 75, 320, 292)];
+        [_table setFrame:CGRectMake(0, 75, 320, 292)]; // move table to below header labels
     }
     //update table view 
     [_table reloadData];

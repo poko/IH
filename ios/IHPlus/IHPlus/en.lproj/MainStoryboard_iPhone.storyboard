@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="10K549" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Raz-7O-WFW">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.1" toolsVersion="2182" systemVersion="11D50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Raz-7O-WFW">
     <dependencies>
+        <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
     <scenes>
+        <!--Credits View Controller-->
         <scene sceneID="VrH-nf-Ayy">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vqq-fw-Rcz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -64,6 +66,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="4314" y="-1201"/>
         </scene>
+        <!--Note Modal Controller-->
         <scene sceneID="Ucc-By-MyM">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="agL-yD-PIe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -119,6 +122,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="4424" y="-617"/>
         </scene>
+        <!--Text Modal Controller-->
         <scene sceneID="VDM-y1-THg">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cV3-j9-QNh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -191,6 +195,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="4430" y="78"/>
         </scene>
+        <!--Main Map View Controller-->
         <scene sceneID="6xq-K3-Wpu">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vH-nr-Oej" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -326,6 +331,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="3766" y="86"/>
         </scene>
+        <!--Upload Hike Controller-->
         <scene sceneID="UlB-2Q-skx">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8Y-xY-e7z" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -412,6 +418,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="4430" y="728"/>
         </scene>
+        <!--Search Results Controller - Search-->
         <scene sceneID="OkR-RD-d3N">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="27r-ec-S2R" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -426,14 +433,14 @@ www.ecoarttech.org</string>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="IH+" lineBreakMode="tailTruncation" minimumFontSize="10" id="aAP-jL-NFb">
-                                    <rect key="frame" x="139" y="10" width="134" height="21"/>
+                                    <rect key="frame" x="10" y="10" width="134" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="10" id="ifS-ez-Yhe">
-                                    <rect key="frame" x="139" y="40" width="145" height="21"/>
+                                    <rect key="frame" x="10" y="40" width="145" height="21"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -520,6 +527,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="4424" y="1353"/>
         </scene>
+        <!--Search View Controller-->
         <scene sceneID="q8e-sx-V9K">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ac-bV-rGi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -566,6 +574,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="3766" y="1361"/>
         </scene>
+        <!--Companion Map View Controller-->
         <scene sceneID="W3e-dL-Kch">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZGn-mR-bvy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -713,6 +722,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="3766" y="736"/>
         </scene>
+        <!--Hike Details View Controller-->
         <scene sceneID="Lgj-Kj-oN8">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JMq-sP-y4y" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -722,7 +732,7 @@ www.ecoarttech.org</string>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsSelection="NO" rowHeight="100" sectionHeaderHeight="22" sectionFooterHeight="22" id="ZuO-21-zQ4">
-                                <rect key="frame" x="0.0" y="111" width="320" height="256"/>
+                                <rect key="frame" x="0.0" y="75" width="320" height="292"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.792156862745098" green="0.792156862745098" blue="0.81568627450980391" alpha="1" colorSpace="calibratedRGB"/>
                                 <prototypes>
@@ -853,7 +863,7 @@ www.ecoarttech.org</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" id="304-YK-9du">
+                            <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" hidesForSinglePage="YES" numberOfPages="3" id="304-YK-9du">
                                 <rect key="frame" x="0.0" y="75" width="320" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.56569343065693434" green="0.24452554744525548" blue="0.28832116788321166" alpha="1" colorSpace="calibratedRGB"/>
@@ -876,6 +886,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="4864" y="1353"/>
         </scene>
+        <!--Tab Bar Controller-->
         <scene sceneID="eEw-ng-wgV">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V0Q-MI-EXl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -894,6 +905,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="2554" y="475"/>
         </scene>
+        <!--Navigation Controller - create-->
         <scene sceneID="6zv-hy-swY">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gk7-vP-hsT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -913,6 +925,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="3240" y="86"/>
         </scene>
+        <!--Navigation Controller - search-->
         <scene sceneID="FhD-Wj-f1l">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="slv-E8-nrF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -931,6 +944,7 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="3240" y="1361"/>
         </scene>
+        <!--Navigation Controller - companion-->
         <scene sceneID="F2c-tS-FIn">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm2-Fk-hhy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1085,9 +1099,9 @@ www.ecoarttech.org</string>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Y6k-v3-2Nt"/>
-        <segue reference="lMW-ll-iJ0"/>
-        <segue reference="xAG-cC-qK2"/>
-        <segue reference="h6C-6V-0tW"/>
+        <segue reference="TDM-7N-Kau"/>
+        <segue reference="Mm1-B0-xmR"/>
+        <segue reference="lOp-uO-6Ve"/>
+        <segue reference="dU7-5y-fdI"/>
     </inferredMetricsTieBreakers>
 </document>
