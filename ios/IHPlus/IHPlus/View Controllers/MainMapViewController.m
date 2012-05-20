@@ -66,7 +66,7 @@
     
     // If the radius is too large, registration fails automatically,
     // so clamp the radius to the max value.
-    CLLocationDegrees radius = 2;
+    CLLocationDegrees radius = 10;
     if (radius > _locMgr.maximumRegionMonitoringDistance)
         radius = _locMgr.maximumRegionMonitoringDistance;
     

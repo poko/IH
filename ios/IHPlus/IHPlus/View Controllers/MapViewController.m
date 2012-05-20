@@ -634,6 +634,7 @@ int midpoint;
 -(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
 {
     NSLog(@"monitoring region: %@", [region identifier]);
+    NSLog(@"region lat:%f long: %f", region.center.latitude, region.center.longitude  );
 }
 
 #pragma mark keyboard handling
