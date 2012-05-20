@@ -44,10 +44,11 @@
 -(void)showActionView;
 -(void)showLoadingDialog;
 -(void)hideLoadingDialog:(NSString *) msg;
--(void)prepareNewHike;
+-(void)prepareNewHike;//TODO remove?
 -(void)pathGenerated:(int) midpoint;
 -(void)removeOverlaysAndAnnotations;
--(void)drawPath;
+-(void)drawPath; //TODO remove?
 -(NSArray *) useLocalActions:(NSString *) plist;
+-(void)newHike: (BOOL) clearMapView; //TODO remove?
 
 @end

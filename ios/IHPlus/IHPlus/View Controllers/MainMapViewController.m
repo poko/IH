@@ -34,7 +34,7 @@
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
     //_monitoredRegions = [NSMutableArray array];
     NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
     for (int i = 0; i < [regionArray count]; i++) { 
         [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
@@ -48,7 +48,7 @@
     // e.g. self.myOutlet = nil;
     // remove any pending proximity alerts
     NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
     for (int i = 0; i < [regionArray count]; i++) {
         [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
@@ -81,26 +81,38 @@
 
 -(void) drawVistas
 {
-    NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
+    //NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
     for (int i = 0; i < [[_hike vistas] count]; i++){
         ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
         MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
         [annotationPoint setCoordinate:[[vista location] coordinate]];
-        //[annotationPoint setTitle:[vista prompt]]; //TODOx
         [_mapView addAnnotation:annotationPoint];
         // enable geofence
         [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
-        NSLog(@"Vista fence at coord: %@", [vista location]);
+        //NSLog(@"Vista fence at coord: %@", [vista location]);
     }
 }
 
+#pragma mark - hike observer
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    // Do whatever you need to do here
+    // update map view .. 
+    Hike *curHike = [(AppDelegate *)[[UIApplication sharedApplication] delegate] hike];
+    NSLog(@"main view observing hike. it changed! %@", curHike);
+    if (curHike == nil || [curHike companion]){ // this is a new companion hike
+        // remove overlays for current hike
+        NSLog(@"main view clearing hike, because it's a new companion hike...");
+        [self newHike:false];
+    }
+}
 
 #pragma mark - "protected" methods
 -(void) prepareNewHike
 {
-    NSLog(@"prepare test in Main map");
+    NSLog(@"prepare new hike in Main map");
     NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
     for (int i = 0; i < [regionArray count]; i++) { 
         [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
     }
@@ -109,7 +121,7 @@
 
 -(void) pathGenerated:(int) midpoint
 {
-    NSLog(@"path generated in Main map");
+    //NSLog(@"path generated in Main map");
     // generate random scenic vistas
     // make end point and mid point SVs
     [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:midpoint]];
@@ -157,12 +169,13 @@
         }
         // draw & enable geofences for vistas
         [self drawVistas];
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate] setHike:_hike];
     }];
     NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=%i", BASE_URL, [[_hike vistas] count]];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
-        NSLog(@"connection to get actions failed");
+        //NSLog(@"connection to get actions failed");
         [self hideLoadingDialog:@"Unable to connect with server"];
     }
 }
@@ -175,9 +188,9 @@
     [self showLoadingDialog];
     // make server call
     NSString *url = [NSString stringWithFormat:@"%@getHike.php?hike_id=%@", BASE_URL, hikeId];
-    NSLog(@"Sending to url %@", url);
+    //NSLog(@"Sending to url %@", url);
     RewalkHikeDelegate *rewalkDelegate = [[RewalkHikeDelegate alloc] initWithHandler:^(bool result, Hike *hike) {
-        NSLog(@"tralala back in the map view with a hike! %@", hike);
+        //NSLog(@"tralala back in the map view with a hike! %@", hike);
         //clear any existing paths and vistas!
         [self removeOverlaysAndAnnotations];
         [self hideLoadingDialog:nil];
@@ -193,7 +206,7 @@
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; 
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:rewalkDelegate];
     if (!connection) {
-        NSLog(@"connection failed");
+        //NSLog(@"connection failed");
         [self hideLoadingDialog:@"There was an error connecting to the server."];
     }
     

@@ -43,7 +43,6 @@
     // set vistas
     hike.vistas = [NSMutableArray array];
     NSArray *vistasJson = [dict objectForKey:@"vistas"];
-    NSLog(@"VISTAS: %@", vistasJson);
     for (NSDictionary *vistaJson in vistasJson) {
         ScenicVista *vista = [ScenicVista initWithDictionary:vistaJson];
         [hike.vistas addObject:vista];
@@ -131,7 +130,7 @@ bool eligble = false;
     // remove last comma
     [str deleteCharactersInRange:NSMakeRange([str length]-1, 1)];
     [str appendString:@"]"];
-    NSLog(@"vistas as json: %@", str);
+    //NSLog(@"vistas as json: %@", str);
     return str;
 }
 

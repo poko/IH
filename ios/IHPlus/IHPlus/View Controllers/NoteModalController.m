@@ -43,7 +43,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
-    NSLog(@"do we get here??");
     [super viewDidLoad];
     [doneButton setEnabled:NO];
     // make input look input-y
@@ -78,20 +77,17 @@
 
 -(void)resignResponder:(id)sender
 {
-    NSLog(@"resigning!");
     [input resignFirstResponder];
 }
 
 -(IBAction)doneClick:(id)sender
 {
-    NSLog(@"done clicked");
     [vcDelegate noteModalController:self done:[input text]];
 }
 
 #pragma mark textView delegate
 - (void)textViewDidChange:(UITextView *)textView
 {
-    NSLog(@"editing!");
     [doneButton setEnabled:[[textView text] length] > 0];
 }
 

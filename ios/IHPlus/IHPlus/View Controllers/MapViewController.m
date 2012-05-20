@@ -32,7 +32,7 @@
 {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    NSLog(@"MapViewController low mem");
+    //NSLog(@"MapViewController low mem");
     // Release any cached data, images, etc that aren't in use.
 }
 
@@ -40,29 +40,27 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    NSLog(@"map did appear: %@", [self class]);
+    //NSLog(@"map did appear: %@", [self class]);
     if (_mapView != nil){
         [self.view insertSubview:_mapView belowSubview:_inputHolder];
         [_mapView setDelegate:self];
         [_locMgr setDelegate:self];
-        NSLog(@"location manager? %@", _locMgr);
     }
+    
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"map view didloaded");
+    //NSLog(@"map view didloaded");
     [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];//TODOx
     [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
     // check for region monitoring
-    if ([CLLocationManager regionMonitoringAvailable] && [CLLocationManager regionMonitoringEnabled]){
-        NSLog(@"we are good to go!");
-        _locMgr = [[CLLocationManager alloc] init];
+    if ([CLLocationManager regionMonitoringAvailable] && [CLLocationManager regionMonitoringEnabled]){        _locMgr = [[CLLocationManager alloc] init];
         [_locMgr setDelegate:self];
     }
     else{
@@ -77,6 +75,9 @@
                                                  name:UIKeyboardWillShowNotification object:self.view.window]; 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) 
                                                  name:UIKeyboardWillHideNotification object:self.view.window]; 
+    NSLog(@"adding controller as observer of currentHike.");
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [delegate addObserver:self forKeyPath:@"hike" options:NSKeyValueObservingOptionOld context:nil];
 }
 
 - (void)viewDidUnload
@@ -84,7 +85,7 @@
     [super viewDidUnload];
     // TODO Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    NSLog(@"map view unloaded");
+    //NSLog(@"map view unloaded");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
  
@@ -92,8 +93,8 @@
 
 - (void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     
-    NSLog(@"User location : %@", userLocation.location );
-    NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
+    //NSLog(@"User location : %@", userLocation.location );
+    //NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
     if (userLocation != nil)
         _currentLocation = userLocation;
     if (!_zoomed){
@@ -110,7 +111,7 @@
     
     if(overlay == _routeLine)
     {
-        NSLog(@"trying to add route line");
+        //NSLog(@"trying to add route line");
         //if we have not yet created an overlay view for this overlay, create it now.
         if (_routeLineView == nil){
             _routeLineView = [[MKPolylineView alloc] initWithPolyline:_routeLine];
@@ -175,11 +176,13 @@ bool alertShowing = false;
     
 }
 
-- (void) newHike
+- (void) newHike: (BOOL) clearMapView
 {
     //clear hike
+    NSLog(@"clearing hike");
     _hike = nil;
-    [self removeOverlaysAndAnnotations];
+    if (clearMapView)
+        [self removeOverlaysAndAnnotations];
     [self prepareNewHike];
     [_promptHolder setHidden:true];
     [_inputHolder setHidden:false];
@@ -195,14 +198,14 @@ bool alertShowing = false;
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"MapView dismissed with index: %i", buttonIndex);
+    //NSLog(@"MapView dismissed with index: %i", buttonIndex);
     if ([alertView tag] == CREATE_ERROR_ALERT){
         alertShowing = false;
     }
     else if ([alertView tag] == NEW_HIKE_ALERT){
         // check if user canceled or clicked 'yes'
         if (buttonIndex == 1){ //clicked 'yes'
-            [self newHike];
+            [self newHike:true];
         }
     }
 }
@@ -252,7 +255,7 @@ bool alertShowing = false;
 
 - (NSArray *) useLocalActions:(NSString *) plist
 {
-    NSLog(@"USE LOCAL ACTIONS");
+    //NSLog(@"USE LOCAL ACTIONS");
     // Path to the plist (in the application bundle)
     NSString *path = [[NSBundle mainBundle] pathForResource:plist ofType:@"plist"];        
     // Build from the plist  
@@ -278,27 +281,26 @@ int midpoint;
     NSString *url = [NSString stringWithFormat:@"http://maps.google.com/maps?output=kml&saddr=%@&daddr=%@", 
                      [from stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], 
                      [to stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    NSLog(@"Sending to url %@", url);
+    //NSLog(@"Sending to url %@", url);
                      
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    NSLog(@"url: %@", req.URL);
     GetDirectionsDelegate *connDelegate = [[GetDirectionsDelegate alloc] initWithHandler:^(NSMutableArray *points, NSString *error) {
-        NSLog(@"handler gets: %i", [points count]);
+        //NSLog(@"handler gets: %i", [points count]);
         if (error != nil){
             [self hideLoadingDialog:error];
             return;
         }
         _callCount++;
         [_pathPoints addObjectsFromArray:points];
-        NSLog(@"compeltion handler!! %i", _callCount);
+        //NSLog(@"compeltion handler!! %i", _callCount);
         if (_callCount == 1){
             midpoint = ([_pathPoints count] - 1);//set midpoint as last index from first call
             //[self getDirectionsFrom:to to:[_endAddress text]];
         }
         if (_callCount == 2){
-            NSLog(@"should be drawing now, %i", [points count]);
+            //NSLog(@"should be drawing now, %i", [points count]);
             // Create the Hike object!
-            _hike = [AppDelegate getCurrentHike];//[[Hike alloc] init];
+            _hike = [[Hike alloc] init]; //TODO set this as the appDelegate hike ..
             [_hike setOriginal:@"true"];
             // add all points to it
             [_hike setPoints:_pathPoints];
@@ -315,36 +317,32 @@ int midpoint;
         
         [self drawPath];
         // Have subclasses do whatever work they need .. 
-        NSLog(@"about to call path generated: %i", midpoint);
         [self pathGenerated:midpoint];
-        NSLog(@"done call path generated");
        }
         
     }];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:connDelegate];
     if (!connection) {
-        NSLog(@"connection failed");
+        //NSLog(@"connection failed");
         [self hideLoadingDialog:@"Could not connect to server"];
     }
 }
 
 -(void) completeCurrentVista
 {
-    NSLog(@"completing current vista. Total vistas: %i", [[_hike vistas] count]);
+    //NSLog(@"completing current vista. Total vistas: %i", [[_hike vistas] count]);
     [_currentVista setComplete:YES];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [_currentVista setDate:[dateFormatter stringFromDate:[NSDate date]]];
     //remove region tracking!
     [_locMgr stopMonitoringForRegion:[_currentVista region]];
-    NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
+    //NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
     _currentVista = nil;
     [_promptHolder setHidden:YES];
     // check if we can enable upload button
     if ([_hike eligibleForUpload]){
-        _uploadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadHike:)];
-        //[_uploadButton setEnabled:YES];
-        [[self navigationItem] setRightBarButtonItem:_uploadButton];
+        _uploadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadHike:)];        [[self navigationItem] setRightBarButtonItem:_uploadButton];
     }
     // if all the vistas are complete, show the modal automagically. 
     if ([_hike isComplete]){
@@ -354,7 +352,7 @@ int midpoint;
 
 // called when user hits the 'back/create/edit' hike button after generating a hike
 - (IBAction) clickedCreateButton:(id)sender{
-    NSLog(@"clicked create!");
+    //NSLog(@"clicked create!");
     //check that user hasn't completed any vistas, if they have, warn.
     if ([_hike hasCompletedVista]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Hike" 
@@ -365,7 +363,7 @@ int midpoint;
         return;
     }
     else{ // just show the input fields
-        [self newHike];
+        [self newHike:true];
     }
 }
 
@@ -436,10 +434,10 @@ int midpoint;
                  float randLat = [self getRandomOffset]+latitude;
                  float randLng = [self getRandomOffset]+longitude;
                  
-                 NSLog(@" lat: %f", latitude);
-                 NSLog(@" lng: %f", longitude);
-                 NSLog(@"Rand lat: %f", randLat);
-                 NSLog(@"Rand lng: %f", randLng);
+//                 NSLog(@" lat: %f", latitude);
+//                 NSLog(@" lng: %f", longitude);
+//                 NSLog(@"Rand lat: %f", randLat);
+//                 NSLog(@"Rand lng: %f", randLng);
                  // reverse geocode the random point //TODO ??
                  //CLLocation *randLoc = [[CLLocation alloc] initWithLatitude:randLat longitude:randLng];
                  NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng]; 
@@ -448,7 +446,7 @@ int midpoint;
                  [self getDirectionsFrom:randPoint to:end];
              }
              else{
-                 NSLog(@"Nothing returned for placemarks search");
+                 //NSLog(@"Nothing returned for placemarks search");
                  [self hideLoadingDialog:@"Not a valid starting location"];
              } 
          }];
@@ -460,7 +458,7 @@ int midpoint;
 
 -(IBAction)currentLocation:(id)sender
 {
-    NSLog(@"current loc");
+    //NSLog(@"current loc");
     [_startAddress setText:CURRENT_LOCATION];
 }
 
@@ -469,24 +467,24 @@ int midpoint;
     if (_currentVista != nil){
         switch ([_currentVista getActionType]){
             case MEDITATE:{
-                NSLog(@"MEDITATE!");
+                //NSLog(@"MEDITATE!");
                 [self completeCurrentVista];
                 break;
             }
             case NOTE: {
-                NSLog(@"NOTE!");
+                //NSLog(@"NOTE!");
                 // popup modal for note taking
                 [self performSegueWithIdentifier:@"NoteModal" sender:self];
                 break;
             }
             case TEXT: {
-                NSLog(@"TEXT!");
+                //NSLog(@"TEXT!");
                 // popup modal for texting logic
                 [self performSegueWithIdentifier:@"TextModal" sender:self];
                 break;
             }
             case PHOTO: {
-                NSLog(@"PHOTO!");
+                //NSLog(@"PHOTO!");
                 // Create image picker controller
                 UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
                 
@@ -523,18 +521,18 @@ int midpoint;
 
 - (void)uploadModalController:(UploadHikeController *)controller done:(NSString *) error
 {
-    NSLog(@"called uploadModalController done");
+    //NSLog(@"called uploadModalController done");
     [controller dismissViewControllerAnimated:YES completion:^{
-        NSLog(@"and hike should have uploaded! %@", error);
+        //NSLog(@"and hike should have uploaded! %@", error);
         if (error != nil){
             // boo!
-            NSLog(@" boooo error back in mapview");
+            //NSLog(@" boooo error back in mapview");
             // show error toast (maybe user canceled, if we allow that option?)
             [self.view makeToast:@"Hike was not uploaded to server."];
         }
         else{
             // success!
-            NSLog(@" no error back in mapview");
+            //NSLog(@" no error back in mapview");
             // show success "toast"
             [self.view makeToast:@"Hike uploaded successfully."];
             // clean up current Hike object, clear overlays, show input fields again 
@@ -568,14 +566,14 @@ int midpoint;
         [modal setHike:_hike];
         [modal setVcDelegate:self];
     }
-    NSLog(@"preparing for segue: %@", segue.identifier);
+    //NSLog(@"preparing for segue: %@", segue.identifier);
 }
 
 #pragma mark image picker delegate
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSLog(@"finished taking photo");
+    //NSLog(@"finished taking photo");
     //dismiss picker
     [picker dismissModalViewControllerAnimated:true];
     // Access the uncropped image from info dictionary
@@ -589,7 +587,7 @@ int midpoint;
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     UIAlertView *alert;
-    NSLog(@"did finish saving photo error? %@", error);
+    //NSLog(@"did finish saving photo error? %@", error);
     // Unable to save the image  
     if (error){
         alert = [[UIAlertView alloc] initWithTitle:@"Error" 
@@ -610,7 +608,7 @@ int midpoint;
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     if (textField == _startAddress){
-        NSLog(@"start next");
+        //NSLog(@"start next");
         NSInteger nextTag = textField.tag + 1;
         // Try to find next responder
         UIResponder* nextResponder = [textField.superview viewWithTag:nextTag];
@@ -623,7 +621,7 @@ int midpoint;
         }
     }
     else if (textField == _endAddress){
-        NSLog(@"end go");
+        //NSLog(@"end go");
         [textField resignFirstResponder];
         [self hitTrail:textField];
     }
@@ -639,7 +637,7 @@ int midpoint;
 
 - (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
 {
-    NSLog(@"failed to monitor region!!, %@", error);
+    //NSLog(@"failed to monitor region!!, %@", error);
 }
 
 - (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
@@ -651,13 +649,13 @@ int midpoint;
 
 - (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
 {
-    NSLog(@"exited region!");
+    //NSLog(@"exited region!");
 }
 
 -(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
 {
-    NSLog(@"monitoring region: %@", [region identifier]);
-    NSLog(@"region lat:%f long: %f", region.center.latitude, region.center.longitude  );
+    //NSLog(@"monitoring region: %@", [region identifier]);
+    //NSLog(@"region lat:%f long: %f", region.center.latitude, region.center.longitude  );
 }
 
 #pragma mark keyboard handling

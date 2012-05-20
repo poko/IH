@@ -17,7 +17,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MKMapView *map;
+@property (strong, nonatomic) Hike *hike;
 
-+ (Hike *) getCurrentHike;
+//+ (Hike *) getCurrentHike;
 
 @end
