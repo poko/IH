@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "MainMapViewController.h"
 #import "RewalkHikeDelegate.h"
-#import "Constants.h"
 
 #define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
 
@@ -95,6 +94,7 @@
     }
 }
 
+
 #pragma mark - "protected" methods
 -(void) prepareNewHike
 {
@@ -139,9 +139,10 @@
     VistaActionsDelegate *getActions = [[VistaActionsDelegate alloc] initWithHandler:^(NSArray *actions, NSString *error){
         [self hideLoadingDialog:error];
         if (error != nil){ // something went wrong.
-            return;
+            // get actions from local plist
+            actions = [self useLocalActions:@"vista_actions"];
         }
-        if ([actions count] != [[_hike vistas] count]){
+        if ([actions count] < [[_hike vistas] count]){
             NSLog(@"something went terribly wrong!");
             return;
         }

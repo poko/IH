@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>1</key>
+	<array>
+		<string>NOTE</string>
+		<string>note verbiage</string>
+	</array>
+	<key>2</key>
+	<array>
+		<string>MEDITATE</string>
+		<string>med verbiage</string>
+	</array>
+	<key>3</key>
+	<array>
+		<string>MEDITATE</string>
+		<string>med verbiage</string>
+	</array>
+	<key>4</key>
+	<array>
+		<string>MEDITATE</string>
+		<string>med verbiage</string>
+	</array>
+	<key>5</key>
+	<array>
+		<string>MEDITATE</string>
+		<string>med verbiage</string>
+	</array>
+	<key>6</key>
+	<array>
+		<string>MEDITATE</string>
+		<string>med verbiage</string>
+	</array>
+</dict>
+</plist>
