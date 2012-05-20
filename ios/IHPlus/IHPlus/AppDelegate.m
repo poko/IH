@@ -14,6 +14,8 @@
 @synthesize window = _window;
 @synthesize map;
 
+static Hike *_singletonHike = nil;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
@@ -61,5 +63,14 @@
      See also applicationDidEnterBackground:.
      */
 }
+
++ (Hike *) getCurrentHike
+{
+    if (_singletonHike == nil){
+        _singletonHike = [[Hike alloc] init];
+    }
+    return _singletonHike;
+}
+
 
 @end

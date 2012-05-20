@@ -10,6 +10,8 @@
 #import "GetDirectionsDelegate.h"
 #import "ScenicVista.h"
 #import "Toast+UIView.h"
+#import "Constants.h"
+#import "AppDelegate.h"
 
 #define CURRENT_LOCATION @"Current Location"
 #define CREATE_ERROR_ALERT 10
@@ -52,8 +54,8 @@
 {
     [super viewDidLoad];
     NSLog(@"map view didloaded");
-    [_endAddress setDelegate:self]; //[_endAddress setText:@"1300 bob harrison 78702"];//TODOx
-    [_startAddress setDelegate:self]; //[_startAddress setText:@"1200 bob harrison austin, tx"];
+    [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];//TODOx
+    [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
@@ -193,7 +195,7 @@ bool alertShowing = false;
 #pragma mark - Alert View Delegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"dismissed with index: %i", buttonIndex);
+    NSLog(@"MapView dismissed with index: %i", buttonIndex);
     if ([alertView tag] == CREATE_ERROR_ALERT){
         alertShowing = false;
     }
@@ -246,6 +248,28 @@ bool alertShowing = false;
     return offset * i;
 }
 
+
+
+- (NSArray *) useLocalActions:(NSString *) plist
+{
+    NSLog(@"USE LOCAL ACTIONS");
+    // Path to the plist (in the application bundle)
+    NSString *path = [[NSBundle mainBundle] pathForResource:plist ofType:@"plist"];        
+    // Build from the plist  
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc]initWithContentsOfFile:path];
+    // Show the string values
+    NSMutableArray *localActions = [NSMutableArray array];
+    for (NSString *indx in [dictionary allKeys]){
+        NSArray *values = [dictionary objectForKey:indx];
+        NSDictionary *action = [[NSDictionary alloc] init];
+        [action setValue:indx forKey:KEY_ACTION_ID];
+        [action setValue:[values objectAtIndex:0] forKey:KEY_ACTION_TYPE];
+        [action setValue:[values objectAtIndex:1] forKey:KEY_ACTION_PROMPT];
+        [localActions addObject:action];
+    }
+    return localActions;
+}
+
 int midpoint;
 
 -(void) getDirectionsFrom:(NSString *) from to:(NSString *) to
@@ -269,12 +293,12 @@ int midpoint;
         NSLog(@"compeltion handler!! %i", _callCount);
         if (_callCount == 1){
             midpoint = ([_pathPoints count] - 1);//set midpoint as last index from first call
-            [self getDirectionsFrom:to to:[_endAddress text]];
+            //[self getDirectionsFrom:to to:[_endAddress text]];
         }
         if (_callCount == 2){
             NSLog(@"should be drawing now, %i", [points count]);
             // Create the Hike object!
-            _hike = [[Hike alloc] init];
+            _hike = [AppDelegate getCurrentHike];//[[Hike alloc] init];
             [_hike setOriginal:@"true"];
             // add all points to it
             [_hike setPoints:_pathPoints];
@@ -301,7 +325,6 @@ int midpoint;
     if (!connection) {
         NSLog(@"connection failed");
         [self hideLoadingDialog:@"Could not connect to server"];
-        //TODO - have some included vistas, don't show error?
     }
 }
 

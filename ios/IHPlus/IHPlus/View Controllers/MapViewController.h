@@ -13,8 +13,9 @@
 #import "TextModalController.h"
 #import "UploadHikeController.h"
 #import "VistaActionsDelegate.h"
+#import "Constants.h"
 
-@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UploadHikeControllerDelegate>{
+@interface MapViewController : UIViewController <MKMapViewDelegate, UITextFieldDelegate, CLLocationManagerDelegate, NoteModalControllerDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UploadHikeControllerDelegate, UIAlertViewDelegate>{
     IBOutlet MKMapView *_mapView;
     IBOutlet UITextField *_startAddress;
     IBOutlet UITextField *_endAddress;
@@ -47,5 +48,6 @@
 -(void)pathGenerated:(int) midpoint;
 -(void)removeOverlaysAndAnnotations;
 -(void)drawPath;
+-(NSArray *) useLocalActions:(NSString *) plist;
 
 @end

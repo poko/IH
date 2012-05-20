@@ -7,7 +7,10 @@
 //
 #import "AppDelegate.h"
 #import "CompanionMapViewController.h"
-#import "Constants.h"
+#import "Toast+UIView.h"
+#import "MainMapViewController.h"
+
+#define COMPANION_ALERT 5
 
 @implementation CompanionMapViewController
 
@@ -46,6 +49,16 @@
     _mapView = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];
 }
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    NSLog(@"companion viewWillAppear.");
+    //show dialog
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Companion Mode" message:@"You have selected companion species mode. In this mode scenic vistas are chosen via a collaborative effort between you and your non-human animal companion."
+                                                   delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"continue",nil];
+    [alert setTag:COMPANION_ALERT];
+    [alert show];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -53,23 +66,48 @@
     // e.g. self.myOutlet = nil;
 }
 
+#pragma mark - Alert View Delegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"companion alert dismissed with index: %i", buttonIndex);
+    if ([alertView tag] == COMPANION_ALERT){
+        if (buttonIndex == 0){ //canceled
+            [self.tabBarController setSelectedIndex:0];
+        }
+        else if (buttonIndex == 1){ //continue
+            // TODO show new alert dialog if there is a current hike
+//            if ([[(AppDelegate *)[[UIApplication sharedApplication] delegate] currentHike] != nil){
+//                // show new alert dialog
+//                NSLog(@"DONT LOOSE HIKE!");
+//            }
+        }
+    }
+    else{
+        [super alertView:alertView didDismissWithButtonIndex:buttonIndex];
+    }
+}
+
+
 #pragma mark - "protected" methods
 -(void) prepareNewHike
 {
-    NSLog(@"prepare hike in compantion");
+    NSLog(@"prepare hike in companion");
 }
 
 -(void) pathGenerated:(int) midpoint
 {
-    NSLog(@"path generated in compantion");
+    NSLog(@"path generated in companion");
     // now we get some vista actions from the server to pull from
     //download vista actions
     VistaActionsDelegate *getActions = [[VistaActionsDelegate alloc] initWithHandler:^(NSArray *actions, NSString *error){
-        [self hideLoadingDialog:error];
-        if (error != nil){ // something went wrong.
-            return;
+        [self hideLoadingDialog:nil];
+        if (error != nil){ // something went wrong getting .
+            // use local vista actions
+            _actions = [self useLocalActions:@"compantion_actions"];
         }
-        _actions = actions;
+        else{
+            _actions = actions;            
+        }
         // show the add button
         [_addVistaButton setHidden:false];
     }];
@@ -78,7 +116,10 @@
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
         NSLog(@"connection to get actions failed");
-        [self hideLoadingDialog:@"Unable to connect with server"];
+        [self hideLoadingDialog:@"!!Unable to connect with server"];
+        // have actions locally
+        _actions = [self useLocalActions:@"compantion_actions"];
+        [_addVistaButton setHidden:false];
     }
     // make hike a companion hike
     [_hike setCompanion:true];
@@ -88,6 +129,10 @@
 
 -(IBAction)addVistaHere:(id)sender
 { 
+    if (_currentLocation == nil){
+        [self.view makeToast:@"Unable to determine your current location to add vista here."];
+        return;
+    }
     NSLog(@"adding new vista now. prev amt of vistas: %i", [[_hike vistas] count]);
     // drop pin on map at current location
     //TODO - vista image

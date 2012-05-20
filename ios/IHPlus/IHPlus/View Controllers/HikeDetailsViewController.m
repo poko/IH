@@ -42,6 +42,17 @@ NSMutableData *receivedData;
 
 #pragma mark - View lifecycle
 
+- (void) loadUI
+{
+    
+    [_header setText:[hike name]];
+    [_desc setText:[hike description]];
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"MM.dd.yyyy"];
+    NSString *details = [NSString stringWithFormat:@"Pioneered by: %@, %@", [hike username], [dateFormatter stringFromDate:[hike date]]];
+    [_details setText:details];
+}
+
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
@@ -49,12 +60,7 @@ NSMutableData *receivedData;
     [super viewDidLoad];
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     // load ui
-    [_header setText:[hike name]];
-    [_desc setText:[hike description]];
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"MM.dd.yyyy"];
-    NSString *details = [NSString stringWithFormat:@"Pioneered by: %@, %@", [hike username], [dateFormatter stringFromDate:[hike date]]];
-    [_details setText:details];
+    [self loadUI];
     // make call to load the full hike data
     //loading dialog
     if (_loadingIndicator == nil){
@@ -94,6 +100,17 @@ NSMutableData *receivedData;
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - page control
+- (IBAction)changePage:(id)sender {
+    int page = pageControl.currentPage;
+    // TODO
+    
+    NSLog(@"changed to page: %i", page);
+    hike = [_hikes objectAtIndex:page];
+    [self loadUI];
+    [_table reloadData];
 }
 
 #pragma mark - Table view data source
@@ -226,12 +243,18 @@ NSMutableData *receivedData;
         [alert show];
     }
     NSLog(@"Here is the escaped response: %@", json);
-    NSArray *allHikes = [json objectForKey:@"hikes"];
-    NSLog(@"all hikes count: %i", [allHikes count]);
-    hike = [Hike initWithDictionary:[allHikes objectAtIndex:0]];
-    if ([allHikes count] > 1){ //multiple people walked this hike before
-        // show page controller
-        
+    _hikes = [json objectForKey:@"hikes"]; //TODO save allHikes so we can shuffle through
+    NSLog(@"all hikes count: %i", [_hikes count]);
+    hike = [Hike initWithDictionary:[_hikes objectAtIndex:0]];
+    if ([_hikes count] > 1){ //multiple people walked this hike before
+        // TODO show page controller
+        [pageControl setHidden:false];
+        [pageControl setNumberOfPages:[_hikes count]];
+        [_table setFrame:CGRectMake(0, 75, 320, 256)];
+    }
+    else{
+        [pageControl setHidden:true];
+        [_table setFrame:CGRectMake(0, 75, 320, 292)];
     }
     //update table view 
     [_table reloadData];

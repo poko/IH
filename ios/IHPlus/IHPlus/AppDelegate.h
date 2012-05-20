@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "Hike.h"
 
 //TODO - all memory mgmt
 //TODO - 2x UI elements
@@ -16,5 +17,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MKMapView *map;
+
++ (Hike *) getCurrentHike;
 
 @end
