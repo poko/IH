@@ -54,6 +54,7 @@ NSMutableData *vistaActionsData;
 {
     // parse response data
     NSLog(@"Succeeded! Received %d bytes of data",[vistaActionsData length]);
+    NSLog(@"we got: %@ ",[[NSString alloc] initWithData:vistaActionsData encoding:NSUTF8StringEncoding]);
     NSError *error; 
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:vistaActionsData options:kNilOptions error:&error];
     if (error != nil){

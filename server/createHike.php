@@ -3,8 +3,8 @@
 
 if (version_compare(PHP_VERSION, '5.1.0', '>=')) { date_default_timezone_set('UTC'); }
 
-$base_upload_dir = "/home/ecoar4/public_html/ih_plus/uploads/";
-//$base_upload_dir = "/Applications/MAMP/htdocs/IHServer/uploads/";
+//$base_upload_dir = "/home/ecoar4/public_html/ih_plus/uploads/";
+$base_upload_dir = "/Applications/MAMP/htdocs/IHServer/uploads/";
 
 function createThumbnail($inFile, $outFile, $maxWidth, $maxHeight) {
     $pathinfo = pathinfo($inFile);
@@ -139,19 +139,20 @@ foreach ($vista_json as $v){
 }
 
 // save the photos
+$success = "true";
 foreach ($_FILES as $file){
 	// create target folder/filename and move it there
 	$uploadfile = $today_upload_dir . "/".$hike_id."_".basename($file['name']);
 	if (move_uploaded_file($file['tmp_name'], $uploadfile)) {
 	    //echo "File is valid, and was successfully uploaded.\n";
 	} else {
+		$success = "false";
 	    error_log("Couldn't upload file.  Maybe it's too big?");
 	}
 }
 
 
 include 'db_close.php';
-
-echo "{\"result\":\"true\", \"hike_id\":\"".$hike_id."\"}";
+echo "{\"result\":\"".$success."\", \"hike_id\":\"".$hike_id."\"}";
 
 ?>

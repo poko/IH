@@ -103,12 +103,13 @@ bool eligble = false;
 
 - (bool) isComplete
 {
-   if (companion)
-        return false; // companion hikes are never 'complete', just eligible for upload.
-    for (ScenicVista *vista in vistas){
-        if (![vista complete])
-            return false;
-    }
+//  TODOX if (companion)
+//        return false; // companion hikes are never 'complete', just eligible for upload.
+//    for (ScenicVista *vista in vistas){
+//        if (![vista complete])
+//            return false;
+//    }
+    NSLog(@" hike is complete!");
     return true;
 }
 
@@ -188,9 +189,10 @@ bool eligble = false;
             NSString*       head = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"photos_@i\"",
                                     @"####", i];
             
-            if([vista getUploadFileName])
+            if([vista getUploadFileName]){
                 head = [head stringByAppendingFormat:@"; filename=\"%@\"", [vista getUploadFileName]];
-            
+            }
+            NSLog(@"trying to upload file with length: %i", [[vista getUploadPhoto] length] );
             head = [head stringByAppendingFormat:@"\r\nContent-Length: %d\r\n\r\n", [[vista getUploadPhoto] length]];
             
             [data appendData:[head dataUsingEncoding:NSUTF8StringEncoding]];

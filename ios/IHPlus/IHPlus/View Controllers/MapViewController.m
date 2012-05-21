@@ -12,6 +12,7 @@
 #import "Toast+UIView.h"
 #import "Constants.h"
 #import "AppDelegate.h"
+#import "AssetsLibrary/AssetsLibrary.h"
 
 #define CURRENT_LOCATION @"Current Location"
 #define CREATE_ERROR_ALERT 10
@@ -330,7 +331,7 @@ int midpoint;
 
 -(void) completeCurrentVista
 {
-    //NSLog(@"completing current vista. Total vistas: %i", [[_hike vistas] count]);
+    NSLog(@"completing current vista. Total vistas: %i", [[_hike vistas] count]);
     [_currentVista setComplete:YES];
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -342,10 +343,12 @@ int midpoint;
     [_promptHolder setHidden:YES];
     // check if we can enable upload button
     if ([_hike eligibleForUpload]){
-        _uploadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadHike:)];        [[self navigationItem] setRightBarButtonItem:_uploadButton];
+        _uploadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadHike:)];
+        [[self navigationItem] setRightBarButtonItem:_uploadButton];
     }
     // if all the vistas are complete, show the modal automagically. 
     if ([_hike isComplete]){
+        NSLog(@"should perform seqgue??");
         [self performSegueWithIdentifier:@"UploadHike" sender:self];
     }
 }
@@ -551,6 +554,7 @@ int midpoint;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 { 
+    NSLog(@"preparing for segue: %@", segue.identifier);
     if ([[segue identifier] isEqualToString:@"NoteModal"]){
         NoteModalController *modal = [segue destinationViewController];
         [modal setPromptText:[_currentVista prompt]];
@@ -566,20 +570,18 @@ int midpoint;
         [modal setHike:_hike];
         [modal setVcDelegate:self];
     }
-    //NSLog(@"preparing for segue: %@", segue.identifier);
 }
 
 #pragma mark image picker delegate
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    //NSLog(@"finished taking photo");
+    NSLog(@"finished taking photo");
     //dismiss picker
     [picker dismissModalViewControllerAnimated:true];
     // Access the uncropped image from info dictionary
+    [self showLoadingDialog];
     UIImage *image = [info objectForKey:@"UIImagePickerControllerOriginalImage"];
-    NSURL *photoUrl = [info objectForKey:UIImagePickerControllerReferenceURL];
-    [_currentVista setPhotoLocalUrl:photoUrl];
     // Save image
     UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 }
@@ -587,7 +589,6 @@ int midpoint;
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     UIAlertView *alert;
-    //NSLog(@"did finish saving photo error? %@", error);
     // Unable to save the image  
     if (error){
         alert = [[UIAlertView alloc] initWithTitle:@"Error" 
@@ -596,11 +597,54 @@ int midpoint;
                                  otherButtonTitles:nil];
     }
     else{ // All is well
-        //TODO - mark vista as complete, save location of photo for uploadings
-        //[_currentVista setImage:[imageUrl!];
+        CGSize newImageSize = CGSizeMake(360, 480);
+        UIImage *scaled = [MapViewController imageWithImage:image scaledToSize:newImageSize];
+        NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@", [_currentVista getUploadFileName]]];
+        [UIImageJPEGRepresentation(scaled, 1.0) writeToFile:jpgPath atomically:YES]; 
         [self completeCurrentVista];
     }
-} 
+    [self hideLoadingDialog:nil];
+}
+
+
++ (UIImage*)imageWithImage:(UIImage*)image scaledToSize:(CGSize)newSize;
+{
+    // Create a graphics image context
+    UIGraphicsBeginImageContext(newSize);
+    
+    // Tell the old image to draw in this new context, with the desired
+    // new size
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    
+    // Get the new image from the context
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    // End the context
+    UIGraphicsEndImageContext();
+    
+    // Return the new image.
+    return newImage;
+}
+                            
+                            
+////TODO comment out
+//- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
+//{
+//    UIAlertView *alert;
+//    //NSLog(@"did finish saving photo error? %@", error);
+//    // Unable to save the image  
+//    if (error){
+//        alert = [[UIAlertView alloc] initWithTitle:@"Error" 
+//                                           message:@"Unable to save image to Photo Album." 
+//                                          delegate:self cancelButtonTitle:@"Ok" 
+//                                 otherButtonTitles:nil];
+//    }
+//    else{ // All is well
+//        //TODO - mark vista as complete, save location of photo for uploadings
+//        //[_currentVista setImage:[imageUrl!];
+//        [self completeCurrentVista];
+//    }
+//} 
 
 
 #pragma mark TextField Delegate

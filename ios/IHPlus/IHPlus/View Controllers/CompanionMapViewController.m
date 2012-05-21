@@ -97,8 +97,7 @@
             [self.tabBarController setSelectedIndex:0];
         }
         else if (buttonIndex == 1){ //continue
-            // TODO show new alert dialog if there is a current hike
-            //if ([AppDelegate getCurrentHike] != nil){
+            // show new alert dialog if there is a current hike
             if ([(AppDelegate *)[[UIApplication sharedApplication] delegate] hike] != nil){
                 // show new alert dialog
                 
@@ -115,8 +114,6 @@
         }
         else if (buttonIndex == 1){ //continue
             // clear current hike
-//            Hike *current = [AppDelegate getCurrentHike];
-//            current = nil;
             [(AppDelegate *)[[UIApplication sharedApplication] delegate] setHike:nil];
         }
     }
@@ -136,22 +133,24 @@
     //download vista actions
     VistaActionsDelegate *getActions = [[VistaActionsDelegate alloc] initWithHandler:^(NSArray *actions, NSString *error){
         [self hideLoadingDialog:nil];
-        if (error != nil){ // something went wrong getting .
+        if (error != nil || [actions count] == 0){ // something went wrong getting .
             // use local vista actions
             _actions = [self useLocalActions:@"compantion_actions"];
         }
         else{
             _actions = actions;            
         }
+        NSLog(@"Got actions: %@", _actions);
         // show the add button
         [_addVistaButton setHidden:false];
         [(AppDelegate *)[[UIApplication sharedApplication] delegate] setHike:_hike];
     }];
     NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=10&companion=true", BASE_URL];
+    NSLog(@"url: %@", url);
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
-        //NSLog(@"connection to get actions failed");
+        NSLog(@"connection to get actions failed");
         [self hideLoadingDialog:@"!!Unable to connect with server"];
         // have actions locally
         _actions = [self useLocalActions:@"compantion_actions"];
@@ -174,8 +173,9 @@
     //TODO - vista image
     MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
     annotationPoint.coordinate = _currentLocation.location.coordinate;
-    //NSLog(@"vista point lat: %f",   _currentLocation.location.coordinate.latitude );
-    //NSLog(@"vista point lng: %f",   _currentLocation.location.coordinate.longitude );
+    NSLog(@"vista point lat: %f",   _currentLocation.location.coordinate.latitude );
+    NSLog(@"vista point lng: %f",   _currentLocation.location.coordinate.longitude );
+    NSLog(@"Actions %@", _actions);
     [_mapView addAnnotation:annotationPoint];
     //next action (size of existing vistas) to get our action from.
     NSDictionary *action = [_actions objectAtIndex:[[_hike vistas] count]];
@@ -183,8 +183,8 @@
     ScenicVista *vista = [[ScenicVista alloc] init];
     [vista setLocation:_currentLocation.location];
     [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
-    [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]]; //TODOx    
-    //[vista setActionType:@"note"]; 
+    //[vista setActionType:[action objectForKey:KEY_ACTION_TYPE]]; //TODOx    
+    [vista setActionType:@"photo"]; 
     [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
     // add vista object to hike
     [_hike addCompanionVista:vista];

@@ -10,9 +10,6 @@
 #import <MapKit/MapKit.h>
 #import "Hike.h"
 
-//TODO - all memory mgmt
-//TODO - 2x UI elements
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

@@ -24,7 +24,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *date;
 @property (nonatomic, strong) NSString *note;
 @property (nonatomic, strong) NSString *photoUrl;
-@property (nonatomic, strong) NSURL *photoLocalUrl;
+//@property (nonatomic, strong) NSURL *photoLocalUrl;
 @property (nonatomic, strong) CLLocation *location;
 @property (nonatomic) BOOL complete;
 @property (nonatomic, strong) CLRegion *region;
