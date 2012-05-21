@@ -79,6 +79,7 @@
 		E1C994B415695A3300653B98 /* hike_it_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C994B015695A3300653B98 /* hike_it_btn@2x.png */; };
 		E1C994B515695A3300653B98 /* view_it_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C994B115695A3300653B98 /* view_it_btn@2x.png */; };
 		E1C994B615695A3300653B98 /* your_location_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C994B215695A3300653B98 /* your_location_btn@2x.png */; };
+		E1C994B81569AE6F00653B98 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C994B71569AE6F00653B98 /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -182,6 +183,7 @@
 		E1C994B015695A3300653B98 /* hike_it_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "hike_it_btn@2x.png"; path = "Assets/hike_it_btn@2x.png"; sourceTree = "<group>"; };
 		E1C994B115695A3300653B98 /* view_it_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "view_it_btn@2x.png"; path = "Assets/view_it_btn@2x.png"; sourceTree = "<group>"; };
 		E1C994B215695A3300653B98 /* your_location_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "your_location_btn@2x.png"; path = "Assets/your_location_btn@2x.png"; sourceTree = "<group>"; };
+		E1C994B71569AE6F00653B98 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E1C994B81569AE6F00653B98 /* AssetsLibrary.framework in Frameworks */,
 				A6820D531551861C0039C656 /* BugSense-iOS.framework in Frameworks */,
 				A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */,
 				A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */,
@@ -220,6 +223,7 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				E1C994B71569AE6F00653B98 /* AssetsLibrary.framework */,
 				A6820D521551861B0039C656 /* BugSense-iOS.framework */,
 				A6820D50155077200039C656 /* SystemConfiguration.framework */,
 				A60BBAAE15473F83005E8EF0 /* point.gpx */,

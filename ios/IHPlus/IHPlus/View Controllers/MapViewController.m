@@ -45,7 +45,7 @@
     if (_mapView != nil){
         [self.view insertSubview:_mapView belowSubview:_inputHolder];
         [_mapView setDelegate:self];
-        [_locMgr setDelegate:self];
+        //[_locMgr setDelegate:self];
     }
     
 }
@@ -61,15 +61,15 @@
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
     // check for region monitoring
-    if ([CLLocationManager regionMonitoringAvailable] && [CLLocationManager regionMonitoringEnabled]){        _locMgr = [[CLLocationManager alloc] init];
-        [_locMgr setDelegate:self];
-    }
-    else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location Services Unavailable" 
-                                                        message:@"This app won't work without location services." 
-                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-    }
+//    if ([CLLocationManager regionMonitoringAvailable] && [CLLocationManager regionMonitoringEnabled]){        _locMgr = [[CLLocationManager alloc] init];
+//        [_locMgr setDelegate:self];
+//    }
+//    else{
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location Services Unavailable" 
+//                                                        message:@"This app won't work without location services." 
+//                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//        [alert show];
+//    }
     _zoomed = false;
     // keyboard handling
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
@@ -84,9 +84,7 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // TODO Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    //NSLog(@"map view unloaded");
+    NSLog(@"map view unloaded");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
  
@@ -95,13 +93,27 @@
 - (void) mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation{
     
     //NSLog(@"User location : %@", userLocation.location );
-    //NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
     if (userLocation != nil)
         _currentLocation = userLocation;
     if (!_zoomed){
         MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance([userLocation coordinate], 400, 400);
         [_mapView setRegion:region animated:YES];
         _zoomed = true;
+    }
+    // check if we've entered a vista point
+    for (ScenicVista *vista in [_hike vistas]){
+        if (![vista complete]){ //only care about not completed vistas.
+            // check if entered region
+            NSLog(@"lat diff: %f", fabs(vista.location.coordinate.latitude - userLocation.coordinate.latitude));
+            NSLog(@"lng diff: %f", fabs(vista.location.coordinate.longitude - userLocation.coordinate.longitude));
+            if (fabs(vista.location.coordinate.latitude - userLocation.coordinate.latitude) <= .0001 && fabs(vista.location.coordinate.longitude - userLocation.coordinate.longitude) <= .0001){
+                // we're here!
+                NSLog(@"entered region!");
+                _currentVista = vista;
+                [self showActionView];
+                return;
+            }
+        }
     }
     
 }
@@ -301,7 +313,7 @@ int midpoint;
         if (_callCount == 2){
             //NSLog(@"should be drawing now, %i", [points count]);
             // Create the Hike object!
-            _hike = [[Hike alloc] init]; //TODO set this as the appDelegate hike ..
+            _hike = [[Hike alloc] init]; 
             [_hike setOriginal:@"true"];
             // add all points to it
             [_hike setPoints:_pathPoints];
@@ -337,7 +349,7 @@ int midpoint;
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [_currentVista setDate:[dateFormatter stringFromDate:[NSDate date]]];
     //remove region tracking!
-    [_locMgr stopMonitoringForRegion:[_currentVista region]];
+    //[_locMgr stopMonitoringForRegion:[_currentVista region]];
     //NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
     _currentVista = nil;
     [_promptHolder setHidden:YES];
@@ -436,15 +448,7 @@ int midpoint;
                  // add random offset
                  float randLat = [self getRandomOffset]+latitude;
                  float randLng = [self getRandomOffset]+longitude;
-                 
-//                 NSLog(@" lat: %f", latitude);
-//                 NSLog(@" lng: %f", longitude);
-//                 NSLog(@"Rand lat: %f", randLat);
-//                 NSLog(@"Rand lng: %f", randLng);
-                 // reverse geocode the random point //TODO ??
-                 //CLLocation *randLoc = [[CLLocation alloc] initWithLatitude:randLat longitude:randLng];
                  NSString *randPoint = [NSString stringWithFormat:@"%f,%f",randLat, randLng]; 
-//                 [self getDirectionsFrom:start to:end];
                  [self getDirectionsFrom:start to:randPoint];
                  [self getDirectionsFrom:randPoint to:end];
              }
@@ -625,26 +629,6 @@ int midpoint;
     // Return the new image.
     return newImage;
 }
-                            
-                            
-////TODO comment out
-//- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
-//{
-//    UIAlertView *alert;
-//    //NSLog(@"did finish saving photo error? %@", error);
-//    // Unable to save the image  
-//    if (error){
-//        alert = [[UIAlertView alloc] initWithTitle:@"Error" 
-//                                           message:@"Unable to save image to Photo Album." 
-//                                          delegate:self cancelButtonTitle:@"Ok" 
-//                                 otherButtonTitles:nil];
-//    }
-//    else{ // All is well
-//        //TODO - mark vista as complete, save location of photo for uploadings
-//        //[_currentVista setImage:[imageUrl!];
-//        [self completeCurrentVista];
-//    }
-//} 
 
 
 #pragma mark TextField Delegate
@@ -679,28 +663,28 @@ int midpoint;
     [_prompt setText:[_currentVista prompt]];
 }
 
-- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
-{
-    //NSLog(@"failed to monitor region!!, %@", error);
-}
-
-- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
-{
-    NSLog(@"entered region! %@", [region identifier]);
-    _currentVista = [_hike getVistaById:[region identifier]];
-    [self showActionView];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
-{
-    //NSLog(@"exited region!");
-}
-
--(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
-{
-    //NSLog(@"monitoring region: %@", [region identifier]);
-    //NSLog(@"region lat:%f long: %f", region.center.latitude, region.center.longitude  );
-}
+//- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
+//{
+//    //NSLog(@"failed to monitor region!!, %@", error);
+//}
+//
+//- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
+//{
+//    NSLog(@"entered region! %@", [region identifier]);
+//    _currentVista = [_hike getVistaById:[region identifier]];
+//    [self showActionView];
+//}
+//
+//- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
+//{
+//    //NSLog(@"exited region!");
+//}
+//
+//-(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
+//{
+//    //NSLog(@"monitoring region: %@", [region identifier]);
+//    //NSLog(@"region lat:%f long: %f", region.center.latitude, region.center.longitude  );
+//}
 
 #pragma mark keyboard handling
 

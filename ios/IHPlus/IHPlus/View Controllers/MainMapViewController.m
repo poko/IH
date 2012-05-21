@@ -33,11 +33,11 @@
     // set map
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
     //_monitoredRegions = [NSMutableArray array];
-    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) { 
-        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-    }
+//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
+//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+//    for (int i = 0; i < [regionArray count]; i++) { 
+//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
+//    }
 }
 
 
@@ -47,37 +47,37 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     // remove any pending proximity alerts
-    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) {
-        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-    }
+//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
+//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+//    for (int i = 0; i < [regionArray count]; i++) {
+//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
+//    }
     
 }
 
 #pragma mark - geofencing
-- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(ScenicVista*)vista
-{
-    // Do not create regions if support is unavailable or disabled.
-    if ( ![CLLocationManager regionMonitoringAvailable] ||
-        ![CLLocationManager regionMonitoringEnabled] )
-        return NO;
-    
-    // If the radius is too large, registration fails automatically,
-    // so clamp the radius to the max value.
-    CLLocationDegrees radius = 10;
-    if (radius > _locMgr.maximumRegionMonitoringDistance)
-        radius = _locMgr.maximumRegionMonitoringDistance;
-    
-    // Create the region and start monitoring it.
-    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
-                                                               radius:radius identifier:[vista actionId]];
-    //[_monitoredRegions addObject:region];
-    [_locMgr startMonitoringForRegion:region
-                      desiredAccuracy:kCLLocationAccuracyBest];
-    [vista setRegion:region];
-    return YES;
-}
+//- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(ScenicVista*)vista
+//{
+//    // Do not create regions if support is unavailable or disabled.
+//    if ( ![CLLocationManager regionMonitoringAvailable] ||
+//        ![CLLocationManager regionMonitoringEnabled] )
+//        return NO;
+//    
+//    // If the radius is too large, registration fails automatically,
+//    // so clamp the radius to the max value.
+//    CLLocationDegrees radius = 10;
+//    if (radius > _locMgr.maximumRegionMonitoringDistance)
+//        radius = _locMgr.maximumRegionMonitoringDistance;
+//    
+//    // Create the region and start monitoring it.
+//    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
+//                                                               radius:radius identifier:[vista actionId]];
+//    //[_monitoredRegions addObject:region];
+//    [_locMgr startMonitoringForRegion:region
+//                      desiredAccuracy:kCLLocationAccuracyBest];
+//    [vista setRegion:region];
+//    return YES;
+//}
 
 -(void) drawVistas
 {
@@ -88,7 +88,7 @@
         [annotationPoint setCoordinate:[[vista location] coordinate]];
         [_mapView addAnnotation:annotationPoint];
         // enable geofence
-        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
+//        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
         //NSLog(@"Vista fence at coord: %@", [vista location]);
     }
 }
@@ -108,14 +108,14 @@
 }
 
 #pragma mark - "protected" methods
--(void) prepareNewHike
+-(void) prepareNewHike //TODO remove
 {
     NSLog(@"prepare new hike in Main map");
-    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) { 
-        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-    }
+//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
+//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+//    for (int i = 0; i < [regionArray count]; i++) { 
+//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
+//    }
 
 }
 

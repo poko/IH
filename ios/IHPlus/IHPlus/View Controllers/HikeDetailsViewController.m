@@ -241,11 +241,11 @@ NSMutableData *receivedData;
         [alert show];
     }
     NSLog(@"Here is the escaped response: %@", json);
-    _hikes = [json objectForKey:@"hikes"]; //TODO save allHikes so we can shuffle through
+    _hikes = [json objectForKey:@"hikes"]; //save allHikes so we can shuffle through
     NSLog(@"all hikes count: %i", [_hikes count]);
     hike = [Hike initWithDictionary:[_hikes objectAtIndex:0]];
     if ([_hikes count] > 1){ //multiple people walked this hike before
-        // TODO show page controller
+        // show page controller
         [pageControl setHidden:false];
         [pageControl setNumberOfPages:[_hikes count]];
         [_table setFrame:CGRectMake(0, 111, 320, 256)]; // move table below page controller

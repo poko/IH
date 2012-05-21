@@ -103,13 +103,12 @@ bool eligble = false;
 
 - (bool) isComplete
 {
-//  TODOX if (companion)
-//        return false; // companion hikes are never 'complete', just eligible for upload.
-//    for (ScenicVista *vista in vistas){
-//        if (![vista complete])
-//            return false;
-//    }
-    NSLog(@" hike is complete!");
+  if (companion)
+        return false; // companion hikes are never 'complete', just eligible for upload.
+    for (ScenicVista *vista in vistas){
+        if (![vista complete])
+            return false;
+    }
     return true;
 }
 
@@ -159,15 +158,6 @@ bool eligble = false;
 
 - (NSData *) getUploadData
 {
-//    NSMutableString *data = [NSMutableString stringWithFormat:@"hike_name=%@&description=%@&username=%@",
-//                      name, description, username];
-//    [data appendFormat:@"&original=%@", original];
-//    [data appendFormat:@"&vistas=%@", [self vistasAsJson]];
-//    if ([original isEqualToString:@"true"]){
-//        [data appendFormat:@"&start_lat=%@", startLat];
-//        [data appendFormat:@"&start_lng=%@", startLng];
-//        [data appendFormat:@"&points=%@", [self pointsAsJson]];
-//    }
     
     NSMutableData*      data = [[NSMutableData alloc] init];
     [self appendToData:data key:@"hike_name" value: name];
