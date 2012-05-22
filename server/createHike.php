@@ -3,8 +3,8 @@
 
 if (version_compare(PHP_VERSION, '5.1.0', '>=')) { date_default_timezone_set('UTC'); }
 
-//$base_upload_dir = "/home/ecoar4/public_html/ih_plus/uploads/";
-$base_upload_dir = "/Applications/MAMP/htdocs/IHServer/uploads/";
+$base_upload_dir = "/home/ecoar4/public_html/ih_plus/uploads/";
+//$base_upload_dir = "/Applications/MAMP/htdocs/IHServer/uploads/";
 
 function createThumbnail($inFile, $outFile, $maxWidth, $maxHeight) {
     $pathinfo = pathinfo($inFile);
