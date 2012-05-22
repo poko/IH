@@ -92,6 +92,7 @@
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     //NSLog(@"companion alert dismissed with index: %i", buttonIndex);
+    [super alertView:alertView didDismissWithButtonIndex:buttonIndex]; // make sure not any of the 'common' dialogs
     if ([alertView tag] == COMPANION_ALERT){
         if (buttonIndex == 0){ //canceled
             [self.tabBarController setSelectedIndex:0];

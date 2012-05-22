@@ -95,8 +95,8 @@
     for (ScenicVista *vista in [_hike vistas]){
         if (![vista complete]){ //only care about not completed vistas.
             // check if entered region
-            NSLog(@"lat diff: %f", fabs(vista.location.coordinate.latitude - userLocation.coordinate.latitude));
-            NSLog(@"lng diff: %f", fabs(vista.location.coordinate.longitude - userLocation.coordinate.longitude));
+//            NSLog(@"lat diff: %f", fabs(vista.location.coordinate.latitude - userLocation.coordinate.latitude));
+//            NSLog(@"lng diff: %f", fabs(vista.location.coordinate.longitude - userLocation.coordinate.longitude));
             if (fabs(vista.location.coordinate.latitude - userLocation.coordinate.latitude) <= .0001 && fabs(vista.location.coordinate.longitude - userLocation.coordinate.longitude) <= .0001){
                 // we're here!
                 NSLog(@"entered region!");
@@ -529,11 +529,7 @@ int midpoint;
             // show success "toast"
             [self.view makeToast:@"Hike uploaded successfully."];
             // clean up current Hike object, clear overlays, show input fields again 
-            [self removeOverlaysAndAnnotations];
-            _hike = nil;
-            [_promptHolder setHidden:true];
-            [_inputHolder setHidden:false];
-            [[self navigationItem] setLeftBarButtonItem:nil];
+            [self newHike:true];
         }
     }];
 }

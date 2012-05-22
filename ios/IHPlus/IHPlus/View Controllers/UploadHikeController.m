@@ -97,7 +97,7 @@
         _loadingIndicator.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
         _loadingIndicator.center = self.view.center;
     }
-    [self.view addSubview: _loadingIndicator];
+    [self.scroller addSubview: _loadingIndicator];
     [_loadingIndicator startAnimating];
 }
 

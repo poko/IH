@@ -85,20 +85,15 @@
     return nil;
 }
 
-bool eligble = false;
+
 - (bool) eligibleForUpload
 {
-    if (eligble)
-        return true;
-    else{
-        int completedVistas = 0;
-        for (ScenicVista *v in vistas){
-            if ([v complete])
-                completedVistas++;
-        }
-        eligble = completedVistas > 2;
+   int completedVistas = 0;
+   for (ScenicVista *v in vistas){
+        if ([v complete])
+            completedVistas++;
     }
-    return eligble;
+    return completedVistas > 2;
 }
 
 - (bool) isComplete
