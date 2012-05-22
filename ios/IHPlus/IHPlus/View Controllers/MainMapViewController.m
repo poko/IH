@@ -108,16 +108,6 @@
 }
 
 #pragma mark - "protected" methods
--(void) prepareNewHike //TODO remove
-{
-    NSLog(@"prepare new hike in Main map");
-//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-//    for (int i = 0; i < [regionArray count]; i++) { 
-//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-//    }
-
-}
 
 -(void) pathGenerated:(int) midpoint
 {
@@ -162,8 +152,7 @@
         for (ScenicVista *vista in [_hike vistas]){
             NSDictionary *action = [actions objectAtIndex:i];
             [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
-            [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];//TODOx 
-            //[vista setActionType:@"text"];
+            [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];
             [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
             i++;
         }

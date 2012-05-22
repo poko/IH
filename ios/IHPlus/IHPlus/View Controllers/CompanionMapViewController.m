@@ -118,13 +118,14 @@
         }
     }
 }
+- (void)uploadModalController:(UploadHikeController *)controller done:(NSString *) error
+{
+    [super uploadModalController:controller done:error];
+    [_addVistaButton setHidden:true];
+}
 
 
 #pragma mark - "protected" methods
--(void) prepareNewHike
-{
-    NSLog(@"prepare hike in companion");
-}
 
 -(void) pathGenerated:(int) midpoint
 {
@@ -175,7 +176,6 @@
     annotationPoint.coordinate = _currentLocation.location.coordinate;
     NSLog(@"vista point lat: %f",   _currentLocation.location.coordinate.latitude );
     NSLog(@"vista point lng: %f",   _currentLocation.location.coordinate.longitude );
-    NSLog(@"Actions %@", _actions);
     [_mapView addAnnotation:annotationPoint];
     //next action (size of existing vistas) to get our action from.
     NSDictionary *action = [_actions objectAtIndex:[[_hike vistas] count]];
@@ -183,8 +183,7 @@
     ScenicVista *vista = [[ScenicVista alloc] init];
     [vista setLocation:_currentLocation.location];
     [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
-    //[vista setActionType:[action objectForKey:KEY_ACTION_TYPE]]; //TODOx    
-    [vista setActionType:@"photo"]; 
+    [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];
     [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
     // add vista object to hike
     [_hike addCompanionVista:vista];

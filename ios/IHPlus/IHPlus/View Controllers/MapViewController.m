@@ -55,21 +55,11 @@
 {
     [super viewDidLoad];
     //NSLog(@"map view didloaded");
-    [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];//TODOx
-    [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
+    [_endAddress setDelegate:self]; //[_endAddress setText:@"1300 bob harrison 78702"];//TODOx
+    [_startAddress setDelegate:self]; //[_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
-    // check for region monitoring
-//    if ([CLLocationManager regionMonitoringAvailable] && [CLLocationManager regionMonitoringEnabled]){        _locMgr = [[CLLocationManager alloc] init];
-//        [_locMgr setDelegate:self];
-//    }
-//    else{
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Location Services Unavailable" 
-//                                                        message:@"This app won't work without location services." 
-//                                                       delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//        [alert show];
-//    }
     _zoomed = false;
     // keyboard handling
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
@@ -101,6 +91,7 @@
         _zoomed = true;
     }
     // check if we've entered a vista point
+    if (![_hike companion]){
     for (ScenicVista *vista in [_hike vistas]){
         if (![vista complete]){ //only care about not completed vistas.
             // check if entered region
@@ -114,6 +105,7 @@
                 return;
             }
         }
+    }
     }
     
 }
@@ -196,7 +188,6 @@ bool alertShowing = false;
     _hike = nil;
     if (clearMapView)
         [self removeOverlaysAndAnnotations];
-    [self prepareNewHike];
     [_promptHolder setHidden:true];
     [_inputHolder setHidden:false];
     [[self navigationItem] setLeftBarButtonItem:nil];
@@ -221,12 +212,6 @@ bool alertShowing = false;
             [self newHike:true];
         }
     }
-}
-
--(void) prepareNewHike
-{
-    NSLog(@"wrong prepareNewHike method");
-    assert(false);
 }
 
 -(void) pathGenerated: (int) midpoint
@@ -315,6 +300,9 @@ int midpoint;
             // Create the Hike object!
             _hike = [[Hike alloc] init]; 
             [_hike setOriginal:@"true"];
+            CLLocation *start = (CLLocation *)[_pathPoints objectAtIndex:0];
+            [_hike setStartLat:[NSString stringWithFormat:@"%f", start.coordinate.latitude]];
+            [_hike setStartLng:[NSString stringWithFormat:@"%f", start.coordinate.longitude]];
             // add all points to it
             [_hike setPoints:_pathPoints];
             _pathPoints = nil;
@@ -406,8 +394,6 @@ int midpoint;
     // clear out any previous data
     _callCount = 0;
     _pathPoints = [[NSMutableArray alloc] init];
-    // have subclasses do their prep (remove any pending proximity alerts, etc)
-    [self prepareNewHike];
     
     // check that both fields have values
     NSString *start = [_startAddress text];
@@ -547,6 +533,7 @@ int midpoint;
             _hike = nil;
             [_promptHolder setHidden:true];
             [_inputHolder setHidden:false];
+            [[self navigationItem] setLeftBarButtonItem:nil];
         }
     }];
 }

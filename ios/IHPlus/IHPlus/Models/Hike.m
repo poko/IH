@@ -172,11 +172,11 @@ bool eligble = false;
     }
 
     
-    // TODO upload photos
+    // upload photos
     for (int i = 0; i < [vistas count]; i++){
         ScenicVista *vista = [vistas objectAtIndex:i];
         if ([vista getActionType] == PHOTO) {
-            NSString*       head = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"photos_@i\"",
+            NSString*       head = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"photos_%i\"",
                                     @"####", i];
             
             if([vista getUploadFileName]){
@@ -184,14 +184,14 @@ bool eligble = false;
             }
             NSLog(@"trying to upload file with length: %i", [[vista getUploadPhoto] length] );
             head = [head stringByAppendingFormat:@"\r\nContent-Length: %d\r\n\r\n", [[vista getUploadPhoto] length]];
-            
+            NSLog(@"head str: %@", head);
             [data appendData:[head dataUsingEncoding:NSUTF8StringEncoding]];
             [data appendData:[vista getUploadPhoto]];
+            [data appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", @"####"] dataUsingEncoding:NSUTF8StringEncoding]];
         }
     }
-    [data appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", @"####"] dataUsingEncoding:NSUTF8StringEncoding]];
 
-    return data;//[data dataUsingEncoding:NSUTF8StringEncoding];
+    return data;
 }
 
 @end
