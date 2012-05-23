@@ -4,32 +4,72 @@
 <dict>
 	<key>1</key>
 	<array>
-		<string>NOTE</string>
-		<string>note verbiage</string>
+		<string>photo</string>
+		<string>There were people here before you that have left traces upon the landscape. Take a picture as evidence that their specters still walk amongst us.</string>
 	</array>
 	<key>2</key>
 	<array>
-		<string>MEDITATE</string>
-		<string>med verbiage</string>
+		<string>text</string>
+		<string>Turn your nose to the air and sniff the wifi. Text a friend and tell her what the wifi smells like.</string>
 	</array>
 	<key>3</key>
 	<array>
-		<string>MEDITATE</string>
-		<string>med verbiage</string>
+		<string>note</string>
+		<string>Put your ear against the ground if you can and listen to the mood of the earth for at least 2 minutes. Write a field note that begins: The earth here sounds like...</string>
 	</array>
 	<key>4</key>
 	<array>
-		<string>MEDITATE</string>
-		<string>med verbiage</string>
+		<string>photo</string>
+		<string>Locate a dwelling, whether a cave, a den, an apartment, a cabin, or a nest. Imagine who might live there and what life is like for this creature. Take a photo of this place.</string>
 	</array>
 	<key>5</key>
 	<array>
-		<string>MEDITATE</string>
-		<string>med verbiage</string>
+		<string>photo</string>
+		<string>Search for a creative plant, an obedient plant, or a badly behaving plant. Move closer, study its behavior, and take a picture.</string>
 	</array>
 	<key>6</key>
 	<array>
-		<string>MEDITATE</string>
+		<string>photo</string>
+		<string>Make friends with the nearest tree. If there is no tree then locate a mailbox or a stone. Place your hand upon your new friend and commend it for its valuable role in our networked ecological system. Take photo that best represents your interactions.</string>
+	</array>
+	<key>7</key>
+	<array>
+		<string>note</string>
+		<string>Look for symbolic markings on the rocks, buildings or trees. Compose a field note that details where you saw them and what you think these markings mean. </string>
+	</array>
+	<key>9</key>
+	<array>
+		<string>photo</string>
+		<string>This place used to be different. Slowly turn around in a complete circle keeping your eyes on the horizon. If you think something seems strange or out of place then take a picture. If you think everything is as it should be then take a picture.</string>
+	</array>
+	<key>10</key>
+	<array>
+		<string>note</string>
+		<string>Stop here and find a place to sit down. Close your eyes and listen for 2-5 minutes. In a fieldnote create a list of the sounds you hear. </string>
+	</array>
+	<key>11</key>
+	<array>
+		<string>photo</string>
+		<string>Wildness is transient, fleeting, and unpredictable. The wild is here all around you right now. Take a photo of something wild that you think may not be here tomorrow.</string>
+	</array>
+	<key>12</key>
+	<array>
+		<string>note</string>
+		<string>We live in a complex home of convergent media and ecologies. You are on a nature trail, a wild journey across space and time. Take a pause from your travels and create a short field note about what you notice most about right now.</string>
+	</array>
+	<key>13</key>
+	<array>
+		<string>text</string>
+		<string>Reach your arms out toward the sky. With arms extended skyward count to 5. Then kneel down and place one hand upon the ground and count to 5. Text the first thought that comes to your mind, even if it is gibberish, to someone you love.</string>
+	</array>
+	<key>14</key>
+	<array>
+		<string>note</string>
+		<string>Birdwatch. Look for flying creatures made of carbon or steel, fueled by insects, grains, seeds, or oil. Imagine yourself similarly flying through the air. Make a fieldnote of what you see when you look down at the earth.</string>
+	</array>
+	<key>15</key>
+	<array>
+		<string>note</string>
 		<string>med verbiage</string>
 	</array>
 </dict>
