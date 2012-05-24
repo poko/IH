@@ -3,7 +3,7 @@
 //  IHPlus
 //
 //  Created by Polina Koronkevich on 4/11/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 ecoarttech. All rights reserved.
 //
 
 #import "TextModalController.h"
@@ -36,6 +36,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [textButton setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
 }
 
 
@@ -63,6 +64,10 @@
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
+    if(result == MessageComposeResultSent) {
+        //Message sent, disable button
+        [textButton setEnabled:NO];
+    }
     [[self vcDelegate] noteModalController:self done:[[self input] text]];
 }
 
