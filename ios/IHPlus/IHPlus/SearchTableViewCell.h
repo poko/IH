@@ -14,4 +14,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *description;
 @property (nonatomic, strong) IBOutlet UIButton *viewButton;
 
+-(void) setIcon:(BOOL) companion;
+
 @end

@@ -56,7 +56,7 @@
     NSLog(@"companion viewWillAppear.");
     //show dialog (if we are not currently on a companion hike)
     if (_hike == nil){
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Companion Mode" message:@"You have selected companion species mode. In this mode scenic vistas are chosen via a collaborative effort between you and your non-human animal companion."
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Companion Species Mode" message:@"You have selected companion species mode. In this mode scenic vistas are chosen via a collaborative effort between you and your non-human animal companion."
                                                    delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"continue",nil];
     [alert setTag:COMPANION_ALERT];
     [alert show];
@@ -68,6 +68,11 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+- (void) newHike: (BOOL) clearMapView{
+    [super newHike:clearMapView];
+    [_addVistaButton setHidden:true];
 }
 
 #pragma mark - observer
@@ -184,7 +189,8 @@
     ScenicVista *vista = [[ScenicVista alloc] init];
     [vista setLocation:_currentLocation.location];
     [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
-    [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];
+    //[vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];//TODOx
+    [vista setActionType:@"text"];
     [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
     // add vista object to hike
     [_hike addCompanionVista:vista];

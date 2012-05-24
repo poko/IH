@@ -944,12 +944,12 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="3240" y="1361"/>
         </scene>
-        <!--Navigation Controller - companion-->
+        <!--Navigation Controller - x-species-->
         <scene sceneID="F2c-tS-FIn">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jm2-Fk-hhy" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="ERb-48-zpl" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="companion" image="x-species_btn.png" id="zfI-Md-f6p"/>
+                    <tabBarItem key="tabBarItem" title="x-species" image="x-species_btn.png" id="zfI-Md-f6p"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="wz0-bO-i2v">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

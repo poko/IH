@@ -55,8 +55,8 @@
 {
     [super viewDidLoad];
     //NSLog(@"map view didloaded");
-    [_endAddress setDelegate:self]; //[_endAddress setText:@"1300 bob harrison 78702"];//TODOx
-    [_startAddress setDelegate:self]; //[_startAddress setText:@"1200 bob harrison austin, tx"];
+    [_endAddress setDelegate:self]; [_endAddress setText:@"1300 bob harrison 78702"];//TODOx
+    [_startAddress setDelegate:self]; [_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"titlebar_logo.png"]];
     [_inputHolder setBackgroundColor:[[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"black_gradient.png"]]];
@@ -129,6 +129,25 @@
     }
     return overlayView;
     
+}
+
+- (MKAnnotationView *)mapView:(MKMapView *)map viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    static NSString *AnnotationViewID = @"annotationViewID";
+    
+    MKAnnotationView *annotationView = (MKAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
+    
+    if (annotationView == nil)
+    {
+        annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
+    }
+    
+    annotationView.image = [UIImage imageNamed:@"scenic_vista_point.png"];
+    annotationView.annotation = annotation;
+    
+    return annotationView;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -586,7 +605,7 @@ int midpoint;
     else{ // All is well
         CGSize newImageSize = CGSizeMake(360, 480);
         UIImage *scaled = [MapViewController imageWithImage:image scaledToSize:newImageSize];
-        NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@", [_currentVista getUploadFileName]]];
+        NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@.jpg", [_currentVista getUploadFileName]]];
         [UIImageJPEGRepresentation(scaled, 1.0) writeToFile:jpgPath atomically:YES]; 
         [self completeCurrentVista];
     }

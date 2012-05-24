@@ -73,6 +73,8 @@
 		A6EEC01815503C670060641E /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EEC01315503C670060641E /* Toast+UIView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A6EEC01915503C670060641E /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EEC01515503C670060641E /* ImageLoader.m */; };
 		A6EEC01C15503C7F0060641E /* CreditsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6EEC01A15503C7F0060641E /* CreditsViewController.m */; };
+		E12350B4156D14340006DF2F /* scenic_vista_point.png in Resources */ = {isa = PBXBuildFile; fileRef = E12350B3156D14340006DF2F /* scenic_vista_point.png */; };
+		E12350B6156E5B2A0006DF2F /* scenic_vista_point@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E12350B5156E5B2A0006DF2F /* scenic_vista_point@2x.png */; };
 		E1C0D524152DC7C0009A1F8D /* VistaCellPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */; };
 		E1C0D527152DC970009A1F8D /* VistaCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C0D526152DC970009A1F8D /* VistaCell.m */; };
 		E1C994B315695A3300653B98 /* black_gradient@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C994AF15695A3300653B98 /* black_gradient@2x.png */; };
@@ -175,6 +177,8 @@
 		A6EEC01615503C670060641E /* ImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageLoader.h; path = Utils/ImageLoader.h; sourceTree = "<group>"; };
 		A6EEC01A15503C7F0060641E /* CreditsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CreditsViewController.m; path = "View Controllers/CreditsViewController.m"; sourceTree = "<group>"; };
 		A6EEC01B15503C7F0060641E /* CreditsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CreditsViewController.h; path = "View Controllers/CreditsViewController.h"; sourceTree = "<group>"; };
+		E12350B3156D14340006DF2F /* scenic_vista_point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scenic_vista_point.png; path = Assets/scenic_vista_point.png; sourceTree = "<group>"; };
+		E12350B5156E5B2A0006DF2F /* scenic_vista_point@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "scenic_vista_point@2x.png"; path = "Assets/scenic_vista_point@2x.png"; sourceTree = "<group>"; };
 		E1C0D522152DC7C0009A1F8D /* VistaCellPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCellPhoto.h; sourceTree = "<group>"; };
 		E1C0D523152DC7C0009A1F8D /* VistaCellPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VistaCellPhoto.m; sourceTree = "<group>"; };
 		E1C0D525152DC970009A1F8D /* VistaCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VistaCell.h; sourceTree = "<group>"; };
@@ -324,6 +328,8 @@
 		A687B46D151A486A004F08B0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E12350B5156E5B2A0006DF2F /* scenic_vista_point@2x.png */,
+				E12350B3156D14340006DF2F /* scenic_vista_point.png */,
 				E1C994AF15695A3300653B98 /* black_gradient@2x.png */,
 				E1C994B015695A3300653B98 /* hike_it_btn@2x.png */,
 				E1C994B115695A3300653B98 /* view_it_btn@2x.png */,
@@ -474,6 +480,8 @@
 				E1C994B415695A3300653B98 /* hike_it_btn@2x.png in Resources */,
 				E1C994B515695A3300653B98 /* view_it_btn@2x.png in Resources */,
 				E1C994B615695A3300653B98 /* your_location_btn@2x.png in Resources */,
+				E12350B4156D14340006DF2F /* scenic_vista_point.png in Resources */,
+				E12350B6156E5B2A0006DF2F /* scenic_vista_point@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
