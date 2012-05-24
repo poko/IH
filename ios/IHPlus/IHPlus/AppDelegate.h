@@ -10,14 +10,12 @@
 #import <MapKit/MapKit.h>
 #import "Hike.h"
 
-//TODO - all memory mgmt
-//TODO - 2x UI elements
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) MKMapView *map;
+@property (strong, nonatomic) Hike *hike;
 
-+ (Hike *) getCurrentHike;
+//+ (Hike *) getCurrentHike;
 
 @end

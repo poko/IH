@@ -51,7 +51,7 @@ NSMutableData *receivedData;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     // parse response data
-    NSLog(@"Directions Succeeded! Received %d bytes of data",[receivedData length]);
+    //NSLog(@"Directions Succeeded! Received %d bytes of data",[receivedData length]);
     if ([receivedData length] > 0){
         NSXMLParser *parser = [[NSXMLParser alloc] initWithData:receivedData];
         [parser setDelegate:self];
@@ -70,7 +70,7 @@ NSMutableString *coordStr;
 {
     //NSLog(@"starting element: %@", elementName);
     if ([elementName isEqualToString:LINE_STRING]){
-        NSLog(@"found line string:");
+        //NSLog(@"found line string:");
         savingChars = YES;
         coordStr = [NSMutableString string];
     }
@@ -80,7 +80,7 @@ NSMutableString *coordStr;
 {
     //NSLog(@"found chars");
     if (savingChars){
-        NSLog(@"now we save");
+       // NSLog(@"now we save");
         [coordStr appendString:string];
     }
 }
@@ -88,14 +88,14 @@ NSMutableString *coordStr;
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
     if ([elementName isEqualToString:LINE_STRING]){
-        NSLog(@"ended line string element");
+        //NSLog(@"ended line string element");
         savingChars = NO;
         // parse coords into points
         NSMutableArray *locCoords = [NSMutableArray array];
         NSArray *coords = [coordStr componentsSeparatedByString:@" "];
         //CLLocationCoordinate2D locCoords[[coords count]];
         //CLLocationCoordinate2D *locCoords = malloc(([coords count] - 1) * sizeof(CLLocationCoordinate2D));
-        NSLog(@"coords count: %i" , [coords count]);
+        //NSLog(@"coords count: %i" , [coords count]);
         for (int i = 0; i < [coords count]; i++){
             NSArray *lngLat = [[coords objectAtIndex:i] componentsSeparatedByString:@","];
             //NSLog(@"lngLat: %@" , lngLat);
@@ -116,7 +116,7 @@ NSMutableString *coordStr;
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser
 {
-    NSLog(@"finished parsing doc: %@", coordStr);
+    //NSLog(@"finished parsing doc: %@", coordStr);
     if (!foundDirs){
         // here's where there weren't valid directions returned, silly!
         _handler(nil, @"Invalid directions");

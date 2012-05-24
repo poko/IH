@@ -97,7 +97,7 @@
         _loadingIndicator.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
         _loadingIndicator.center = self.view.center;
     }
-    [self.view addSubview: _loadingIndicator];
+    [self.scroller addSubview: _loadingIndicator];
     [_loadingIndicator startAnimating];
 }
 
@@ -127,7 +127,6 @@
     [req setHTTPMethod:@"POST"];
     [req addValue:[NSString stringWithFormat:@"multipart/form-data; charset=UTF-8; boundary=%@", @"####"]
                                forHTTPHeaderField:@"Content-Type"];
-    NSLog(@"trying to log upload data: %@", [hike getUploadData]);
     [req setHTTPBody:[hike getUploadData]];
     UploadHikeDelegate *connDelegate = [[UploadHikeDelegate alloc] initWithHandler:^(bool success, NSString *error) {
         NSLog(@"upload handler gets: %i", success);

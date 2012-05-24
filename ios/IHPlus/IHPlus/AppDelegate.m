@@ -13,8 +13,9 @@
 
 @synthesize window = _window;
 @synthesize map;
+@synthesize hike;
 
-static Hike *_singletonHike = nil;
+//static Hike *_singletonHike = nil;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -64,13 +65,14 @@ static Hike *_singletonHike = nil;
      */
 }
 
-+ (Hike *) getCurrentHike
-{
-    if (_singletonHike == nil){
-        _singletonHike = [[Hike alloc] init];
-    }
-    return _singletonHike;
-}
+//+ (Hike *) getCurrentHike
+//{
+//    if (_singletonHike == nil){
+//        NSLog(@"creating new current hike.");
+//        _singletonHike = [[Hike alloc] init];
+//    }
+//    return _singletonHike;
+//}
 
 
 @end

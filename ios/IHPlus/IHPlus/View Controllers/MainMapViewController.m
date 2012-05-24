@@ -33,11 +33,11 @@
     // set map
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
     //_monitoredRegions = [NSMutableArray array];
-    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) { 
-        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-    }
+//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
+//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+//    for (int i = 0; i < [regionArray count]; i++) { 
+//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
+//    }
 }
 
 
@@ -47,69 +47,71 @@
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     // remove any pending proximity alerts
-    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) {
-        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-    }
+//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
+//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
+//    for (int i = 0; i < [regionArray count]; i++) {
+//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
+//    }
     
 }
 
 #pragma mark - geofencing
-- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(ScenicVista*)vista
-{
-    // Do not create regions if support is unavailable or disabled.
-    if ( ![CLLocationManager regionMonitoringAvailable] ||
-        ![CLLocationManager regionMonitoringEnabled] )
-        return NO;
-    
-    // If the radius is too large, registration fails automatically,
-    // so clamp the radius to the max value.
-    CLLocationDegrees radius = 2;
-    if (radius > _locMgr.maximumRegionMonitoringDistance)
-        radius = _locMgr.maximumRegionMonitoringDistance;
-    
-    // Create the region and start monitoring it.
-    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
-                                                               radius:radius identifier:[vista actionId]];
-    //[_monitoredRegions addObject:region];
-    [_locMgr startMonitoringForRegion:region
-                      desiredAccuracy:kCLLocationAccuracyBest];
-    [vista setRegion:region];
-    return YES;
-}
+//- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(ScenicVista*)vista
+//{
+//    // Do not create regions if support is unavailable or disabled.
+//    if ( ![CLLocationManager regionMonitoringAvailable] ||
+//        ![CLLocationManager regionMonitoringEnabled] )
+//        return NO;
+//    
+//    // If the radius is too large, registration fails automatically,
+//    // so clamp the radius to the max value.
+//    CLLocationDegrees radius = 10;
+//    if (radius > _locMgr.maximumRegionMonitoringDistance)
+//        radius = _locMgr.maximumRegionMonitoringDistance;
+//    
+//    // Create the region and start monitoring it.
+//    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
+//                                                               radius:radius identifier:[vista actionId]];
+//    //[_monitoredRegions addObject:region];
+//    [_locMgr startMonitoringForRegion:region
+//                      desiredAccuracy:kCLLocationAccuracyBest];
+//    [vista setRegion:region];
+//    return YES;
+//}
 
 -(void) drawVistas
 {
-    NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
+    //NSLog(@"drawing this many vistas: %i", [[_hike vistas] count]);
     for (int i = 0; i < [[_hike vistas] count]; i++){
         ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
         MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
         [annotationPoint setCoordinate:[[vista location] coordinate]];
-        //[annotationPoint setTitle:[vista prompt]]; //TODOx
         [_mapView addAnnotation:annotationPoint];
         // enable geofence
-        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
-        NSLog(@"Vista fence at coord: %@", [vista location]);
+//        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
+        //NSLog(@"Vista fence at coord: %@", [vista location]);
     }
 }
 
+#pragma mark - hike observer
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    // Do whatever you need to do here
+    // update map view .. 
+    Hike *curHike = [(AppDelegate *)[[UIApplication sharedApplication] delegate] hike];
+    NSLog(@"main view observing hike. it changed! %@", curHike);
+    if (curHike == nil || [curHike companion]){ // this is a new companion hike
+        // remove overlays for current hike
+        NSLog(@"main view clearing hike, because it's a new companion hike...");
+        [self newHike:false];
+    }
+}
 
 #pragma mark - "protected" methods
--(void) prepareNewHike
-{
-    NSLog(@"prepare test in Main map");
-    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-    NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-    for (int i = 0; i < [regionArray count]; i++) { 
-        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-    }
-
-}
 
 -(void) pathGenerated:(int) midpoint
 {
-    NSLog(@"path generated in Main map");
+    //NSLog(@"path generated in Main map");
     // generate random scenic vistas
     // make end point and mid point SVs
     [_hike addVista:(CLLocation *)[[_hike points] objectAtIndex:midpoint]];
@@ -150,19 +152,19 @@
         for (ScenicVista *vista in [_hike vistas]){
             NSDictionary *action = [actions objectAtIndex:i];
             [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
-            [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];//TODOx 
-            //[vista setActionType:@"text"];
+            [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];
             [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
             i++;
         }
         // draw & enable geofences for vistas
         [self drawVistas];
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate] setHike:_hike];
     }];
     NSString *url = [NSString stringWithFormat:@"%@getVistaAction.php?amount=%i", BASE_URL, [[_hike vistas] count]];
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];  
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:getActions];
     if (!connection) {
-        NSLog(@"connection to get actions failed");
+        //NSLog(@"connection to get actions failed");
         [self hideLoadingDialog:@"Unable to connect with server"];
     }
 }
@@ -175,9 +177,9 @@
     [self showLoadingDialog];
     // make server call
     NSString *url = [NSString stringWithFormat:@"%@getHike.php?hike_id=%@", BASE_URL, hikeId];
-    NSLog(@"Sending to url %@", url);
+    //NSLog(@"Sending to url %@", url);
     RewalkHikeDelegate *rewalkDelegate = [[RewalkHikeDelegate alloc] initWithHandler:^(bool result, Hike *hike) {
-        NSLog(@"tralala back in the map view with a hike! %@", hike);
+        //NSLog(@"tralala back in the map view with a hike! %@", hike);
         //clear any existing paths and vistas!
         [self removeOverlaysAndAnnotations];
         [self hideLoadingDialog:nil];
@@ -193,7 +195,7 @@
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; 
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:rewalkDelegate];
     if (!connection) {
-        NSLog(@"connection failed");
+        //NSLog(@"connection failed");
         [self hideLoadingDialog:@"There was an error connecting to the server."];
     }
     

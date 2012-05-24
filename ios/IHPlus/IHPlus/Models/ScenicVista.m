@@ -3,14 +3,15 @@
 //  IHPlus
 //
 //  Created by Polina Koronkevich on 3/16/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 ecoarttech. All rights reserved.
 //
 
 #import "ScenicVista.h"
+#import "AssetsLibrary/AssetsLibrary.h"
 
 @implementation ScenicVista
 
-@synthesize actionId, actionType, prompt, date, note, photoUrl, photoLocalUrl;
+@synthesize actionId, actionType, prompt, date, note, photoUrl;// photoLocalUrl;
 @synthesize location, complete, region;
 
 + (ScenicVista *) initWithDictionary:(NSDictionary *)dict
@@ -53,17 +54,6 @@
 
 - (NSString *) toJson
 {
-//    NSMutableString *str = [[NSMutableString alloc] init];
-//    [str appendFormat:@"latitude=%f", location.coordinate.latitude];
-//	[str appendFormat:@"longitude=%f", location.coordinate.longitude];
-//	[str appendFormat:@"action_id=%@", actionId];
-//	[str appendFormat:@"note=%@", note];
-//    if ([self getActionType] == PHOTO){
-//        photoUrl = [self getUploadFileName];
-//        [str appendFormat:@"photo=%@", photoUrl];
-//    }
-//	[str appendFormat:@"date=%@", date];
-//    return str;
      NSMutableString *str = [NSMutableString stringWithFormat:@"{\"latitude\": %f, \"longitude\": %f, \"action_id\": %@, \"note\": \"%@\",\"photo\":\"%@\", \"date\":\"%@\"}", 
                               location.coordinate.latitude,
                               location.coordinate.longitude,
@@ -77,15 +67,17 @@
 
 - (NSData *) getUploadPhoto
 {
-    if (photoLocalUrl != nil){
-        return [NSData dataWithContentsOfURL:photoLocalUrl];
-    }
-    return nil;
+    NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@.jpg", [self getUploadFileName]]];
+    NSData *data = [[NSFileManager defaultManager] contentsAtPath:jpgPath];
+    return data;
 }
 
 -(NSString *) getUploadFileName
 {
-      return [NSString stringWithFormat:@"IH_%i,%i", location.coordinate.latitude*1000000, location.coordinate.longitude *1000000];
+    if ([self getActionType] == PHOTO){
+      return [NSString stringWithFormat:@"IH_%i,%i", (int)(location.coordinate.latitude*1000000), (int)(location.coordinate.longitude*1000000)];
+    }
+    return @"";
 }
 
 -(BOOL) isEqual:(id)object
@@ -99,7 +91,6 @@
             return NO;
         return YES;
     }
-   // return [location isEqual:[object location]];
         
 }
 

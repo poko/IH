@@ -31,7 +31,7 @@
     MKPolyline *_routeLine;
     Hike *_hike;
     ScenicVista *_currentVista;
-    CLLocationManager *_locMgr;
+    //CLLocationManager *_locMgr;
     MKUserLocation *_currentLocation;
     NSMutableArray *_pathPoints;
     bool _zoomed;
@@ -44,10 +44,10 @@
 -(void)showActionView;
 -(void)showLoadingDialog;
 -(void)hideLoadingDialog:(NSString *) msg;
--(void)prepareNewHike;
 -(void)pathGenerated:(int) midpoint;
 -(void)removeOverlaysAndAnnotations;
--(void)drawPath;
+-(void)drawPath; 
 -(NSArray *) useLocalActions:(NSString *) plist;
+-(void)newHike: (BOOL) clearMapView; 
 
 @end

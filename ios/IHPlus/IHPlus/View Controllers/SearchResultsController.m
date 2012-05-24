@@ -145,6 +145,7 @@
     NSString *desc = [NSString stringWithFormat:@"%@, %@", [hike description], [dateFormatter stringFromDate:[hike date]]];
     [[cell description] setText:desc];
     [[cell viewButton] setTag:indexPath.row];
+    [cell setIcon:[hike companion]];
     return cell;
 }
 

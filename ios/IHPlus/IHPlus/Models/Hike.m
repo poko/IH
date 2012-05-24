@@ -43,7 +43,6 @@
     // set vistas
     hike.vistas = [NSMutableArray array];
     NSArray *vistasJson = [dict objectForKey:@"vistas"];
-    NSLog(@"VISTAS: %@", vistasJson);
     for (NSDictionary *vistaJson in vistasJson) {
         ScenicVista *vista = [ScenicVista initWithDictionary:vistaJson];
         [hike.vistas addObject:vista];
@@ -86,25 +85,20 @@
     return nil;
 }
 
-bool eligble = false;
+
 - (bool) eligibleForUpload
 {
-    if (eligble)
-        return true;
-    else{
-        int completedVistas = 0;
-        for (ScenicVista *v in vistas){
-            if ([v complete])
-                completedVistas++;
-        }
-        eligble = completedVistas > 2;
+   int completedVistas = 0;
+   for (ScenicVista *v in vistas){
+        if ([v complete])
+            completedVistas++;
     }
-    return eligble;
+    return completedVistas > 2;
 }
 
 - (bool) isComplete
 {
-   if (companion)
+  if (companion)
         return false; // companion hikes are never 'complete', just eligible for upload.
     for (ScenicVista *vista in vistas){
         if (![vista complete])
@@ -131,7 +125,7 @@ bool eligble = false;
     // remove last comma
     [str deleteCharactersInRange:NSMakeRange([str length]-1, 1)];
     [str appendString:@"]"];
-    NSLog(@"vistas as json: %@", str);
+    //NSLog(@"vistas as json: %@", str);
     return str;
 }
 
@@ -159,15 +153,6 @@ bool eligble = false;
 
 - (NSData *) getUploadData
 {
-//    NSMutableString *data = [NSMutableString stringWithFormat:@"hike_name=%@&description=%@&username=%@",
-//                      name, description, username];
-//    [data appendFormat:@"&original=%@", original];
-//    [data appendFormat:@"&vistas=%@", [self vistasAsJson]];
-//    if ([original isEqualToString:@"true"]){
-//        [data appendFormat:@"&start_lat=%@", startLat];
-//        [data appendFormat:@"&start_lng=%@", startLng];
-//        [data appendFormat:@"&points=%@", [self pointsAsJson]];
-//    }
     
     NSMutableData*      data = [[NSMutableData alloc] init];
     [self appendToData:data key:@"hike_name" value: name];
@@ -180,27 +165,31 @@ bool eligble = false;
         [self appendToData:data key:@"start_lng" value: startLng];
         [self appendToData:data key:@"points" value: [self pointsAsJson]];
     }
+    if (companion){
+        [self appendToData:data key:@"companion" value:@"true"];
+    }
 
     
-    // TODO upload photos
+    // upload photos
     for (int i = 0; i < [vistas count]; i++){
         ScenicVista *vista = [vistas objectAtIndex:i];
         if ([vista getActionType] == PHOTO) {
-            NSString*       head = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"photos_@i\"",
+            NSString*       head = [NSString stringWithFormat:@"--%@\r\nContent-Disposition: form-data; name=\"photos_%i\"",
                                     @"####", i];
             
-            if([vista getUploadFileName])
+            if([vista getUploadFileName]){
                 head = [head stringByAppendingFormat:@"; filename=\"%@\"", [vista getUploadFileName]];
-            
+            }
+            NSLog(@"trying to upload file with length: %i", [[vista getUploadPhoto] length] );
             head = [head stringByAppendingFormat:@"\r\nContent-Length: %d\r\n\r\n", [[vista getUploadPhoto] length]];
-            
+            NSLog(@"head str: %@", head);
             [data appendData:[head dataUsingEncoding:NSUTF8StringEncoding]];
             [data appendData:[vista getUploadPhoto]];
+            [data appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", @"####"] dataUsingEncoding:NSUTF8StringEncoding]];
         }
     }
-    [data appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n", @"####"] dataUsingEncoding:NSUTF8StringEncoding]];
 
-    return data;//[data dataUsingEncoding:NSUTF8StringEncoding];
+    return data;
 }
 
 @end
