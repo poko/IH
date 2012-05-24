@@ -61,6 +61,10 @@ $start_lat = $_POST["start_lat"];
 $start_lng = $_POST["start_lng"];
 $ip_address = $_SERVER["REMOTE_ADDR"];
 $points = $_POST["points"];
+$companion = "false";
+if (isset($_POST["companion"]) && $_POST["companion"] == 'true'){
+	$companion = "true";
+}
 
 // create target folder
 $today_dir = date("Y-m-d");
@@ -86,14 +90,15 @@ is_dir($today_upload_dir) || mkdir($today_upload_dir, 0755);
 include 'db_open.php';
 
 // save hike data
-$query = sprintf("insert into hikes (username, name, description, start_lat, start_lng, ip_address, original) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+$query = sprintf("insert into hikes (username, name, description, start_lat, start_lng, ip_address, original, companion) values ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
                   mysql_real_escape_string($username),
                   mysql_real_escape_string($hike_name),
                   mysql_real_escape_string($hike_desc),
                   mysql_real_escape_string($start_lat),
                   mysql_real_escape_string($start_lng),
                   mysql_real_escape_string($ip_address),
-                  mysql_real_escape_string($original));
+                  mysql_real_escape_string($original),
+                  mysql_real_escape_string($companion));
 $result = mysql_query($query);
 
 if (!$result) {
