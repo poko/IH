@@ -165,6 +165,9 @@
         [self appendToData:data key:@"start_lng" value: startLng];
         [self appendToData:data key:@"points" value: [self pointsAsJson]];
     }
+    if (companion){
+        [self appendToData:data key:@"companion" value:@"true"];
+    }
 
     
     // upload photos
