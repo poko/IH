@@ -67,7 +67,7 @@
 
 - (NSData *) getUploadPhoto
 {
-    NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@", [self getUploadFileName]]];
+    NSString  *jpgPath = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Documents/%@.jpg", [self getUploadFileName]]];
     NSData *data = [[NSFileManager defaultManager] contentsAtPath:jpgPath];
     return data;
 }
@@ -75,7 +75,7 @@
 -(NSString *) getUploadFileName
 {
     if ([self getActionType] == PHOTO){
-      return [NSString stringWithFormat:@"IH_%i,%i.jpg", (int)(location.coordinate.latitude*1000000), (int)(location.coordinate.longitude*1000000)];
+      return [NSString stringWithFormat:@"IH_%i,%i", (int)(location.coordinate.latitude*1000000), (int)(location.coordinate.longitude*1000000)];
     }
     return @"";
 }
