@@ -4,8 +4,53 @@
 <dict>
 	<key>1</key>
 	<array>
-		<string>NOTE</string>
-		<string>compantion note</string>
+		<string>photo</string>
+		<string>Spin around, fall to your knees then quickly slap both hands on the ground. Take a photo that communicates your non-human companion’s response to your actions.</string>
+	</array>
+	<key>2</key>
+	<array>
+		<string>note</string>
+		<string>Exhale a short burst of air through your nose. Do this three times. See if your companion will respond in similar fashion. Write a quick field note detailing the results of this interaction.</string>
+	</array>
+	<key>3</key>
+	<array>
+		<string>text</string>
+		<string>Smell is important chracteristic of a scenic vista. Send a brief text to a friend that says what you smell here and what you imagine your companion might smell too.</string>
+	</array>
+	<key>4</key>
+	<array>
+		<string>text</string>
+		<string>Listen to the first sound you hear. Turn your head from side to side in attempt to hear beyond that sound to something muted, distant, or ambient. Text simply the name of the subtle sound to someone your companion loves.</string>
+	</array>
+	<key>5</key>
+	<array>
+		<string>photo</string>
+		<string>If it is sunny take a photo of your companion’s ear. If it is cloudy take a photo of your own ear. If it is partly sunny or cloudy try to take a photo of you and your companion’s ears together.</string>
+	</array>
+	<key>6</key>
+	<array>
+		<string>photo</string>
+		<string>If the wind is blowing then give your companion a treat or a neck rub. Take a photo that records your results.</string>
+	</array>
+	<key>7</key>
+	<array>
+		<string>meditate</string>
+		<string>Sit on the ground and simply breathe alongside your companion. Get up and continue when your companion tells you it is tome to move on.</string>
+	</array>
+	<key>8</key>
+	<array>
+		<string>note</string>
+		<string>In a fieldnote explain why you believe your companion thinks this location worthy of a scenic vista?</string>
+	</array>
+	<key>9</key>
+	<array>
+		<string>text</string>
+		<string>Text your companion’s name and favorite food to someone you barely know.</string>
+	</array>
+	<key>10</key>
+	<array>
+		<string>photo</string>
+		<string>Ask the closest person human, non-human, or plant the following question: Which is better getting attention or not getting attention? Take a photo that best respresents their response.</string>
 	</array>
 </dict>
 </plist>
