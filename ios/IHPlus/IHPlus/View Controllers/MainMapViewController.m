@@ -11,6 +11,7 @@
 #import "RewalkHikeDelegate.h"
 
 #define RANDOM_INT(min, max) (min + arc4random() % ((max + 1) - min))
+#define LOST_COMPANION_ALERT 25
 
 @implementation MainMapViewController
 
@@ -32,52 +33,40 @@
     [super viewDidLoad];
     // set map
     [(AppDelegate *)[[UIApplication sharedApplication] delegate] setMap:_mapView];
-    //_monitoredRegions = [NSMutableArray array];
-//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-//    for (int i = 0; i < [regionArray count]; i++) { 
-//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-//    }
 }
 
+-(void) viewDidAppear:(BOOL)animated
+{
+    Hike *curHike = [(AppDelegate *)[[UIApplication sharedApplication] delegate] hike];
+    if (curHike != nil && [curHike companion]){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"You are about to exit companion species mode and go it alone. Do you really want to exit and re-start in standard hike mode? All info from your current hike will be lost."
+                                                       delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"continue",nil];
+        [alert setTag:LOST_COMPANION_ALERT];
+        [alert show];
+    }
+}
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-    // remove any pending proximity alerts
-//    NSArray *regionArray = [[_locMgr monitoredRegions] allObjects]; 
-//    //NSLog(@"removing all previous monitored regions? %i", [regionArray count]);
-//    for (int i = 0; i < [regionArray count]; i++) {
-//        [_locMgr stopMonitoringForRegion:[regionArray objectAtIndex:i]];
-//    }
     
 }
 
-#pragma mark - geofencing
-//- (BOOL)registerRegionWithCircularOverlay:(CLLocationCoordinate2D)coord andIdentifier:(ScenicVista*)vista
-//{
-//    // Do not create regions if support is unavailable or disabled.
-//    if ( ![CLLocationManager regionMonitoringAvailable] ||
-//        ![CLLocationManager regionMonitoringEnabled] )
-//        return NO;
-//    
-//    // If the radius is too large, registration fails automatically,
-//    // so clamp the radius to the max value.
-//    CLLocationDegrees radius = 10;
-//    if (radius > _locMgr.maximumRegionMonitoringDistance)
-//        radius = _locMgr.maximumRegionMonitoringDistance;
-//    
-//    // Create the region and start monitoring it.
-//    CLRegion* region = [[CLRegion alloc] initCircularRegionWithCenter:coord
-//                                                               radius:radius identifier:[vista actionId]];
-//    //[_monitoredRegions addObject:region];
-//    [_locMgr startMonitoringForRegion:region
-//                      desiredAccuracy:kCLLocationAccuracyBest];
-//    [vista setRegion:region];
-//    return YES;
-//}
+#pragma mark - Alert View Delegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    //NSLog(@"companion alert dismissed with index: %i", buttonIndex);
+    [super alertView:alertView didDismissWithButtonIndex:buttonIndex]; // make sure not any of the 'common' dialogs
+    if ([alertView tag] == LOST_COMPANION_ALERT){
+        if (buttonIndex == 0){ //canceled
+            [self.tabBarController setSelectedIndex:2];
+        }
+        else if (buttonIndex == 1){ //continue
+            // clear current hike
+            [(AppDelegate *)[[UIApplication sharedApplication] delegate] setHike:nil];
+        }
+    }
+}
 
 -(void) drawVistas
 {

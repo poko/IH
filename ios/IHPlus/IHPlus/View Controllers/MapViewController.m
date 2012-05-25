@@ -665,29 +665,6 @@ int midpoint;
     [_prompt setText:[_currentVista prompt]];
 }
 
-//- (void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error
-//{
-//    //NSLog(@"failed to monitor region!!, %@", error);
-//}
-//
-//- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region
-//{
-//    NSLog(@"entered region! %@", [region identifier]);
-//    _currentVista = [_hike getVistaById:[region identifier]];
-//    [self showActionView];
-//}
-//
-//- (void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region
-//{
-//    //NSLog(@"exited region!");
-//}
-//
-//-(void)locationManager:(CLLocationManager *)manager didStartMonitoringForRegion:(CLRegion *)region
-//{
-//    //NSLog(@"monitoring region: %@", [region identifier]);
-//    //NSLog(@"region lat:%f long: %f", region.center.latitude, region.center.longitude  );
-//}
-
 #pragma mark keyboard handling
 
 UIButton *dummy;
