@@ -146,6 +146,7 @@
     [[cell description] setText:desc];
     [[cell viewButton] setTag:indexPath.row];
     [cell setIcon:[hike companion]];
+
     return cell;
 }
 

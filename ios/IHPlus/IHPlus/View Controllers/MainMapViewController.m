@@ -37,6 +37,7 @@
 
 -(void) viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     Hike *curHike = [(AppDelegate *)[[UIApplication sharedApplication] delegate] hike];
     if (curHike != nil && [curHike companion]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"You are about to exit companion species mode and go it alone. Do you really want to exit and re-start in standard hike mode? All info from your current hike will be lost."

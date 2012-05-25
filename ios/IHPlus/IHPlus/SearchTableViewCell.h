@@ -13,6 +13,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *name;
 @property (nonatomic, strong) IBOutlet UILabel *description;
 @property (nonatomic, strong) IBOutlet UIButton *viewButton;
+@property (nonatomic, strong) IBOutlet UIImageView *imgView;
 
 -(void) setIcon:(BOOL) companion;
 

@@ -503,12 +503,17 @@ www.ecoarttech.org</string>
                                                 <action selector="rewalkHike:" destination="K2Z-HB-mYH" eventType="touchUpInside" id="Nvr-XU-dTb"/>
                                             </connections>
                                         </button>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="0SI-gQ-t84">
+                                            <rect key="frame" x="150" y="8" width="12" height="16"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="description" destination="0Fv-SV-HfJ" id="KgR-P1-9xE"/>
+                                    <outlet property="imgView" destination="0SI-gQ-t84" id="XnC-ke-NVZ"/>
                                     <outlet property="name" destination="Z6v-Vq-xcm" id="Z86-2P-rOp"/>
                                     <outlet property="viewButton" destination="b8Y-BF-bLG" id="SnW-E8-tJs"/>
                                 </connections>
@@ -1043,6 +1048,7 @@ www.ecoarttech.org</string>
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchTableViewCell.h"/>
             <relationships>
                 <relationship kind="outlet" name="description" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imgView" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="name" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="viewButton" candidateClass="UIButton"/>
             </relationships>

@@ -3,14 +3,14 @@
 //  IHPlus
 //
 //  Created by Polina Koronkevich on 3/16/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 ecoarttech. All rights reserved.
 //
 
 #import "SearchTableViewCell.h"
 
 @implementation SearchTableViewCell
 
-@synthesize name,description, viewButton;
+@synthesize name,description, viewButton, imgView;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -30,12 +30,14 @@
 
 - (void) setIcon:(BOOL)companion
 {
+    [name sizeToFit];
+    NSString *fileName = companion ? @"companion_search_result_img.png" : @"standard_search_result_img.png";
     CGRect titleFrame = [name frame];
-    //CGRectMake(0, 0, 100, 100)
-    UIImage *icon = [UIImage imageWithContentsOfFile:@"scenic_vista_point.png"];
-    UIImageView* imgView = [[UIImageView alloc] initWithFrame:titleFrame];
+    CGRect frame = CGRectMake(titleFrame.size.width + 15, titleFrame.origin.y + 5 , 12, 16);
+    UIImage *icon = [UIImage imageNamed:fileName];
+    [imgView setFrame: frame];
     [imgView setImage:icon];
-    [self addSubview:imgView];
+    [self.contentView addSubview:imgView];
 }
 
 @end

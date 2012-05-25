@@ -47,7 +47,8 @@
         ScenicVista *vista = [ScenicVista initWithDictionary:vistaJson];
         [hike.vistas addObject:vista];
     }
-    // set points
+    // set companion
+    [hike setCompanion:[[dict objectForKey:@"companion"] isEqual:@"true"]];
     
     return hike;
 }
