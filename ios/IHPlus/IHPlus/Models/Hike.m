@@ -179,7 +179,7 @@
                                     @"####", i];
             
             if([vista getUploadFileName]){
-                head = [head stringByAppendingFormat:@"; filename=\"%@\"", [vista getUploadFileName]];
+                head = [head stringByAppendingFormat:@"; filename=\"%@.jpg\"", [vista getUploadFileName]];
             }
             NSLog(@"trying to upload file with length: %i", [[vista getUploadPhoto] length] );
             head = [head stringByAppendingFormat:@"\r\nContent-Length: %d\r\n\r\n", [[vista getUploadPhoto] length]];

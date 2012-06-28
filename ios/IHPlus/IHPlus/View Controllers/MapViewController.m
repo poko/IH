@@ -20,6 +20,8 @@
 
 @implementation MapViewController
 
+BOOL uploadToastShown = false;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -53,7 +55,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //NSLog(@"map view didloaded");
+    NSLog(@"map view did loaded");
     [_endAddress setDelegate:self]; //[_endAddress setText:@"1300 bob harrison 78702"];//TODOx
     [_startAddress setDelegate:self]; //[_startAddress setText:@"1200 bob harrison austin, tx"];
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque; 
@@ -90,7 +92,7 @@
         _zoomed = true;
     }
     // check if we've entered a vista point
-    if (![_hike companion]){
+    if (![_hike companion] && (_currentVista == nil)){
     for (ScenicVista *vista in [_hike vistas]){
         if (![vista complete]){ //only care about not completed vistas.
             // check if entered region
@@ -135,15 +137,16 @@
     if ([annotation isKindOfClass:[MKUserLocation class]])
         return nil;
     static NSString *AnnotationViewID = @"annotationViewID";
-    
+    NSLog(@"View for annotation: %@", [annotation title]);
     MKAnnotationView *annotationView = (MKAnnotationView *)[map dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
     
     if (annotationView == nil)
     {
         annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
     }
-    
-    annotationView.image = [UIImage imageNamed:@"scenic_vista_point.png"];
+    ScenicVista *vista = [_hike getVistaById:[annotation title]];
+    NSString *imgName = [vista complete] ? @"visited_vista.png" :@"scenic_vista_point.png";
+    annotationView.image = [UIImage imageNamed:imgName];
     annotationView.annotation = annotation;
     
     return annotationView;
@@ -198,12 +201,20 @@ bool alertShowing = false;
     }
     
 }
+//- (void) showFailureAlert
+//{
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Uh Oh" 
+//                                                    message:@"Something went wrong!" 
+//                                                   delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Ok", nil];
+//    [alert show];
+//}
 
 - (void) newHike: (BOOL) clearMapView
 {
     //clear hike
     NSLog(@"clearing hike");
     _hike = nil;
+    uploadToastShown = false;
     if (clearMapView)
         [self removeOverlaysAndAnnotations];
     [_promptHolder setHidden:true];
@@ -354,15 +365,25 @@ int midpoint;
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     [_currentVista setDate:[dateFormatter stringFromDate:[NSDate date]]];
-    //remove region tracking!
-    //[_locMgr stopMonitoringForRegion:[_currentVista region]];
-    //NSLog(@"how many regions we tracking? %i", [[_locMgr monitoredRegions] count]);
+    // set vista annotation point image
+    for (id annotation in _mapView.annotations){
+        if ([[_currentVista actionId] isEqual:[annotation title]]){
+            NSLog(@"removing and readding annotation: %@", [annotation title]);
+            [_mapView removeAnnotation:annotation];
+            [_mapView addAnnotation:annotation];
+        }
+    }
     _currentVista = nil;
     [_promptHolder setHidden:YES];
     // check if we can enable upload button
     if ([_hike eligibleForUpload]){
         _uploadButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(uploadHike:)];
         [[self navigationItem] setRightBarButtonItem:_uploadButton];
+        if ([_hike companion] && !uploadToastShown){
+            // show upload toast
+            [self.view makeToast:@"You can now upload your hike using the upload button on the navigation bar."];
+            uploadToastShown = true;
+        }
     }
     // if all the vistas are complete, show the modal automagically. 
     if ([_hike isComplete]){
@@ -512,7 +533,15 @@ int midpoint;
                 [self presentModalViewController:imagePicker animated:YES];
                 break;
             }
+            default:{ // This should ever happen, but ?? 
+                _currentVista = nil;
+                [_promptHolder setHidden:YES];
+            }
         }
+    }
+    else{ //how did this happen?
+        _currentVista = nil;
+        [_promptHolder setHidden:YES];
     }
 }
 

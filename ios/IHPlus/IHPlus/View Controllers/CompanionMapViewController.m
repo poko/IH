@@ -177,7 +177,6 @@
     }
     //NSLog(@"adding new vista now. prev amt of vistas: %i", [[_hike vistas] count]);
     // drop pin on map at current location
-    //TODO - vista image
     MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
     annotationPoint.coordinate = _currentLocation.location.coordinate;
     NSLog(@"vista point lat: %f",   _currentLocation.location.coordinate.latitude );

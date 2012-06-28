@@ -66,6 +66,10 @@ NSMutableData *receivedData;
 BOOL savingChars = NO;
 BOOL foundDirs = NO;
 NSMutableString *coordStr;
+-(void) parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError{
+    _handler(nil, @"Error with directions from Google.");
+}
+
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
 {
     //NSLog(@"starting element: %@", elementName);

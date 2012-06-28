@@ -76,10 +76,11 @@
         ScenicVista *vista = [[_hike vistas] objectAtIndex:i];
         MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
         [annotationPoint setCoordinate:[[vista location] coordinate]];
+        [annotationPoint setTitle:[vista actionId]];
         [_mapView addAnnotation:annotationPoint];
         // enable geofence
 //        [self registerRegionWithCircularOverlay:[[vista location] coordinate] andIdentifier:vista];
-        //NSLog(@"Vista fence at coord: %@", [vista location]);
+        NSLog(@"Vista fence at coord: %@", [vista location]);
     }
 }
 
@@ -142,7 +143,8 @@
         for (ScenicVista *vista in [_hike vistas]){
             NSDictionary *action = [actions objectAtIndex:i];
             [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
-            [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];
+            [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];//TODOx
+            //[vista setActionType:@"note"];
             [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
             i++;
         }
