@@ -13,8 +13,7 @@ import net.ecoarttech.ihplus.util.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import org.json.JSONObject;
 
 import android.app.ListActivity;
 import android.app.ProgressDialog;
@@ -63,8 +62,7 @@ public class SearchActivity extends ListActivity {
 				Hike hike = (Hike) mAdapter.getItem(position);
 				i.putExtra(Constants.BUNDLE_HIKE_ID, hike.getId());
 				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE1, hike.getName() + ". " + hike.getDescription());
-				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE2, "created by " + hike.getUsername() + ", "
-						+ hike.getCreateDate());
+				i.putExtra(Constants.BUNDLE_HIKE_DESC_LINE2, "created by " + hike.getUsername() + ", " + hike.getCreateDate());
 				startActivity(i);
 			}
 		});
@@ -75,8 +73,7 @@ public class SearchActivity extends ListActivity {
 
 			@Override
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				if ((event == null && actionId == EditorInfo.IME_ACTION_SEARCH)
-						|| (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN)) {
+				if ((event == null && actionId == EditorInfo.IME_ACTION_SEARCH) || (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_DOWN)) {
 					searchByText(v.getText().toString());
 				}
 				return true;
@@ -120,7 +117,7 @@ public class SearchActivity extends ListActivity {
 	public void onSearchClick(View v) {
 		searchByText(mSearchBar.getText().toString());
 	}
-	
+
 	public void onHikesClick(View v) {
 		Intent i = new Intent(this, CreateHikeActivity.class);
 		startActivity(i);
@@ -129,23 +126,28 @@ public class SearchActivity extends ListActivity {
 	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
 
 		@Override
-		public void onComplete(Document doc) {
-			if (doc != null) {
-				NodeList nl = doc.getElementsByTagName("coordinates");
-				if (nl != null) {
-					try {
-						String coordsElm = nl.item(0).getFirstChild().getNodeValue();
-						String[] coords = coordsElm.split(",");
-						// long = 0, lat = 1
-						double lat = Double.valueOf(coords[1]);
-						double lng = Double.valueOf(coords[0]);
-						// TODO - check for validity
-						// send coords up to server. bam.
-						searchHikes(lat, lng);
-					} catch (NullPointerException e) {
+		public void onComplete(String result) {
+			if (result != null) {
+				try {
+					JSONObject jsonResp = new JSONObject(result);
+					if (jsonResp != null && jsonResp.optString("status").equals("OK")) {
+						JSONArray resultsJson = jsonResp.optJSONArray("results");
+						if (resultsJson != null && resultsJson.length() > 0) {
+							JSONObject resultJson = resultsJson.getJSONObject(0);
+							JSONObject locJson = resultJson.optJSONObject("geometry").optJSONObject("location");
+							double lat = locJson.optDouble("lat");
+							double lng = locJson.optDouble("lng");
+							// TODO - check for validity
+							// send coords up to server. bam.
+							searchHikes(lat, lng);
+						} else {
+							showError();
+						}
+					} else {
 						showError();
 					}
-				} else {
+				} catch (JSONException e) {
+					e.printStackTrace();
 					showError();
 				}
 			} else {

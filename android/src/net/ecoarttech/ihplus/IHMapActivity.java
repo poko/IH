@@ -85,6 +85,7 @@ public class IHMapActivity extends MapActivity {
 
 		mCurrentLocationOverlay = new CurrentLocationOverlay(this, mMapView);
 		mCurrentLocationOverlay.runOnFirstFix(new Runnable() {
+			@Override
 			public void run() {
 				mMapView.getController().animateTo(mCurrentLocationOverlay.getMyLocation());
 			}
@@ -94,8 +95,7 @@ public class IHMapActivity extends MapActivity {
 		// populate user's contact list for any text actions (to prevent db lookups every time this kind of action takes
 		// place)
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-		String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-				ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.TYPE };
+		String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.TYPE };
 
 		Cursor cur = getContentResolver().query(uri, projection, null, null, null);
 
@@ -139,6 +139,7 @@ public class IHMapActivity extends MapActivity {
 	/*
 	 * Return back to Hike Activity from taking a photo. Mark vista as complete if the activity succeeded.
 	 */
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		Log.d(TAG, "result code: " + resultCode);
 		if (requestCode == TAKE_PHOTO_ACTIVITY) {
@@ -166,6 +167,7 @@ public class IHMapActivity extends MapActivity {
 		}
 	}
 
+	@Override
 	protected void onPause() {
 		super.onPause();
 		mCurrentLocationOverlay.disableMyLocation();
@@ -191,15 +193,15 @@ public class IHMapActivity extends MapActivity {
 		}
 	}
 
-	protected void drawPath(String[] pairs) {
-		String[] lngLat = pairs[0].split(",");
-		// STARTING POINT
-		double startLat = Double.parseDouble(lngLat[1]);
-		double startLng = Double.parseDouble(lngLat[0]);
-		GeoPoint startGP = new GeoPoint((int) (startLat * 1E6), (int) (startLng * 1E6));
+	protected void drawPath(ArrayList<GeoPoint> points) {
+		// String[] lngLat = pairs[0].split(",");
+		// // STARTING POINT
+		// double startLat = Double.parseDouble(lngLat[1]);
+		// double startLng = Double.parseDouble(lngLat[0]);
+		GeoPoint startGP = points.get(0);// new GeoPoint((int) (startLat * 1E6), (int) (startLng * 1E6));
 
-		mHike.addPoint(startGP);
-		mHike.setStartPoints(startLat, startLng);
+		// mHike.addPoint(startGP);
+		// mHike.setStartPoints(startGP.getLatitudeE6() / 1e6, startGP.getLongitudeE6() / 1e6);
 		mMapController = mMapView.getController();
 		geoPoint = startGP;
 		mMapController.setCenter(geoPoint);
@@ -209,14 +211,14 @@ public class IHMapActivity extends MapActivity {
 		// NAVIGATE THE PATH
 		GeoPoint gp1;
 		GeoPoint gp2 = startGP;
-		for (int i = 1; i < pairs.length; i++) {
-			lngLat = pairs[i].split(",");
+		for (int i = 1; i < points.size(); i++) {
+			// lngLat = pairs[i].split(",");
 			gp1 = gp2;
 			// watch out! For GeoPoint, first:latitude, second:longitude
-			gp2 = new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double.parseDouble(lngLat[0]) * 1E6));
+			gp2 = points.get(i);// new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double.parseDouble(lngLat[0]) * 1E6));
 			mMapView.getOverlays().add(new DirectionPathOverlay(gp1, gp2));
-			Log.d("xxx", "pair:" + pairs[i]);
-			mHike.addPoint(gp2);
+			Log.d("xxx", "point:" + points.get(i));
+			// mHike.addPoint(gp2);
 		}
 
 		// END POINT
@@ -277,8 +279,7 @@ public class IHMapActivity extends MapActivity {
 	private void showHikeWarning() {
 		if (mHike.isOriginal()) {
 			// (warn that current hike will be lost)
-			new AlertDialog.Builder(this).setTitle("create a new hike").setMessage(
-					"are you sure you would like to create a new hike?\nthe current hike will be lost.")
+			new AlertDialog.Builder(this).setTitle("create a new hike").setMessage("are you sure you would like to create a new hike?\nthe current hike will be lost.")
 					.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
 						@Override
@@ -325,7 +326,7 @@ public class IHMapActivity extends MapActivity {
 				setActionClickListeners(enteredVista, vistaCont);
 			} else {
 				// TODO - if vista task is not completed, tsk tsk! ??
-				if (enteredVista.isComplete()){
+				if (enteredVista.isComplete()) {
 					// if vista is complete, get rid of vista info bar
 					findViewById(R.id.hike_layout).setVisibility(View.GONE);
 					findViewById(R.id.vista_layout).setVisibility(View.GONE);
@@ -344,17 +345,17 @@ public class IHMapActivity extends MapActivity {
 					// open note dialog
 					if (vista.getActionType() == ActionType.NOTE) {
 						final View alertContent = getLayoutInflater().inflate(R.layout.note_dialog, null);
-						new AlertDialog.Builder(mContext).setTitle("make a field note").setIcon(0)
-								.setView(alertContent).setPositiveButton("Done", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface d, int which) {
-										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
-										vista.setNote(noteInput.getText().toString());
-										if (vista.isComplete()) {
-											// allow user to move on to the next vista
-											markVistaAsCompleted(vista);
-										}
-									}
-								}).create().show();
+						new AlertDialog.Builder(mContext).setTitle("make a field note").setIcon(0).setView(alertContent).setPositiveButton("Done", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface d, int which) {
+								EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
+								vista.setNote(noteInput.getText().toString());
+								if (vista.isComplete()) {
+									// allow user to move on to the next vista
+									markVistaAsCompleted(vista);
+								}
+							}
+						}).create().show();
 					} else if (vista.getActionType() == ActionType.MEDITATE) {
 						vista.complete();
 						markVistaAsCompleted(vista);
@@ -367,8 +368,7 @@ public class IHMapActivity extends MapActivity {
 						final Spinner contactSpinner = (Spinner) alertContent.findViewById(R.id.vista_contact);
 						final EditText confirmView = (EditText) alertContent.findViewById(R.id.confirm_contact);
 						final Button editConfirm = (Button) alertContent.findViewById(R.id.edit_confirm);
-						ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext,
-								android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet()));
+						ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet()));
 						arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						contactSpinner.setAdapter(arrayAdapter);
 						// set on selection listener to display selected number
@@ -380,35 +380,35 @@ public class IHMapActivity extends MapActivity {
 							}
 
 							@Override
-							public void onNothingSelected(AdapterView<?> parent) {}
+							public void onNothingSelected(AdapterView<?> parent) {
+							}
 						});
 						// set listener for confirm button
 						editConfirm.setOnClickListener(new OnClickListener() {
-							
+
 							@Override
 							public void onClick(View v) {
 								confirmView.setEnabled(true);
 							}
 						});
-						new AlertDialog.Builder(mContext).setTitle("send a field note").setIcon(0)
-								.setView(alertContent).setPositiveButton("Send", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface d, int which) {
-										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
-										vista.setNote(noteInput.getText().toString());
-										String number = confirmView.getText().toString();//mContacts.get(contactSpinner.getSelectedItem());
-										Log.d(TAG, "selected number to send to: " + number);
-										if (number != null){
-											PendingIntent pi = PendingIntent.getActivity(mContext, 0, null, 0);
-											SmsManager sms = SmsManager.getDefault();
-											sms.sendTextMessage(number, null,
-													noteInput.getText().toString(), pi, null);
-										}
-										if (vista.isComplete()) {
-											// allow user to move on to the next vista
-											markVistaAsCompleted(vista);
-										}
-									}
-								}).create().show();
+						new AlertDialog.Builder(mContext).setTitle("send a field note").setIcon(0).setView(alertContent).setPositiveButton("Send", new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface d, int which) {
+								EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
+								vista.setNote(noteInput.getText().toString());
+								String number = confirmView.getText().toString();// mContacts.get(contactSpinner.getSelectedItem());
+								Log.d(TAG, "selected number to send to: " + number);
+								if (number != null) {
+									PendingIntent pi = PendingIntent.getActivity(mContext, 0, null, 0);
+									SmsManager sms = SmsManager.getDefault();
+									sms.sendTextMessage(number, null, noteInput.getText().toString(), pi, null);
+								}
+								if (vista.isComplete()) {
+									// allow user to move on to the next vista
+									markVistaAsCompleted(vista);
+								}
+							}
+						}).create().show();
 					}
 				}
 			});
@@ -457,25 +457,23 @@ public class IHMapActivity extends MapActivity {
 
 	private void completeHike() {
 		// inflate input dialog
-		final View dialogView = getLayoutInflater().inflate(
-				mHike.isOriginal() ? R.layout.complete_hike_dialog : R.layout.complete_walk_hike_dialog, null);
-		new AlertDialog.Builder(this).setTitle("hike completed").setView(dialogView).setPositiveButton("share",
-				new DialogInterface.OnClickListener() {
+		final View dialogView = getLayoutInflater().inflate(mHike.isOriginal() ? R.layout.complete_hike_dialog : R.layout.complete_walk_hike_dialog, null);
+		new AlertDialog.Builder(this).setTitle("hike completed").setView(dialogView).setPositiveButton("share", new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// get user inputs
-						EditText username = (EditText) dialogView.findViewById(R.id.hike_username);
-						EditText hikeName = (EditText) dialogView.findViewById(R.id.hike_name);
-						EditText hikeDesc = (EditText) dialogView.findViewById(R.id.hike_desc);
-						mHike.setUsername(username.getText().toString());
-						if (mHike.isOriginal()) {
-							mHike.setName(hikeName.getText().toString());
-							mHike.setDescription(hikeDesc.getText().toString());
-						}
-						mHike.upload(mContext, mUploadHandler);
-					}
-				}).create().show();
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// get user inputs
+				EditText username = (EditText) dialogView.findViewById(R.id.hike_username);
+				EditText hikeName = (EditText) dialogView.findViewById(R.id.hike_name);
+				EditText hikeDesc = (EditText) dialogView.findViewById(R.id.hike_desc);
+				mHike.setUsername(username.getText().toString());
+				if (mHike.isOriginal()) {
+					mHike.setName(hikeName.getText().toString());
+					mHike.setDescription(hikeDesc.getText().toString());
+				}
+				mHike.upload(mContext, mUploadHandler);
+			}
+		}).create().show();
 	}
 
 	private Handler mUploadHandler = new Handler() {
@@ -499,19 +497,18 @@ public class IHMapActivity extends MapActivity {
 	};
 
 	private void showRetryDialog() {
-		new AlertDialog.Builder(this).setTitle("oops").setMessage(
-				"something went wrong during the upload.\nwould you like to try again?").setPositiveButton("Re-try",
-				new DialogInterface.OnClickListener() {
+		new AlertDialog.Builder(this).setTitle("oops").setMessage("something went wrong during the upload.\nwould you like to try again?")
+				.setPositiveButton("Re-try", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						mHike.upload(mContext, mUploadHandler);
 					}
 				}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-			}
-		}).create().show();
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).create().show();
 	}
 
 	@Override

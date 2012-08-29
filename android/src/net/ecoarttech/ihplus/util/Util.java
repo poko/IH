@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -15,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.maps.GeoPoint;
 
 public class Util {
 	private static final String TAG = "IH+ - Util";
@@ -69,4 +73,36 @@ public class Util {
 		}
 	}
 
+	public static List<GeoPoint> decodePoly(String encoded) {
+
+		List<GeoPoint> poly = new ArrayList<GeoPoint>();
+		int index = 0, len = encoded.length();
+		int lat = 0, lng = 0;
+
+		while (index < len) {
+			int b, shift = 0, result = 0;
+			do {
+				b = encoded.charAt(index++) - 63;
+				result |= (b & 0x1f) << shift;
+				shift += 5;
+			} while (b >= 0x20);
+			int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+			lat += dlat;
+
+			shift = 0;
+			result = 0;
+			do {
+				b = encoded.charAt(index++) - 63;
+				result |= (b & 0x1f) << shift;
+				shift += 5;
+			} while (b >= 0x20);
+			int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+			lng += dlng;
+
+			GeoPoint p = new GeoPoint((int) ((lat / 1E5) * 1E6), (int) ((lng / 1E5) * 1E6));
+			poly.add(p);
+		}
+
+		return poly;
+	}
 }

@@ -35,8 +35,7 @@ public class WalkHikeActivity extends IHMapActivity {
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			mHikeId = extras.getInt(Constants.BUNDLE_HIKE_ID);
-			new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL,
-					NetworkConstants.RESPONSE_JSON_HIKE).execute();
+			new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL, NetworkConstants.RESPONSE_JSON_HIKE).execute();
 		}
 	}
 
@@ -53,8 +52,7 @@ public class WalkHikeActivity extends IHMapActivity {
 					JSONArray points = json.getJSONArray(NetworkConstants.RESPONSE_JSON_POINTS);
 					for (int i = 0; i < points.length(); i++) {
 						JSONObject point = points.getJSONObject(i);
-						GeoPoint gp = new GeoPoint(point.getInt(NetworkConstants.RESPONSE_JSON_LAT), point
-								.getInt(NetworkConstants.RESPONSE_JSON_LNG));
+						GeoPoint gp = new GeoPoint(point.getInt(NetworkConstants.RESPONSE_JSON_LAT), point.getInt(NetworkConstants.RESPONSE_JSON_LNG));
 						mHike.addPoint(gp);
 					}
 					JSONArray vistas = json.getJSONArray(NetworkConstants.RESPONSE_JSON_VISTAS);
@@ -63,13 +61,14 @@ public class WalkHikeActivity extends IHMapActivity {
 					}
 					// draw path
 					ArrayList<GeoPoint> geoPoints = mHike.getPoints();
-					String[] pairs = new String[geoPoints.size()];
-					for (int i = 0; i < geoPoints.size(); i++) {
-						GeoPoint gp = geoPoints.get(i);
-						pairs[i] = String.format("%f,%f", (float) gp.getLongitudeE6() * .000001, (float) gp
-								.getLatitudeE6() * .000001);
-					}
-					drawPath(pairs);
+					Log.d("pk", "points size: " + geoPoints.size());
+					// String[] pairs = new String[geoPoints.size()];
+					// for (int i = 0; i < geoPoints.size(); i++) {
+					// GeoPoint gp = geoPoints.get(i);
+					// pairs[i] = String.format("%f,%f", (float) gp.getLongitudeE6() * .000001, (float) gp
+					// .getLatitudeE6() * .000001);
+					// }
+					drawPath(geoPoints);
 					// draw vistas
 					drawVistas();
 					// setup vista intents
@@ -85,15 +84,13 @@ public class WalkHikeActivity extends IHMapActivity {
 	};
 
 	private void showFailureDialog() {
-		new AlertDialog.Builder(this).setTitle("oops something went wrong").setMessage("try again?").setPositiveButton(
-				"Retry", new OnClickListener() {
+		new AlertDialog.Builder(this).setTitle("oops something went wrong").setMessage("try again?").setPositiveButton("Retry", new OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL,
-								NetworkConstants.RESPONSE_JSON_HIKE).execute();
-					}
-				}).setNegativeButton("Cancel", new OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				new DownloadByHikeId(hikeDownloadHandler, mHikeId, NetworkConstants.GET_HIKE_URL, NetworkConstants.RESPONSE_JSON_HIKE).execute();
+			}
+		}).setNegativeButton("Cancel", new OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

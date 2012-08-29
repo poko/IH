@@ -55,7 +55,13 @@ public class ScenicVista implements Serializable {
 	private boolean complete = false;
 	private boolean isEnd = false;
 
-	public ScenicVista(String lat, String lon) {
+	public ScenicVista(GeoPoint point) {
+		this.point = point;
+		this.latitude = point.getLatitudeE6() / 1e6;
+		this.longitude = point.getLongitudeE6() / 1e6;
+	}
+
+	private ScenicVista(String lat, String lon) {
 		this.latitude = Double.parseDouble(lat);
 		this.longitude = Double.parseDouble(lon);
 		this.point = new GeoPoint((int) (latitude * 1E6), (int) (longitude * 1E6));
@@ -119,8 +125,7 @@ public class ScenicVista implements Serializable {
 			try {
 				BitmapFactory.Options opts = new Options();
 				opts.inSampleSize = 4;
-				Bitmap scaled = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath()
-						+ photo.getEncodedPath(), opts);
+				Bitmap scaled = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + photo.getEncodedPath(), opts);
 				FileOutputStream os;
 				os = c.openFileOutput(getPhotoTitle() + ".jpg", Context.MODE_PRIVATE);
 				scaled.compress(CompressFormat.JPEG, 90, os);

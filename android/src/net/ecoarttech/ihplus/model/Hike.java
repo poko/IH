@@ -42,8 +42,7 @@ public class Hike implements Serializable {
 		this.original = true; // hike created on device
 	}
 
-	public Hike(int id, String name, String desc, String createDate, String user, Double startLat, Double startLng,
-			boolean original) {
+	public Hike(int id, String name, String desc, String createDate, String user, Double startLat, Double startLng, boolean original) {
 		this.id = id;
 		this.name = name;
 		this.description = desc;
@@ -62,11 +61,11 @@ public class Hike implements Serializable {
 	public void addEndVista(ScenicVista vista) {
 		if (!vistas.contains(vista))
 			vistas.add(vista);
-		else{ // vista is there, mark it as the end vista
+		else { // vista is there, mark it as the end vista
 			vistas.get(vistas.indexOf(vista)).setIsEnd();
 		}
 	}
-	
+
 	public void setStartPoints(Double lat, Double lng) {
 		this.startLat = lat;
 		this.startLng = lng;
@@ -74,6 +73,12 @@ public class Hike implements Serializable {
 
 	public void addPoint(GeoPoint point) {
 		points.add(point);
+	}
+
+	public void addPoints(ArrayList<GeoPoint> pts, int start) {
+		points.addAll(pts);
+		if (start == 1)
+			setStartPoints(pts.get(0).getLatitudeE6() / 1e6, pts.get(0).getLongitudeE6() / 1e6);
 	}
 
 	public ArrayList<ScenicVista> getVistas() {
@@ -91,8 +96,8 @@ public class Hike implements Serializable {
 	public int getId() {
 		return id;
 	}
-	
-	public void setId(Integer id){
+
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -175,8 +180,7 @@ public class Hike implements Serializable {
 		StringBuilder sb = new StringBuilder("[");
 		for (int i = 0; i < points.size(); i++) {
 			GeoPoint p = points.get(i);
-			sb.append(String.format("{\"index\": %d, \"latitude\": %d, \"longitude\": %d}", i, p.getLatitudeE6(), p
-					.getLongitudeE6()));
+			sb.append(String.format("{\"index\": %d, \"latitude\": %d, \"longitude\": %d}", i, p.getLatitudeE6(), p.getLongitudeE6()));
 			sb.append(",");
 		}
 		sb.deleteCharAt(sb.length() - 1); // remove last comma
@@ -201,8 +205,7 @@ public class Hike implements Serializable {
 	}
 
 	public static Hike fromJson(JSONObject json, boolean isOriginal) {
-		return new Hike(json.optInt(JSON_ID), json.optString(JSON_NAME), json.optString(JSON_DESC), json
-				.optString(JSON_CREATE_DATE), json.optString(JSON_USERNAME), json.optDouble(JSON_START_LAT), json
-				.optDouble(JSON_START_LNG), isOriginal);
+		return new Hike(json.optInt(JSON_ID), json.optString(JSON_NAME), json.optString(JSON_DESC), json.optString(JSON_CREATE_DATE), json.optString(JSON_USERNAME), json.optDouble(JSON_START_LAT),
+				json.optDouble(JSON_START_LNG), isOriginal);
 	}
 }

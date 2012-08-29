@@ -14,10 +14,11 @@ import net.ecoarttech.ihplus.network.DirectionsAsyncTask;
 import net.ecoarttech.ihplus.network.DownloadVistaActionsTask;
 import net.ecoarttech.ihplus.network.NetworkConstants;
 import net.ecoarttech.ihplus.network.StartCoordsAsyncTask;
+import net.ecoarttech.ihplus.util.Util;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -34,7 +35,7 @@ import com.google.android.maps.GeoPoint;
 
 public class OriginalHikeActivity extends IHMapActivity {
 	private static final String TAG = "IH+ - OriginalHikeActivity";
-	private boolean randomPoint = true; 
+	private boolean randomPoint = true;
 	private int mPathCalls = 0;
 	private String mStart;
 	private String mEnd;
@@ -78,6 +79,7 @@ public class OriginalHikeActivity extends IHMapActivity {
 	}
 
 	private Handler currentLocationFixHandler = new Handler() {
+		@Override
 		public void handleMessage(Message msg) {
 			GeoPoint currentLocation = (GeoPoint) msg.obj;
 			mCurrentLocationOverlay.callbackReceived();
@@ -88,19 +90,25 @@ public class OriginalHikeActivity extends IHMapActivity {
 	private DirectionCompletionListener coordsListener = new DirectionCompletionListener() {
 
 		@Override
-		public void onComplete(Document doc) {
-			if (doc != null) {
-				NodeList nl = doc.getElementsByTagName("coordinates");
-				try{
-					String coordsElm = nl.item(0).getFirstChild().getNodeValue();
-					String[] coords = coordsElm.split(",");
-					// long = 0, lat = 1
-					double lat = Double.valueOf(coords[1]);
-					double lng = Double.valueOf(coords[0]);
-					// randomize offset
-					randomizePoints(lat, lng, false);
-				}
-				catch( NullPointerException e){
+		public void onComplete(String result) {
+			if (result != null) {
+				try {
+					JSONObject jsonResp = new JSONObject(result);
+					if (jsonResp != null && jsonResp.optString("status").equals("OK")) {
+						JSONArray resultsJson = jsonResp.optJSONArray("results");
+						if (resultsJson != null && resultsJson.length() > 0) {
+							JSONObject resultJson = resultsJson.getJSONObject(0);
+							JSONObject locJson = resultJson.optJSONObject("geometry").optJSONObject("location");
+							double lat = locJson.optDouble("lat");
+							double lng = locJson.optDouble("lng");
+							randomizePoints(lat, lng, false);
+						} else {
+							displayRetryDialog();
+						}
+					} else {
+						displayRetryDialog();
+					}
+				} catch (JSONException e) {
 					e.printStackTrace();
 					displayRetryDialog();
 				}
@@ -134,26 +142,29 @@ public class OriginalHikeActivity extends IHMapActivity {
 				Log.d(TAG, "To: " + to);
 			}
 			getDirectionData(mStart, to);
+			// put in a tiny pause
+			Thread.sleep(500);
 			getDirectionData(to, mEnd);
 		} catch (IOException e) {
+			e.printStackTrace();
+			displayRetryDialog();
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 			displayRetryDialog();
 		}
 	}
 
 	private void displayRetryDialog() {
-		if (!isFinishing()){
+		if (!isFinishing()) {
 			mDialog.dismiss();
-			new AlertDialog.Builder(this).setTitle("oops").setMessage(
-					"there was an error generating your hike.\ntry again?").setPositiveButton("Retry",
-					new DialogInterface.OnClickListener() {
-	
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							new StartCoordsAsyncTask(mContext, mStart, coordsListener).execute();
-						}
-					}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	
+			new AlertDialog.Builder(this).setTitle("oops").setMessage("there was an error generating your hike.\ntry again?").setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					new StartCoordsAsyncTask(mContext, mStart, coordsListener).execute();
+				}
+			}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
@@ -164,60 +175,68 @@ public class OriginalHikeActivity extends IHMapActivity {
 	}
 
 	private void getDirectionData(String srcPlace, String destPlace) {
-		DirectionsAsyncTask task = new DirectionsAsyncTask(this, srcPlace, destPlace,
-				new DirectionCompletionListener() {
+		DirectionsAsyncTask task = new DirectionsAsyncTask(this, srcPlace, destPlace, new DirectionCompletionListener() {
 
-					@Override
-					public void onComplete(Document doc) {
-						String pathConent = "";
-						Log.d(TAG, "doc: " + doc);
-						if (doc != null) {
-							NodeList nl = doc.getElementsByTagName("LineString");
-							for (int s = 0; s < nl.getLength(); s++) {
-								Node rootNode = nl.item(s);
-								NodeList configItems = rootNode.getChildNodes();
-								for (int x = 0; x < configItems.getLength(); x++) {
-									Node lineStringNode = configItems.item(x);
-									NodeList path = lineStringNode.getChildNodes();
-									pathConent = path.item(0).getNodeValue();
-								}
+			@Override
+			public void onComplete(String result) {
+				ArrayList<GeoPoint> pathPoints = new ArrayList<GeoPoint>();
+				if (result != null) {
+					try {
+						JSONObject jsonResult = new JSONObject(result);
+						JSONArray jsonRoutes = jsonResult.optJSONArray("routes");
+						if (jsonRoutes != null && jsonRoutes.length() > 0) {
+							JSONObject jsonRoute = jsonRoutes.getJSONObject(0);
+							JSONObject legJson = jsonRoute.getJSONArray("legs").getJSONObject(0);
+							JSONArray steps = legJson.getJSONArray("steps");
+							for (int k = 0; k < steps.length(); k++) {
+								// get poly line points
+								String polyLineString = steps.getJSONObject(k).getJSONObject("polyline").getString("points");
+								Log.d(TAG, "polyline: " + polyLineString);
+								pathPoints.addAll(Util.decodePoly(polyLineString));
 							}
-							if (pathConent.length() == 0) {
+							if (pathPoints.size() == 0) {
 								displayRetryDialog();
 								return;
 							}
-							String[] tempContent = pathConent.split(" ");
-							generateScenicVistas(tempContent);
-							drawPath(tempContent);
+
+							generateScenicVistas(pathPoints);
+							mHike.addPoints(pathPoints, mPathCalls);
+							// drawPath(pathPoints);
 							if (randomPoint) {
 								mPathCalls++;
 								if (mPathCalls == 1) {
 									// add the random mid-point to scenic vistas (addVista() call will prevent double
 									// vistas)
-									createNewVista(tempContent[tempContent.length - 1]);
+									createNewVista(pathPoints.get(pathPoints.size() - 1));
 								}
 								if (mPathCalls == 2) {
-									createEndVista(tempContent[tempContent.length - 1]);
+									createEndVista(pathPoints.get(pathPoints.size() - 1));
 									drawVistasAndDownloadTasks();
 								}
 							} else {
 								// we're done!
 								drawVistasAndDownloadTasks();
 							}
-						} else {
-							displayRetryDialog();
+
 						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+						displayRetryDialog();
 					}
-				});
+				} else {
+					displayRetryDialog();
+				}
+			}
+		});
 		task.execute();
 	}
 
-	private void generateScenicVistas(String[] points) {
+	private void generateScenicVistas(ArrayList<GeoPoint> points) {
 		ArrayList<Integer> existingVistas = new ArrayList<Integer>();
-		if (points.length < 3) {
+		if (points.size() < 3) {
 			// each point is a new scenic vista
-			for (int i = 0; i < points.length; i++) {
-				createNewVista(points[i]);
+			for (int i = 0; i < points.size(); i++) {
+				createNewVista(points.get(i));
 			}
 		} else {
 			// generate random number between 2-4 (for 4-8 total scenic vistas)
@@ -226,10 +245,10 @@ public class OriginalHikeActivity extends IHMapActivity {
 			Log.d(TAG, "Vistas: " + vistaAmount);
 			int i = 0;
 			while (i < vistaAmount) {
-				int r = rand.nextInt(points.length);
+				int r = rand.nextInt(points.size());
 				Log.d(TAG, "trying vista : " + r);
 				if (!existingVistas.contains(r)) {
-					createNewVista(points[r]);
+					createNewVista(points.get(r));
 					existingVistas.add(r);
 					i++;
 				}
@@ -237,24 +256,25 @@ public class OriginalHikeActivity extends IHMapActivity {
 		}
 	}
 
-	private void createNewVista(String coordsStr) {
+	private void createNewVista(GeoPoint point) {
 		// create a new scenic vista here!
-		String[] lngLat = coordsStr.split(",");
-		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
+		// String[] lngLat = coordsStr.split(",");
+		ScenicVista vista = new ScenicVista(point);
 		mHike.addVista(vista);
-		Log.d(TAG, "new vista!" + coordsStr);
+		Log.d(TAG, "new vista!" + point);
 	}
 
-	private void createEndVista(String coordsStr) {
+	private void createEndVista(GeoPoint point) {
 		// create a new scenic vista here!
-		String[] lngLat = coordsStr.split(",");
-		ScenicVista vista = new ScenicVista(lngLat[1], lngLat[0]);
+		// String[] lngLat = coordsStr.split(",");
+		ScenicVista vista = new ScenicVista(point);
 		vista.setIsEnd();
 		mHike.addEndVista(vista);
-		Log.d(TAG, "new vista!" + coordsStr);
+		Log.d(TAG, "new vista!" + point);
 	}
 
 	private void drawVistasAndDownloadTasks() {
+		drawPath(mHike.getPoints());
 		drawVistas();
 		// get vista 'tasks' from server
 		new DownloadVistaActionsTask(mHike.getVistas(), mDownloadActionsHandler).execute();
@@ -272,12 +292,8 @@ public class OriginalHikeActivity extends IHMapActivity {
 					cursor.moveToPosition(i);
 					ScenicVista v = mHike.getVistas().get(i);
 					v.setActionId(cursor.getInt(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_ID)));
-					v
-							.setAction(cursor.getString(cursor
-									.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE)));
-					v
-							.setActionType(cursor.getString(cursor
-									.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE)));
+					v.setAction(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_VERBIAGE)));
+					v.setActionType(cursor.getString(cursor.getColumnIndex(NetworkConstants.RESPONSE_JSON_VISTAS_TYPE)));
 				}
 				cursor.close();
 			}
