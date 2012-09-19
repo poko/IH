@@ -51,11 +51,52 @@ NSMutableData *receivedData;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     // parse response data
-    //NSLog(@"Directions Succeeded! Received %d bytes of data",[receivedData length]);
+    NSLog(@"Directions Succeeded! Received %d bytes of data",[receivedData length]);
+   // NSLog(@"we got: %@ ",[[NSString alloc] initWithData:receivedData encoding:NSUTF8StringEncoding]);
     if ([receivedData length] > 0){
-        NSXMLParser *parser = [[NSXMLParser alloc] initWithData:receivedData];
-        [parser setDelegate:self];
-        [parser parse];
+        NSError *error;
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:receivedData options:kNilOptions error:&error];
+        if (error != nil){
+            NSLog(@"Here is the error: %@", error);
+            _handler(nil, @"Invalid Directions between locations");
+            return;
+        }
+        NSString *status = [json objectForKey:@"status"];
+        if ([status isEqualToString:@"OK"]){
+            NSArray *routes = [json objectForKey:@"routes"];
+            // get first route
+            NSDictionary *route = [routes objectAtIndex:0];
+            NSLog(@"route: %@", route);
+            NSArray *legs = [route objectForKey:@"legs"];
+            NSLog(@"legs: %@", legs);
+            NSArray *steps = [[legs objectAtIndex:0] objectForKey:@"steps"];
+            NSLog(@"steps: %@", steps);
+            NSMutableArray *locCoords = [NSMutableArray array];
+            for (int i = 0; i < [steps count]; i++){
+                NSDictionary *step = [steps objectAtIndex:i];
+                // add each start point
+                NSDictionary *latLng = [step objectForKey:@"start_location"];
+                NSLog(@"latlng: %@", latLng);
+                CLLocationDegrees latitude = [[latLng objectForKey:@"lat"] doubleValue];
+                CLLocationDegrees longitude = [[latLng objectForKey:@"lng"] doubleValue];
+                CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+                [locCoords addObject:loc];
+            }
+            // add last end location
+            NSDictionary *step = [steps objectAtIndex:[steps count]-1];
+            NSLog(@"last step: %@", step);
+            NSDictionary *latLng = [step objectForKey:@"end_location"];
+            CLLocationDegrees latitude = [[latLng objectForKey:@"lat"] doubleValue];
+            CLLocationDegrees longitude = [[latLng objectForKey:@"lng"] doubleValue];
+            CLLocation *loc = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
+            [locCoords addObject:loc];
+            // send data back
+            foundDirs = YES;
+            _handler(locCoords, nil);
+        }
+        //NSXMLParser *parser = [[NSXMLParser alloc] initWithData:receivedData];
+        //[parser setDelegate:self];
+        //[parser parse];
     }
     else{
         _handler(nil, @"Invalid Directions between locations");
@@ -67,14 +108,15 @@ BOOL savingChars = NO;
 BOOL foundDirs = NO;
 NSMutableString *coordStr;
 -(void) parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError{
+    NSLog(@"error: %@", parseError);
     _handler(nil, @"Error with directions from Google.");
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict
 {
-    //NSLog(@"starting element: %@", elementName);
+    NSLog(@"starting element: %@", elementName);
     if ([elementName isEqualToString:LINE_STRING]){
-        //NSLog(@"found line string:");
+        NSLog(@"found line string:");
         savingChars = YES;
         coordStr = [NSMutableString string];
     }
@@ -82,9 +124,9 @@ NSMutableString *coordStr;
 
 -(void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
 {
-    //NSLog(@"found chars");
+    NSLog(@"found chars");
     if (savingChars){
-       // NSLog(@"now we save");
+        NSLog(@"now we save");
         [coordStr appendString:string];
     }
 }
@@ -92,7 +134,7 @@ NSMutableString *coordStr;
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
     if ([elementName isEqualToString:LINE_STRING]){
-        //NSLog(@"ended line string element");
+        NSLog(@"ended line string element");
         savingChars = NO;
         // parse coords into points
         NSMutableArray *locCoords = [NSMutableArray array];
