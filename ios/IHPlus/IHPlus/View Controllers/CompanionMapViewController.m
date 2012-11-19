@@ -189,7 +189,7 @@
     [vista setLocation:_currentLocation.location];
     [vista setActionId:[action objectForKey:KEY_ACTION_ID]];
     [vista setActionType:[action objectForKey:KEY_ACTION_TYPE]];//TODOx
-    //[vista setActionType:@"text"];
+    //[vista setActionType:@"photo"];
     [vista setPrompt:[action objectForKey:KEY_ACTION_PROMPT]];
     // add vista object to hike
     [_hike addCompanionVista:vista];

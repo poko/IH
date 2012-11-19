@@ -37,7 +37,6 @@
 		A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D781512998400391EE5 /* MapKit.framework */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
 		A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D50155077200039C656 /* SystemConfiguration.framework */; };
-		A6820D531551861C0039C656 /* BugSense-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D521551861B0039C656 /* BugSense-iOS.framework */; };
 		A6984D9A152F6EF7005934C4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984D9B152F6EF7005934C4 /* MapViewController.m */; };
 		A6984DA0152F74EE005934C4 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984DA1152F74EE005934C4 /* SearchViewController.m */; };
 		A6AB117815265FB20002D9EE /* hike_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117415265FB10002D9EE /* hike_it_btn.png */; };
@@ -206,7 +205,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1C994B81569AE6F00653B98 /* AssetsLibrary.framework in Frameworks */,
-				A6820D531551861C0039C656 /* BugSense-iOS.framework in Frameworks */,
 				A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */,
 				A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */,
 				A6D9663D1534E54600255CC3 /* MessageUI.framework in Frameworks */,
