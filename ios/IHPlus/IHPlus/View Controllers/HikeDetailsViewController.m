@@ -248,11 +248,17 @@ NSMutableData *receivedData;
         // show page controller
         [pageControl setHidden:false];
         [pageControl setNumberOfPages:[_hikes count]];
-        [_table setFrame:CGRectMake(0, 111, 320, 256)]; // move table below page controller
+        if (iphone4 or less)
+            [_table setFrame:CGRectMake(0, 111, 320, 256)]; // move table below page controller
+        else //iphone 5
+            [_table setFrame:CGRectMake(0, 111, 320, 256+additionalPixels)];
     }
     else{
         [pageControl setHidden:true];
-        [_table setFrame:CGRectMake(0, 75, 320, 292)]; // move table to below header labels
+        if (iphone4 or less)
+            [_table setFrame:CGRectMake(0, 75, 320, 292)]; // move table to below header labels
+        else //iphone 5
+            [_table setFrame:CGRectMake(0, 75, 320, 292 + additionalPixels)];
     }
     //update table view 
     [_table reloadData];
