@@ -180,7 +180,7 @@ NSTimer *_timer;
         _loadingIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         [_loadingIndicator setHidesWhenStopped:YES];
         [_loadingIndicator setBackgroundColor:[UIColor colorWithWhite:0 alpha:.5]];
-        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 320.0, 480.0);
+        _loadingIndicator.frame = CGRectMake(0.0, 0.0, 320.0, [[UIScreen mainScreen] bounds].size.height );
         _loadingIndicator.center = self.view.center;
     }
     [self.view addSubview: _loadingIndicator];
