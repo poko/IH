@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2840" systemVersion="11G63b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Raz-7O-WFW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="11G63" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Raz-7O-WFW">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1926"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--Credits View Controller-->
@@ -929,11 +928,11 @@ www.ecoarttech.org</string>
             </objects>
             <point key="canvasLocation" x="3240" y="86"/>
         </scene>
-        <!--Navigation Controller - search-->
+        <!--Navigation Controller - archives-->
         <scene sceneID="FhD-Wj-f1l">
             <objects>
                 <navigationController id="JcT-Ac-8hO" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="2" title="search" image="search_hike_on_btn.png" id="nAt-Ou-xvY"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="archives" image="search_hike_on_btn.png" id="nAt-Ou-xvY"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="ucT-Dp-sF0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1011,6 +1010,7 @@ www.ecoarttech.org</string>
         <class className="MapViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
             <relationships>
+                <relationship kind="action" name="clickedCreateButton:"/>
                 <relationship kind="action" name="continueClicked:"/>
                 <relationship kind="action" name="currentLocation:"/>
                 <relationship kind="action" name="hitTrail:"/>
@@ -1070,6 +1070,7 @@ www.ecoarttech.org</string>
             <source key="sourceIdentifier" type="project" relativePath="./Classes/UploadHikeController.h"/>
             <relationships>
                 <relationship kind="action" name="cancelClick:"/>
+                <relationship kind="action" name="dismissKeyboard:"/>
                 <relationship kind="action" name="uploadClick:"/>
                 <relationship kind="outlet" name="hikeDesc" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="hikeName" candidateClass="UITextField"/>
