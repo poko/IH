@@ -21,6 +21,7 @@
 @property (nonatomic, strong) IBOutlet UILabel *prompt;
 @property (nonatomic, strong) IBOutlet UITextView *input;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *doneButton;
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) NSString *promptText;
 
 -(IBAction)doneClick:(id)sender;

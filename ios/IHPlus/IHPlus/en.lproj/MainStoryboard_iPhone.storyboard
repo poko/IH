@@ -68,7 +68,7 @@ www.ecoarttech.org</string>
         <scene sceneID="Ucc-By-MyM">
             <objects>
                 <viewController id="iRV-y2-isw" customClass="NoteModalController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="SSM-K7-na1">
+                    <view key="view" contentMode="scaleToFill" id="SSM-K7-na1" customClass="UIScrollView">
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -114,6 +114,7 @@ www.ecoarttech.org</string>
                         <outlet property="holder" destination="kfa-py-GMS" id="N4M-2O-vyi"/>
                         <outlet property="input" destination="GM8-av-VVe" id="vcG-XA-F0B"/>
                         <outlet property="prompt" destination="MXs-3e-U0m" id="B8E-M1-uZh"/>
+                        <outlet property="scrollView" destination="SSM-K7-na1" id="bYi-Tu-XPR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="agL-yD-PIe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -124,7 +125,7 @@ www.ecoarttech.org</string>
         <scene sceneID="VDM-y1-THg">
             <objects>
                 <viewController id="2NU-L1-tak" customClass="TextModalController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="XAc-wH-Aef">
+                    <view key="view" contentMode="scaleToFill" id="XAc-wH-Aef" customClass="UIScrollView">
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
@@ -186,6 +187,7 @@ www.ecoarttech.org</string>
                         <outlet property="doneButton" destination="2ET-H7-PcM" id="GvQ-bE-nB1"/>
                         <outlet property="input" destination="mPD-z5-XOl" id="WYM-Dq-fQU"/>
                         <outlet property="prompt" destination="Jkk-gz-c1M" id="qee-2v-3Gb"/>
+                        <outlet property="scrollView" destination="XAc-wH-Aef" id="EdD-0f-W1E"/>
                         <outlet property="textButton" destination="eKI-fG-8Nl" id="S0O-BF-Kws"/>
                     </connections>
                 </viewController>
@@ -978,6 +980,128 @@ www.ecoarttech.org</string>
         <image name="x-species_btn.png" width="35" height="35"/>
         <image name="your_location_btn.png" width="45" height="30"/>
     </resources>
+    <classes>
+        <class className="CompanionMapViewController" superclassName="MapViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CompanionMapViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="addVistaHere:"/>
+                <relationship kind="outlet" name="_addVistaButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="CreditsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CreditsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="done:"/>
+                <relationship kind="outlet" name="textview" candidateClass="UITextView"/>
+            </relationships>
+        </class>
+        <class className="HikeDetailsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HikeDetailsViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="changePage:"/>
+                <relationship kind="outlet" name="_desc" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_details" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_table" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="pageControl" candidateClass="UIPageControl"/>
+            </relationships>
+        </class>
+        <class className="MainMapViewController" superclassName="MapViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MainMapViewController.h"/>
+        </class>
+        <class className="MapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="clickedCreateButton:"/>
+                <relationship kind="action" name="continueClicked:"/>
+                <relationship kind="action" name="currentLocation:"/>
+                <relationship kind="action" name="hitTrail:"/>
+                <relationship kind="action" name="uploadHike:"/>
+                <relationship kind="outlet" name="_endAddress" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="_infoButton" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="_inputHolder" candidateClass="UIView"/>
+                <relationship kind="outlet" name="_mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="_prompt" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_promptHolder" candidateClass="UIView"/>
+                <relationship kind="outlet" name="_startAddress" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="_uploadButton" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="NoteModalController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NoteModalController.h"/>
+            <relationships>
+                <relationship kind="action" name="doneClick:"/>
+                <relationship kind="outlet" name="doneButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="holder" candidateClass="UIView"/>
+                <relationship kind="outlet" name="input" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="prompt" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="scrollView" candidateClass="UIScrollView"/>
+            </relationships>
+        </class>
+        <class className="SearchResultsController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchResultsController.h"/>
+            <relationships>
+                <relationship kind="action" name="rewalkHike:"/>
+                <relationship kind="outlet" name="_header" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="_tableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="SearchTableViewCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchTableViewCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="description" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="imgView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="name" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="viewButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="SearchViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SearchViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="_searchBar" candidateClass="UISearchBar"/>
+            </relationships>
+        </class>
+        <class className="TextModalController" superclassName="NoteModalController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/TextModalController.h"/>
+            <relationships>
+                <relationship kind="action" name="textClick:"/>
+                <relationship kind="outlet" name="disclaimer" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="textButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="UploadHikeController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/UploadHikeController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancelClick:"/>
+                <relationship kind="action" name="dismissKeyboard:"/>
+                <relationship kind="action" name="uploadClick:"/>
+                <relationship kind="outlet" name="hikeDesc" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="hikeName" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="scroller" candidateClass="UIScrollView"/>
+                <relationship kind="outlet" name="uploadButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="userName" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="VistaCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="prompt" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="vistaNum" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="VistaCellNote" superclassName="VistaCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCellNote.h"/>
+            <relationships>
+                <relationship kind="outlet" name="note" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="VistaCellPhoto" superclassName="VistaCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/VistaCellPhoto.h"/>
+            <relationships>
+                <relationship kind="outlet" name="photo" candidateClass="UIImageView"/>
+            </relationships>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

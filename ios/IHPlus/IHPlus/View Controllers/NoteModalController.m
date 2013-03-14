@@ -12,7 +12,7 @@
 @implementation NoteModalController
 
 @synthesize vcDelegate, promptText;
-@synthesize holder, prompt, input, doneButton;
+@synthesize holder, prompt, input, doneButton, scrollView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,11 +53,11 @@
     [input.layer setMasksToBounds:YES];
     [input setDelegate:self];
     [prompt setText:promptText];
-    
     //allows user to hide keyboard.
     UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self 
                                             action:@selector(resignResponder:)];
     [holder addGestureRecognizer:singleFingerTap];
+    [self registerForKeyboardNotifications];
 }
 
 
@@ -99,6 +99,45 @@
     }
     
     return YES;
+}
+
+#pragma mark keyboard handling
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
+    
+}
+
+- (void)keyboardWasShown:(NSNotification*)notification {
+    // move text field
+    NSDictionary* info = [notification userInfo];
+    CGSize keyboardSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardSize.height, 0.0);
+    scrollView.contentInset = contentInsets;
+    scrollView.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    //CGRect aRect = self.view.frame;
+    //aRect.size.height -= keyboardSize.height;
+    //if (!CGRectContainsPoint(aRect, input.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, abs(input.frame.origin.y+input.frame.size.height-keyboardSize.height));
+        [scrollView setContentOffset:scrollPoint animated:YES];
+   // }
+}
+
+- (void)keyboardWillBeHidden:(NSNotification*)notification {
+    // move text field back
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    scrollView.contentInset = contentInsets;
+    scrollView.scrollIndicatorInsets = contentInsets;
 }
 
 @end
