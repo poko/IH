@@ -23,7 +23,7 @@
 #define kFadeDuration               0.3
 #define kDisplayShadow              YES
 
-#define kDefaultLength              1.5
+#define kDefaultLength              2.5
 #define kDefaultPosition            @"center"
 
 #define kImageWidth                 80.0

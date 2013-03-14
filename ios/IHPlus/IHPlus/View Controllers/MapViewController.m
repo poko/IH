@@ -305,10 +305,10 @@ int midpoint;
 -(void) getDirectionsFrom:(NSString *) from to:(NSString *) to
 {
     //NSLog(@"getting directions from : %@ to: %@", from, to);
-    NSString *url = [NSString stringWithFormat:@"http://maps.google.com/maps?output=kml&saddr=%@&daddr=%@", 
+    NSString *url = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/directions/json?sensor=false&origin=%@&destination=%@", 
                      [from stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], 
                      [to stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    //NSLog(@"Sending to url %@", url);
+    NSLog(@"Sending to url %@", url);
                      
     NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     GetDirectionsDelegate *connDelegate = [[GetDirectionsDelegate alloc] initWithHandler:^(NSMutableArray *points, NSString *error) {

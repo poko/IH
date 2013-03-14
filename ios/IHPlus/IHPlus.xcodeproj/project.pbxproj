@@ -37,7 +37,6 @@
 		A67D3D791512998400391EE5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A67D3D781512998400391EE5 /* MapKit.framework */; };
 		A67D3D8B1513AD8E00391EE5 /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A67D3D8A1513AD8E00391EE5 /* SearchTableViewCell.m */; };
 		A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D50155077200039C656 /* SystemConfiguration.framework */; };
-		A6820D531551861C0039C656 /* BugSense-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6820D521551861B0039C656 /* BugSense-iOS.framework */; };
 		A6984D9A152F6EF7005934C4 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984D9B152F6EF7005934C4 /* MapViewController.m */; };
 		A6984DA0152F74EE005934C4 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6984DA1152F74EE005934C4 /* SearchViewController.m */; };
 		A6AB117815265FB20002D9EE /* hike_it_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = A6AB117415265FB10002D9EE /* hike_it_btn.png */; };
@@ -87,6 +86,7 @@
 		E1C994B515695A3300653B98 /* view_it_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C994B115695A3300653B98 /* view_it_btn@2x.png */; };
 		E1C994B615695A3300653B98 /* your_location_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1C994B215695A3300653B98 /* your_location_btn@2x.png */; };
 		E1C994B81569AE6F00653B98 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C994B71569AE6F00653B98 /* AssetsLibrary.framework */; };
+		E1E8A71F166CF6E900D97A63 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E1E8A71E166CF6E900D97A63 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -198,6 +198,7 @@
 		E1C994B115695A3300653B98 /* view_it_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "view_it_btn@2x.png"; path = "Assets/view_it_btn@2x.png"; sourceTree = "<group>"; };
 		E1C994B215695A3300653B98 /* your_location_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "your_location_btn@2x.png"; path = "Assets/your_location_btn@2x.png"; sourceTree = "<group>"; };
 		E1C994B71569AE6F00653B98 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		E1E8A71E166CF6E900D97A63 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +207,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1C994B81569AE6F00653B98 /* AssetsLibrary.framework in Frameworks */,
-				A6820D531551861C0039C656 /* BugSense-iOS.framework in Frameworks */,
 				A6820D51155077200039C656 /* SystemConfiguration.framework in Frameworks */,
 				A60BBAAA154213AB005E8EF0 /* libz.dylib in Frameworks */,
 				A6D9663D1534E54600255CC3 /* MessageUI.framework in Frameworks */,
@@ -237,6 +237,7 @@
 		A67D3D4115126D5C00391EE5 = {
 			isa = PBXGroup;
 			children = (
+				E1E8A71E166CF6E900D97A63 /* Default-568h@2x.png */,
 				E1C994B71569AE6F00653B98 /* AssetsLibrary.framework */,
 				A6820D521551861B0039C656 /* BugSense-iOS.framework */,
 				A6820D50155077200039C656 /* SystemConfiguration.framework */,
@@ -502,6 +503,7 @@
 				E12350BE156FDEBA0006DF2F /* standard_search_result_img@2x.png in Resources */,
 				E17AB29B157024BB00670DAA /* visited_vista.png in Resources */,
 				E17AB29C157024BB00670DAA /* visited_vista@2x.png in Resources */,
+				E1E8A71F166CF6E900D97A63 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -183,8 +183,14 @@
         // draw path and vistas
         [self drawPath];
         [self drawVistas];
+        // create a 'back' button to get input view back
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+                                       initWithTitle:@"Edit"
+                                       style:UIBarButtonItemStyleBordered
+                                       target:self action: @selector(clickedCreateButton:)];
+        [[self navigationItem] setLeftBarButtonItem:backButton];
     }];
-    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; 
+    NSURLRequest *req = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSURLConnection *connection =[[NSURLConnection alloc] initWithRequest:req delegate:rewalkDelegate];
     if (!connection) {
         //NSLog(@"connection failed");

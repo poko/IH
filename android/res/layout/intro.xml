@@ -8,7 +8,7 @@
 	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:background="@drawable/hiking_top_bar">
+		android:background="@drawable/top_bar_logo_full">
 		<ImageView android:id="@+id/hike_btn"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 

@@ -95,7 +95,8 @@ public class IHMapActivity extends MapActivity {
 		// populate user's contact list for any text actions (to prevent db lookups every time this kind of action takes
 		// place)
 		Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-		String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.TYPE };
+		String[] projection = new String[] { ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+				ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.TYPE };
 
 		Cursor cur = getContentResolver().query(uri, projection, null, null, null);
 
@@ -215,7 +216,8 @@ public class IHMapActivity extends MapActivity {
 			// lngLat = pairs[i].split(",");
 			gp1 = gp2;
 			// watch out! For GeoPoint, first:latitude, second:longitude
-			gp2 = points.get(i);// new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6), (int) (Double.parseDouble(lngLat[0]) * 1E6));
+			gp2 = points.get(i);// new GeoPoint((int) (Double.parseDouble(lngLat[1]) * 1E6), (int)
+								// (Double.parseDouble(lngLat[0]) * 1E6));
 			mMapView.getOverlays().add(new DirectionPathOverlay(gp1, gp2));
 			Log.d("xxx", "point:" + points.get(i));
 			// mHike.addPoint(gp2);
@@ -279,7 +281,8 @@ public class IHMapActivity extends MapActivity {
 	private void showHikeWarning() {
 		if (mHike.isOriginal()) {
 			// (warn that current hike will be lost)
-			new AlertDialog.Builder(this).setTitle("create a new hike").setMessage("are you sure you would like to create a new hike?\nthe current hike will be lost.")
+			new AlertDialog.Builder(this).setTitle("create a new hike")
+					.setMessage("are you sure you would like to create a new hike?\nthe current hike will be lost.")
 					.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 
 						@Override
@@ -301,6 +304,8 @@ public class IHMapActivity extends MapActivity {
 		}
 	}
 
+	private ScenicVista mCurrentVista;
+
 	public class VistaEnteredReceiver extends BroadcastReceiver {
 
 		@Override
@@ -312,25 +317,27 @@ public class IHMapActivity extends MapActivity {
 			boolean entering = extras.getBoolean(LocationManager.KEY_PROXIMITY_ENTERING);
 			String enter = entering ? "Entering" : "Leaving";
 			Log.i(TAG, enter + " a scenic vista.");
-			final ScenicVista enteredVista = mHike.getVistaByHashCode(i);
-			if (entering) {
+			// final ScenicVista enteredVista = mHike.getVistaByHashCode(i);
+			if (entering && mCurrentVista == null) { // entered a new vista ..
 				// display hike & vista info at top of screen
+				mCurrentVista = mHike.getVistaByHashCode(i);
 				findViewById(R.id.hike_layout).setVisibility(View.VISIBLE);
 				findViewById(R.id.vista_layout).setVisibility(View.VISIBLE);
 				TextView vistaInfo = (TextView) findViewById(R.id.vista_info);
-				vistaInfo.setText(Html.fromHtml(enteredVista.getAction()));
+				vistaInfo.setText(Html.fromHtml(mCurrentVista.getAction()));
 				// Util.setBoldFont(mContext, findViewById(R.id.hike_name), findViewById(R.id.vista_label), vistaInfo,
 				// vistaCont);
 				// set click listeners
 				View vistaCont = findViewById(R.id.vista_cont);
-				setActionClickListeners(enteredVista, vistaCont);
+				setActionClickListeners(mCurrentVista, vistaCont);
 			} else {
 				// TODO - if vista task is not completed, tsk tsk! ??
-				if (enteredVista.isComplete()) {
+				if (mCurrentVista != null && mCurrentVista.isComplete()) {
 					// if vista is complete, get rid of vista info bar
 					findViewById(R.id.hike_layout).setVisibility(View.GONE);
 					findViewById(R.id.vista_layout).setVisibility(View.GONE);
 				}
+				// otherwise we ignore ..
 			}
 		}
 	}
@@ -345,17 +352,18 @@ public class IHMapActivity extends MapActivity {
 					// open note dialog
 					if (vista.getActionType() == ActionType.NOTE) {
 						final View alertContent = getLayoutInflater().inflate(R.layout.note_dialog, null);
-						new AlertDialog.Builder(mContext).setTitle("make a field note").setIcon(0).setView(alertContent).setPositiveButton("Done", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface d, int which) {
-								EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
-								vista.setNote(noteInput.getText().toString());
-								if (vista.isComplete()) {
-									// allow user to move on to the next vista
-									markVistaAsCompleted(vista);
-								}
-							}
-						}).create().show();
+						new AlertDialog.Builder(mContext).setTitle("make a field note").setIcon(0)
+								.setView(alertContent).setPositiveButton("Done", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface d, int which) {
+										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
+										vista.setNote(noteInput.getText().toString());
+										if (vista.isComplete()) {
+											// allow user to move on to the next vista
+											markVistaAsCompleted(vista);
+										}
+									}
+								}).create().show();
 					} else if (vista.getActionType() == ActionType.MEDITATE) {
 						vista.complete();
 						markVistaAsCompleted(vista);
@@ -368,7 +376,8 @@ public class IHMapActivity extends MapActivity {
 						final Spinner contactSpinner = (Spinner) alertContent.findViewById(R.id.vista_contact);
 						final EditText confirmView = (EditText) alertContent.findViewById(R.id.confirm_contact);
 						final Button editConfirm = (Button) alertContent.findViewById(R.id.edit_confirm);
-						ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet()));
+						ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext,
+								android.R.layout.simple_spinner_item, new ArrayList<String>(mContacts.keySet()));
 						arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 						contactSpinner.setAdapter(arrayAdapter);
 						// set on selection listener to display selected number
@@ -391,24 +400,25 @@ public class IHMapActivity extends MapActivity {
 								confirmView.setEnabled(true);
 							}
 						});
-						new AlertDialog.Builder(mContext).setTitle("send a field note").setIcon(0).setView(alertContent).setPositiveButton("Send", new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface d, int which) {
-								EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
-								vista.setNote(noteInput.getText().toString());
-								String number = confirmView.getText().toString();// mContacts.get(contactSpinner.getSelectedItem());
-								Log.d(TAG, "selected number to send to: " + number);
-								if (number != null) {
-									PendingIntent pi = PendingIntent.getActivity(mContext, 0, null, 0);
-									SmsManager sms = SmsManager.getDefault();
-									sms.sendTextMessage(number, null, noteInput.getText().toString(), pi, null);
-								}
-								if (vista.isComplete()) {
-									// allow user to move on to the next vista
-									markVistaAsCompleted(vista);
-								}
-							}
-						}).create().show();
+						new AlertDialog.Builder(mContext).setTitle("send a field note").setIcon(0)
+								.setView(alertContent).setPositiveButton("Send", new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface d, int which) {
+										EditText noteInput = (EditText) alertContent.findViewById(R.id.vista_note);
+										vista.setNote(noteInput.getText().toString());
+										String number = confirmView.getText().toString();// mContacts.get(contactSpinner.getSelectedItem());
+										Log.d(TAG, "selected number to send to: " + number);
+										if (number != null) {
+											PendingIntent pi = PendingIntent.getActivity(mContext, 0, null, 0);
+											SmsManager sms = SmsManager.getDefault();
+											sms.sendTextMessage(number, null, noteInput.getText().toString(), pi, null);
+										}
+										if (vista.isComplete()) {
+											// allow user to move on to the next vista
+											markVistaAsCompleted(vista);
+										}
+									}
+								}).create().show();
 					}
 				}
 			});
@@ -441,6 +451,7 @@ public class IHMapActivity extends MapActivity {
 	}
 
 	private void markVistaAsCompleted(ScenicVista vista) {
+		mCurrentVista = null;
 		// remove vista info views
 		findViewById(R.id.hike_layout).setVisibility(View.GONE);
 		findViewById(R.id.vista_layout).setVisibility(View.GONE);
@@ -457,23 +468,25 @@ public class IHMapActivity extends MapActivity {
 
 	private void completeHike() {
 		// inflate input dialog
-		final View dialogView = getLayoutInflater().inflate(mHike.isOriginal() ? R.layout.complete_hike_dialog : R.layout.complete_walk_hike_dialog, null);
-		new AlertDialog.Builder(this).setTitle("hike completed").setView(dialogView).setPositiveButton("share", new DialogInterface.OnClickListener() {
+		final View dialogView = getLayoutInflater().inflate(
+				mHike.isOriginal() ? R.layout.complete_hike_dialog : R.layout.complete_walk_hike_dialog, null);
+		new AlertDialog.Builder(this).setTitle("hike completed").setView(dialogView)
+				.setPositiveButton("share", new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// get user inputs
-				EditText username = (EditText) dialogView.findViewById(R.id.hike_username);
-				EditText hikeName = (EditText) dialogView.findViewById(R.id.hike_name);
-				EditText hikeDesc = (EditText) dialogView.findViewById(R.id.hike_desc);
-				mHike.setUsername(username.getText().toString());
-				if (mHike.isOriginal()) {
-					mHike.setName(hikeName.getText().toString());
-					mHike.setDescription(hikeDesc.getText().toString());
-				}
-				mHike.upload(mContext, mUploadHandler);
-			}
-		}).create().show();
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// get user inputs
+						EditText username = (EditText) dialogView.findViewById(R.id.hike_username);
+						EditText hikeName = (EditText) dialogView.findViewById(R.id.hike_name);
+						EditText hikeDesc = (EditText) dialogView.findViewById(R.id.hike_desc);
+						mHike.setUsername(username.getText().toString());
+						if (mHike.isOriginal()) {
+							mHike.setName(hikeName.getText().toString());
+							mHike.setDescription(hikeDesc.getText().toString());
+						}
+						mHike.upload(mContext, mUploadHandler);
+					}
+				}).create().show();
 	}
 
 	private Handler mUploadHandler = new Handler() {
@@ -497,7 +510,8 @@ public class IHMapActivity extends MapActivity {
 	};
 
 	private void showRetryDialog() {
-		new AlertDialog.Builder(this).setTitle("oops").setMessage("something went wrong during the upload.\nwould you like to try again?")
+		new AlertDialog.Builder(this).setTitle("oops")
+				.setMessage("something went wrong during the upload.\nwould you like to try again?")
 				.setPositiveButton("Re-try", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

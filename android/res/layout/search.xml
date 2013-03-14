@@ -21,7 +21,7 @@
 	<ImageView android:id="@+id/msg_bar"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:src="@drawable/message_bar_search_btn"/>
+		android:background="@drawable/message_bar_search_btn_9"/>
 	<RelativeLayout 
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
