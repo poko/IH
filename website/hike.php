@@ -160,7 +160,10 @@ if (!$result) {
 $hike = mysql_fetch_object($result);
 
 // get vistas
-$query = sprintf("SELECT * from vistas INNER JOIN vista_actions where hike_id = '%s' AND vistas.action_id = vista_actions.action_id", mysql_real_escape_string($hike_id));
+if ($hike->companion)
+	$query = sprintf("SELECT * from vistas INNER JOIN companion_vista_actions where hike_id = '%s' AND vistas.action_id = vista_actions.action_id", mysql_real_escape_string($hike_id));
+else
+	$query = sprintf("SELECT * from vistas INNER JOIN vista_actions where hike_id = '%s' AND vistas.action_id = vista_actions.action_id", mysql_real_escape_string($hike_id));
 $result=mysql_query($query);
 $vista_json = array();
 while ($row = mysql_fetch_object($result)) {
