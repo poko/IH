@@ -49,6 +49,14 @@
 
 #pragma mark - View lifecycle
 
+-(void) viewWillAppear:(BOOL)animated
+{
+    NSLog(@"search viewWillAppear.");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Archives Mode" message:@"You have selected the option to view past documentation from other people's hikes."
+                                                       delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"continue",nil];
+    [alert show];
+}
+
 -(void)viewDidAppear:(BOOL)animated
 {
     MKMapView *map = [(AppDelegate *)[[UIApplication sharedApplication] delegate] map];
@@ -80,6 +88,18 @@
 {
     // Return YES for supported orientations
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
+#pragma mark - Alert View Delegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0){ //canceled
+        [self.tabBarController setSelectedIndex:0];
+    }
+    else if (buttonIndex == 1){ //continue
+        //do nothing
+    }
 }
 
 
