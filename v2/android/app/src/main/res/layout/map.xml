@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	> 
+	<!-- Top Bar -->
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/hiking_top_bar">
+		<ImageView android:id="@+id/hikes_btn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/hikes_top_btn"
+			android:clickable="true"
+			android:onClick="onHikesClick"/>
+		<ImageView android:id="@+id/search_btn"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_toLeftOf="@id/hikes_btn"
+			android:src="@drawable/search_top_btn"
+			android:clickable="true"
+			android:onClick="onSearchClick"/>
+		<!-- <ImageView 
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:src="@drawable/hiking_top_bar"
+			android:layout_toLeftOf="@id/search_btn"/> -->
+	</RelativeLayout>
+	<!-- Hike Info Bar -->
+	<RelativeLayout android:id="@+id/hike_layout"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:background="@color/tabbar_gray"
+		android:visibility="gone">
+		<TextView android:id="@+id/hike_name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_centerVertical="true"
+			android:text="@string/current_hike"
+			android:textColor="#FFFFFF"
+			android:textStyle="bold"/>
+		<!-- <ImageView android:id="@+id/vista_task"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/notes_tab"
+			android:clickable="true"
+			android:onClick="onHikeTaskClick"/> -->
+		<ImageView android:id="@+id/vista_gallery"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/gallery_tab"
+			android:clickable="true"
+			android:onClick="onHikeGalleryClick"
+			android:visibility="gone"/> 
+	</RelativeLayout>
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:id="@+id/map"
+			android:name="com.google.android.gms.maps.SupportMapFragment"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			tools:context="net.ecoarttech.ihplus.activities.IHMapActivity" />
+		<!-- Vista Info bar -->
+		<LinearLayout android:id="@+id/vista_layout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:orientation="vertical"
+			android:padding="10dp"
+			android:background="@drawable/vista_bg"
+			android:visibility="gone">
+			<TextView android:id="@+id/vista_label"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:text="@string/this_is_vista"
+				android:textStyle="bold"
+				android:textColor="#000000"/>
+			<TextView android:id="@+id/vista_info"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textStyle="bold"
+				android:textColor="#000000"/>
+			<TextView android:id="@+id/vista_cont"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:layout_gravity="right"
+				android:textColor="@color/link_blue"
+				android:textStyle="bold"
+				android:clickable="true"
+				android:text="@string/cont"/> 
+		</LinearLayout>
+	</RelativeLayout>
+</LinearLayout>

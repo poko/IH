@@ -3,3 +3,5 @@ gen
 .DS_Store
 android/gen/net/ecoarttech/ihplus/R.java
 UserInterfaceState.xcuserstate
+*/.idea
+.idea

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="header_gray">#444444</color>
+    <color name="splash_gray">#333333</color>
+    <color name="tabbar_gray">#848181</color>
+    <color name="link_blue">#21D9FC</color>
+    <color name="background_gray">#BCBBBB</color>
+    <color name="light_gray">#F1F1F1</color>
+    <color name="bg">#bababa</color><!-- TODO -->
+</resources>

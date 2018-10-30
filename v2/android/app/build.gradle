@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "net.ecoarttech.ihplus"
+        minSdkVersion 21
+        targetSdkVersion 27
+        versionCode 200
+        versionName "2.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$supportLibsVersion"
+    implementation "com.google.android.gms:play-services-maps:$playServices"
+    implementation "com.android.support:support-media-compat:$supportLibsVersion"
+    implementation "com.android.support:support-v4:$supportLibsVersion"
+    implementation "com.google.android.gms:play-services-location:$playServices"
+
+    //Third Party Libs
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-jackson:2.3.0'
+}

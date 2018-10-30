@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:background="@color/tabbar_gray"
+	> 
+	<EditText android:id="@+id/vista_note"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:lines="3"/>
+
+	<Spinner
+	    android:id="@+id/vista_contact"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" />
+
+	<TextView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="verify the number below:"
+		android:paddingLeft="5dp"/>
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<Button android:id="@+id/edit_confirm"
+			android:layout_width="40dp"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:text="edit"
+			android:background="@drawable/ih_edittext"/>
+		<EditText android:id="@+id/confirm_contact"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_toLeftOf="@id/edit_confirm"
+			android:inputType="phone"
+			android:enabled="false"/>
+	</RelativeLayout>
+</LinearLayout>

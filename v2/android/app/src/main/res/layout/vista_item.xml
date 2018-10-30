@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="wrap_content"
+	android:layout_height="fill_parent"
+	> 
+	<TextView android:id="@+id/vista_divider"
+	    style="@style/boldWhite"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:background="@color/header_gray"/>
+	<TextView android:id="@+id/vista_action"
+	    style="@style/boldBlack"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:background="@color/light_gray"
+		android:textSize="12sp"/>
+	<TextView android:id="@+id/vista_content_note"
+	    style="@style/boldBlack"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:visibility="gone"/>
+	<ImageView android:id="@+id/vista_content_photo"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
+		android:scaleType="centerInside"
+		android:gravity="center"/>
+</LinearLayout>

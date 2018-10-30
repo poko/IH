@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<ImageView 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="100dp"
+		android:gravity="center"
+		android:src="@drawable/about_screen_bkg_img"/>
+	<TextView android:id="@+id/info"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:gravity="left"
+		android:text="@string/credits"
+		android:textStyle="bold"
+		android:textSize="16sp"
+		android:paddingTop="30dp"
+		android:paddingRight="15dp"
+		android:paddingLeft="15dp"
+		android:lineSpacingMultiplier="1.4"/>
+</RelativeLayout>

@@ -1,0 +1,46 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.ecoarttech.ihplus">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SEND_SMS"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:theme="@style/AppTheme">
+
+        <activity android:name=".activities.SplashActivity" android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activities.AboutActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.CreateHikeActivity" android:screenOrientation="portrait" android:launchMode="singleTask"/>
+        <activity android:name=".activities.InfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.IntroActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.OriginalHikeActivity" android:screenOrientation="portrait" android:configChanges="orientation"/>
+        <activity android:name=".activities.SearchActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" android:taskAffinity="net.ecoarttech.ihplus.activities.CreatHikeActivity"/>
+        <activity android:name=".activities.ViewOrHikeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ViewHikesListActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ViewHikeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.WalkHikeActivity" android:screenOrientation="portrait"/>
+
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value=""/>
+
+    </application>
+</manifest>

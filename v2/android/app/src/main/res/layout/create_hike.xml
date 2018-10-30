@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	> 
+	<!-- Top Bar -->
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/top_bar_logo_full"
+		android:gravity="center_vertical">
+		<ImageView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentRight="true"
+			android:src="@drawable/search_top_btn"
+			android:clickable="true"
+			android:onClick="onSearchClick"/>
+	</RelativeLayout>
+	<ImageView android:id="@+id/msg_bar"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@drawable/message_bar_create_btn_9"/>
+	<RelativeLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:padding="5dp"
+		android:background="@color/tabbar_gray">
+		<EditText android:id="@+id/start_address"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/enter_start"
+			android:textColorHint="@color/background_gray"
+			android:singleLine="true"/>	
+		<Button android:id="@+id/current_location"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_marginRight="7dp"
+			android:layout_marginTop="7dp"
+			android:background="@drawable/your_location_img"
+			android:onClick="onCurrentLocationClick"/>
+		<EditText android:id="@+id/end_address"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/start_address"
+			android:hint="@string/enter_end"
+			android:textColorHint="@color/background_gray"
+			android:singleLine="true"/>	
+	</RelativeLayout>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@color/light_gray"
+		android:padding="5dp">
+		<Button android:id="@+id/start_hike"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:background="@drawable/hit_the_trail_btn"
+			android:onClick="onHitTrailClick"/>
+	</RelativeLayout>
+	<ImageView 
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1"
+		android:gravity="center"
+		android:src="@drawable/create_screen_bkg_img"/>
+</LinearLayout>
